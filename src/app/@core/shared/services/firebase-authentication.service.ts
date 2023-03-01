@@ -1,68 +1,83 @@
 import { Injectable } from '@angular/core';
 /*
   01 Mar 2023 wutthichair
-    Import AngularFireAuth, AngularFirestore, Router, GoogleAuthProvider and FirebaseUser
+    Import required modules
 */
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { FirebaseUser } from '../interfaces/firebase-user';
+/*
+  01 Mar 2023 wutthichair
+    Import required modules
+*/
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthenticationService implements CanActivate{
 
-  private firebaseUserInfo: FirebaseUser;
+  /*
+    01 Mar 2023 wutthichair
+  */
+  private firebaseUser: FirebaseUser;
+  private firebaseUserStoreKey = "firebaseUserStoreKey";
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Revise constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router)
   */
   constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router) {
+    this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
+    if(this.firebaseUser != null){
+      console.log('Cache Login');
+    }
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Revise canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
   */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-    return this.firebaseUserInfo != null;
+    return this.firebaseUser != null;
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add GoogleAuth()
   */
-  private GoogleAuth() {
+  public GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider());
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add AuthLogin()
   */
-  private AuthLogin(provider: firebase.default.auth.AuthProvider | GoogleAuthProvider) {
+  private async AuthLogin(provider: firebase.default.auth.AuthProvider | GoogleAuthProvider) {
     return this.afAuth
       .signInWithPopup(provider)
       .then((result) => {
-        //Good Authentication 
+        /*
+          01 Mar 2023 wutthichar
+            Implement function when get result from firebase
+        */
         console.log(JSON.stringify(result.user));
+        this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(result.user),2*365*24*60*60*1000);
+        this.router.navigate(['home']);
       })
       .catch((error) => {
-        //Unable to login
         console.log(error);
       });
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add saveDataWithExpiry(key : string, value: string, ttl : number)
   */
   private saveDataWithExpiry(key : string, value: string, ttl : number){
     const now = new Date();
-
     const item = {
       value: value,
       expiry: now.getTime() + ttl,
@@ -72,7 +87,7 @@ export class FirebaseAuthenticationService implements CanActivate{
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add getDataWithExpiry(key : string)
   */
   private getDataWithExpiry(key: string){
@@ -97,25 +112,23 @@ export class FirebaseAuthenticationService implements CanActivate{
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add getFirebaseUser()
   */
   public getFirebaseUser(): FirebaseUser{
-    return this.firebaseUserInfo;
+    return this.firebaseUser;
   }
 
   /*
-    01 Mar 2023 wutthichai
+    01 Mar 2023 wutthichair
       Add logout()
   */
   public logout() {
-    // localStorage.removeItem(this.emailLocalStorageKey);
-    // localStorage.removeItem(this.localDBName);
-    // this.loginEmail = '';
-    // this.isLoggedIn = false;
-
-    // this.afAuth.signOut().then(() => {
-    //   this.router.navigate(['signin']);
-    // });
+    //Remove firebaseUser from local storage
+    localStorage.removeItem(this.firebaseUserStoreKey);
+    
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['signin']);
+    });
   }
 }
