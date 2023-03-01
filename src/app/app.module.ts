@@ -21,9 +21,30 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 
+/*
+  01 Mar 2023 wutthichair
+    Import environment configuration and firebase modules
+*/
+import { environment } from '../environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    /*
+      01 Mar 2023 wutthichair
+        Import environment configuration and firebase modules
+    */
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
