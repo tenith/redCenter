@@ -65,7 +65,7 @@ export class FirebaseAuthenticationService implements CanActivate{
         */
         console.log(JSON.stringify(result.user));
         this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(result.user),2*365*24*60*60*1000);
-        this.router.navigate(['home']);
+        this.router.navigate(['./pages']);
       })
       .catch((error) => {
         console.log(error);
@@ -128,7 +128,7 @@ export class FirebaseAuthenticationService implements CanActivate{
     localStorage.removeItem(this.firebaseUserStoreKey);
     
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['signin']);
+      this.router.navigate(['./authentication/']);
     });
   }
 }

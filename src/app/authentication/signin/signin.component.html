@@ -1,0 +1,9 @@
+<img src="../../../favicon.ico" style="margin-left: auto;margin-right: auto;display: block;">
+<h1 id="title" class="title" style="text-align: center;">Login</h1>
+<p class="sub-title" style="text-align: center;">Hello! Welcome to Red Center Application, Please Log in with your Airasia email.</p>
+<section aria-label="Click to login" style="text-align: center;">
+    <button nbButton status="primary" size="medium" (click)="firebaseAuthen.GoogleAuth()">Click to login</button>
+</section>
+<section class="another-action" aria-label="Click to login" style="text-align: center;">
+    <nb-icon icon="cloud-upload" (click)="firebaseAuthen.GoogleAuth()" [options]="{ animation: { type: 'zoom' }}" status="primary" style="margin-left: auto;margin-right: auto;display: block;font-size: 5rem;"></nb-icon>
+</section>

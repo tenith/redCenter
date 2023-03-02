@@ -5,6 +5,8 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { FirebaseAuthenticationService } from '../../../@core/shared/services/firebase-authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -47,22 +49,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
-              private userService: UserData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              public firebaseUser: FirebaseAuthenticationService,
+              public router: Router) {
   }
 
   ngOnInit() {
     /*
       01 MAR 2023 by wutthichair
         change defualt theme from 'default' to 'dark'
+
+      02 Mar 2023 by wutthichair
+        change defualt theme from 'dark' to 'default'
     */
-    this.currentTheme = 'dark';
+    this.currentTheme = 'default';
     this.themeService.changeTheme(this.currentTheme);
     
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+    /*
+      02 Mar 2023 by wutthichai
+        change default user from 'users.nick' to firebaseUser.getFirebaseUser();
+    */
+    // this.userService.getUsers()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((users: any) => this.user = users.nick);
+    this.user = this.firebaseUser.getFirebaseUser();
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -78,6 +89,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(themeName => this.currentTheme = themeName);
+
+      this.menuService.onItemClick().subscribe(( event ) => {
+        this.onItemSelection(event.item.title);
+      });
+  }
+
+  onItemSelection(title: string) {
+    // Do something on Log out
+    if ( title === 'Log out' ) {
+      //Redirect to signout component.....
+      this.router.navigate(['./authentication/signout']);
+    }
   }
 
   ngOnDestroy() {
