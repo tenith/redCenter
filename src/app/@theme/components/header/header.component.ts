@@ -58,13 +58,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     /*
       01 MAR 2023 by wutthichair
-        change defualt theme from 'default' to 'dark'
+        change defualt theme
 
       02 Mar 2023 by wutthichair
         change defualt theme from 'dark' to 'default'
     */
-    this.currentTheme = 'default';
-    this.themeService.changeTheme(this.currentTheme);
+    this.currentTheme = this.currentTheme = this.themeService.currentTheme;
+    // this.themeService.changeTheme(this.currentTheme);
     
     /*
       02 Mar 2023 by wutthichai

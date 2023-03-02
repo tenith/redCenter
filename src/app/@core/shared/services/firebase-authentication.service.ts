@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { NbGlobalLogicalPosition, NbToastrService } from '@nebular/theme';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { FirebaseUser } from '../interfaces/firebase-user';
 /*
@@ -28,7 +29,7 @@ export class FirebaseAuthenticationService implements CanActivate{
     01 Mar 2023 wutthichair
       Revise constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router)
   */
-  constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router) {
+  constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, private toastrService: NbToastrService, public router: Router) {
     this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
     if(this.firebaseUser != null){
       console.log('Cache Login');
@@ -40,7 +41,12 @@ export class FirebaseAuthenticationService implements CanActivate{
       Revise canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
   */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-    return this.firebaseUser != null;
+    if(this.firebaseUser == null){
+      this.router.navigate(['./authentication/']);
+      return false;
+    }
+
+    return true;
   }
 
   /*
@@ -60,15 +66,29 @@ export class FirebaseAuthenticationService implements CanActivate{
       .signInWithPopup(provider)
       .then((result) => {
         /*
-          01 Mar 2023 wutthichar
+          02 Mar 2023 wutthichair
+            Implement function check airasia domain
+        */
+        const tempFirebaseUser  = JSON.parse(JSON.stringify(result.user)) as FirebaseUser;
+        
+        if(!tempFirebaseUser.email.includes("@airasia.com")){
+          /*
+            02 Mar 2023 wutthichair
+              inhibit check airasia.com domain
+          */
+          // throw new Error('Invalid Airasia Email');
+        }
+
+        /*
+          01 Mar 2023 wutthichair
             Implement function when get result from firebase
         */
-        console.log(JSON.stringify(result.user));
-        this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(result.user),2*365*24*60*60*1000);
+        this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(tempFirebaseUser),2*365*24*60*60*1000);
+        this.firebaseUser = tempFirebaseUser;
         this.router.navigate(['./pages']);
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error(error);
       });
   }
 
