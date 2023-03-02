@@ -1,0 +1,16 @@
+<img src="../../../favicon.ico" style="margin-left: auto;margin-right: auto;display: block;">
+<h1 id="title" class="title" style="text-align: center;">Logout</h1>
+<p class="sub-title" style="text-align: center;">
+    Beaware! You are going to logout from the Red Center Application. 
+</p>
+<p class="sub-title" style="text-align: center;">
+    <b>Offline features will be unavailable.</b>&nbsp;
+    <a href="#" (click)="back()">Cancel logout</a>
+</p>
+
+<section aria-label="Click to logout" style="text-align: center;">
+    <button nbButton status="danger" size="medium" (click)="firebaseAuthen.logout()">Click to logout</button>
+</section>
+<section class="another-action" aria-label="Click to login" style="text-align: center;">
+    <nb-icon icon="cloud-download" (click)="firebaseAuthen.logout()" [options]="{ animation: { type: 'zoom' }}" status="danger" style="margin-left: auto;margin-right: auto;display: block;font-size: 5rem;"></nb-icon>
+</section>
