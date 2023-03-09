@@ -1,1 +1,5 @@
-<p>sep works!</p>
+<div class="row" [nbSpinner]="loading">
+    <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4">
+        <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+    </div>
+</div>
