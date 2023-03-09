@@ -16,76 +16,79 @@ export class SepComponent implements OnInit {
   autoLandCards : AutolandSepCard[];
 
   showAutoLand: boolean = false;
+  firstTimeAlert: boolean = true;
 
-  constructor(public toastr: NbToastrService, sepCardService: SepCardService, autoLandCardService: AutolandCardService) {
+  constructor(public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
+
+  ngOnInit(): void {
     /*
       Loading Information From Cache....
     */
-    sepCardService.getAllSepCardsFromCache().subscribe(allSepCards => {
-      if(allSepCards == null) {
-        this.toastr.info('Info','There is no SEP information from your cache', {duration:5000});
-        return;
-      } 
-      if(allSepCards.length == 0) {
-        this.toastr.info('Info','SEP information from your cache is error', {duration:5000});
-        return;
-      }
-
-      this.toastr.primary('Info','SEP information from cache, loading completed', {duration:5000});
-      this.oneSepCards = [...allSepCards]; 
+    if(this.sepCardService.isInLocalStorage()){
+      // this.toastr.info('Info','Using SEP data from local storage.', {duration:10000});
+      this.oneSepCards = [...(this.sepCardService.getAllSepCardsFromCache())];
       this.loading = false;
-    });
 
-    autoLandCardService.getAllAutolandCardsFromCache().subscribe(autoLandCards => {
-      if(autoLandCards == null) {
-        this.toastr.info('Info','There is no Autoland history from your cache', {duration:5000});
-        return;
-      } 
-      if(autoLandCards.length == 0) {
-        this.toastr.info('Info','Autoland history from your cache is error', {duration:5000});
-        return;
-      }
-
-      this.showAutoLand = true; 
-      this.toastr.primary('Info','Autoland history from cache, loading completed', {duration:5000});
-      this.autoLandCards = [...autoLandCards];
-    });
-
+      this.loadAutolandCards();
+    }
+    else
+      this.loading = true;
+          
     /*
       Loading Information From Online Server....
     */
-    sepCardService.getAllSepCards().subscribe(allSepCards => {
-      if(allSepCards == null) {
-        this.toastr.danger('Error','There is no SEP information from online Server, Please check your internet connection or contact TMS.', {duration:5000});
+    this.sepCardService.getAllSepCards().subscribe(response => {
+      if(response == null) {
+        this.toastr.danger('Error','There is no SEP information from online Server, Please check your internet connection or contact TMS.', {duration:10000});
         return;
       } 
-      if(allSepCards.length == 0) {
-        this.toastr.danger('Error','SEP Information From your Cache is error, Please check your internet connection or contact TMS.', {duration:5000});
-        return;
+
+      const tempSubjects = response['courses'];
+      
+      let temp: OneSepCard[] = [];
+      for(let i: number = 0; i < tempSubjects.length; i++){
+        temp.push(response[tempSubjects[i]][0]);
       }
 
-      this.toastr.success('Completed','Updated SEP from online server completed', {duration:5000});
-      this.oneSepCards = [...allSepCards]; 
+      this.toastr.primary('Completed','Updated SEP from online server completed', {duration:10000});
+      this.oneSepCards = [...temp];
+      this.sepCardService.deleteAllSepCards();
+      this.sepCardService.saveAllSepCards(this.oneSepCards);
+
+      this.loadAutolandCards();
       this.loading = false;
-    });
-
-    autoLandCardService.getAllAutolandCards().subscribe(autoLandCards => {
-      if(autoLandCards == null) {
-        this.toastr.danger('Error','There is no Autoland history from online Server, Please check your internet connection or contact TMS.', {duration:5000});
-        return;
-      } 
-      if(autoLandCards.length == 0) {
-        this.toastr.danger('Error','Autoland history from your cache is error, Please check your internet connection or contact TMS.', {duration:5000});
-        return;
-      }
-
-      this.showAutoLand = true;
-      this.toastr.success('Completed','Updated Autoland history completed', {duration:5000});
-      this.autoLandCards = [...autoLandCards];
     });
   }
 
-  ngOnInit(): void {
+  loadAutolandCards(): void {
+    if(!this.isLVOCertified())
+      return;
+
+    if(this.autoLandCardService.isInLocalStorage()){
+      // this.toastr.info('Info','Using Autoland data from local storage.', {duration:10000});
+      this.autoLandCards = [...(this.autoLandCardService.getAllAutolandCardsFromCache())];
+      this.showAutoLand = true;
+    }
+    
+    this.autoLandCardService.getAllAutolandCards().subscribe(autoLandCards => {
+      if(autoLandCards == null) {
+        this.toastr.danger('Error','There is no Autoland history from online Server, Please check your internet connection or contact TMS.', {duration:10000});
+        return;
+      } 
+      if(autoLandCards.length == 0) {
+        this.toastr.danger('Error','Autoland history from your cache is error, Please check your internet connection or contact TMS.', {duration:10000});
+        return;
+      }
+
+      this.autoLandCards = [...autoLandCards];
+      if(!this.firstTimeAlert)
+        this.toastr.primary('Completed','Updated Autoland history completed', {duration:10000, preventDuplicates: true});
+
+      this.firstTimeAlert = false;
+      this.showAutoLand = true;
+      this.autoLandCardService.deleteAllSepCards();
+      this.autoLandCardService.saveAllSepCards(this.autoLandCards);
+    });
   }
 
   isLVOCertified(): boolean {
@@ -98,5 +101,4 @@ export class SepComponent implements OnInit {
     
     return false;
   }
-
 }

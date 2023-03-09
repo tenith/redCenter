@@ -1,5 +1,5 @@
 <nb-card accent="{{myStatus}}">
-    <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b>{{info.name}}</b></nb-card-header>
+    <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b> {{info.name}}</b></nb-card-header>
     <nb-card-body>
         <div class="row">
             <div class="col-4">
@@ -29,18 +29,18 @@
             <div class="col-8">
                 {{info.expiry}}
             </div>
-            <div *ngIf="info.remark!=''" class="col-12">
+            <!-- <div *ngIf="info.remark!=''" class="col-12">
                 <b>Remark</b>
             </div>
             <div class="col-12">
                 {{info.remark}}
-            </div>
-            <div *ngIf="info.link!=''" class="col-12">
+            </div> -->
+            <!-- <div *ngIf="info.link!=''" class="col-12">
                 <b>Certificate</b>
             </div>
             <div class="col-12">
                 <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{info.link}}>
-            </div>
+            </div> -->
         </div>
     </nb-card-body>
 </nb-card>
