@@ -14,7 +14,7 @@ export class SepComponent implements OnInit {
 
   constructor(sepCardService: SepCardService) {
     sepCardService.getAllSepCards().subscribe(allSepCards => {
-      console.log(JSON.stringify(allSepCards)); 
+      // console.log(JSON.stringify(allSepCards)); 
       this.oneSepCards = [...allSepCards]; 
       setTimeout(() => this.loading = false, 3000);
     });
