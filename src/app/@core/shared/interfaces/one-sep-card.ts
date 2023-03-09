@@ -1,6 +1,4 @@
 export interface OneSepCard {
-    // uid: string;
-    // email: string;
     name: string;
     attended: string;
     type: string;

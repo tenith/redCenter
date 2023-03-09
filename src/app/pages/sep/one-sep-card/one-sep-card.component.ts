@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 
+
 @Component({
   selector: 'ngx-one-sep-card',
   templateUrl: './one-sep-card.component.html',

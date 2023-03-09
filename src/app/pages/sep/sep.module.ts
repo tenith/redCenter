@@ -5,20 +5,32 @@ import { SepComponent } from './sep.component';
 import { NbCardModule } from '@nebular/theme';
 import { NbIconModule } from '@nebular/theme';
 import { NbSpinnerModule } from '@nebular/theme';
+import { NbButtonModule } from '@nebular/theme';
 
 import { OneSepCardComponent } from './one-sep-card/one-sep-card.component';
+import { AutolandCardComponent } from './autoland-card/autoland-card.component';
+
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
   declarations: [
     SepComponent,
-    OneSepCardComponent
+    OneSepCardComponent,
+    AutolandCardComponent
   ],
   imports: [
     CommonModule,
     NbCardModule,
     NbIconModule,
-    NbSpinnerModule
+    NbSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NbButtonModule
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class SepModule { }

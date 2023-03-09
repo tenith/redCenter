@@ -1,4 +1,4 @@
-import { OneSepCard } from "../shared/interfaces/one-sep-card"
+import { OneSepCard } from "../shared/interfaces/one-sep-card";
 
 export const oneSepCardsMockUp: OneSepCard[] = [
     {name: 'TCAS', attended: '01 MAR 2000', type: 'INITIAL', validperiod: 'LIFETIME', expiry: '', instructor: 'AIRASIA', remark: '', link: 'https://static.airasia.com/design/logos/airasiacom_logo.svg'},
