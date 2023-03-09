@@ -13,11 +13,26 @@ export class AutolandCardService {
   constructor() { 
     this.autoLandCard = [...autoLandCardMockup];
   }
-
+  
   getAutolandCard(name: string): Observable<AutolandSepCard> {
     if(name.includes('ONLINE'))
       return observableOf(this.autoLandCard[0]);
     else
       return observableOf(this.autoLandCard[1]);
+  }
+
+  getAllAutolandCards(): Observable<AutolandSepCard[]>{
+    return observableOf(this.autoLandCard);
+  }
+
+  getAutolandCardFromCache(name: string): Observable<AutolandSepCard>{
+    if(name.includes('ONLINE'))
+      return observableOf(this.autoLandCard[0]);
+    else
+      return observableOf(this.autoLandCard[1]);
+  }
+
+  getAllAutolandCardsFromCache(): Observable<AutolandSepCard[]>{
+    return observableOf(this.autoLandCard);
   }
 }

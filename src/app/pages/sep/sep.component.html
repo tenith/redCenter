@@ -1,5 +1,34 @@
-<div class="row" [nbSpinner]="loading">
-    <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4">
-        <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+<!-- SHOW SPINNER -->
+<div *ngIf="loading">
+    <nb-card status="danger" size="giant" [nbSpinner]="loading"
+             nbSpinnerStatus="danger"
+             nbSpinnerSize="large"
+             nbSpinnerMessage="">
+      <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+      <nb-card-body style="text-align: center;">
+        <p>
+            Please wait, We are loading the information from the server.
+        </p>
+      </nb-card-body>
+    </nb-card>
+</div>
+
+<!-- SHOW INFORMATION -->
+<div *ngIf="!loading">
+    <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
+    <div *ngIf="showAutoLand" class="row">
+        <div class="col-12 col-sm-4 col-md-4">
+            <ngx-autoland-card [name]="'AUTOLAND - ONLINE'"></ngx-autoland-card>
+        </div>
+        <div class="col-12 col-sm-4 col-md-4">
+            <ngx-autoland-card [name]="'AUTOLAND - SIMULATOR'"></ngx-autoland-card>
+        </div>
+    </div>
+
+    <!-- SHOW SEP CARDS-->
+    <div class="row">
+        <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4">
+            <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+        </div>
     </div>
 </div>

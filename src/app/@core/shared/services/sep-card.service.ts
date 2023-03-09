@@ -17,4 +17,8 @@ export class SepCardService {
   getAllSepCards(): Observable<OneSepCard[]> {
     return observableOf(this.oneSepCards);
   }
+
+  getAllSepCardsFromCache(): Observable<OneSepCard[]> {
+    return observableOf(this.oneSepCards);
+  }
 }
