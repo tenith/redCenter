@@ -4,6 +4,7 @@ import { AutolandCardService } from '../../../@core/shared/services/autoland-car
 
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { FirebaseAuthenticationService } from '../../../@core/shared/services/firebase-authentication.service';
 
 @Component({
   selector: 'ngx-autoland-card',
@@ -30,11 +31,15 @@ export class AutolandCardComponent implements OnInit {
 
   constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe) { }
 
-  ngOnInit(): void { 
-    
+  ngOnInit(): void {     
     this.autoLandService.getAutolandCard(this.name).subscribe(info => {
+      if(JSON.stringify(info) == '{}'){
+        this.info = {name: this.name, airport: '', perform: '', validperiod: '', expiry: ''}
+      }
+      else{
+        this.info = {...info};
+      }
       
-      this.info = {...info};
       this.loading = false;
 
       this.reviseAutoLandCard();
@@ -53,6 +58,9 @@ export class AutolandCardComponent implements OnInit {
       this.setStatusSuccess();
     if(diffDate <= 30 && diffDate >= 0)
       this.setStatusWarning();    
+
+    if(this.info.expiry == '')
+      this.setStatusDanger();
   }
 
   setStatusSuccess(): void{
@@ -80,7 +88,18 @@ export class AutolandCardComponent implements OnInit {
   }
 
   submitAutoLandForm(){
+    // console.log(JSON.stringify(this.autoLandingForm.value));
+    // var formData : any = new FormData();
+    // formData.append('email', this.firebaseAuth.getFirebaseUser().email);
+    // formData.append('type', this.name);
+    // formData.append('date',this.autoLandingForm.value.date);
+    // formData.append('cat',this.autoLandingForm.value.cat);
+    // formData.append('runway',this.autoLandingForm.value.runway);
+    // formData.append('airport',this.autoLandingForm.value.airport);
+
     console.log(JSON.stringify(this.autoLandingForm.value));
-    
+
+    this.autoLandService.postAutoLandForm(this.name, this.autoLandingForm.value.date, this.autoLandingForm.value.cat, this.autoLandingForm.value.runway, this.autoLandingForm.value.airport)
+    .subscribe(respone => {console.log('POST COMPLETED' + JSON.stringify(this.autoLandingForm.value)); console.log(JSON.stringify(respone))});
   }
 }

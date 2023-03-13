@@ -3,6 +3,7 @@ import { NbToastrService } from '@nebular/theme';
 import { AutolandSepCard } from '../../@core/shared/interfaces/autoland-sep-card';
 import { OneSepCard } from '../../@core/shared/interfaces/one-sep-card';
 import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
+import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
 import { SepCardService } from '../../@core/shared/services/sep-card.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class SepComponent implements OnInit {
   showAutoLand: boolean = false;
   firstTimeAlert: boolean = true;
 
-  constructor(public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
+  constructor(public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
     /*
@@ -65,6 +66,7 @@ export class SepComponent implements OnInit {
       return;
 
     if(this.autoLandCardService.isInLocalStorage()){
+      console.log('loading autoland from cache');
       // this.toastr.info('Info','Using Autoland data from local storage.', {duration:10000});
       this.autoLandCards = [...(this.autoLandCardService.getAllAutolandCardsFromCache())];
       this.showAutoLand = true;
@@ -81,6 +83,8 @@ export class SepComponent implements OnInit {
       }
 
       this.autoLandCards = [...autoLandCards];
+      // console.log('GET AUTOLAND JSON :' + JSON.stringify(this.autoLandCards));
+
       if(!this.firstTimeAlert)
         this.toastr.primary('Completed','Updated Autoland history completed', {duration:10000, preventDuplicates: true});
 

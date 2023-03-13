@@ -1,49 +1,57 @@
-<nb-card accent="{{myStatus}}">
-    <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b> {{info.name}}</b></nb-card-header>
-    <nb-card-body>
-        <div class="row">
-            <div class="col-4">
-                <b>Type</b>
-            </div>
-            <div class="col-8">
-                {{info.type}}
-            </div>
+<nb-accordion>
+    <nb-accordion-item expanded="{{myStatus != 'success'}}">
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <nb-card accent="{{myStatus}}">
+                <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-4">
+                            <b>Type</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.type}}
+                        </div>
+            
+                        <div class="col-4">
+                            <b>Attended</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.attended}}
+                        </div>
+            
+                        <div class="col-4">
+                            <b>Validity</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.validperiod}}
+                        </div>
+            
+                        <div *ngIf="info.expiry!=''" class="col-4">
+                            <b>Expiry</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.expiry}}
+                        </div>
+                        <!-- <div *ngIf="info.remark!=''" class="col-12">
+                            <b>Remark</b>
+                        </div>
+                        <div class="col-12">
+                            {{info.remark}}
+                        </div> -->
+                        <!-- <div *ngIf="info.link!=''" class="col-12">
+                            <b>Certificate</b>
+                        </div>
+                        <div class="col-12">
+                            <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{info.link}}>
+                        </div> -->
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </nb-accordion-item-body>
+       </nb-accordion-item>
+</nb-accordion>
 
-            <div class="col-4">
-                <b>Attended</b>
-            </div>
-            <div class="col-8">
-                {{info.attended}}
-            </div>
-
-            <div class="col-4">
-                <b>Validity</b>
-            </div>
-            <div class="col-8">
-                {{info.validperiod}}
-            </div>
-
-            <div *ngIf="info.expiry!=''" class="col-4">
-                <b>Expiry</b>
-            </div>
-            <div class="col-8">
-                {{info.expiry}}
-            </div>
-            <!-- <div *ngIf="info.remark!=''" class="col-12">
-                <b>Remark</b>
-            </div>
-            <div class="col-12">
-                {{info.remark}}
-            </div> -->
-            <!-- <div *ngIf="info.link!=''" class="col-12">
-                <b>Certificate</b>
-            </div>
-            <div class="col-12">
-                <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{info.link}}>
-            </div> -->
-        </div>
-    </nb-card-body>
-</nb-card>
 
 <!-- <div *ngIf="info.name.includes('LVO')" >
     <div><ngx-autoland-card [name]="'AUTOLAND - ONLINE'"></ngx-autoland-card></div>

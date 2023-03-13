@@ -13,6 +13,7 @@ import { AutolandCardComponent } from './autoland-card/autoland-card.component';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
+import { NbAccordionModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DatePipe } from '@angular/common';
     NbSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
-    NbButtonModule
+    NbButtonModule,
+    NbAccordionModule
   ],
   providers: [
     DatePipe

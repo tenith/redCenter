@@ -1,76 +1,84 @@
-<nb-card accent="{{myStatus}}">
-    <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b> {{info.name}}</b></nb-card-header>
-    <nb-card-body>
-        <div class="row">
-            <div class="col-4">
-                <b>Airport</b>
-            </div>
-            <div class="col-8">
-                {{info.airport}}
-            </div>
+<nb-accordion>
+    <nb-accordion-item expanded="{{myStatus != 'success'}}">
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <nb-card accent="{{myStatus}}">
+                <!-- <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b> {{info.name}}</b></nb-card-header> -->
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-4">
+                            <b>Airport</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.airport}}
+                        </div>
+            
+                        <div class="col-4">
+                            <b>Perform</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.perform}}
+                        </div>
+            
+                        <div class="col-4">
+                            <b>Validity</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.validperiod}}
+                        </div>
+            
+                        <div *ngIf="info.expiry!=''" class="col-4">
+                            <b>Expiry</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.expiry}}
+                        </div>
+                    </div>
+                    <div>
+                        <form #autoLandingForm="ngForm">
+                          <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-12"><b>Perform Date</b></div>
+                            <div class="col-12"><input type="date" class="form-control" id="date" name="date" #date="ngModel" [min]="minDate" [max]="todayDate" [ngModel]="landingDate" (ngModelChange)="landingDate = $event!=null?$event.toUpperCase():''" required></div>
+                            <div class="col-12" [hidden]="date.valid || date.pristine" class="alert alert-danger" style="color: red;">Perform Date is required</div>
+                          </div>
+                          
+                          <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-12"><b>ILS CAT (ILS I, ILS II, ILS IIIA, ILS IIIB)</b></div>
+                            <div class="col-12">
+                                <select class="form-control" id="cat" name="cat" #cat="ngModel" [ngModel]="landingCat" (ngModelChange)="landingCat = $event!=null?$event.toUpperCase():''" required>
+                                <option *ngIf="this.info.name.includes('ONLINE')" value="I">ILS I</option>
+                                <option *ngIf="this.info.name.includes('ONLINE')" value="II">ILS II</option>
+                                <option value="IIIA">ILS IIIA</option>
+                                <option value="IIIB">ILS IIIB</option>
+                                </select>
+                            </div>
+                            <div class="col-12" [hidden]="cat.valid || cat.pristine" class="alert alert-danger" style="color: red;">ILS CAT is required</div>
+                          </div>
+                      
+                          <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-12"><b>Landing Runway (Ex. 21R, 21L, 07L, 25R)</b></div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="runway" name="runway" #runway="ngModel" [ngModel]="landingRunway" (ngModelChange)="landingRunway = $event!=null?$event.toUpperCase():''" pattern="^[0-2]{1}[0-9]{1}[L,R,C,l,r,c]?$" required>
+                            </div>
+                            <div class="col-12" [hidden]="runway.valid || runway.pristine" class="alert alert-danger">Incorrect format please check your input.</div>
+                          </div>
+                      
+                          <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-12"><b>Airport (Ex. VTBD, VHHH)</b></div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="airport" name="airport" #airport="ngModel" [ngModel]="landingAirport" (ngModelChange)="landingAirport = $event!=null?$event.toUpperCase():''" pattern="^[A-Z]{4}$" required>
+                            </div>
+                            <div class="col-12" [hidden]="airport.valid || airport.pristine" class="alert alert-danger">Incorrect format please check your input.</div>
+                          </div>
+                      
+                          <div class="row" style="margin-top: 0.5rem;display: flex;justify-content: center;"><button nbButton status="primary" *ngIf="autoLandingForm.valid" type="button" (click)="submitAutoLandForm()">Submit</button>&nbsp;&nbsp;&nbsp;<button nbButton status="primary" *ngIf="date.dirty || airport.dirty || runway.dirty || cat.dirty " (click)="resetAutoLandForm()">Reset</button>
+                          </div>
+                          
+                        </form>
+                      </div>
+                </nb-card-body>
+            </nb-card>
+        </nb-accordion-item-body>
+    </nb-accordion-item>
+</nb-accordion>
 
-            <div class="col-4">
-                <b>Perform</b>
-            </div>
-            <div class="col-8">
-                {{info.perform}}
-            </div>
-
-            <div class="col-4">
-                <b>Validity</b>
-            </div>
-            <div class="col-8">
-                {{info.validperiod}}
-            </div>
-
-            <div *ngIf="info.expiry!=''" class="col-4">
-                <b>Expiry</b>
-            </div>
-            <div class="col-8">
-                {{info.expiry}}
-            </div>
-        </div>
-        <div>
-            <form #autoLandingForm="ngForm">
-              <div class="row" style="margin-top: 0.5rem;">
-                <div class="col-12"><b>Perform Date</b></div>
-                <div class="col-12"><input type="date" class="form-control" id="date" name="date" #date="ngModel" [min]="minDate" [max]="todayDate" [ngModel]="landingDate" (ngModelChange)="landingDate = $event!=null?$event.toUpperCase():''" required></div>
-                <div class="col-12" [hidden]="date.valid || date.pristine" class="alert alert-danger" style="color: red;">Perform Date is required</div>
-              </div>
-              
-              <div class="row" style="margin-top: 0.5rem;">
-                <div class="col-12"><b>ILS CAT (ILS I, ILS II, ILS IIIA, ILS IIIB)</b></div>
-                <div class="col-12">
-                    <select class="form-control" id="cat" name="cat" #cat="ngModel" [ngModel]="landingCat" (ngModelChange)="landingCat = $event!=null?$event.toUpperCase():''" required>
-                    <option *ngIf="this.info.name.includes('ONLINE')" value="ILS I">ILS I</option>
-                    <option *ngIf="this.info.name.includes('ONLINE')" value="ILS II">ILS II</option>
-                    <option value="ILS IIIA">ILS IIIA</option>
-                    <option value="ILS IIIB">ILS IIIB</option>
-                    </select>
-                </div>
-                <div class="col-12" [hidden]="cat.valid || cat.pristine" class="alert alert-danger" style="color: red;">ILS CAT is required</div>
-              </div>
-          
-              <div class="row" style="margin-top: 0.5rem;">
-                <div class="col-12"><b>Landing Runway (Ex. 21R, 21L, 07L, 25R)</b></div>
-                <div class="col-12">
-                    <input type="text" class="form-control" id="runway" name="runway" #runway="ngModel" [ngModel]="landingRunway" (ngModelChange)="landingRunway = $event!=null?$event.toUpperCase():''" pattern="^[0-2]{1}[0-9]{1}[L,R,C,l,r,c]?$" required>
-                </div>
-                <div class="col-12" [hidden]="runway.valid || runway.pristine" class="alert alert-danger">Incorrect format please check your input.</div>
-              </div>
-          
-              <div class="row" style="margin-top: 0.5rem;">
-                <div class="col-12"><b>Airport (Ex. VTBD, VHHH)</b></div>
-                <div class="col-12">
-                    <input type="text" class="form-control" id="airport" name="airport" #airport="ngModel" [ngModel]="landingAirport" (ngModelChange)="landingAirport = $event!=null?$event.toUpperCase():''" pattern="^[A-Z]{4}$" required>
-                </div>
-                <div class="col-12" [hidden]="airport.valid || airport.pristine" class="alert alert-danger">Incorrect format please check your input.</div>
-              </div>
-          
-              <div class="row" style="margin-top: 0.5rem;display: flex;justify-content: center;"><button nbButton status="primary" *ngIf="autoLandingForm.valid" type="button" (click)="submitAutoLandForm()">Submit</button>&nbsp;&nbsp;&nbsp;<button nbButton status="primary" *ngIf="date.dirty || airport.dirty || runway.dirty || cat.dirty " (click)="resetAutoLandForm()">Reset</button>
-              </div>
-              
-            </form>
-          </div>
-    </nb-card-body>
-</nb-card>

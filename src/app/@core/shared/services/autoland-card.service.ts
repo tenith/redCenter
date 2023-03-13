@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { of as observableOf,  Observable } from 'rxjs';
-import { autoLandCardMockup } from '../../mock/autoland-mockup-data';
 import { AutolandSepCard } from '../interfaces/autoland-sep-card';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
@@ -10,7 +9,7 @@ import { FirebaseAuthenticationService } from './firebase-authentication.service
   providedIn: 'root'
 })
 export class AutolandCardService {
-  private apiURL = 'https://script.google.com/macros/s/AKfycbyxxKjMeBQgDOj1s1A78fK-xGpOQv-YIXNgaJxQTIWncsFYt4z-szGrbURz3sCCJv3I/exec';
+  private apiURL = 'https://script.google.com/macros/s/AKfycbyVqLFc02e78IYpjEZYg6YW67fEYQIBiYi9FKXrh1ze3SB8oDz53lCLyxriLmIT72uJ/exec';
 
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" })
@@ -20,13 +19,19 @@ export class AutolandCardService {
   autoLandCard: AutolandSepCard[];
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient) {
+    // const temp = localStorage.getItem(this.autoLandCardLocalDBName);
+    // if(temp != null){
+    //   this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
+    // }
+    // else{
+    //   this.autoLandCard = [...autoLandCardMockup];
+    // }
+    /*
+      13 MAR 2023 wutthichair
+        Fetch Data From Server
+    */
     const temp = localStorage.getItem(this.autoLandCardLocalDBName);
-    if(temp != null){
-      this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
-    }
-    else{
-      this.autoLandCard = [...autoLandCardMockup];
-    }
+    this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
   }
 
   isInLocalStorage(): boolean{
@@ -51,9 +56,9 @@ export class AutolandCardService {
   }
 
   getAllAutolandCards(): Observable<any>{
-    // let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
-    // return this.httpClient.get(this.apiURL,{params:params});
-    return observableOf(this.autoLandCard);
+    let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
+    return this.httpClient.get(this.apiURL,{params:params});
+    // return observableOf(this.autoLandCard);
   }
 
   getAutolandCardFromCache(name: string): AutolandSepCard{
@@ -65,5 +70,19 @@ export class AutolandCardService {
 
   getAllAutolandCardsFromCache(): AutolandSepCard[]{
     return this.autoLandCard;
+  }
+
+  postAutoLandForm(course : string, date : string, cat : string, runway : string, airport : string) : Observable<any>{
+    var formData : any = new FormData();
+    formData.append('email', this.fireBaseAuthService.getFirebaseUser().email);
+    formData.append('course', course);
+    formData.append('date',date);
+    formData.append('cat',cat);
+    formData.append('runway',runway);
+    formData.append('airport',airport);
+
+    console.log('POST ' + this.apiURL);
+    
+    return this.httpClient.post(this.apiURL,formData);
   }
 }
