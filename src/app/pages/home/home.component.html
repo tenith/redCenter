@@ -1,1 +1,50 @@
-<p>home works!</p>
+<!-- SHOW SPINNER -->
+<div *ngIf="loading">
+    <nb-card status="danger" size="giant" [nbSpinner]="loading"
+             nbSpinnerStatus="danger"
+             nbSpinnerSize="large"
+             nbSpinnerMessage="">
+      <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+      <nb-card-body style="text-align: center;">
+        <p>
+            Please wait, We are loading the information from the server.
+        </p>
+      </nb-card-body>
+    </nb-card>
+</div>
+
+<!-- SHOW INFORMATION -->
+<div *ngIf="!loading">
+    <div class="col-12">
+        <nb-card accent="info">
+            <nb-card-header ><nb-icon icon="file-text-outline"></nb-icon> FOC, MEMO, etc</nb-card-header>
+            <nb-card-body>
+                <nb-accordion>
+                    <nb-accordion-item>
+                        <nb-accordion-item-header>TAA/FOC/FOP/02-23</nb-accordion-item-header>
+                        <nb-accordion-item-body>
+                            <div class="col-12" style="text-align: justify; text-justify: inter-word;"><b>Subject</b> Revise OM-A 8. 1. 8. 2 Methods, Procedures and Responsibility for Preparation and Acceptance of the Weight and Balance Sheet</div>
+                            <div class="col-12"><b>ISSUE Date</b> 14 MAR 2023</div>
+                            <div class="col-12"><b>Effective Date</b> 15 MAR 2023</div>
+                            <div class="col-12"><b>Attached file</b>&nbsp;&nbsp;<a href="https://mail.google.com/mail/u/0/?tab=wm&ogbl#inbox/FMfcgzGslbGNXtXzdStzdlrQbxRjMQCW?projector=1&messagePartId=0.2">link</a></div>
+                            <div class="col-12"><b>Acknowledge via</b>&nbsp;&nbsp;<a href="https://docs.google.com/forms/d/e/1FAIpQLSf4nTry1w18vqpKqB2tnz6gLrz4wudy4rl84xq8mWleVqX8SQ/viewform?usp=pp_url">link</a></div>
+                        </nb-accordion-item-body>
+                    </nb-accordion-item>
+                </nb-accordion>
+
+                <nb-accordion>
+                    <nb-accordion-item>
+                        <nb-accordion-item-header>TAA/FOC/FOP/02-23</nb-accordion-item-header>
+                        <nb-accordion-item-body>
+                            <div class="col-12" style="text-align: justify; text-justify: inter-word;"><b>Subject</b> Revise OM-A 8. 1. 8. 2 Methods, Procedures and Responsibility for Preparation and Acceptance of the Weight and Balance Sheet</div>
+                            <div class="col-12"><b>ISSUE Date</b> 14 MAR 2023</div>
+                            <div class="col-12"><b>Effective Date</b> 15 MAR 2023</div>
+                            <div class="col-12"><b>Attached file</b>&nbsp;&nbsp;<a href="https://mail.google.com/mail/u/0/?tab=wm&ogbl#inbox/FMfcgzGslbGNXtXzdStzdlrQbxRjMQCW?projector=1&messagePartId=0.2">link</a></div>
+                            <div class="col-12"><b>Acknowledge via</b>&nbsp;&nbsp;<a href="https://docs.google.com/forms/d/e/1FAIpQLSf4nTry1w18vqpKqB2tnz6gLrz4wudy4rl84xq8mWleVqX8SQ/viewform?usp=pp_url">link</a></div>
+                        </nb-accordion-item-body>
+                    </nb-accordion-item>
+                </nb-accordion>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

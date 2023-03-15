@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 
+import { NbCardModule } from '@nebular/theme';
+import { NbIconModule } from '@nebular/theme';
+import { NbAccordionModule } from '@nebular/theme';
 
 
 @NgModule({
@@ -9,7 +12,10 @@ import { HomeComponent } from './home.component';
     HomeComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NbCardModule,
+    NbIconModule,
+    NbAccordionModule
   ]
 })
 export class HomeModule { }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
 
 @Component({
   selector: 'ngx-home',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  loading: boolean = true;
+  constructor(public fireBaseAuth: FirebaseAuthenticationService) { }
 
   ngOnInit(): void {
+    this.loading = false;
   }
 
 }
