@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy  } from '@angular/core';
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
+import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
 
 
@@ -14,9 +15,16 @@ export class OneSepCardComponent implements OnInit {
   myStatus: string;
   myIcon: string;
 
-  constructor() { }
+  cacheLink: string = '';
+
+  constructor(public temp: SepCardService) {}
 
   ngOnInit(): void { 
+    this.temp.getURIByLink(this.info.link).subscribe((data)=>{
+      if(data != null)
+        this.cacheLink = data.link;
+    });
+
     if(this.info.validperiod.toUpperCase() == 'LIFETIME'){
       this.setStatusSuccess();
     }
