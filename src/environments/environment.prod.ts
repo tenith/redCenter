@@ -10,11 +10,12 @@ export const environment = {
       Add firebaseConfig
   */
   firebaseConfig : {
-    apiKey: "AIzaSyBNzq0vOMsBXMCrwD5rZKXmwNjIYWs0ZLg",
-    authDomain: "redbook-taa.firebaseapp.com",
-    projectId: "redbook-taa",
-    storageBucket: "redbook-taa.appspot.com",
-    messagingSenderId: "826040339698",
-    appId: "1:826040339698:web:e5781b8f67c7762402546b"
+    apiKey: "AIzaSyClzKnPCsqH0wIpdRgA1-VNB-WSCQn73rk",
+    authDomain: "red-center.firebaseapp.com",
+    projectId: "red-center",
+    storageBucket: "red-center.appspot.com",
+    messagingSenderId: "880704583837",
+    appId: "1:880704583837:web:312aec2438ff06a7017c74",
+    measurementId: "G-NC095M4JX4"
   }
 };
