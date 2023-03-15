@@ -9,8 +9,8 @@
 </p>
 
 <section aria-label="Click to logout" style="text-align: center;">
-    <button nbButton status="danger" size="medium" (click)="firebaseAuthen.logout()">Click to logout</button>
+    <button nbButton status="danger" size="medium" (click)="logout()">Click to logout</button>
 </section>
 <section class="another-action" aria-label="Click to login" style="text-align: center;">
-    <nb-icon icon="cloud-download" (click)="firebaseAuthen.logout()" [options]="{ animation: { type: 'zoom' }}" status="danger" style="margin-left: auto;margin-right: auto;display: block;font-size: 5rem;"></nb-icon>
+    <nb-icon icon="cloud-download" (click)="logout()" [options]="{ animation: { type: 'zoom' }}" status="danger" style="margin-left: auto;margin-right: auto;display: block;font-size: 5rem;"></nb-icon>
 </section>

@@ -19,19 +19,17 @@ export class AutolandCardService {
   autoLandCard: AutolandSepCard[];
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient) {
-    // const temp = localStorage.getItem(this.autoLandCardLocalDBName);
-    // if(temp != null){
-    //   this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
-    // }
-    // else{
-    //   this.autoLandCard = [...autoLandCardMockup];
-    // }
     /*
       13 MAR 2023 wutthichair
         Fetch Data From Server
     */
     const temp = localStorage.getItem(this.autoLandCardLocalDBName);
-    this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
+    if(temp == null)
+      this.autoLandCard = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
+                           {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}] as AutolandSepCard[];
+    else
+      this.autoLandCard = JSON.parse(temp) as AutolandSepCard[];
+    // console.log('constructor of autoland servicec : ' + JSON.stringify(this.autoLandCard));
   }
 
   isInLocalStorage(): boolean{
@@ -43,12 +41,11 @@ export class AutolandCardService {
   }
 
   deleteAllSepCards(): void {
+    this.autoLandCard = [{},{}] as AutolandSepCard[];
     localStorage.removeItem(this.autoLandCardLocalDBName);
   }
   
   getAutolandCard(name: string): Observable<any> {
-    // let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
-    // return this.httpClient.get(this.apiURL,{params:params});
     if(name.includes('ONLINE'))
       return observableOf(this.autoLandCard[0]);
     else
@@ -58,7 +55,6 @@ export class AutolandCardService {
   getAllAutolandCards(): Observable<any>{
     let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
     return this.httpClient.get(this.apiURL,{params:params});
-    // return observableOf(this.autoLandCard);
   }
 
   getAutolandCardFromCache(name: string): AutolandSepCard{
@@ -81,8 +77,7 @@ export class AutolandCardService {
     formData.append('runway',runway);
     formData.append('airport',airport);
 
-    console.log('POST ' + this.apiURL);
-    
+  
     return this.httpClient.post(this.apiURL,formData);
   }
 }

@@ -1,21 +1,27 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AutolandSepCard } from '../../../@core/shared/interfaces/autoland-sep-card';
 import { AutolandCardService } from '../../../@core/shared/services/autoland-card.service';
 
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { FirebaseAuthenticationService } from '../../../@core/shared/services/firebase-authentication.service';
+import { NbToastrService } from '@nebular/theme';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'ngx-autoland-card',
   templateUrl: './autoland-card.component.html',
   styleUrls: ['./autoland-card.component.scss']
 })
-export class AutolandCardComponent implements OnInit {
+export class AutolandCardComponent implements OnInit, OnDestroy {
   loading = true;
 
-  @Input() name!: string;
-  info: AutolandSepCard;
+  // @Input() name!: string;
+  @Input() info: AutolandSepCard;
+  @Input() events: Observable<void>;
+  @Output() postCompleteEvent = new EventEmitter<string>();
+
+  private eventsSubscription: Subscription;
+
   myStatus: string;
   myIcon: string;
 
@@ -29,21 +35,22 @@ export class AutolandCardComponent implements OnInit {
 
   @ViewChild('autoLandingForm', {static: false}) autoLandingForm!: NgForm;
 
-  constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe) { }
+  constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe, public toastr: NbToastrService) { }
 
   ngOnInit(): void {     
-    this.autoLandService.getAutolandCard(this.name).subscribe(info => {
-      if(JSON.stringify(info) == '{}'){
-        this.info = {name: this.name, airport: '', perform: '', validperiod: '', expiry: ''}
-      }
-      else{
-        this.info = {...info};
-      }
-      
-      this.loading = false;
-
+    // console.log(JSON.stringify(this.info));
+    this.reviseAutoLandCard();
+    this.eventsSubscription = this.events.subscribe(() => {
+      console.log('event subscription');
       this.reviseAutoLandCard();
-    })
+      this.autoLandingForm.reset();
+      if(this.info.perform != '')
+        this.minDate = this.datePipe.transform(new Date(this.info.perform), 'YYYY-MM-dd');
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.eventsSubscription.unsubscribe();
   }
 
   reviseAutoLandCard(): void{
@@ -88,18 +95,33 @@ export class AutolandCardComponent implements OnInit {
   }
 
   submitAutoLandForm(){
-    // console.log(JSON.stringify(this.autoLandingForm.value));
-    // var formData : any = new FormData();
-    // formData.append('email', this.firebaseAuth.getFirebaseUser().email);
-    // formData.append('type', this.name);
-    // formData.append('date',this.autoLandingForm.value.date);
-    // formData.append('cat',this.autoLandingForm.value.cat);
-    // formData.append('runway',this.autoLandingForm.value.runway);
-    // formData.append('airport',this.autoLandingForm.value.airport);
+    // console.log('post ' + JSON.stringify(this.autoLandingForm.value));
+    this.autoLandService.postAutoLandForm(this.info.name, this.autoLandingForm.value.date, this.autoLandingForm.value.cat, this.autoLandingForm.value.runway, this.autoLandingForm.value.airport)
+    .subscribe(respone => {
+      /*
+        15 Mar 2023 wutthichair
+          Reload Autoland when post complete
+      */ 
+      if(respone.status.toString().includes('completed')){
+        this.autoLandService.getAllAutolandCards().subscribe(response =>{
+          let temp = response as AutolandSepCard[];
 
-    console.log(JSON.stringify(this.autoLandingForm.value));
+          this.autoLandService.deleteAllSepCards();
+          this.autoLandService.saveAllSepCards(temp);
 
-    this.autoLandService.postAutoLandForm(this.name, this.autoLandingForm.value.date, this.autoLandingForm.value.cat, this.autoLandingForm.value.runway, this.autoLandingForm.value.airport)
-    .subscribe(respone => {console.log('POST COMPLETED' + JSON.stringify(this.autoLandingForm.value)); console.log(JSON.stringify(respone))});
+          if(this.info.name.includes('ONLINE'))
+            this.info = {...temp[0]};
+          else
+            this.info = {...temp[1]};
+          
+          // console.log(JSON.stringify(this.info));
+          this.autoLandingForm.reset();
+          this.toastr.primary('Completed','Updated Autoland history completed', {duration:10000, preventDuplicates: true});
+          this.reviseAutoLandCard();
+
+          this.minDate = this.datePipe.transform(new Date(this.info.perform), 'YYYY-MM-dd');
+        });
+      }
+    });
   }
 }

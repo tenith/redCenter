@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
+import { Subject } from 'rxjs';
 import { AutolandSepCard } from '../../@core/shared/interfaces/autoland-sep-card';
 import { OneSepCard } from '../../@core/shared/interfaces/one-sep-card';
 import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
@@ -16,12 +17,17 @@ export class SepComponent implements OnInit {
   oneSepCards : OneSepCard[];
   autoLandCards : AutolandSepCard[];
 
+  changeEvent: Subject<void> = new Subject<void>();
+
   showAutoLand: boolean = false;
   firstTimeAlert: boolean = true;
 
   constructor(public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
+    this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
+                           {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];
+
     /*
       Loading Information From Cache....
     */
@@ -32,8 +38,6 @@ export class SepComponent implements OnInit {
 
       this.loadAutolandCards();
     }
-    else
-      this.loading = true;
           
     /*
       Loading Information From Online Server....
@@ -45,7 +49,6 @@ export class SepComponent implements OnInit {
       } 
 
       const tempSubjects = response['courses'];
-      
       let temp: OneSepCard[] = [];
       for(let i: number = 0; i < tempSubjects.length; i++){
         temp.push(response[tempSubjects[i]][0]);
@@ -61,13 +64,15 @@ export class SepComponent implements OnInit {
     });
   }
 
+  // alertChangeEvent(): void {
+  //   this.changeEvent.next();
+  // }
+
   loadAutolandCards(): void {
     if(!this.isLVOCertified())
       return;
 
     if(this.autoLandCardService.isInLocalStorage()){
-      console.log('loading autoland from cache');
-      // this.toastr.info('Info','Using Autoland data from local storage.', {duration:10000});
       this.autoLandCards = [...(this.autoLandCardService.getAllAutolandCardsFromCache())];
       this.showAutoLand = true;
     }
@@ -86,12 +91,13 @@ export class SepComponent implements OnInit {
       // console.log('GET AUTOLAND JSON :' + JSON.stringify(this.autoLandCards));
 
       if(!this.firstTimeAlert)
-        this.toastr.primary('Completed','Updated Autoland history completed', {duration:10000, preventDuplicates: true});
+        this.toastr.primary('Completed','Updated Autoland history from online server completed', {duration:10000, preventDuplicates: true});
 
       this.firstTimeAlert = false;
       this.showAutoLand = true;
       this.autoLandCardService.deleteAllSepCards();
       this.autoLandCardService.saveAllSepCards(this.autoLandCards);
+      this.changeEvent.next();
     });
   }
 

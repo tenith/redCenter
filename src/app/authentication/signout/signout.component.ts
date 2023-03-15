@@ -1,7 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
 import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
+import { SepCardService } from '../../@core/shared/services/sep-card.service';
 
 @Component({
   selector: 'ngx-signout',
@@ -10,7 +12,7 @@ import { FirebaseAuthenticationService } from '../../@core/shared/services/fireb
 })
 export class SignoutComponent implements OnInit {
 
-  constructor(public firebaseAuthen : FirebaseAuthenticationService, public router: Router, public location: Location) { }
+  constructor(public firebaseAuthen : FirebaseAuthenticationService, public sepCardService: SepCardService, public autolandCardService: AutolandCardService, public router: Router, public location: Location) { }
 
   ngOnInit(): void {
     if(this.firebaseAuthen.getFirebaseUser() == null)
@@ -19,6 +21,17 @@ export class SignoutComponent implements OnInit {
 
   public back(): void {
     this.location.back();
+  }
+
+  /*
+    15 MAR 2023 wutthichair
+      Implement logout function to clear user cache.
+  */
+  public logout(): void{
+    console.log('new logout function');
+    this.firebaseAuthen.logout();
+    this.sepCardService.deleteAllSepCards();
+    this.autolandCardService.deleteAllSepCards();
   }
 
 }
