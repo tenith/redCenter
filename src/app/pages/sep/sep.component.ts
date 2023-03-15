@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { Subject } from 'rxjs';
@@ -13,6 +14,13 @@ import { SepCardService } from '../../@core/shared/services/sep-card.service';
   styleUrls: ['./sep.component.scss']
 })
 export class SepComponent implements OnInit {
+  /*
+    15 Mar 2023 wutthichair
+  */
+  validList: string[] = [];
+  aboutList: string[] = [];
+  expiredList: string[] = [];
+
   loading: boolean = true;
   oneSepCards : OneSepCard[];
   autoLandCards : AutolandSepCard[];
@@ -61,12 +69,62 @@ export class SepComponent implements OnInit {
 
       this.loadAutolandCards();
       this.loading = false;
+
+      this.updateSummary();
     });
   }
 
-  // alertChangeEvent(): void {
-  //   this.changeEvent.next();
-  // }
+  public jumpTo(elementId: string): void { 
+    const elmnt = document.getElementById(elementId);
+    elmnt.scrollIntoView({behavior: "auto", block: "center", inline: "nearest"});
+  }
+
+  updateSummary(): void {
+    this.validList = [];
+    this.aboutList = [];
+    this.expiredList = [];
+
+    this.updateSEPSummary();
+    this.updateAutoLandSummary();
+  }
+
+  updateSEPSummary(): void{
+    if(this.oneSepCards == null)
+      return;
+
+    for(let i=0;i<this.oneSepCards.length;i++){
+      const msInDay = 24 * 60 * 60 * 1000;
+      const today = new Date().getTime();
+      const expire = new Date(this.oneSepCards[i].expiry).getTime();
+      const diffDate = (expire - today) / msInDay;
+
+      if(diffDate < 0)
+        this.expiredList.push(this.oneSepCards[i].name);
+      if(diffDate > 30)
+        this.validList.push(this.oneSepCards[i].name);
+      if(diffDate <= 30 && diffDate >= 0)
+        this.aboutList.push(this.oneSepCards[i].name);
+    }
+  }
+
+  updateAutoLandSummary(): void {
+    if(this.autoLandCards == null)
+      return;
+    
+      for(let i=0;i<this.autoLandCards.length;i++){
+        const msInDay = 24 * 60 * 60 * 1000;
+        const today = new Date().getTime();
+        const expire = new Date(this.autoLandCards[i].expiry).getTime();
+        const diffDate = (expire - today) / msInDay;
+  
+        if(diffDate < 0)
+          this.expiredList.push(this.autoLandCards[i].name);
+        if(diffDate > 30)
+          this.validList.push(this.autoLandCards[i].name);
+        if(diffDate <= 30 && diffDate >= 0)
+          this.aboutList.push(this.autoLandCards[i].name);
+      }
+  }
 
   loadAutolandCards(): void {
     if(!this.isLVOCertified())
@@ -75,6 +133,8 @@ export class SepComponent implements OnInit {
     if(this.autoLandCardService.isInLocalStorage()){
       this.autoLandCards = [...(this.autoLandCardService.getAllAutolandCardsFromCache())];
       this.showAutoLand = true;
+
+      this.updateSummary();
     }
     
     this.autoLandCardService.getAllAutolandCards().subscribe(autoLandCards => {
@@ -98,7 +158,11 @@ export class SepComponent implements OnInit {
       this.autoLandCardService.deleteAllSepCards();
       this.autoLandCardService.saveAllSepCards(this.autoLandCards);
       this.changeEvent.next();
+
+      this.updateSummary();
     });
+
+    
   }
 
   isLVOCertified(): boolean {

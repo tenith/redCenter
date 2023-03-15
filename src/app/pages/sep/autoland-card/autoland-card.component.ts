@@ -41,7 +41,6 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
     // console.log(JSON.stringify(this.info));
     this.reviseAutoLandCard();
     this.eventsSubscription = this.events.subscribe(() => {
-      console.log('event subscription');
       this.reviseAutoLandCard();
       this.autoLandingForm.reset();
       if(this.info.perform != '')

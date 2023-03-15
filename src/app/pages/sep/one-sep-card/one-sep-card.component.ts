@@ -22,7 +22,7 @@ export class OneSepCardComponent implements OnInit {
   ngOnInit(): void { 
     this.temp.getURIByLink(this.info.link).subscribe((data)=>{
       if(data != null)
-        this.cacheLink = data.link;
+        this.cacheLink = data.uri;
     });
 
     if(this.info.validperiod.toUpperCase() == 'LIFETIME'){

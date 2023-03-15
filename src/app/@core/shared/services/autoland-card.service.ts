@@ -41,7 +41,8 @@ export class AutolandCardService {
   }
 
   deleteAllSepCards(): void {
-    this.autoLandCard = [{},{}] as AutolandSepCard[];
+    // this.autoLandCard = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
+    //                      {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}] as AutolandSepCard[];
     localStorage.removeItem(this.autoLandCardLocalDBName);
   }
   
