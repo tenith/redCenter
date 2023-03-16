@@ -17,20 +17,24 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'book-outline',
     link: '/pages/sep',
   },  
-  {
-    title: 'E-TS1',
-    icon: 'file',
-    children: [
-      {
-        title: 'My work space (Instructor)',
-        link: '/pages/ets1/iworkspace',
-      },
-      {
-        title: 'My E-TS1',
-        link: '/pages/ets1/tworkspace',
-      }
-    ],
-  },
+  /*
+    16 Mar 2023 wutthichair 
+      Inhibit this menu for production purpose.
+  */
+  // {
+  //   title: 'E-TS1',
+  //   icon: 'file',
+  //   children: [
+  //     {
+  //       title: 'My work space (Instructor)',
+  //       link: '/pages/ets1/iworkspace',
+  //     },
+  //     {
+  //       title: 'My E-TS1',
+  //       link: '/pages/ets1/tworkspace',
+  //     }
+  //   ],
+  // },
   // {
   //   title: 'Forms',
   //   icon: 'edit-2-outline',
