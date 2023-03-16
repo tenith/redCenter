@@ -43,6 +43,8 @@ export class NewsService {
   }
 
   getAllNewsFromCache(): News[] {
+    const temp = localStorage.getItem(this.newsLocalDBName);
+    this.newsList = JSON.parse(temp) as News[];
     return this.newsList;
   }
   

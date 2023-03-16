@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.newsService.isInLocalStorage()){
-      this.newsList = [...(this.newsService.getAllNewsFromCache())];
+      this.newsList = [...(this.newsService.getAllNewsFromCache() as News[])];
       this.loading = false;
     }
           
