@@ -23,12 +23,15 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
+              "src/firebase-messaging-sw.js", 
+              "src/manifest.json",
               "src/favicon.png",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
-              }
+              },
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -65,7 +68,9 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -142,11 +147,14 @@
               "src/assets",
               "src/favicon.ico",
               "src/favicon.png",
+              "src/firebase-messaging-sw.js", 
+              "src/manifest.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
-              }
+              },
+              "src/manifest.webmanifest"
             ]
           }
         },

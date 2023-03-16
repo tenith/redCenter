@@ -33,7 +33,6 @@ export class HomeComponent implements OnInit {
 
       let temp: News[] = [];
       for(let i: number = 0; i < response.length; i++){
-        console.log('PUSH ' + JSON.stringify(response[i]));
         temp.push(response[i] as News);
       }
 

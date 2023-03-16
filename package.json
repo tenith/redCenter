@@ -41,6 +41,7 @@
     "@angular/platform-browser": "^13.3.12",
     "@angular/platform-browser-dynamic": "^13.3.12",
     "@angular/router": "^13.3.12",
+    "@angular/service-worker": "^13.3.12",
     "@asymmetrik/ngx-leaflet": "3.0.1",
     "@nebular/auth": "9.1.0-rc.8",
     "@nebular/eva-icons": "9.1.0-rc.8",

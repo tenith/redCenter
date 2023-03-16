@@ -29,7 +29,7 @@ export class SignoutComponent implements OnInit {
       Implement logout function to clear user cache.
   */
   public logout(): void{
-    console.log('new logout function');
+    // console.log('new logout function');
     this.firebaseAuthen.logout();
     this.sepCardService.deleteAllSepCards();
     this.autolandCardService.deleteAllSepCards();

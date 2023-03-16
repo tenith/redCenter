@@ -21,6 +21,7 @@ export const environment = {
     storageBucket: "red-center.appspot.com",
     messagingSenderId: "880704583837",
     appId: "1:880704583837:web:312aec2438ff06a7017c74",
-    measurementId: "G-NC095M4JX4"
+    measurementId: "G-NC095M4JX4",
+    vapidKey: "BCuIfA9ISlQR9IMblIGlnwiLfuo71eJViwltkPuteEiRVKjw7pdRoUrbEiV1hVgPdr6qDpnO-iiE3Kq_x_8rCt8"
   }
 };

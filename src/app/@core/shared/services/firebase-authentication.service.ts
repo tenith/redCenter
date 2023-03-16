@@ -32,7 +32,7 @@ export class FirebaseAuthenticationService implements CanActivate{
   constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, private toastrService: NbToastrService, public router: Router) {
     this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
     if(this.firebaseUser != null){
-      console.log('Cache Login');
+      // console.log('Cache Login');
     }
   }
 

@@ -32,6 +32,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 /*
   09 MAR 2023 wutthichair
@@ -81,6 +82,12 @@ const dbConfig: DBConfig  = {
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   bootstrap: [AppComponent],
 })
