@@ -5,7 +5,7 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2022 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="flight2022Data" class="demo-chart"></ngx-basic-chart>
+                    <ngx-basic-chart [year]="'2022'" [info]="'fltOps'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>
@@ -13,7 +13,8 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2023 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="flight2023Data" class="demo-chart"></ngx-basic-chart>
+                    <!-- <ngx-basic-chart [inputData]="flight2023Data" [loading]="flight2023DataLoading" class="demo-chart"></ngx-basic-chart> -->
+                    <ngx-basic-chart [year]="'2023'" [info]="'fltOps'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>
@@ -28,8 +29,9 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2022 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="fuel2022Data" class="demo-chart"></ngx-basic-chart>
+                    <!-- <ngx-basic-chart [inputData]="fuel2022Data" class="demo-chart"></ngx-basic-chart> -->
                     <!-- <div echarts [options]="options" class="demo-chart"></div> -->
+                    <ngx-basic-chart [year]="'2022'" [info]="'fuel'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>
@@ -38,8 +40,9 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2023 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="fuel2023Data" class="demo-chart"></ngx-basic-chart>
+                    <!-- <ngx-basic-chart [inputData]="fuel2023Data" class="demo-chart"></ngx-basic-chart> -->
                     <!-- <div echarts [options]="options" class="demo-chart"></div> -->
+                    <ngx-basic-chart [year]="'2023'" [info]="'fuel'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>
@@ -53,7 +56,8 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2022 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="flight2022Data" class="demo-chart"></ngx-basic-chart>
+                    <!-- <ngx-basic-chart [inputData]="flight2022Data" class="demo-chart"></ngx-basic-chart> -->
+                    <ngx-basic-chart [year]="'2022'" [info]="'safety'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>
@@ -61,7 +65,8 @@
             <nb-accordion-item>
                 <nb-accordion-item-header>Year 2023 Graphic</nb-accordion-item-header>
                 <nb-accordion-item-body>
-                    <ngx-basic-chart [inputData]="flight2023Data" class="demo-chart"></ngx-basic-chart>
+                    <!-- <ngx-basic-chart [inputData]="flight2023Data" class="demo-chart"></ngx-basic-chart> -->
+                    <ngx-basic-chart [year]="'2023'" [info]="'safety'" class="demo-chart"></ngx-basic-chart>
                 </nb-accordion-item-body>
             </nb-accordion-item>
         </nb-accordion>

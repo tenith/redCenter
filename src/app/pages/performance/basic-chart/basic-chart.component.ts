@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import LinearGradient from 'zrender/lib/graphic/LinearGradient';
+import { PerformanceService } from '../../../@core/shared/services/performance.service';
 
 @Component({
   selector: 'ngx-basic-chart',
@@ -9,9 +10,12 @@ import LinearGradient from 'zrender/lib/graphic/LinearGradient';
 })
 export class BasicChartComponent implements OnInit {
 
-  @Input() inputData: any;
+  @Input() year: string;
+  @Input() info: string;
+
+  isLoading: boolean;
   options: any;
-  constructor() { }
+  constructor(public performanceService: PerformanceService) { }
 
   getMaxValue(list: number[]): number{
     if(list == null)
@@ -28,84 +32,97 @@ export class BasicChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const dataAxis = this.inputData[0];
-    const data = this.inputData[1] as number[];
-    const yMax = this.getMaxValue(data);
-    const dataShadow = [];
+    this.isLoading = true;
+    this.performanceService.getMyPerformanceInfo(this.year, this.info).subscribe((dataServer)=>{
+      let temp = JSON.parse(dataServer);
+      let index = temp[0] as string[];
+      let value = temp[1] as number[];
+      
+      const dataAxis = index;
+      const data = value;
+      const yMax = this.getMaxValue(data);
+      const dataShadow = [];
 
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < data.length; i++) {
-      dataShadow.push(yMax);
-    }
+      // console.log('DATA AXIS ' + JSON.stringify(dataAxis));
+      // console.log('VALUE ' + JSON.stringify(data));
+      
+      for (let i = 0; i < data.length; i++) {
+        dataShadow.push(yMax);
+      }
 
-    this.options = {
-      title: {
-        text: '',
-      },
-      xAxis: {
-        data: dataAxis,
-        axisLabel: {
-          inside: false,
-          color: '#000',
+      this.options = {
+        title: {
+          text: '',
         },
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        z: 10,
-      },
-      yAxis: {
-        axisLine: {
-          show: false,
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
-          color: '#999',
-        },
-      },
-      dataZoom: [
-        {
-          type: 'inside',
-        },
-      ],
-      series: [
-        {
-          // For shadow
-          type: 'bar',
-          itemStyle: {
-            color: 'rgba(0,0,0,0.05)'
+        xAxis: {
+          data: dataAxis,
+          axisLabel: {
+            inside: false,
+            color: '#000',
           },
-          barGap: '-100%',
-          barCategoryGap: '40%',
-          data: dataShadow,
-          animation: false,
-        },
-        {
-          type: 'bar',
-          itemStyle: {
-            color: new LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#83bff6' },
-              { offset: 0.5, color: '#188df0' },
-              { offset: 1, color: '#188df0' },
-            ]),
+          axisTick: {
+            show: false,
           },
-          emphasis: {
+          axisLine: {
+            show: false,
+          },
+          z: 10,
+        },
+        yAxis: {
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            color: '#999',
+          },
+        },
+        dataZoom: [
+          {
+            type: 'inside',
+          },
+        ],
+        series: [
+          {
+            // For shadow
+            type: 'bar',
+            itemStyle: {
+              color: 'rgba(0,0,0,0.05)'
+            },
+            barGap: '-100%',
+            barCategoryGap: '40%',
+            data: dataShadow,
+            animation: false,
+          },
+          {
+            type: 'bar',
             itemStyle: {
               color: new LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#2378f7' },
-                { offset: 0.7, color: '#2378f7' },
-                { offset: 1, color: '#83bff6' },
+                { offset: 0, color: '#83bff6' },
+                { offset: 0.5, color: '#188df0' },
+                { offset: 1, color: '#188df0' },
               ]),
-            }
+            },
+            emphasis: {
+              itemStyle: {
+                color: new LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#2378f7' },
+                  { offset: 0.7, color: '#2378f7' },
+                  { offset: 1, color: '#83bff6' },
+                ]),
+              }
+            },
+            data,
           },
-          data,
-        },
-      ],
-    };
+        ],
+      };
+
+      this.isLoading = false;
+    });
+
+    
   }
 
 }
