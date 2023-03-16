@@ -29,7 +29,10 @@
       01 MAR 2023 by wutthichair
       remove rotate-layout, email-outline, bell-outline features 
     -->
-
+    <!-- <nb-badge text="badgeText" status="warning" position="bottom right"></nb-badge> -->
+    <!-- <nb-action class="control-item" icon="bell-outline"  badgeText="99+" badgeStatus="danger"></nb-action> -->
+    <nb-action icon="bell-outline" badgePosition="top right" badgeDot="true" badgeStatus="primary"></nb-action>
+    <!-- <nb-action icon="bell-outline"></nb-action> -->
     <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
       <nb-user [nbContextMenu]="userMenu"
                [onlyPicture]="userPictureOnly"

@@ -62,13 +62,14 @@ export class SepComponent implements OnInit {
         temp.push(response[tempSubjects[i]][0]);
       }
 
+      this.loading = false;
       this.toastr.primary('Completed','Updated SEP from online server completed', {duration:10000});
       this.oneSepCards = [...temp];
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
       this.loadAutolandCards();
-      this.loading = false;
+      // this.loading = false;
 
       this.updateSummary();
     });

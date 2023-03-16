@@ -1,14 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NbGetters, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
-
-interface FSEntry {
-  name: string;
-  size: string;
-  kind: string;
-  items?: number;
-  childEntries?: FSEntry[];
-  expanded?: boolean;
-}
 
 @Component({
   selector: 'ngx-performance',
@@ -17,65 +7,34 @@ interface FSEntry {
 })
 export class PerformanceComponent implements OnInit {
 
+  flight2022Data: any[] = [];
+  flight2023Data: any[] = [];
+
+  fuel2022Data: any[] = [];
+  fuel2023Data: any[] = [];
+  constructor() {}
+
   ngOnInit(): void {
+    const codeList: string[] = ['cs1', 'cs2', 'csx', 'cslx', 'csrx' , 'late MC', 'AWOL', 'Miss Flight', 'MC After Activated', 'Refuse to fly', 'Uncontact', 'Nil Document'];
+    const monthList: string[] = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+    let flight2022DataValue = [1,1,1,1,1,1,2,1,1,1,3,4];
+    let flight2023DataValue = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+    this.flight2022Data.push(codeList);
+    this.flight2022Data.push(flight2022DataValue);
+
+    this.flight2023Data.push(codeList);
+    this.flight2023Data.push(flight2023DataValue);
+
+    let fuel2022DataValue = [1,2,3,4,5,6,7,8,9,10,11,12];
+    let fuel2023DataValue = [1,2,3,0,1,2,3,0,-1,2,3,0];
+
+    this.fuel2022Data.push(monthList);
+    this.fuel2022Data.push(fuel2022DataValue);
+
+    this.fuel2023Data.push(monthList);
+    this.fuel2023Data.push(fuel2023DataValue);
   }
-
-  customColumn = 'name';
-  defaultColumns = [ 'size', 'kind', 'items' ];
-  allColumns = [ this.customColumn, ...this.defaultColumns ];
-  source: NbTreeGridDataSource<FSEntry>;
-
-  constructor(dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>) {
-    const getters: NbGetters<FSEntry, FSEntry> = {
-      dataGetter: (node: FSEntry) => node,
-      childrenGetter: (node: FSEntry) => node.childEntries || undefined,
-      expandedGetter: (node: FSEntry) => !!node.expanded,
-    };
-    this.source = dataSourceBuilder.create(this.data, getters);
-  }
-
-  private data: FSEntry[] = [
-    {
-      name: 'Projects', size: '1.8 MB', items: 5, kind: 'dir', expanded: true,
-      childEntries: [
-        { name: 'project-1.doc', kind: 'doc', size: '240 KB' },
-        { name: 'project-2.doc', kind: 'doc', size: '290 KB' },
-        {
-          name: 'project-3', kind: 'dir', size: '466 KB', items: 3,
-          childEntries: [
-            { name: 'project-3A.doc', kind: 'doc', size: '200 KB' },
-            { name: 'project-3B.doc', kind: 'doc', size: '266 KB' },
-            { name: 'project-3C.doc', kind: 'doc', size: '0' },
-          ],
-        },
-        { name: 'project-4.docx', kind: 'docx', size: '900 KB' },
-      ],
-    },
-    {
-      name: 'Reports', kind: 'dir', size: '400 KB', items: 2,
-      childEntries: [
-        {
-          name: 'Report 1', kind: 'dir', size: '100 KB', items: 1,
-          childEntries: [
-            { name: 'report-1.doc', kind: 'doc', size: '100 KB' },
-          ],
-        },
-        {
-          name: 'Report 2', kind: 'dir', size: '300 KB', items: 2,
-          childEntries: [
-            { name: 'report-2.doc', kind: 'doc', size: '290 KB' },
-            { name: 'report-2-note.txt', kind: 'txt', size: '10 KB' },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Other', kind: 'dir', size: '109 MB', items: 2,
-      childEntries: [
-        { name: 'backup.bkp', kind: 'bkp', size: '107 MB' },
-        { name: 'secret-note.txt', kind: 'txt', size: '2 MB' },
-      ],
-    },
-  ];
 
 }

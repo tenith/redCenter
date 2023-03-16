@@ -7,18 +7,22 @@ import { NbCardModule } from '@nebular/theme';
 import { NbAccordionModule } from '@nebular/theme';
 import { NbTreeGridModule } from '@nebular/theme';
 
+import { NgxEchartsModule } from 'ngx-echarts';
+import { BasicChartComponent } from './basic-chart/basic-chart.component';
 
 
 @NgModule({
   declarations: [
-    PerformanceComponent
+    PerformanceComponent,
+    BasicChartComponent
   ],
   imports: [
     CommonModule,
     NbIconModule,
     NbCardModule,
     NbAccordionModule,
-    NbTreeGridModule
+    NbTreeGridModule,
+    NgxEchartsModule,
   ]
 })
 export class PerformanceModule { }

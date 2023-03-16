@@ -67,6 +67,9 @@ export class SepCardService {
       Implement save Certificate into database
   */
   saveAllCertificate(): void{
+    if(this.oneSepCards == null)
+      return;
+
     for(let i=0;i<this.oneSepCards.length;i++){
       if(this.oneSepCards[i].link != ''){
         this.dbService.getByIndex("certificates",'link',this.oneSepCards[i].link).subscribe((data)=> {
