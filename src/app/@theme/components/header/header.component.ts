@@ -14,6 +14,7 @@ import { FirestoreUserService } from '../../../@core/shared/services/firestore-u
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../../../@core/shared/services/notification.service';
 import { Notification } from '../../../@core/shared/interfaces/notification';
+import { SwPush } from '@angular/service-worker';
 
 @Component({
   selector: 'ngx-header',
@@ -76,6 +77,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               public firestoreUserService: FirestoreUserService,
               public dialogService: NbDialogService,
               public notificationService: NotificationService,
+              public push: SwPush,
               public router: Router) {
   }
 
@@ -173,6 +175,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       console.log(JSON.stringify(payload));
       this.changeDetectorRefs.detectChanges();
     });
+
+    this.push.messages.subscribe(msg => console.log('push message', msg));
   }
   showNotification(): void{
     console.log('show notification');

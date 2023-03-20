@@ -11,3 +11,14 @@ firebase.initializeApp({
     measurementId: "G-NC095M4JX4"
 });
 const messaging = firebase.messaging();
+messaging.onBackgroundMessage(messaging, payload => {
+    self.clients
+      .matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      })
+      .then(all =>
+        all.forEach(client => {
+          client.postMessage(payload);
+        })
+      )});
