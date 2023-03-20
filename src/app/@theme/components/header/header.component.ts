@@ -7,8 +7,13 @@ import { FirebaseAuthenticationService } from '../../../@core/shared/services/fi
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 
+import { NbDialogService } from '@nebular/theme';
+
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
+import { NotificationComponent } from '../notification/notification.component';
+import { NotificationService } from '../../../@core/shared/services/notification.service';
+import { Notification } from '../../../@core/shared/interfaces/notification';
 
 @Component({
   selector: 'ngx-header',
@@ -54,6 +59,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   */
   userMenu = [ { title: 'Log out' } ];
 
+  /**
+   * 20 Mar 2023 wutthichair 
+   * Add notification menu
+   */
+  notificationMenu = [ {title: 'Notification(s)'}];
+
+
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
@@ -62,11 +74,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               public firebaseUser: FirebaseAuthenticationService,
               public changeDetectorRefs: ChangeDetectorRef,
               public firestoreUserService: FirestoreUserService,
+              public dialogService: NbDialogService,
+              public notificationService: NotificationService,
               public router: Router) {
-  }
-
-  public clickToCount(): void{
-    this.numberNotification++;
   }
 
   ngOnInit() {
@@ -141,6 +151,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
        (currentToken) => {
          if (currentToken) {
           //  console.log("Hurraaa!!! we got the token.....");
+
+          /**
+           * 20 Mar 2023 wutthichair 
+           * Save token into firestore.
+           */
           this.firestoreUserService.addToken(currentToken);
          } else {
            console.log('No registration token available. Request permission to generate one.');
@@ -154,16 +169,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
       this.numberNotification++;
-      // console.log(this.numberNotification);
-      // console.log('Message received. ', payload);
-
-      // {"from":"880704583837","messageId":"a6279c3f-3743-4b54-8691-7ff1c6cc527f","notification":{"title":"First Notification","body":"Hello from Jishnu!!"},"data":{"gcm.notification.time":"02 Mar 2023"}}
-      // {"from":"880704583837","messageId":"4a5e1b92-d096-49e7-a0e2-7fda3d5971c1","data":{"body":"great match!","Room":"PortugalVSDenmark","Nick":"Mario"}}
+      this.notificationService.addNotification({ ...payload.data } as unknown as Notification);
       console.log(JSON.stringify(payload));
-      // this.message=payload;
-
       this.changeDetectorRefs.detectChanges();
     });
+  }
+  showNotification(): void{
+    console.log('show notification');
+    this.dialogService.open(NotificationComponent);
   }
 
   onItemSelection(title: string) {
@@ -171,6 +184,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if ( title === 'Log out' ) {
       //Redirect to signout component.....
       this.router.navigate(['./authentication/signout']);
+    }
+
+    if(title === 'Notification(s)'){
+      console.log('notification click');
     }
   }
 

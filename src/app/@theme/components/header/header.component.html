@@ -7,7 +7,6 @@
       01 MAR 2023 by wutthichair
         change title 'ngx-admin' to 'Red Center'
     -->
-    <!-- <nb-icon icon="home-outline" (click)="clickToCount()"></nb-icon> -->
     <a class="logo" href="#" (click)="navigateHome()">Red Center</a>
   </div>
   <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
@@ -32,8 +31,7 @@
     -->
     <!-- <nb-badge text="badgeText" status="warning" position="bottom right"></nb-badge> -->
     <!-- <nb-action class="control-item" icon="bell-outline"  badgeText="99+" badgeStatus="danger"></nb-action> -->
-    
-    <nb-action icon="bell-outline" badgeText="{{numberNotification > 0 ? numberNotification : ''}}" badgePosition="top right" badgeDot="false" badgeStatus="primary"></nb-action>
+    <nb-action icon="bell-outline" (click)="showNotification()" size="large" badgePosition="top start" badgeDot="{{numberNotification > 0}}" badgeStatus="primary"></nb-action>
     <!-- <nb-action icon="bell-outline"></nb-action> -->
     <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
       <nb-user [nbContextMenu]="userMenu"

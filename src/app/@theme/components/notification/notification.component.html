@@ -1,0 +1,31 @@
+<!-- <div class="notification-wrapper" style="background-color: white;">
+    <div class="notification-header">
+        <nb-card accent="info">
+            <nb-card-header>Todo List(s)</nb-card-header>
+            <nb-card-body>
+                <nb-card *ngFor="let notification of notifications" accent="{{notification.isRead ? 'info' : 'danger'}}">
+                    <nb-card-header>{{ notification.subject }}</nb-card-header>
+                    <nb-card-body>
+                        {{notification.owner}}
+                    </nb-card-body>
+                </nb-card>
+            </nb-card-body>
+        </nb-card>  
+    </div>
+</div> -->
+
+<div class="row" style="background-color: white;">
+    <div class="col-12 col-sm-4 col-md-4" style="margin-left: auto; margin-right: auto; margin-top: auto;">
+        Todo(s) List
+    </div>
+
+    <div class="col-12 col-sm-4 col-md-4" style="margin-left: auto; margin-right: auto; margin-top: 50px;">
+        <nb-card *ngFor="let notification of notifications" accent="{{notification.isRead == 'true' ? 'info' : 'danger'}}">
+            <nb-card-header>{{ notification.subject }} <nb-icon icon='trash-2-outline' (click)="deleteNotification(notification)"></nb-icon></nb-card-header>
+            <nb-card-body>
+                {{notification.owner}} <nb-icon icon='search-outline' (click)="markAsRead(notification)"></nb-icon>
+            </nb-card-body>
+        </nb-card>
+    </div>
+
+</div>

@@ -1,6 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  NbCardModule,
+  NbAccordionModule,
   NbActionsModule,
   NbLayoutModule,
   NbMenuModule,
@@ -15,6 +17,8 @@ import {
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
+
+import { NotificationComponent } from './../@theme/components/notification/notification.component';
 
 import {
   FooterComponent,
@@ -40,7 +44,9 @@ import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 
 const NB_MODULES = [
+  NbCardModule,
   NbLayoutModule,
+  NbAccordionModule,
   NbMenuModule,
   NbUserModule,
   NbActionsModule,
@@ -54,6 +60,7 @@ const NB_MODULES = [
   NbEvaIconsModule,
 ];
 const COMPONENTS = [
+  NotificationComponent,
   HeaderComponent,
   FooterComponent,
   SearchInputComponent,
