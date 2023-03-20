@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { NbGlobalLogicalPosition, NbToastrService } from '@nebular/theme';
+import { NbToastrService } from '@nebular/theme';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { FirebaseUser } from '../interfaces/firebase-user';
 /*

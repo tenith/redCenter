@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 
 @Component({
   selector: 'ngx-header',
@@ -60,6 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private breakpointService: NbMediaBreakpointsService,
               public firebaseUser: FirebaseAuthenticationService,
               public changeDetectorRefs: ChangeDetectorRef,
+              public firestoreUserService: FirestoreUserService,
               public router: Router) {
   }
 
@@ -113,6 +115,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     */
     this.requestPermission();
     this.listen();
+
+
+    /*
+      20 Mar 2023 wutthichair 
+        Implement user firestore....
+    */
+    // this.firestoreUserService.init();
+    // console.log(JSON.stringify(this.firebaseUser.getFirebaseUser()));
+    // console.log(JSON.stringify(this.firestoreUserService.getFireStoreUser()));
+    // this.firestoreUserService.addToken('test token1');
+    // this.firestoreUserService.addToken('test token2');
+
+    // console.log(JSON.stringify(this.firestoreUserService.getFireStoreUser()));
   }
 
   /*
@@ -126,7 +141,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
        (currentToken) => {
          if (currentToken) {
           //  console.log("Hurraaa!!! we got the token.....");
-          //  console.log(currentToken);
+          this.firestoreUserService.addToken(currentToken);
          } else {
            console.log('No registration token available. Request permission to generate one.');
          }
