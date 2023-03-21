@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
 import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
+import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { NewsService } from '../../@core/shared/services/news.service';
 import { SepCardService } from '../../@core/shared/services/sep-card.service';
 
@@ -13,7 +14,7 @@ import { SepCardService } from '../../@core/shared/services/sep-card.service';
 })
 export class SignoutComponent implements OnInit {
 
-  constructor(public newsService: NewsService, public firebaseAuthen : FirebaseAuthenticationService, public sepCardService: SepCardService, public autolandCardService: AutolandCardService, public router: Router, public location: Location) { }
+  constructor(public firestoreUserService: FirestoreUserService, public newsService: NewsService, public firebaseAuthen : FirebaseAuthenticationService, public sepCardService: SepCardService, public autolandCardService: AutolandCardService, public router: Router, public location: Location) { }
 
   ngOnInit(): void {
     if(this.firebaseAuthen.getFirebaseUser() == null)
@@ -34,6 +35,7 @@ export class SignoutComponent implements OnInit {
     this.sepCardService.deleteAllSepCards();
     this.autolandCardService.deleteAllSepCards();
     this.newsService.deleteAllNewsFromCache();
+    this.firestoreUserService.deleteToken();
   }
 
 }

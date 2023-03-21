@@ -28,6 +28,10 @@ export class NotificationService {
     // ];
   }
 
+  hasNotifications(): boolean{
+    return this.notifications.length > 0;
+  }
+
   getNotifications(): Notification[]{
     return this.notifications;
   }

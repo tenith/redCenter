@@ -10,6 +10,7 @@ import { FirebaseAuthenticationService } from './firebase-authentication.service
 })
 export class FirestoreUserService {
   collectionName: string = '/users';
+  token: string = '';
 
   collectionRef: AngularFirestoreCollection<FirestoreUser>;
   // firestoreUser: FirestoreUser;
@@ -46,6 +47,7 @@ export class FirestoreUserService {
   }
 
   addToken(token: string): void{
+    this.token = token;
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
       if (doc.exists) {
         let temp = {...doc.data()} as FirestoreUser;
@@ -62,18 +64,18 @@ export class FirestoreUserService {
     }).catch((error)=> { console.log(error);});
   }
 
-  deleteToken(token: string): void{
+  deleteToken(): void{
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
       if (doc.exists) {
         let temp = {...doc.data()} as FirestoreUser;
-        let tempIndex = temp.tokenList.indexOf(token);
+        let tempIndex = temp.tokenList.indexOf(this.token);
         if(tempIndex < 0)
           return;
         temp.tokenList.splice(tempIndex,1);
 
         this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({tokenList: temp.tokenList})
         .then(()=> {
-          console.log('Remove Token :' + token + ' completed');
+          console.log('Remove Token :' + this.token + ' completed');
         });
       }
     }).catch((error)=> { console.log(error);});

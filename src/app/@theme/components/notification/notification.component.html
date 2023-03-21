@@ -13,13 +13,16 @@
         </nb-card>  
     </div>
 </div> -->
-
+<div class="notification-wrapper" style="background-color: white;">
 <div class="row" style="background-color: white;">
-    <div class="col-12 col-sm-4 col-md-4" style="margin-left: auto; margin-right: auto; margin-top: auto;">
-        Todo(s) List
+    <div class="col-12 col-sm-12 col-md-12" style="margin-left: auto; margin-right: auto; margin-top: 5px;">
+        <b>Todo(s) List</b>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12" style="margin-left: auto; margin-right: auto; margin-top: auto;">
+        <hr>
     </div>
 
-    <div class="col-12 col-sm-4 col-md-4" style="margin-left: auto; margin-right: auto; margin-top: 50px;">
+    <div class="col-12 col-sm-12 col-md-12" style="margin-left: auto; margin-right: auto; margin-top: 20px;">
         <nb-card *ngFor="let notification of notifications" accent="{{notification.isRead == 'true' ? 'info' : 'danger'}}">
             <nb-card-header>{{ notification.subject }} <nb-icon icon='trash-2-outline' (click)="deleteNotification(notification)"></nb-icon></nb-card-header>
             <nb-card-body>
@@ -27,5 +30,5 @@
             </nb-card-body>
         </nb-card>
     </div>
-
+</div>
 </div>

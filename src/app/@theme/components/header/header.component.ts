@@ -16,6 +16,8 @@ import { NotificationService } from '../../../@core/shared/services/notification
 import { Notification } from '../../../@core/shared/interfaces/notification';
 import { SwPush } from '@angular/service-worker';
 
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
+
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -26,8 +28,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   title = 'af-notification';
   message:any = null;
-
-  numberNotification: number = 0;
 
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
@@ -78,11 +78,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
               public dialogService: NbDialogService,
               public notificationService: NotificationService,
               public push: SwPush,
+              public afMessaging: AngularFireMessaging,
               public router: Router) {
   }
 
   ngOnInit() {
-    this.numberNotification = 0;
     /*
       01 MAR 2023 by wutthichair
         change defualt theme
@@ -128,6 +128,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.requestPermission();
     this.listen();
 
+    this.listenOnBackground();
+
 
     /*
       20 Mar 2023 wutthichair 
@@ -140,6 +142,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.firestoreUserService.addToken('test token2');
 
     // console.log(JSON.stringify(this.firestoreUserService.getFireStoreUser()));
+  }
+
+  hasNotification(): boolean{
+    // this.changeDetectorRefs.detectChanges();
+    return this.notificationService.hasNotifications();
+  }
+
+  listenOnBackground(): void {
+    const bc = new BroadcastChannel('background_notification');
+    bc.onmessage = (ev) => { 
+      this.notificationService.addNotification({ ...JSON.parse(ev.data) } as unknown as Notification);
+      this.changeDetectorRefs.detectChanges();
+    };
   }
 
   /*
@@ -160,26 +175,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
            */
           this.firestoreUserService.addToken(currentToken);
          } else {
-           console.log('No registration token available. Request permission to generate one.');
+          //  console.log('No registration token available. Request permission to generate one.');
          }
      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
+        // console.log('An error occurred while retrieving token. ', err);
     });
   }
   
   listen() {
     const messaging = getMessaging();
+  
     onMessage(messaging, (payload) => {
-      this.numberNotification++;
       this.notificationService.addNotification({ ...payload.data } as unknown as Notification);
-      console.log(JSON.stringify(payload));
+      // console.log(JSON.stringify(payload));
       this.changeDetectorRefs.detectChanges();
     });
 
-    this.push.messages.subscribe(msg => console.log('push message', msg));
+    
   }
   showNotification(): void{
-    console.log('show notification');
+    // console.log('show notification');
     this.dialogService.open(NotificationComponent);
   }
 
@@ -190,9 +205,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['./authentication/signout']);
     }
 
-    if(title === 'Notification(s)'){
-      console.log('notification click');
-    }
+    // if(title === 'Notification(s)'){
+    //   // console.log('notification click');
+    // }
   }
 
   ngOnDestroy() {
