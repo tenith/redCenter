@@ -5,6 +5,7 @@ import { FirebaseAuthenticationService } from './@core/shared/services/firebase-
 
 export const routes: Routes = [
   { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
+  { path: 'authorization', loadChildren: () => import('./authorization/authorization.module').then(m => m.AuthorizationModule) },
   { path: 'pages', canActivate: [FirebaseAuthenticationService], loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule) },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: '**', redirectTo: 'authentication' }

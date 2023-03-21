@@ -12,14 +12,16 @@ export class FirestoreUserService {
   collectionName: string = '/users';
   token: string = '';
 
+  firestoreUser: FirestoreUser;
+
   collectionRef: AngularFirestoreCollection<FirestoreUser>;
   // firestoreUser: FirestoreUser;
 
   constructor(public afs: AngularFirestore, public firebaseAuthen: FirebaseAuthenticationService) { 
     this.collectionRef = this.afs.collection(this.collectionName);
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-      if (doc.exists) 
-        console.log('SET UP completed');
+      if (doc.exists) {;}
+        // console.log('SET UP completed');;
       else 
         this.initFirestoreUser();
     }).catch((error)=> { console.log(error);});
@@ -30,6 +32,7 @@ export class FirestoreUserService {
     let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
     let tempDeafult: FirestoreUser = {
       email: tempUser.email,
+      role: '',
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
       tokenList: []
@@ -37,13 +40,40 @@ export class FirestoreUserService {
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult)
     .then(()=> {
       this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-        if (doc.exists) 
+        if (doc.exists) {
           console.log('SET UP completed');
+          this.firestoreUser = tempDeafult;
+        }
       })
     })
     .catch(error=> {
       console.log(error);
     });
+  }
+
+  public hasRole(): boolean{
+    if(this.firestoreUser == null)
+      return false;
+    if(this.firestoreUser.role == null)
+      return false;
+    if(this.firestoreUser.role != '')
+      return true;
+    
+    return false;
+  }
+
+  initRole(role: string): void{
+    this.firestoreUser = {...this.firestoreUser, role : role} as FirestoreUser;
+    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
+      if (doc.exists) {
+        let temp = {...doc.data()} as FirestoreUser;
+        temp.role = role;
+        this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: role})
+        .then(()=> {
+          console.log('Init role :' + role + ' completed');
+        });
+      }
+    }).catch((error)=> { console.log(error);});
   }
 
   addToken(token: string): void{
@@ -65,6 +95,7 @@ export class FirestoreUserService {
   }
 
   deleteToken(): void{
+    this.firestoreUser = null;
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
       if (doc.exists) {
         let temp = {...doc.data()} as FirestoreUser;

@@ -85,7 +85,7 @@ export class FirebaseAuthenticationService implements CanActivate{
         */
         this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(tempFirebaseUser),2*365*24*60*60*1000);
         this.firebaseUser = tempFirebaseUser;
-        this.router.navigate(['./pages']);
+        this.router.navigate(['./authorization/role']);
       })
       .catch((error) => {
         throw new Error(error);
