@@ -1,3 +1,18 @@
+<!-- SHOW SPINNER -->
+<div *ngIf="loading">
+    <nb-card status="danger" size="giant" [nbSpinner]="loading"
+             nbSpinnerStatus="danger"
+             nbSpinnerSize="large"
+             nbSpinnerMessage="">
+      <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+      <nb-card-body style="text-align: center;">
+        <p>
+            Please wait, We are loading the information from the server.
+        </p>
+      </nb-card-body>
+    </nb-card>
+</div>
+<div *ngIf="!loading">
 <img src="../../../favicon.ico" style="margin-left: auto;margin-right: auto;display: block;">
 <h1 id="title" class="title" style="text-align: center;">Role</h1>
 <p class="sub-title" style="text-align: center;">Hello! Welcome to Red Center Application, Please choose your role.</p>
@@ -43,9 +58,4 @@
         </nb-card>
     </div>
 </div>
-<!-- <section aria-label="Click to login" style="text-align: center;">
-    <button nbButton status="primary" size="medium">Click to login</button>
-</section>
-<section class="another-action" aria-label="Click to login" style="text-align: center;">
-    <nb-icon icon="cloud-upload" [options]="{ animation: { type: 'zoom' }}" status="primary" style="margin-left: auto;margin-right: auto;display: block;font-size: 5rem;"></nb-icon>
-</section> -->
+</div>

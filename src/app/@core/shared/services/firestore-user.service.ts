@@ -13,18 +13,52 @@ export class FirestoreUserService {
   token: string = '';
 
   firestoreUser: FirestoreUser;
+  firestoreUserDBName: string = 'firestoreUserDBName';
 
   collectionRef: AngularFirestoreCollection<FirestoreUser>;
   // firestoreUser: FirestoreUser;
 
   constructor(public afs: AngularFirestore, public firebaseAuthen: FirebaseAuthenticationService) { 
+    if(localStorage.getItem(this.firestoreUserDBName) != null)
+      this.firestoreUser = JSON.parse(localStorage.getItem(this.firestoreUserDBName)) as FirestoreUser;
+
     this.collectionRef = this.afs.collection(this.collectionName);
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-      if (doc.exists) {;}
-        // console.log('SET UP completed');;
+      if (doc.exists) {
+        this.firestoreUser = {...doc.data()} as FirestoreUser;
+      }
       else 
         this.initFirestoreUser();
     }).catch((error)=> { console.log(error);});
+  }
+
+  
+  async getRole(): Promise<string>{
+    return this.firestoreUser.role;
+  }
+
+  public isInLocalStorage(): boolean{
+    return localStorage.getItem(this.firestoreUserDBName) != null;
+  }
+
+  public getFirestoreUser(): Promise<any> {
+    return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get();
+  }
+
+  async createFirestoreUser(): Promise<any>{
+    let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
+    let tempDeafult: FirestoreUser = {
+      email: tempUser.email,
+      role: '',
+      displayName: tempUser.displayName,
+      photoURL: tempUser.photoURL,
+      tokenList: []
+    };
+    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult)
+      .then(()=> {return tempDeafult})
+      .catch(error=> {
+        console.log(error);
+      });
   }
 
   //Create FirestoreUser....
@@ -36,13 +70,14 @@ export class FirestoreUserService {
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
       tokenList: []
-    }
+    };
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult)
     .then(()=> {
       this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
         if (doc.exists) {
           console.log('SET UP completed');
           this.firestoreUser = tempDeafult;
+          localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
         }
       })
     })
@@ -52,7 +87,8 @@ export class FirestoreUserService {
   }
 
   public hasRole(): boolean{
-    if(this.firestoreUser == null)
+    // console.log('object firestore : ' + JSON.stringify(this.firestoreUser));
+    if(this.firestoreUser == null || this.firestoreUser == undefined)
       return false;
     if(this.firestoreUser.role == null)
       return false;
@@ -71,6 +107,7 @@ export class FirestoreUserService {
         this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: role})
         .then(()=> {
           console.log('Init role :' + role + ' completed');
+          localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
         });
       }
     }).catch((error)=> { console.log(error);});
@@ -96,6 +133,7 @@ export class FirestoreUserService {
 
   deleteToken(): void{
     this.firestoreUser = null;
+    localStorage.removeItem(this.firestoreUserDBName);
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
       if (doc.exists) {
         let temp = {...doc.data()} as FirestoreUser;

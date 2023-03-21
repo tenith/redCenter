@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { FirebaseAuthenticationService } from '../@core/shared/services/firebase-authentication.service';
+import { FirestoreUserService } from '../@core/shared/services/firestore-user.service';
 
 import { MENU_ITEMS } from './pages-menu';
 
@@ -21,7 +22,10 @@ export class PagesComponent implements OnInit {
     02 Mar 2023 wutthichair
       Implement constructor, ngOnInit for showing toast when login with outside airasia domain
   */
-  constructor(public firebaseUser: FirebaseAuthenticationService, public toastr: NbToastrService){}
+  constructor(public firebaseUser: FirebaseAuthenticationService, public toastr: NbToastrService, public firestoreUserService: FirestoreUserService){
+    // console.log('My Role : ' + this.firestoreUserService.getRole());
+    // this.menu.pop();
+  }
 
   ngOnInit(): void {
     if(!this.firebaseUser.getFirebaseUser().email.includes("@airasia.com")){
