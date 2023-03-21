@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { Notification } from '../interfaces/notification';
 
 @Injectable({
@@ -6,6 +7,8 @@ import { Notification } from '../interfaces/notification';
 })
 export class NotificationService {
   notifications: Notification[] = [];
+
+  updateSubject: Subject<void> = new Subject<void>();
 
   constructor() { 
     // this.notifications = [
@@ -43,21 +46,30 @@ export class NotificationService {
 
     notification.isRead = 'true';
     this.notifications[tempIndex] = notification;
+  }
 
+  getNotificationObservable() : Observable<any>{
+    return this.updateSubject.asObservable();
   }
 
   addNotification(notification: Notification): void {
     console.log('add notification' + JSON.stringify(notification));
+
+    this.updateSubject.next();
     this.notifications.push(notification);
   }
 
   deleteNotification(notification: Notification): void {
+    console.log('delete notification' + JSON.stringify(notification));
     let tempIndex = this.notifications.indexOf(notification);
-    if(tempIndex >=0 )
+    if(tempIndex >=0 ){
+      this.updateSubject.next();
       this.notifications.splice(tempIndex,1);
+    }
   }
 
   deleteAllNotification(): void{
+    this.updateSubject.next();
     this.notifications = [];
   }
   

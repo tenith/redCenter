@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbDialogRef, NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { FirebaseAuthenticationService } from '../../../@core/shared/services/firebase-authentication.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -53,7 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   currentTheme = 'default';
-
+  private notification$: Observable<void>;  
+  private eventsSubscription!: Subscription;
   /*
     01 MAR 2023 by wutthichair
       change userMenu from userMenu = [ { title: 'Profile' }, { title: 'Log out' } ]; to userMenu = [ { title: 'Log out' } ];
@@ -66,6 +67,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   notificationMenu = [ {title: 'Notification(s)'}];
 
+  bc = new BroadcastChannel('background_notification');
+  private dialogRef: NbDialogRef<any>;
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
@@ -130,6 +133,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.listenOnBackground();
 
+    this.notification$ = this.notificationService.getNotificationObservable();
+    this.eventsSubscription = this.notification$.subscribe(()=>{
+      this.revisedNotification();
+    });
 
     /*
       20 Mar 2023 wutthichair 
@@ -149,9 +156,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.notificationService.hasNotifications();
   }
 
+  revisedNotification(): void {
+    this.changeDetectorRefs.detectChanges(); 
+  }
+
   listenOnBackground(): void {
-    const bc = new BroadcastChannel('background_notification');
-    bc.onmessage = (ev) => { 
+    this.bc.onmessage = (ev) => { 
       this.notificationService.addNotification({ ...JSON.parse(ev.data) } as unknown as Notification);
       this.changeDetectorRefs.detectChanges();
     };
@@ -195,7 +205,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   showNotification(): void{
     // console.log('show notification');
-    this.dialogService.open(NotificationComponent);
+    this.dialogRef = this.dialogService.open(NotificationComponent);
+    this.dialogRef.onClose.subscribe(()=>{this.revisedNotification()});
   }
 
   onItemSelection(title: string) {
@@ -211,8 +222,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.bc.removeAllListeners('background_notification');
     this.destroy$.next();
     this.destroy$.complete();
+
+    this.eventsSubscription.unsubscribe();
   }
 
   changeTheme(themeName: string) {
