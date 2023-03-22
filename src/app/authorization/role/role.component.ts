@@ -12,6 +12,8 @@ import { RoleConfirmationComponent } from '../role-confirmation/role-confirmatio
 })
 export class RoleComponent implements OnInit {
 
+  tempFirestoreUser: FirestoreUser;
+
   myRole: string;
   dialogRef: NbDialogRef<RoleConfirmationComponent>;
 
@@ -19,33 +21,31 @@ export class RoleComponent implements OnInit {
   constructor(private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, public router: Router) {}
 
   ngOnInit(): void {
+    //Already has role, user can process to pages.
     if(this.firestoreUserService.hasRole()){
       this.router.navigate(['./pages']);
       return;
     }
 
-    let temp: FirestoreUser;
-    this.firestoreUserService.getFirestoreUser().then(async (doc)=> {
+    
+    this.firestoreUserService.getFirestoreUserFromServer().then((doc)=> {
       if (doc.exists) {
-        console.log('reload from server ' + JSON.stringify(doc.data()));
-        temp = {...doc.data()} as FirestoreUser;
-        this.loading = false;
+        // console.log('getFirestoreUserFromServer :' + JSON.stringify(doc.data()));
+        this.tempFirestoreUser = {...doc.data()} as FirestoreUser;
 
-        console.log('reload from server ' + JSON.stringify(temp));
-        if(temp.role != '')
+        this.firestoreUserService.setFirestoreUser(this.tempFirestoreUser);
+        
+        if(this.tempFirestoreUser.role != '')
           this.router.navigate(['./pages']);
+
+        this.loading = false;
       }
       else{
-        await this.firestoreUserService.createFirestoreUser();
+        this.firestoreUserService.initDefaultFirestoreUser();
         this.loading = false;
       }
     });
-      
-      
-    
-    // if(this.firestoreUserService.hasRole()){
-    //   this.router.navigate(['./pages']);
-    // }
+          
   }
 
   setRole(role: string): void{
@@ -54,7 +54,7 @@ export class RoleComponent implements OnInit {
     
     this.dialogRef.onClose.subscribe(confirmRole => {
       if(confirmRole != ''){
-        this.firestoreUserService.initRole(confirmRole as string);
+        this.firestoreUserService.setRole(confirmRole as string);
         this.router.navigate(['./pages']);
       }
     })

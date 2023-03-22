@@ -36,6 +36,7 @@ export class SignoutComponent implements OnInit {
     this.autolandCardService.deleteAllSepCards();
     this.newsService.deleteAllNewsFromCache();
     this.firestoreUserService.deleteToken();
+    this.firestoreUserService.logout();
   }
 
 }

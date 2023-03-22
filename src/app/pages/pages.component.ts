@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService } from '@nebular/theme';
+import { NbMenuItem, NbToastrService } from '@nebular/theme';
 import { FirebaseAuthenticationService } from '../@core/shared/services/firebase-authentication.service';
 import { FirestoreUserService } from '../@core/shared/services/firestore-user.service';
 
-import { MENU_ITEMS } from './pages-menu';
+import { menuList, MENU_ITEMS } from './pages-menu';
 
 @Component({
   selector: 'ngx-pages',
@@ -23,8 +23,21 @@ export class PagesComponent implements OnInit {
       Implement constructor, ngOnInit for showing toast when login with outside airasia domain
   */
   constructor(public firebaseUser: FirebaseAuthenticationService, public toastr: NbToastrService, public firestoreUserService: FirestoreUserService){
-    // console.log('My Role : ' + this.firestoreUserService.getRole());
-    // this.menu.pop();
+    let tempFirestoreUser = this.firestoreUserService.getFirestoreUser();
+    let temp = menuList[tempFirestoreUser.role];
+    /**
+     * Normal User will be remove all moderator menu.
+     */
+    if(tempFirestoreUser.level.includes('subscriber')){
+      for(let i=0;i<temp.length;i++){
+        if(temp[i].children != null || temp[i].children != undefined)
+          for(let j=0;j<temp[i].children.length;j++)
+            if(temp[i].children[j].title.includes('Moderator'))
+              temp[i].children.splice(j--,1);
+      }
+      
+      this.menu = [...temp] as NbMenuItem[];
+    }
   }
 
   ngOnInit(): void {

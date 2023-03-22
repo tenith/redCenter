@@ -1,6 +1,6 @@
 <!-- SHOW SPINNER -->
 <div *ngIf="loading">
-    <nb-card status="danger" size="giant" [nbSpinner]="loading"
+    <nb-card status="danger" size="giant" [nbSpinner]="!loading"
              nbSpinnerStatus="danger"
              nbSpinnerSize="large"
              nbSpinnerMessage="">

@@ -1,5 +1,228 @@
 import { NbMenuItem } from '@nebular/theme';
 
+export let menuList = {
+  Pilot : [
+    {
+      title: 'Home',
+      icon: 'home',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Documents Amendment',
+      icon: 'flag-outline',
+      link: '/pages/documents_amendment'
+    },
+    {
+      title: 'My document(s)',
+      icon: 'folder-outline',
+      link: '/pages/my_documents',
+      children: [
+        {
+          title: 'Dashboard (Moderator)',
+          link: '/pages/my_documents/moderator',
+        },
+        {
+          title: 'Dashboard',
+          link: '/pages/my_documents/dashboard',
+        }
+      ],
+    },
+    {
+      title: 'My performance',
+      icon: 'trending-up',
+      link: '/pages/performance',
+    },
+    {
+      title: 'E-TS1',
+      icon: 'file-outline',
+      children: [
+        {
+          title: 'My dashboard (Moderator)',
+          link: '/pages/ets1/mworkspace',
+        },
+        {
+          title: 'My dashboard (Instructor)',
+          link: '/pages/ets1/iworkspace',
+        },
+        {
+          title: 'My E-TS1',
+          link: '/pages/ets1/tworkspace',
+        }
+      ],
+    },
+    {
+      title: 'SEP Card',
+      icon: 'book-outline',
+      link: '/pages/sep',
+    },  
+    {
+      title: 'Log out',
+      icon: 'log-out',
+      link: '/authentication/logout',
+    },
+  ],
+
+  Cabin_Crew : [
+    {
+      title: 'Home',
+      icon: 'home',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Documents Amendment',
+      icon: 'flag-outline',
+      link: '/pages/documents_amendment'
+    },
+    {
+      title: 'My document(s)',
+      icon: 'folder-outline',
+      link: '/pages/my_documents',
+      children: [
+        {
+          title: 'Dashboard (Moderator)',
+          link: '/pages/my_documents/moderator',
+        },
+        {
+          title: 'Dashboard',
+          link: '/pages/my_documents/dashboard',
+        }
+      ],
+    },
+    {
+      title: 'SEP Card',
+      icon: 'book-outline',
+      link: '/pages/sep',
+    },  
+    {
+      title: 'Log out',
+      icon: 'log-out',
+      link: '/authentication/logout',
+    },
+  ],
+
+  Flight_Operations : [
+    {
+      title: 'Home',
+      icon: 'home',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Documents Amendment',
+      icon: 'flag-outline',
+      link: '/pages/documents_amendment'
+    },
+    {
+      title: 'My document(s)',
+      icon: 'folder-outline',
+      link: '/pages/my_documents',
+      children: [
+        {
+          title: 'Dashboard (Moderator)',
+          link: '/pages/my_documents/moderator',
+        },
+        {
+          title: 'Dashboard',
+          link: '/pages/my_documents/dashboard',
+        }
+      ],
+    },
+    {
+      title: 'Log out',
+      icon: 'log-out',
+      link: '/authentication/logout',
+    },
+  ],
+
+  Training : [
+    {
+      title: 'Home',
+      icon: 'home',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Documents Amendment',
+      icon: 'flag-outline',
+      link: '/pages/documents_amendment'
+    },
+    {
+      title: 'My document(s)',
+      icon: 'folder-outline',
+      link: '/pages/my_documents',
+      children: [
+        {
+          title: 'Dashboard (Moderator)',
+          link: '/pages/my_documents/moderator',
+        },
+        {
+          title: 'Dashboard',
+          link: '/pages/my_documents/dashboard',
+        }
+      ],
+    },
+    {
+      title: 'E-TS1',
+      icon: 'file-outline',
+      children: [
+        {
+          title: 'My dashboard (Moderator)',
+          link: '/pages/ets1/mworkspace',
+        },
+        {
+          title: 'My dashboard (Instructor)',
+          link: '/pages/ets1/iworkspace',
+        },
+        {
+          title: 'My E-TS1',
+          link: '/pages/ets1/tworkspace',
+        }
+      ],
+    },
+    {
+      title: 'Log out',
+      icon: 'log-out',
+      link: '/authentication/logout',
+    },
+  ],
+
+  Engineer : [
+    {
+      title: 'Home',
+      icon: 'home',
+      link: '/pages/home',
+      home: true,
+    },
+    {
+      title: 'Documents Amendment',
+      icon: 'flag-outline',
+      link: '/pages/documents_amendment'
+    },
+    {
+      title: 'My document(s)',
+      icon: 'folder-outline',
+      link: '/pages/my_documents',
+      children: [
+        {
+          title: 'Dashboard (Moderator)',
+          link: '/pages/my_documents/moderator',
+        },
+        {
+          title: 'Dashboard',
+          link: '/pages/my_documents/dashboard',
+        }
+      ],
+    },  
+    {
+      title: 'Log out',
+      icon: 'log-out',
+      link: '/authentication/logout',
+    },
+  ]
+};
+
 export let MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Home',
@@ -21,20 +244,6 @@ export let MENU_ITEMS: NbMenuItem[] = [
     16 Mar 2023 wutthichair 
       Inhibit this menu for production purpose.
   */
-  // {
-  //   title: 'E-TS1',
-  //   icon: 'file',
-  //   children: [
-  //     {
-  //       title: 'My work space (Instructor)',
-  //       link: '/pages/ets1/iworkspace',
-  //     },
-  //     {
-  //       title: 'My E-TS1',
-  //       link: '/pages/ets1/tworkspace',
-  //     }
-  //   ],
-  // },
   // {
   //   title: 'Forms',
   //   icon: 'edit-2-outline',

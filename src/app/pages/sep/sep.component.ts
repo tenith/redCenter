@@ -105,6 +105,9 @@ export class SepComponent implements OnInit {
         this.validList.push(this.oneSepCards[i].name);
       if(diffDate <= 30 && diffDate >= 0)
         this.aboutList.push(this.oneSepCards[i].name);
+
+      if(this.oneSepCards[i].expiry == '')
+        this.validList.push(this.oneSepCards[i].name);
     }
   }
 
