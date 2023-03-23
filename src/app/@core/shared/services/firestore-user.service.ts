@@ -57,7 +57,7 @@ export class FirestoreUserService {
     let tempDeafult: FirestoreUser = {
       email: tempUser.email,
       role: '',
-      level: 'subscriber',
+      level: 'Subscriber',
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
       tokenList: []
@@ -183,7 +183,8 @@ export class FirestoreUserService {
             console.log('Remove Token :' + this.token + ' completed');
           })
           .catch(error => {
-            console.log('Remove Token :' + this.token + ' completed');
+            console.log('Remove Token :' + error);
+            // console.log('Remove Token :' + this.token + ' completed');
           });
       }
     }).catch((error)=> { console.log(error);});
@@ -200,5 +201,6 @@ export class FirestoreUserService {
 
   logout(): void{
     localStorage.removeItem(this.firestoreUserDBName);
+    this.firestoreUser = null;
   }
 }

@@ -17,7 +17,7 @@ import { FirebaseUser } from '../interfaces/firebase-user';
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseAuthenticationService implements CanActivate{
+export class FirebaseAuthenticationService {
 
   /*
     01 Mar 2023 wutthichair

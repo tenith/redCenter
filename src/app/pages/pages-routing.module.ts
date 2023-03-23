@@ -2,20 +2,31 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { PerformanceComponent } from './performance/performance.component';
 import { SepComponent } from './sep/sep.component';
+import { PagesGuard } from '../@core/shared/guards/pages.guard';
+import { AuthorizationComponent } from './authorization/authorization.component';
+import { DocumentsAmendmentComponent } from './documents-amendment/documents-amendment.component';
+import { PersonalDocumentsComponent } from './personal-documents/personal-documents.component';
+import { ForbiddenComponent } from './miscellaneous/forbidden/forbidden.component';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
     { path: 'home', component: HomeComponent, },
-    { path: 'performance', component: PerformanceComponent, },
-    { path: 'sep', component: SepComponent, },
+    { path: 'authorization', canActivate: [PagesGuard], component: AuthorizationComponent, },
+    { path: 'documents_amendment', canActivate: [PagesGuard], component: DocumentsAmendmentComponent, },
+
+    { path: 'personal_documents', canActivate: [PagesGuard], component: PersonalDocumentsComponent, },
+    { path: 'performance', canActivate: [PagesGuard], component: PerformanceComponent, },
     { path: 'ets1', loadChildren: () => import('../pages/ets1/ets1.module').then(m => m.Ets1Module), },
+
+    { path: 'sep', canActivate: [PagesGuard], component: SepComponent, },
+
+    { path: 'forbidden', component: ForbiddenComponent, },
     { path: '', redirectTo: 'home', pathMatch: 'full', },
     { path: '**', component: NotFoundComponent, },
   ],

@@ -3,7 +3,7 @@ import { NbMenuItem, NbToastrService } from '@nebular/theme';
 import { FirebaseAuthenticationService } from '../@core/shared/services/firebase-authentication.service';
 import { FirestoreUserService } from '../@core/shared/services/firestore-user.service';
 
-import { menuList, MENU_ITEMS } from './pages-menu';
+import { allowMenuByRole, menuListDetail } from './pages-menu';
 
 @Component({
   selector: 'ngx-pages',
@@ -16,28 +16,48 @@ import { menuList, MENU_ITEMS } from './pages-menu';
   `,
 })
 export class PagesComponent implements OnInit {
-  menu = MENU_ITEMS;
-
+  menu: NbMenuItem[];
   /*
     02 Mar 2023 wutthichair
       Implement constructor, ngOnInit for showing toast when login with outside airasia domain
   */
   constructor(public firebaseUser: FirebaseAuthenticationService, public toastr: NbToastrService, public firestoreUserService: FirestoreUserService){
     let tempFirestoreUser = this.firestoreUserService.getFirestoreUser();
-    let temp = menuList[tempFirestoreUser.role];
-    /**
-     * Normal User will be remove all moderator menu.
-     */
-    if(tempFirestoreUser.level.includes('subscriber')){
-      for(let i=0;i<temp.length;i++){
-        if(temp[i].children != null || temp[i].children != undefined)
-          for(let j=0;j<temp[i].children.length;j++)
-            if(temp[i].children[j].title.includes('Moderator'))
-              temp[i].children.splice(j--,1);
-      }
-      
-      this.menu = [...temp] as NbMenuItem[];
+    let tempMenu: NbMenuItem[] = [];
+    let myList: string[];
+
+    if(tempFirestoreUser.level == 'admin'){
+      myList = allowMenuByRole['Admin'];
     }
+    else{
+      myList = allowMenuByRole[tempFirestoreUser.role];
+    }
+
+    console.log('My menu list' + JSON.stringify(myList));
+    for(let i=0;i<myList.length;i++){
+      console.log('add menu detail ' + myList[i]);
+      if(menuListDetail[myList[i]].title == 'E-TS1'){
+        if(tempFirestoreUser.role == 'Pilot' && tempFirestoreUser.level == 'Subscriber')
+          menuListDetail[myList[i]].children.splice(0,1);
+      }
+      tempMenu.push(menuListDetail[myList[i]]);
+    }
+
+    this.menu = tempMenu;
+    // let temp = menuList[tempFirestoreUser.role];
+    // /**
+    //  * Normal User will be remove all moderator menu.
+    //  */
+    // if(tempFirestoreUser.level.includes('subscriber')){
+    //   for(let i=0;i<temp.length;i++){
+    //     if(temp[i].children != null || temp[i].children != undefined)
+    //       for(let j=0;j<temp[i].children.length;j++)
+    //         if(temp[i].children[j].title.includes('Moderator'))
+    //           temp[i].children.splice(j--,1);
+    //   }
+      
+    //   this.menu = [...temp] as NbMenuItem[];
+    // }
   }
 
   ngOnInit(): void {

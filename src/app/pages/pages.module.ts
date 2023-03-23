@@ -15,6 +15,8 @@ import { HomeModule } from './home/home.module';
 import { PerformanceModule } from './performance/performance.module';
 import { SepModule } from './sep/sep.module';
 import { Ets1Module } from './ets1/ets1.module';
+import { DocumentsAmendmentComponent } from './documents-amendment/documents-amendment.component';
+import { PersonalDocumentsComponent } from './personal-documents/personal-documents.component';
 
 @NgModule({
   imports: [
@@ -35,6 +37,8 @@ import { Ets1Module } from './ets1/ets1.module';
   ],
   declarations: [
     PagesComponent,
+    DocumentsAmendmentComponent,
+    PersonalDocumentsComponent,
   ],
 })
 export class PagesModule {

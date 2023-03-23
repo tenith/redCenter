@@ -1,40 +1,21 @@
-<!-- SHOW SPINNER -->
-<div *ngIf="loading">
-    <nb-card status="danger" size="giant" [nbSpinner]="loading"
-             nbSpinnerStatus="danger"
-             nbSpinnerSize="large"
-             nbSpinnerMessage="">
-      <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
-      <nb-card-body style="text-align: center;">
-        <p>
-            Please wait, We are loading the information from the server.
-        </p>
-      </nb-card-body>
-    </nb-card>
-</div>
-
-<!-- SHOW INFORMATION -->
-<div *ngIf="!loading">
+<div class="col-12" id="home">
     <nb-card accent="primary">
-        <nb-card-header ><nb-icon icon="file-text-outline"></nb-icon> FOC/MEMO</nb-card-header>
+        <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-3 col-sm-1 col-md-1"><B>Name</B></div>
+                <div class="col-9 col-sm-11 col-md-11">{{firestoreUser.displayName | uppercase}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-3 col-sm-1 col-md-1"><B>Role</B></div>
+                <div class="col-9 col-sm-11 col-md-11">{{firestoreUser.role}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-3 col-sm-1 col-md-1"><B>Level</B></div>
+                <div class="col-9 col-sm-10 col-md-10">{{firestoreUser.level}}</div>
+            </div>
+        </nb-card-body>
     </nb-card>
-    <div class="col-12" *ngFor="let news of newsList">
-        <nb-card status="info">
-            <nb-card-header><B>{{news.code}}</B></nb-card-header>
-            <nb-card-body>
-                <nb-accordion>
-                    <nb-accordion-item>
-                        <nb-accordion-item-header style="text-align: justify; text-justify: inter-word;"><b>{{news.subject}}</b></nb-accordion-item-header>
-                        <nb-accordion-item-body>
-                            <!-- <div class="col-12" style="text-align: justify; text-justify: inter-word;"><b>Subject</b> {{news.subject}}</div> -->
-                            <div class="col-12"><b>ISSUE Date</b> {{news.issue}}</div>
-                            <div class="col-12"><b>Effective Date</b> {{news.effective}}</div>
-                            <div class="col-12" style="text-align: justify; text-justify: inter-word;"><b>Detail </b>&nbsp;&nbsp;<a href="{{news.body}}">link</a></div>
-                            <div class="col-12" style="text-align: justify; text-justify: inter-word;"><b>Acknowledge via</b>&nbsp;&nbsp;<a href="{{news.acknowledge}}">link</a></div>
-                        </nb-accordion-item-body>
-                    </nb-accordion-item>
-                </nb-accordion>
-            </nb-card-body>
-        </nb-card>
-    </div>
 </div>
