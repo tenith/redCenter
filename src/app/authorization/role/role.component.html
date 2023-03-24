@@ -12,7 +12,7 @@
       </nb-card-body>
     </nb-card>
 </div>
-<div *ngIf="!loading">
+<div *ngIf="!loading && tempFirestoreUser.role==''">
 <img src="../../../favicon.ico" style="margin-left: auto;margin-right: auto;display: block;">
 <h1 id="title" class="title" style="text-align: center;">Role</h1>
 <p class="sub-title" style="text-align: center;">Hello! Welcome to Red Center Application, Please choose your role.</p>

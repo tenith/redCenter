@@ -29,13 +29,13 @@ export class SignoutComponent implements OnInit {
     15 MAR 2023 wutthichair
       Implement logout function to clear user cache.
   */
-  public logout(): void{
-    // console.log('new logout function');
-    this.firebaseAuthen.logout();
+  public async logout(): Promise<any>{    
+    await this.firestoreUserService.deleteToken();
     this.sepCardService.deleteAllSepCards();
     this.autolandCardService.deleteAllSepCards();
     this.newsService.deleteAllNewsFromCache();
-    this.firestoreUserService.deleteToken();
+    
+    this.firebaseAuthen.logout();
     this.firestoreUserService.logout();
   }
 

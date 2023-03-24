@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService } from '@nebular/theme';
+import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 @Component({
   selector: 'ngx-authorization',
@@ -13,6 +14,8 @@ export class AuthorizationComponent implements OnInit {
   firestoreUser: FirestoreUser;
 
   searchEmail: string;
+
+  dialogRef: NbDialogRef<ConfirmationComponent>;
 
   roleOptions = [
     { value: 'Pilot', label: 'Pilot' },
@@ -28,13 +31,14 @@ export class AuthorizationComponent implements OnInit {
     { value: 'Subscriber', label: 'Subscriber' },
   ];
 
-  constructor(private firestoreUserService: FirestoreUserService, private toastr: NbToastrService) { }
+  constructor(private firestoreUserService: FirestoreUserService, private toastr: NbToastrService, private dialogService: NbDialogService) { }
 
   ngOnInit(): void {
   }
 
   search(): void {
-    console.log('search() : ' + this.searchEmail);
+    console.log('search() : ' + this.searchEmail);    
+    
     this.firestoreUser = null;
     this.loading = true;
 
@@ -44,19 +48,43 @@ export class AuthorizationComponent implements OnInit {
         this.firestoreUser = data.data() as FirestoreUser;
       }
     });
+  }
 
+  delete(): void{
+    if(this.firestoreUser == null)
+      return;
+    
+    if(this.searchEmail == this.firestoreUserService.getFirestoreUser().email)
+      return;
+
+    this.dialogRef = this.dialogService.open(ConfirmationComponent);
+    this.dialogRef.onClose.subscribe(confirmation => {
+      console.log('result ' + confirmation);
+      if(confirmation == 'confirm'){
+        console.log('delete user');
+        // this.firestoreUserService.deleteFirestoreUser(this.firestoreUser)
+        // .then(()=>{
+        //   this.toastr.primary('Completed','Delete ' + this.firestoreUser.email + ' completed', {duration:5000});
+        //   this.reset();
+        // })
+        // .catch(()=>{
+        //   this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
+        //   this.reset();
+        // });
+      }
+    });
+    
+    
   }
 
   update(): void {
     this.firestoreUserService.reviseFirestoreUser(this.firestoreUser)
     .then(()=>{
       this.toastr.primary('Completed','Updated ' + this.firestoreUser.email + ' completed', {duration:5000});
-
       this.reset();
     })
     .catch(()=>{
       this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
-
       this.reset();
     });
 

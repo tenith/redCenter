@@ -4,6 +4,9 @@ import { FirebaseUser } from '../interfaces/firebase-user';
 import { FirestoreUser } from '../interfaces/firestore-user';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
+// import * as admin from 'firebase-admin';
+import  firestore  from 'firebase/compat/app';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,17 +28,6 @@ export class FirestoreUserService {
      */
     if(localStorage.getItem(this.firestoreUserDBName) != null)
       this.firestoreUser = JSON.parse(localStorage.getItem(this.firestoreUserDBName)) as FirestoreUser;
-    // if(localStorage.getItem(this.firestoreUserDBName) != null)
-    //   this.firestoreUser = JSON.parse(localStorage.getItem(this.firestoreUserDBName)) as FirestoreUser;
-
-    // this.collectionRef = this.afs.collection(this.collectionName);
-    // this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-    //   if (doc.exists) {
-    //     this.firestoreUser = {...doc.data()} as FirestoreUser;
-    //   }
-    //   else 
-    //     this.initFirestoreUser();
-    // }).catch((error)=> { console.log(error);});
   }
 
   public getFirestoreUser(): FirestoreUser{
@@ -68,47 +60,6 @@ export class FirestoreUserService {
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult);
   }
 
-  // async createFirestoreUser(): Promise<any>{
-  //   let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
-  //   let tempDeafult: FirestoreUser = {
-  //     email: tempUser.email,
-  //     role: '',
-  //     displayName: tempUser.displayName,
-  //     photoURL: tempUser.photoURL,
-  //     tokenList: []
-  //   };
-  //   this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult)
-  //     .then(()=> {return tempDeafult})
-  //     .catch(error=> {
-  //       console.log(error);
-  //     });
-  // }
-
-  //Create FirestoreUser....
-  // public initFirestoreUser(): void{
-  //   let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
-  //   let tempDeafult: FirestoreUser = {
-  //     email: tempUser.email,
-  //     role: '',
-  //     displayName: tempUser.displayName,
-  //     photoURL: tempUser.photoURL,
-  //     tokenList: []
-  //   };
-  //   this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult)
-  //   .then(()=> {
-  //     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-  //       if (doc.exists) {
-  //         console.log('SET UP completed');
-  //         this.firestoreUser = tempDeafult;
-  //         localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
-  //       }
-  //     })
-  //   })
-  //   .catch(error=> {
-  //     console.log(error);
-  //   });
-  // }
-
   public getFirestoreUserByEmail(email: string) : Promise<any> {
     return this.collectionRef.doc(email).ref.get();
   }
@@ -118,7 +69,7 @@ export class FirestoreUserService {
   }
 
   public hasRole(): boolean{
-    console.log(JSON.stringify(this.firestoreUser));
+    // console.log(JSON.stringify(this.firestoreUser));
     if(this.firestoreUser == null || this.firestoreUser == undefined)
       return false;
     if(this.firestoreUser.role == null)
@@ -139,72 +90,59 @@ export class FirestoreUserService {
         .catch(err => {
           console.log('Set Role Error', err);
         });
-    // this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-    //   if (doc.exists) {
-    //     let temp = {...doc.data()} as FirestoreUser;
-    //     temp.role = role;
-    //     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: role})
-    //     .then(()=> {
-    //       console.log('Init role :' + role + ' completed');
-    //       localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
-    //     });
-    //   }
-    // }).catch((error)=> { console.log(error);});
   }
 
   addToken(token: string): void{
-    this.token = token;
-    
-    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-      if (doc.exists) {
-        let temp = {...doc.data()} as FirestoreUser;
-        let tempIndex = temp.tokenList.indexOf(token);
-        if(tempIndex >= 0)
-          return;
-        temp.tokenList.push(token);
+    this.token = token;    
 
-        this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({tokenList: temp.tokenList})
-          .then(()=> {
-            console.log('Update Token :' + token + ' completed');
-          })
-          .catch(error => {
-            console.log('Update Token :' + token + ' error' + error);
-          });
-      }
-    }).catch((error)=> { console.log(error);});
-  }
-
-  deleteToken(): void{
-    if(this.token == '')
-      return;
-    
-    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
-      if (doc.exists) {
-        let temp = {...doc.data()} as FirestoreUser;
-        let tempIndex = temp.tokenList.indexOf(this.token);
-        if(tempIndex < 0)
-          return;
-        temp.tokenList.splice(tempIndex,1);
-
-        this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({tokenList: temp.tokenList})
-          .then(()=> {
-            console.log('Remove Token :' + this.token + ' completed');
-          })
-          .catch(error => {
-            console.log('Remove Token :' + error);
-            // console.log('Remove Token :' + this.token + ' completed');
-          });
-      }
-    }).catch((error)=> { console.log(error);});
-  }
-
-  deleteFirestoreUser(): void{
-    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).delete().then(()=> {
-        console.log('Delete ' + this.firebaseAuthen.getFirebaseUser().email + ' completed.');
+    /**
+     * logic array union
+     */
+    this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.update({
+      tokenList: firestore.firestore.FieldValue.arrayUnion(token)}).then(()=> {
+        // console.log('Update Token array union:' + token + ' completed');
       })
-      .catch(error=> {
-        console.log(error);
+      .catch(error => {
+        // console.log('Update Token array union:' + token + ' error' + error);
       });
+
+    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
+    roleCollection.doc(this.firestoreUser.role).ref.update({
+        tokenList: firestore.firestore.FieldValue.arrayUnion(token)}).then(()=> {
+          // console.log('Update Token array union:' + token + ' to group ' + this.firestoreUser.role + ' completed');
+        })
+        .catch(error => {
+          // console.log('Update Token array union:' + token + ' error' + error);
+        });
+  }
+
+  async deleteToken(): Promise<any>{    
+    await this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.update({
+      tokenList: firestore.firestore.FieldValue.arrayRemove(this.token)}).then(()=> {
+        // console.log('x Token array remove:' + this.token + ' completed');
+      })
+      .catch(error => {
+        // console.log('x Token array remove:' + this.token + ' error' + error);
+      });
+
+    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
+    await roleCollection.doc(this.firestoreUser.role).ref.update({
+        tokenList: firestore.firestore.FieldValue.arrayRemove(this.token)}).then(()=> {
+          // console.log('Update Token array union:' + this.token + ' to group ' + this.firestoreUser.role + ' completed');
+        })
+        .catch(error => {
+          // console.log('Update Token array union:' + this.token + ' error' + error);
+        });
+  }
+
+  deleteFirestoreUser(firestoreUser: FirestoreUser): Promise<any>{
+    return this.collectionRef.doc(firestoreUser.email).delete();
+    // .then(()=> {
+    //     console.log('Delete ' + this.firebaseAuthen.getFirebaseUser().email + ' completed.');
+    //   })
+    //   .catch(error=> {
+    //     console.log(error);
+    //   });
   }
 
   logout(): void{

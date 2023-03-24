@@ -11,10 +11,12 @@ import { NbSelectModule } from '@nebular/theme';
 import { NbToastrModule } from '@nebular/theme';
 
 import { FormsModule } from '@angular/forms';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
-    AuthorizationComponent
+    AuthorizationComponent,
+    ConfirmationComponent
   ],
   imports: [
     NbToastrModule,
