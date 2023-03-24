@@ -26,7 +26,7 @@ export class PagesComponent implements OnInit {
     let tempMenu: NbMenuItem[] = [];
     let myList: string[];
 
-    if(tempFirestoreUser.level == 'admin'){
+    if(tempFirestoreUser.level == 'Admin'){
       myList = allowMenuByRole['Admin'];
     }
     else{

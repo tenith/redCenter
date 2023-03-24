@@ -7,7 +7,7 @@
       01 MAR 2023 by wutthichair
         change title 'ngx-admin' to 'Red Center'
     -->
-    <a class="logo" href="#" (click)="navigateHome()">Red Center</a>
+    <a class="logo" href="#" (click)="navigateHome()"><font style="color: red;"><b>Red</b></font> Center</a>
   </div>
   <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
     <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>

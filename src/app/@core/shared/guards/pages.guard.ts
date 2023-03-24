@@ -36,7 +36,7 @@ export class PagesGuard implements CanActivate {
     */    
 
     if(thisComponent === AuthorizationComponent){
-      if(firestoreUser.level != 'admin'){
+      if(firestoreUser.level != 'Admin'){
         this.router.navigate(['./forbidden']);
         return false;
       }
