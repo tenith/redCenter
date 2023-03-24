@@ -88,6 +88,8 @@ export class FirebaseAuthenticationService {
         this.router.navigate(['./authorization/role']);
       })
       .catch((error) => {
+        // this.firebaseUser = null;
+        this.logout();
         throw new Error(error);
       });
   }

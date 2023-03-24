@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { FirebaseUser } from '../interfaces/firebase-user';
 import { FirestoreUser } from '../interfaces/firestore-user';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
@@ -110,6 +109,14 @@ export class FirestoreUserService {
   //   });
   // }
 
+  public getFirestoreUserByEmail(email: string) : Promise<any> {
+    return this.collectionRef.doc(email).ref.get();
+  }
+
+  public reviseFirestoreUser(firestoreUser: FirestoreUser): Promise<any> {
+    return this.collectionRef.doc(firestoreUser.email).update({role: firestoreUser.role, level: firestoreUser.level});
+  }
+
   public hasRole(): boolean{
     console.log(JSON.stringify(this.firestoreUser));
     if(this.firestoreUser == null || this.firestoreUser == undefined)
@@ -147,6 +154,7 @@ export class FirestoreUserService {
 
   addToken(token: string): void{
     this.token = token;
+    
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get().then((doc)=> {
       if (doc.exists) {
         let temp = {...doc.data()} as FirestoreUser;

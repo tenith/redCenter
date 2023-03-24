@@ -18,8 +18,11 @@ import { Ets1Module } from './ets1/ets1.module';
 import { DocumentsAmendmentComponent } from './documents-amendment/documents-amendment.component';
 import { PersonalDocumentsComponent } from './personal-documents/personal-documents.component';
 
+import { AuthorizationModule } from './authorization/authorization.module';
+
 @NgModule({
   imports: [
+    AuthorizationModule,
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,

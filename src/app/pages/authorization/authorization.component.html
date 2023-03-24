@@ -1,1 +1,46 @@
-<p>authorization works!</p>
+<div class="row">
+    <div class="col-12 col-md-12">
+        <nb-card class="inline-form-card" status="primary">
+        <nb-card-header>Search user</nb-card-header>
+        <nb-card-body>
+            <form #searchForm class="form-inline">
+                <input id="searchEmailID" name="searchEmailID" #searchEmailID="ngModel" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required type="email" nbTooltip="(ex, names@airasia.com)" [(ngModel)]="searchEmail" nbTooltipStatus="primary" nbInput fullWidth placeholder="User Email">
+                <button type="submit" [disabled]="!searchEmailID.dirty || !searchEmailID.valid" (click)="search()" nbButton status="primary">Submit</button>
+            </form>
+        </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+<div *ngIf="!loading">
+    <div class="row">
+        <div *ngIf="firestoreUser!=null" class="col-12 col-md-12">
+            <nb-card class="inline-form-card" accent="success">
+                <nb-card-header>{{firestoreUser.email}} Informaion</nb-card-header>
+                <nb-card-body>
+                    <form #updateForm>
+                        <div class="form-inline"><b>Role :</b>
+                            <nb-select id="role" name="role" #role="ngModel" fullWidth [(ngModel)]="firestoreUser.role">
+                                <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">{{ roleOption.label }}</nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="form-inline"><b>Level :</b>
+                            <nb-select id="level" name="level" #level="ngModel" fullWidth [(ngModel)]="firestoreUser.level">
+                                <nb-option *ngFor="let levelOption of levelOptions" [value]="levelOption.value">{{ levelOption.label }}</nb-option>
+                            </nb-select>
+                        </div>
+                        <div class="form-inline"><button type="submit" [disabled]="!role.dirty && !level.dirty" (click)="update()" nbButton status="primary">Update</button></div>
+                        </form>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div *ngIf="firestoreUser==null" class="col-12 col-md-12">
+            <nb-card class="inline-form-card" accent="danger">
+                <nb-card-header>User Informaion</nb-card-header>
+                <nb-card-body>
+                    Incorrect email or nothing found.
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>
