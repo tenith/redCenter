@@ -12,11 +12,32 @@
       </nb-card-body>
     </nb-card>
 </div>
-<div *ngIf="!loading && tempFirestoreUser.role==''">
+<div *ngIf="!loading">
 <img src="../../../favicon.ico" style="margin-left: auto;margin-right: auto;display: block;">
-<h1 id="title" class="title" style="text-align: center;">Role</h1>
-<p class="sub-title" style="text-align: center;">Hello! Welcome to Red Center Application, Please choose your role.</p>
-<div class="row">
+<h1 id="title" class="title" style="text-align: center;">Initialize User</h1>
+<p class="sub-title" style="text-align: center;">Hello! Welcome to Red Center Application, Please enter you initialization.</p>
+<div class="col-12 col-md-12">
+    <nb-card class="inline-form-card" accent="success">
+        <nb-card-header style="word-wrap: break-word;text-align: center;">{{tempFirestoreUser.displayName}} </nb-card-header>
+        <nb-card-body>
+            <form #updateForm>
+                <div class="form-inline"><b>Role :</b>
+                    <nb-select id="role" name="role" #role="ngModel" fullWidth [(ngModel)]="tempFirestoreUser.role">
+                        <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value"><img style="max-width: 25px;" src="../../../{{roleOption.icon}}">&nbsp;&nbsp;{{ roleOption.label }}</nb-option>
+                    </nb-select>
+                </div>
+                <div class="form-inline"><b>AOC :</b>
+                    <nb-select id="aoc" name="aoc" #aoc="ngModel" fullWidth [(ngModel)]="tempFirestoreUser.aoc">
+                        <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value"><img style="max-width: 25px;" src="../../../{{aocOption.icon}}">&nbsp;&nbsp;{{ aocOption.label }}</nb-option>
+                    </nb-select>
+                </div>
+                
+                <div class="form-inline"><button style="margin-left: auto; margin-right: auto; margin-top: 10px;" type="submit" [disabled]="!role.dirty || !aoc.dirty" (click)="setInitialUser()" nbButton status="primary">Init</button></div>
+                </form>
+        </nb-card-body>
+    </nb-card>
+</div>
+<!-- <div class="row">
     <div class="col-12 col-sm-4 col-md-4">
         <nb-card accent="primary">
             <nb-card-header style="text-align: center;">Pilot</nb-card-header>
@@ -57,5 +78,5 @@
             </nb-card-body> 
         </nb-card>
     </div>
-</div>
+</div> -->
 </div>

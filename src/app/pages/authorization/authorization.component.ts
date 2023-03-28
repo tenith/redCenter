@@ -4,6 +4,8 @@ import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
+import { aocOptions, levelOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
+
 @Component({
   selector: 'ngx-authorization',
   templateUrl: './authorization.component.html',
@@ -17,19 +19,9 @@ export class AuthorizationComponent implements OnInit {
 
   dialogRef: NbDialogRef<ConfirmationComponent>;
 
-  roleOptions = [
-    { value: 'Pilot', label: 'Pilot' },
-    { value: 'Cabin_Crew', label: 'Cabin Crew' },
-    { value: 'Flight_Operations', label: 'Flight Operations' },
-    { value: 'Training', label: 'Training' },
-    { value: 'Engineer', label: 'Engineer' },
-  ];
-
-  levelOptions = [
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Moderator', label: 'Moderator' },
-    { value: 'Subscriber', label: 'Subscriber' },
-  ];
+  roleOptions = roleOptions;
+  levelOptions = levelOptions
+  aocOptions = aocOptions;
 
   constructor(private firestoreUserService: FirestoreUserService, private toastr: NbToastrService, private dialogService: NbDialogService) { }
 

@@ -23,9 +23,16 @@
                 <nb-card-header style="word-wrap: break-word;">{{firestoreUser.displayName}} Informaion <nb-icon *ngIf="searchEmail != firestoreUserService.getFirestoreUser().email" icon="trash-outline" (click)="delete()"></nb-icon></nb-card-header>
                 <nb-card-body>
                     <form #updateForm>
+                        <div class="form-inline"><b>AOC :</b>
+                            <nb-select id="aoc" name="aoc" #role="ngModel" fullWidth [(ngModel)]="firestoreUser.aoc">
+                                <!-- <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value">{{ aocOption.label }}</nb-option> -->
+                                <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value"><img style="max-width: 25px;" src="../../../{{aocOption.icon}}">&nbsp;&nbsp;{{ aocOption.label }}</nb-option>
+                            </nb-select>
+                        </div>
                         <div class="form-inline"><b>Role :</b>
                             <nb-select id="role" name="role" #role="ngModel" fullWidth [(ngModel)]="firestoreUser.role">
-                                <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">{{ roleOption.label }}</nb-option>
+                                <!-- <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">{{ roleOption.label }}</nb-option> -->
+                                <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value"><img style="max-width: 25px;" src="../../../{{roleOption.icon}}">&nbsp;&nbsp;{{ roleOption.label }}</nb-option>
                             </nb-select>
                         </div>
                         <div class="form-inline"><b>Level :</b>

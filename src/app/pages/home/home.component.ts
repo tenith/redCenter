@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 
+import { aocOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
 
 @Component({
   selector: 'ngx-home',
@@ -10,10 +11,14 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 })
 export class HomeComponent implements OnInit {
   firestoreUser: FirestoreUser;
+  aocURL : string;
+  roleURL : string;
   constructor(private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
     this.firestoreUser = this.firestoreUserService.getFirestoreUser();
+    this.aocURL = aocOptions[aocOptions.findIndex(obj => obj.value === this.firestoreUser.aoc)].icon;
+    this.roleURL = roleOptions[roleOptions.findIndex(obj => obj.value === this.firestoreUser.role)].icon;
   }
 
   // newsList: News[];

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
@@ -8,15 +8,16 @@ import { NbDialogRef } from '@nebular/theme';
 })
 export class RoleConfirmationComponent implements OnInit {
 
-  role: string = '';
+  @Input() data: any;
 
   constructor(private dialogRef: NbDialogRef<RoleConfirmationComponent>) { }
 
   ngOnInit(): void {
+    console.log(JSON.stringify({...this.data}));
   }
 
   confirm(): void {
-    this.dialogRef.close(this.role);
+    this.dialogRef.close('affirm');
   }
 
   cancel(): void {

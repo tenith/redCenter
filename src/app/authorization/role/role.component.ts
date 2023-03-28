@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NbDialogRef, NbDialogService } from '@nebular/theme';
+import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { RoleConfirmationComponent } from '../role-confirmation/role-confirmation.component';
+
+import { aocOptions, levelOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
 
 @Component({
   selector: 'ngx-role',
@@ -14,11 +16,16 @@ export class RoleComponent implements OnInit {
 
   tempFirestoreUser: FirestoreUser;
 
-  myRole: string;
+  roleOptions = roleOptions;
+  levelOptions = levelOptions
+  aocOptions = aocOptions;
+
+  // myRole: string;
+  // myAoc: string;
   dialogRef: NbDialogRef<RoleConfirmationComponent>;
 
   loading: boolean =true;
-  constructor(private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, public router: Router) {}
+  constructor(private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, private toastr: NbToastrService, public router: Router) {}
 
   ngOnInit(): void {
     //Already has role, user can process to pages.
@@ -44,20 +51,33 @@ export class RoleComponent implements OnInit {
         this.firestoreUserService.initDefaultFirestoreUser();
         this.loading = false;
       }
-    });
-          
+      // console.log(JSON.stringify(this.tempFirestoreUser));
+    });          
   }
 
-  setRole(role: string): void{
-    this.myRole = role;
-    this.dialogRef = this.dialogService.open(RoleConfirmationComponent,{context:{role:this.myRole}});
-    
-    this.dialogRef.onClose.subscribe(confirmRole => {
-      if(confirmRole != ''){
-        this.firestoreUserService.setRole(confirmRole as string);
-        this.router.navigate(['./pages']);
+  setInitialUser(): void{
+    // console.log(JSON.stringify(this.tempFirestoreUser));
+
+    this.dialogRef = this.dialogService.open(RoleConfirmationComponent,{
+      context: {
+        data: {
+          role:this.tempFirestoreUser.role,
+          aoc:this.tempFirestoreUser.aoc, 
+        }
       }
-    })
+    });
+    
+    this.dialogRef.onClose.subscribe(confirm => {
+      if(confirm == 'affirm'){
+        this.firestoreUserService.setInitialUser(this.tempFirestoreUser.aoc, this.tempFirestoreUser.role)
+        .then(()=>{
+          this.router.navigate(['./pages']);  
+        })
+        .catch(()=>{ 
+          this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
+        });
+      } 
+    });
   }
 
 }

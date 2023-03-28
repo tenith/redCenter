@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { AuthorizationRoutingModule } from './authorization-routing.module';
 import { AuthorizationComponent } from './authorization.component';
 
+import { FormsModule } from '@angular/forms';
+
+import { NbSelectModule } from '@nebular/theme';
+
 import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbCardModule } from '@nebular/theme';
 import { RoleComponent } from './role/role.component';
 import { RoleConfirmationComponent } from './role-confirmation/role-confirmation.component';
@@ -16,6 +20,8 @@ import { RoleConfirmationComponent } from './role-confirmation/role-confirmation
   ],
   imports: [
     CommonModule,
+    NbSelectModule,
+    FormsModule,
     AuthorizationRoutingModule,
     NbThemeModule,
     NbLayoutModule,

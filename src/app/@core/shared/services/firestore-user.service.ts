@@ -47,6 +47,7 @@ export class FirestoreUserService {
     let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
     let tempDeafult: FirestoreUser = {
       email: tempUser.email,
+      aoc: '',
       role: '',
       level: 'Subscriber',
       displayName: tempUser.displayName,
@@ -55,7 +56,7 @@ export class FirestoreUserService {
     };
 
     this.firestoreUser = tempDeafult;
-    console.log('init default firestoreuser :' + JSON.stringify(this.firestoreUser));
+    // console.log('init default firestoreuser :' + JSON.stringify(this.firestoreUser));
     localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult);
   }
@@ -65,7 +66,7 @@ export class FirestoreUserService {
   }
 
   public reviseFirestoreUser(firestoreUser: FirestoreUser): Promise<any> {
-    return this.collectionRef.doc(firestoreUser.email).update({role: firestoreUser.role, level: firestoreUser.level});
+    return this.collectionRef.doc(firestoreUser.email).update({role: firestoreUser.role, level: firestoreUser.level, aoc:firestoreUser.aoc});
   }
 
   public hasRole(): boolean{
@@ -92,6 +93,15 @@ export class FirestoreUserService {
         });
   }
 
+  setInitialUser(aoc: string, role:string): Promise<any> {
+    this.firestoreUser.role = role;
+    this.firestoreUser.aoc = aoc;
+    console.log('object before update' + JSON.stringify(this.firestoreUser));
+    console.log(this.firestoreUser.role);
+    console.log(this.firestoreUser.aoc);
+    return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: this.firestoreUser.role, aoc:this.firestoreUser.aoc});
+  }
+
   addToken(token: string): void{
     this.token = token;    
 
@@ -107,7 +117,8 @@ export class FirestoreUserService {
       });
 
     const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
-    roleCollection.doc(this.firestoreUser.role).ref.update({
+
+    roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc('tokenDocument').ref.update({
         tokenList: firestore.firestore.FieldValue.arrayUnion(token)}).then(()=> {
           // console.log('Update Token array union:' + token + ' to group ' + this.firestoreUser.role + ' completed');
         })
@@ -126,7 +137,7 @@ export class FirestoreUserService {
       });
 
     const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
-    await roleCollection.doc(this.firestoreUser.role).ref.update({
+    await roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc('tokenDocument').ref.update({
         tokenList: firestore.firestore.FieldValue.arrayRemove(this.token)}).then(()=> {
           // console.log('Update Token array union:' + this.token + ' to group ' + this.firestoreUser.role + ' completed');
         })
