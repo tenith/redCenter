@@ -15,9 +15,7 @@ import { HomeModule } from './home/home.module';
 import { PerformanceModule } from './performance/performance.module';
 import { SepModule } from './sep/sep.module';
 import { Ets1Module } from './ets1/ets1.module';
-import { DocumentsAmendmentComponent } from './documents-amendment/documents-amendment.component';
-import { PersonalDocumentsComponent } from './personal-documents/personal-documents.component';
-
+import { DocumentsAmendmentModule } from './documents-amendment/documents-amendment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 
 @NgModule({
@@ -28,6 +26,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
     NbMenuModule,
     DashboardModule,
     ECommerceModule,
+    DocumentsAmendmentModule,
     /*
       09 MAR 2023 wutthichair
     */
@@ -39,9 +38,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
     MiscellaneousModule,
   ],
   declarations: [
-    PagesComponent,
-    DocumentsAmendmentComponent,
-    PersonalDocumentsComponent,
+    PagesComponent
   ],
 })
 export class PagesModule {
