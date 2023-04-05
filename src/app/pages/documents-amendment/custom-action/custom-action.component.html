@@ -1,0 +1,5 @@
+<!-- <nb-icon icon="maximize-outline" [routerLink]="['/pages/documents_amendment/document', encodeTitle(rowData.code)]"></nb-icon>&nbsp; -->
+<nb-icon icon="maximize-outline" [routerLink]="['/pages/documents_amendment/document']" [queryParams]="{ code: encodeTitle(rowData.code) }"></nb-icon>&nbsp;
+<nb-icon status="primary" icon="checkmark-square-outline"></nb-icon>&nbsp;
+<nb-icon status="danger" icon="question-mark-circle-outline"></nb-icon>&nbsp;
+<nb-icon status="danger" (click)="deleteAnnouncement()" icon="trash-2-outline"></nb-icon>&nbsp;

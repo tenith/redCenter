@@ -13,7 +13,7 @@ export class RoleConfirmationComponent implements OnInit {
   constructor(private dialogRef: NbDialogRef<RoleConfirmationComponent>) { }
 
   ngOnInit(): void {
-    console.log(JSON.stringify({...this.data}));
+    // console.log(JSON.stringify({...this.data}));
   }
 
   confirm(): void {

@@ -22,7 +22,7 @@ export class DocumentComponent implements OnInit {
       effectiveDate: '23 Mar 2023',
       endDate: '23 Mar 2023',
       acknowledge: true,
-      audience: 'Pilot',
+      audience: ['Pilot'],
       signatures: [],
     }
   }

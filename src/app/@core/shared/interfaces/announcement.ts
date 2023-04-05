@@ -9,6 +9,6 @@ export interface Announcement {
     effectiveDate: string;
     endDate: string;
     acknowledge: boolean;
-    audience: string;
+    audience: string[];
     signatures: Signature[];
 }

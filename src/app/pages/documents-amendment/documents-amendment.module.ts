@@ -22,6 +22,11 @@ import { DocumentComponent } from './document/document.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from '../miscellaneous/not-found/not-found.component';
 
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { CustomLinkComponent } from './custom-link/custom-link.component';
+import { CustomActionComponent } from './custom-action/custom-action.component';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+
 const routes: Routes = [{
   path: '',
   component: DocumentsAmendmentComponent,
@@ -40,8 +45,12 @@ const routes: Routes = [{
     PostingDocumentsAmendmentComponent,
     DocumentsAmendmentTableComponent,
     DocumentComponent,
+    CustomLinkComponent,
+    CustomActionComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
+    Ng2SmartTableModule,
     ThemeModule,
     ReactiveFormsModule,
     NbAccordionModule,
