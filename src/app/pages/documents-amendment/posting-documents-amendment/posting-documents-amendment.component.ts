@@ -25,14 +25,19 @@ export class PostingDocumentsAmendmentComponent implements OnInit {
       publishedDate: ['', Validators.required],
       effectiveDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      acknowledge: ['', Validators.required],
-      audience: ['', Validators.required]
-    });
+      acknowledge: ['Yes', Validators.required],
+      audience: ['Pilot', Validators.required]
+    });    
   }
 
   onSubmit() {
     // Process form data here
     console.log(this.postingForm.value);
+  }
+
+  edit(event: any): void{
+    console.log(JSON.stringify(event));
+    this.postingForm.value.body = event as string;
   }
 
 }

@@ -13,17 +13,20 @@ import { NbAccordionModule } from '@nebular/theme';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
+import { ThemeModule } from '../../@theme/theme.module';
+
 import { DocumentsAmendmentComponent } from './documents-amendment.component';
 import { PostingDocumentsAmendmentComponent } from './posting-documents-amendment/posting-documents-amendment.component';
 import { DocumentsAmendmentTableComponent } from './documents-amendment-table/documents-amendment-table.component';
 
 @NgModule({
-  declarations: [     
+  declarations: [  
     DocumentsAmendmentComponent,
     PostingDocumentsAmendmentComponent,
-    DocumentsAmendmentTableComponent
+    DocumentsAmendmentTableComponent,
   ],
   imports: [
+    ThemeModule,
     ReactiveFormsModule,
     NbAccordionModule,
     CommonModule,
