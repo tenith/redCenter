@@ -18,12 +18,28 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { DocumentsAmendmentComponent } from './documents-amendment.component';
 import { PostingDocumentsAmendmentComponent } from './posting-documents-amendment/posting-documents-amendment.component';
 import { DocumentsAmendmentTableComponent } from './documents-amendment-table/documents-amendment-table.component';
+import { DocumentComponent } from './document/document.component';
+import { RouterModule, Routes } from '@angular/router';
+import { NotFoundComponent } from '../miscellaneous/not-found/not-found.component';
+
+const routes: Routes = [{
+  path: '',
+  component: DocumentsAmendmentComponent,
+  children: [
+    { path: 'dashboard', component: DocumentsAmendmentTableComponent},
+    { path: 'announce', component: PostingDocumentsAmendmentComponent},
+    { path: 'document', component: DocumentComponent},
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '**', component: NotFoundComponent },
+  ],
+}];
 
 @NgModule({
   declarations: [  
     DocumentsAmendmentComponent,
     PostingDocumentsAmendmentComponent,
     DocumentsAmendmentTableComponent,
+    DocumentComponent,
   ],
   imports: [
     ThemeModule,
@@ -39,7 +55,9 @@ import { DocumentsAmendmentTableComponent } from './documents-amendment-table/do
     NbButtonModule,
     CommonModule,
     NbCardModule,
-    NbIconModule
-  ]
+    NbIconModule,
+    RouterModule.forChild(routes),
+  ],
+  exports: [RouterModule]
 })
 export class DocumentsAmendmentModule { }

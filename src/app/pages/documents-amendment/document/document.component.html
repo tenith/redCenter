@@ -1,0 +1,52 @@
+<!-- SHOW SPINNER -->
+<div *ngIf="loading">
+    <nb-card status="danger" size="giant" [nbSpinner]="loading"
+             nbSpinnerStatus="danger"
+             nbSpinnerSize="large"
+             nbSpinnerMessage="">
+      <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+      <nb-card-body style="text-align: center;">
+        <p>
+            Please wait, We are loading the information from the server.
+        </p>
+      </nb-card-body>
+    </nb-card>
+</div>
+
+<div *ngIf="!loading" class="row">
+    <div class="col-12 col-md-12">
+        <nb-card status="primary">
+            <nb-card-header>{{announcement.code}} - [{{announcement.title}}]</nb-card-header>
+            <nb-card-body>
+                <!-- Show the announcement body -->
+                <div [innerHTML]="announcement.body"></div>
+
+                <!-- Show the announcement author and publish date -->
+                <p></p>
+                <p>Published by {{ announcement.author }} on {{ announcement.publishedDate }}</p>
+                <p>Effective: {{ announcement.effectiveDate }} - {{ announcement.endDate }}</p>
+                <!-- Show the announcement audience -->
+                <!-- <p>Audience: {{ announcement.audience }}</p> -->
+                <!-- Show the acknowledgement status -->
+                <!-- <p *ngIf="announcement.acknowledge">Acknowledged</p>
+                <p *ngIf="!announcement.acknowledge">Not acknowledged</p> -->
+                <!-- Show the effective and end dates -->
+                
+
+                <!-- Show the announcement code -->
+                <!-- <p>Code: {{ announcement.code }}</p> -->
+            </nb-card-body>
+        </nb-card>
+    </div>
+
+    <div *ngIf="!acknowledge" class="col-12 col-md-12 center">
+        <button nbButton status="primary">Acknowledge</button>
+    </div>
+
+    <!-- <div *ngIf="preview" class="col-12 col-md-12 center">
+        <button nbButton status="primary">Make an announcement</button>
+        &nbsp;&nbsp;&nbsp;
+        <button nbButton status="danger">Discard this announcement</button>
+    </div> -->
+</div>
+

@@ -18,7 +18,8 @@ const routes: Routes = [{
   children: [
     { path: 'home', component: HomeComponent, },
     { path: 'authorization', canActivate: [PagesGuard], component: AuthorizationComponent, },
-    { path: 'documents_amendment', canActivate: [PagesGuard], component: DocumentsAmendmentComponent, },
+    // { path: 'documents_amendment', canActivate: [PagesGuard], component: DocumentsAmendmentComponent, },
+    { path: 'documents_amendment', loadChildren: () => import('../pages/documents-amendment/documents-amendment.module').then(m => m.DocumentsAmendmentModule), },
 
     { path: 'personal_documents', canActivate: [PagesGuard], component: PersonalDocumentsComponent, },
     { path: 'performance', canActivate: [PagesGuard], component: PerformanceComponent, },

@@ -6,6 +6,7 @@ import { FirebaseAuthenticationService } from './firebase-authentication.service
 
 // import * as admin from 'firebase-admin';
 import  firestore  from 'firebase/compat/app';
+import { Invoice } from '../interfaces/invoice';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,8 @@ export class FirestoreUserService {
       level: 'Subscriber',
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
-      tokenList: []
+      tokenList: [],
+      invoice: [],
     };
 
     this.firestoreUser = tempDeafult;
@@ -67,6 +69,10 @@ export class FirestoreUserService {
 
   public reviseFirestoreUser(firestoreUser: FirestoreUser): Promise<any> {
     return this.collectionRef.doc(firestoreUser.email).update({role: firestoreUser.role, level: firestoreUser.level, aoc:firestoreUser.aoc});
+  }
+
+  public addAcknowledgement(firestoreUser: FirestoreUser, invoice: Invoice): Promise<any>{
+    return this.collectionRef.doc(firestoreUser.email).ref.update({invoice:firestore.firestore.FieldValue.arrayUnion(invoice)});
   }
 
   public hasRole(): boolean{
@@ -96,9 +102,9 @@ export class FirestoreUserService {
   setInitialUser(aoc: string, role:string): Promise<any> {
     this.firestoreUser.role = role;
     this.firestoreUser.aoc = aoc;
-    console.log('object before update' + JSON.stringify(this.firestoreUser));
-    console.log(this.firestoreUser.role);
-    console.log(this.firestoreUser.aoc);
+    // console.log('object before update' + JSON.stringify(this.firestoreUser));
+    // console.log(this.firestoreUser.role);
+    // console.log(this.firestoreUser.aoc);
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: this.firestoreUser.role, aoc:this.firestoreUser.aoc});
   }
 
