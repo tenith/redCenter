@@ -16,8 +16,10 @@ export class AnnouncementService {
   collectionRef: AngularFirestoreCollection<Announcement>;
   announcements: Observable<Announcement[]>;
 
+  cacheAnnouncement: Announcement[];
+
   constructor(private afs: AngularFirestore, private firestoreUser: FirestoreUserService) { 
-    this.collectionRef = this.afs.collection(this.collectionName);
+    this.collectionRef = this.afs.collection(this.collectionName, ref=> ref.where('audience','array-contains',this.firestoreUser.getFirestoreUser().role));
     this.announcements = this.collectionRef.snapshotChanges().pipe(map(
       actions => actions.map(
         a => {
@@ -29,6 +31,22 @@ export class AnnouncementService {
   
   addAnnouncement(announcement: Announcement): Promise<any>{
     return this.collectionRef.doc(encodeURIComponent(announcement.code)).set(announcement);
+  }
+
+  setAnnouncementInCache(announcements: Announcement[]){
+    this.cacheAnnouncement = announcements;
+    // console.log(JSON.stringify(this.cacheAnnouncement));
+  }
+
+  getAnnouncementFromCache(code: string): Announcement{
+    if(!this.cacheAnnouncement)
+      return null;
+    
+    const tempIndex = this.cacheAnnouncement.findIndex(object=> { return encodeURIComponent(object.code) === code});
+    if(tempIndex>=0)
+      return this.cacheAnnouncement[tempIndex];
+    else  
+      return null;
   }
 
   getAnnouncement(code: string): Promise<any>{

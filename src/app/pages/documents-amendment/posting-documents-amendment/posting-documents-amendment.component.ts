@@ -98,11 +98,11 @@ export class PostingDocumentsAmendmentComponent implements OnInit, OnDestroy {
   }
 
   edit(event: any): void{
-    console.log('event edit', event);
+    // console.log('event edit', event);
     if(this.postingForm.value.body == (event as string))
       return;
     
-    this.postingForm.value.body = event as string;
+    this.postingForm.get('body').setValue(event as string);
   }
 
   getDiffDate(endDate: string, effectiveDate: string): number{

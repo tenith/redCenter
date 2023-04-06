@@ -28,15 +28,15 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
       delete: false,
     },
     columns: {
-      myCommand: { title:'Action & Status ', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
-      publishedDate: { title: 'Published Date', type: 'date',
+      myCommand: { title:'Action & Status', width:'15%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
+      publishedDate: { title: 'Published Date', sortDirection: 'desc', width:'15%', type: 'date',
         valuePrepareFunction: (date) => {
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyyy');
           return formattedDate.toUpperCase();
         },
       },
-      code: { title: 'Code', type: 'custom', renderComponent: CustomLinkComponent,},
+      code: { title: 'Code', width:'15%', type: 'custom', renderComponent: CustomLinkComponent,},
       title: { title: 'Title', },
       author: { title: 'Author', },
     },
@@ -49,6 +49,7 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.announcementService.getAllAnnouncements().subscribe(data=>{
       this.documentsList = data;
+      this.announcementService.setAnnouncementInCache(this.documentsList);
       this.refresh();
       this.cdr.detectChanges();
     });
@@ -62,28 +63,4 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
     this.source = new LocalDataSource(this.documentsList);
     this.cdr.detectChanges();
   }
-
-  testSign(): void{
-    const tempCode = 'TAA/MEMO/2023/1';
-    const timeStamp = new Date().toLocaleString();
-    const tempSignature = {email:'wutthichai.ratanapornsompong@gmail.com',displayName:'Wutthichair',dateTime: timeStamp} as Signature;
-    const invoice = {uuid: encodeURIComponent(tempCode),title:tempCode, dateTime: timeStamp} as Invoice;
-
-    this.announcementService.addAcknowledgement(encodeURIComponent(tempCode),tempSignature).then(()=>{
-      this.toastr.primary('Completed','Acknowledge completed');
-
-      this.firestoreUserService.addAcknowledgement(this.firestoreUserService.getFirestoreUser(),invoice).then(()=>{
-        this.toastr.primary('Completed','Acknowledge has been save into your device');
-      })
-      .catch(error=>{
-        console.log(error);
-        this.toastr.danger('error','Acknowledge has been failed to save into your device');
-      });
-    })
-    .catch(error=>{
-      console.log(error);
-      this.toastr.danger('error','Acknowledge failed');
-    });
-  }
-
 }

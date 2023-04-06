@@ -44,6 +44,18 @@ export class FirestoreUserService {
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get();
   }
 
+  public isAcknowledge(code: string): number{
+    const acknowledgeList = this.firestoreUser.invoice as Invoice[];
+    const tempIndex = acknowledgeList.findIndex(object => { return object.uuid === encodeURIComponent(code)});
+    
+    return tempIndex;
+  }
+
+  public getInvoice(index: number): Invoice{
+    const acknowledgeList = this.firestoreUser.invoice as Invoice[];
+    return acknowledgeList[index];
+  }
+
   public initDefaultFirestoreUser(): Promise<any> {
     let tempUser: FirebaseUser = this.firebaseAuthen.getFirebaseUser();
     let tempDeafult: FirestoreUser = {

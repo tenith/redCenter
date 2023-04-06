@@ -16,31 +16,25 @@
 <div *ngIf="!loading" class="row">
     <div class="col-12 col-md-12">
         <nb-card status="primary">
-            <nb-card-header>{{announcement.code}} - [{{announcement.title}}]</nb-card-header>
+            <nb-card-header>
+                <nb-icon *ngIf="isAcknowledge" icon="checkmark-square-outline"></nb-icon>
+                <nb-icon *ngIf="!isAcknowledge" icon="question-mark-circle-outline"></nb-icon>
+                {{announcement.code}} - [{{announcement.title}}]</nb-card-header>
             <nb-card-body>
-                <!-- Show the announcement body -->
                 <div [innerHTML]="announcement.body"></div>
-
-                <!-- Show the announcement author and publish date -->
                 <p></p>
-                <p>Published by {{ announcement.author }} on {{ announcement.publishedDate }}</p>
-                <p>Effective: {{ announcement.effectiveDate }} - {{ announcement.endDate }}</p>
-                <!-- Show the announcement audience -->
-                <!-- <p>Audience: {{ announcement.audience }}</p> -->
-                <!-- Show the acknowledgement status -->
-                <!-- <p *ngIf="announcement.acknowledge">Acknowledged</p>
-                <p *ngIf="!announcement.acknowledge">Not acknowledged</p> -->
-                <!-- Show the effective and end dates -->
-                
-
-                <!-- Show the announcement code -->
-                <!-- <p>Code: {{ announcement.code }}</p> -->
+                <hr>
+                <p><b>Published by {{ announcement.author }} on {{ announcement.publishedDate | date : 'dd MMM yyy'}}</b></p>
+                <p><b>Effective: {{ announcement.effectiveDate | date : 'dd MMM yyy'}} - {{ announcement.endDate | date : 'dd MMM yyy'}}</b></p>
+                <hr *ngIf="isAcknowledge">
+                <p *ngIf="isAcknowledge"><b>Acknowledging completion at [{{invoice.dateTime | date : ' dd MMM yyy HH:MM:ss'}}]</b></p>
             </nb-card-body>
         </nb-card>
     </div>
 
     <div *ngIf="!acknowledge" class="col-12 col-md-12 center">
-        <button nbButton status="primary">Acknowledge</button>
+        <button *ngIf="!isAcknowledge" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
+        <button nbButton [routerLink]="['/pages/documents_amendment']" status="danger">Back to dashboard</button>
     </div>
 
     <!-- <div *ngIf="preview" class="col-12 col-md-12 center">
