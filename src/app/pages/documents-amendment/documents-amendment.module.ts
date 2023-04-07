@@ -26,13 +26,17 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CustomLinkComponent } from './custom-link/custom-link.component';
 import { CustomActionComponent } from './custom-action/custom-action.component';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import { ModeratorGuard } from '../../@core/shared/guards/moderator.guard';
+
+
+import { NgxWatermarkModule } from 'ngx-watermark';
 
 const routes: Routes = [{
   path: '',
   component: DocumentsAmendmentComponent,
   children: [
     { path: 'dashboard', component: DocumentsAmendmentTableComponent},
-    { path: 'announce', component: PostingDocumentsAmendmentComponent},
+    { path: 'announce', canActivate: [ModeratorGuard], component: PostingDocumentsAmendmentComponent},
     { path: 'document', component: DocumentComponent},
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: '**', component: NotFoundComponent },
@@ -50,6 +54,7 @@ const routes: Routes = [{
     DeleteConfirmationComponent,
   ],
   imports: [
+    NgxWatermarkModule,
     Ng2SmartTableModule,
     ThemeModule,
     ReactiveFormsModule,

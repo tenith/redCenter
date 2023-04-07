@@ -60,9 +60,17 @@ export class NotificationService {
   }
 
   deleteNotification(notification: Notification): void {
-    console.log('delete notification' + JSON.stringify(notification));
+    //console.log('delete notification' + JSON.stringify(notification));
     let tempIndex = this.notifications.indexOf(notification);
     if(tempIndex >=0 ){
+      this.updateSubject.next();
+      this.notifications.splice(tempIndex,1);
+    }
+  }
+
+  deleteNotificationByCode(code: string): void{
+    const tempIndex = this.notifications.findIndex(object=>{return object.code === code;});
+    if(tempIndex >= 0){
       this.updateSubject.next();
       this.notifications.splice(tempIndex,1);
     }

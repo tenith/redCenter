@@ -49,6 +49,15 @@ export class AnnouncementService {
       return null;
   }
 
+  getAnnouncementsWithPagination(pageSize: number, currentPage: number): Observable<any[]> {
+    const items = this.afs.collection(this.collectionName, ref=> {
+      return ref.where('audience','array-contains',this.firestoreUser.getFirestoreUser().role)
+      .limit(pageSize).startAt(currentPage * pageSize);
+    });
+
+    return items.valueChanges();
+  }
+
   getAnnouncement(code: string): Promise<any>{
     return this.collectionRef.doc(code).ref.get();
   }

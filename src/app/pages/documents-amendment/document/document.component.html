@@ -20,7 +20,7 @@
                 <nb-icon *ngIf="isAcknowledge" icon="checkmark-square-outline"></nb-icon>
                 <nb-icon *ngIf="!isAcknowledge" icon="question-mark-circle-outline"></nb-icon>
                 {{announcement.code}} - [{{announcement.title}}]</nb-card-header>
-            <nb-card-body>
+            <nb-card-body [ngxWatermark]="ngxWaterMarkOptions">
                 <div [innerHTML]="announcement.body"></div>
                 <p></p>
                 <hr>
@@ -36,7 +36,6 @@
         <button *ngIf="!isAcknowledge" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
         <button nbButton [routerLink]="['/pages/documents_amendment']" status="danger">Back to dashboard</button>
     </div>
-
     <!-- <div *ngIf="preview" class="col-12 col-md-12 center">
         <button nbButton status="primary">Make an announcement</button>
         &nbsp;&nbsp;&nbsp;
@@ -44,3 +43,23 @@
     </div> -->
 </div>
 
+<br>
+
+<div #printSummary *ngIf="isModerator" class="col-12 col-md-12">
+    <div *ngIf="!loading && signatures.length != 0" class="row">
+        <div class="col-12 col-md-12">
+            <nb-card status="primary">
+                <nb-card-header>{{announcement.code}} - [{{announcement.title}}] Acknowledge summary</nb-card-header>
+                <nb-card-body [ngxWatermark]="ngxWaterMarkOptions">
+                    <div class="col-12 col-md-12">
+                        <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isModerator && signatures.length > 0" class="col-12 col-md-12 center">
+    <button nbButton status="primary" (click)="printPDF()">Print</button>
+</div>

@@ -4,5 +4,6 @@ export interface Notification {
     short_subject: string;
     link: string;
     body: string;
+    code: string;
     isRead: string;
 }

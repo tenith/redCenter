@@ -3,10 +3,12 @@
         <nb-card status="primary">
             <nb-card-header>Document Dashboard</nb-card-header>
             <nb-card-body>
-                <div class="col-12 col-md-12">
+                <div *ngIf="canCreate" class="col-12 col-md-12">
                     &nbsp;&nbsp;&nbsp;&nbsp;<nb-icon status="primary" [routerLink]="['/pages/documents_amendment/announce']" icon="edit-2-outline"></nb-icon>&nbsp;&nbsp;
                     <button nbButton status="primary" [routerLink]="['/pages/documents_amendment/announce']">Make an announcement</button>    
+                    <br><hr>
                 </div>
+
                 <div class="col-12 col-md-12">
                     <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
                 </div>
@@ -14,3 +16,53 @@
         </nb-card>
     </div>
 </div>
+<!-- 
+<div class="row">
+    <div class="col-12 col-md-12">
+        <nb-card status="primary">
+            <nb-card-header>Document Dashboard</nb-card-header>
+            <nb-card-body>
+                <div class="col-12 col-md-12">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<nb-icon status="primary" [routerLink]="['/pages/documents_amendment/announce']" icon="edit-2-outline"></nb-icon>&nbsp;&nbsp;
+                    <button nbButton status="primary" [routerLink]="['/pages/documents_amendment/announce']">Make an announcement</button>    
+                </div>
+                <div class="col-12 col-md-12">
+                    <table mat-table [dataSource]="dataSource" style="width:100%">
+
+                        <ng-container matColumnDef="actions">
+                          <th mat-header-cell *matHeaderCellDef>
+                            Actions&nbsp;&nbsp;
+                            <nb-icon status="primary" [routerLink]="['/pages/documents_amendment/announce']" icon="edit-2-outline"></nb-icon>&nbsp;&nbsp;
+                            <button nbButton status="primary" [routerLink]="['/pages/documents_amendment/announce']">Make an announcement</button>    
+                            </th>
+                          <td mat-cell *matCellDef="let row">
+                            <nb-icon icon="maximize-outline" [routerLink]="['/pages/documents_amendment/document']" [queryParams]="{ code: encodeTitle(row.code) }"></nb-icon>&nbsp;
+                            <nb-icon status="primary" icon="checkmark-square-outline"></nb-icon>&nbsp;
+                            <nb-icon status="danger" icon="question-mark-circle-outline"></nb-icon>&nbsp;
+                            <nb-icon status="danger" (click)="deleteAnnouncement()" icon="trash-2-outline"></nb-icon>&nbsp;
+                          </td>
+                        </ng-container>
+                  
+                        <ng-container matColumnDef="publishedDate">
+                          <th mat-header-cell *matHeaderCellDef>Published Date</th>
+                          <td mat-cell *matCellDef="let row">{{row.publishedDate | date:'dd MMM yyyy'}}</td>
+                        </ng-container>
+                  
+                        <ng-container matColumnDef="code">
+                          <th mat-header-cell *matHeaderCellDef>Code</th>
+                          <td mat-cell *matCellDef="let row">{{row.code}}</td>
+                        </ng-container>
+                  
+                        <ng-container matColumnDef="title">
+                          <th mat-header-cell *matHeaderCellDef>Title</th>
+                          <td mat-cell *matCellDef="let row">{{row.title}}</td>
+                        </ng-container>
+                  
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div> -->

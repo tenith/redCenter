@@ -18,6 +18,8 @@ import { CustomActionComponent } from '../custom-action/custom-action.component'
 })
 export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
 
+  canCreate: boolean = false;
+
   loading = true;
   documentsList: Announcement[] = [];
 
@@ -27,16 +29,20 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
       edit: false,
       delete: false,
     },
+    pager: {
+      display: true,
+      perPage: 10
+    },
     columns: {
-      myCommand: { title:'Action & Status', width:'15%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
-      publishedDate: { title: 'Published Date', sortDirection: 'desc', width:'15%', type: 'date',
+      myCommand: { title:'Action & Status', width:'12%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
+      publishedDate: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'15%', type: 'date',
         valuePrepareFunction: (date) => {
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyyy');
           return formattedDate.toUpperCase();
         },
       },
-      code: { title: 'Code', width:'15%', type: 'custom', renderComponent: CustomLinkComponent,},
+      code: { title: 'Code', width:'20%', type: 'custom', renderComponent: CustomLinkComponent,},
       title: { title: 'Title', },
       author: { title: 'Author', },
     },
@@ -53,6 +59,8 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
       this.refresh();
       this.cdr.detectChanges();
     });
+
+    this.canCreate = this.firestoreUserService.canCreate();
   }
 
   ngAfterViewInit(): void {
@@ -60,7 +68,7 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit{
 
   refresh(): void {
     this.loading = false;
-    this.source = new LocalDataSource(this.documentsList);
+    this.source = new LocalDataSource([...this.documentsList]);
     this.cdr.detectChanges();
   }
 }

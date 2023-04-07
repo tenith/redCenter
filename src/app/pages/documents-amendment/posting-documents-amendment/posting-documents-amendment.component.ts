@@ -84,7 +84,7 @@ export class PostingDocumentsAmendmentComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     // Process form data here
-    console.log(this.postingForm.value);
+    // console.log(this.postingForm.value);
     const temp = {...this.postingForm.value, signatures:[]} as Announcement;
     this.announcementService.addAnnouncement(temp).then(()=>{
       this.toastr.primary('Completed','Make an announement completed');

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Notification } from '../../../@core/shared/interfaces/notification';
 import { NotificationService } from '../../../@core/shared/services/notification.service';
+import { Router } from '@angular/router';
 
 
 
@@ -12,7 +13,7 @@ import { NotificationService } from '../../../@core/shared/services/notification
 export class NotificationComponent implements OnInit {
 
   notifications: Notification[];
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService, private router: Router) { }
 
   ngOnInit(): void {
     this.notifications = this.notificationService.getNotifications();
@@ -34,6 +35,7 @@ export class NotificationComponent implements OnInit {
   markAsRead(notification: Notification): void{
     notification.isRead = 'true';
     this.notificationService.markAsRead(notification);
+    this.router.navigate([notification.link] ,{queryParams:{code:encodeURIComponent(notification.code)}});
   }
 
 }

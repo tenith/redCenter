@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AnnouncementService } from '../../../@core/shared/services/announcement.service';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 
 @Component({
   selector: 'ngx-custom-action',
@@ -10,12 +11,23 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 })
 export class CustomActionComponent implements OnInit {
   @Input() rowData: any;
+  isAcknowledge: boolean = false;
+  isReadOnly: boolean = false;
+  canDelete: boolean = false;
 
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
-
-  constructor(private dialogService: NbDialogService, private announcementService: AnnouncementService, private toastr: NbToastrService) { }
+ 
+  constructor(private dialogService: NbDialogService, private announcementService: AnnouncementService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
+    if(this.rowData.acknowledge == 'Yes'){
+      const tempIndex = this.firestoreUserService.isAcknowledge(this.rowData.code);
+      if(tempIndex >=0 )
+        this.isAcknowledge = true;
+    }
+    else 
+      this.isReadOnly = true;
+    this.canDelete = this.firestoreUserService.canDelete();
   }
 
   encodeTitle(title: string): string {
@@ -35,17 +47,15 @@ export class CustomActionComponent implements OnInit {
     this.dialogRef.onClose.subscribe(confirm => {
       if(confirm == 'affirm'){
         //Delete an announcement code....
-        console.log('delete ' + this.rowData.code);
+        this.announcementService.deleteAnnouncement(encodeURIComponent(this.rowData.code)).then(()=>{
+          this.toastr.primary('Completed','Delete ' + this.rowData.code + ' announement completed');
+        })
+        .catch(error=>{
+          console.log(error);
+          this.toastr.danger('error','Delete ' + this.rowData.code + ' announement failed, try again later');
+        });
       }
     });
-    return;
-    this.announcementService.deleteAnnouncement(encodeURIComponent(this.rowData.code)).then(()=>{
-      this.toastr.primary('Completed','Delete ' + this.rowData.code + ' announement completed');
-    })
-    .catch(error=>{
-      console.log(error);
-      this.toastr.danger('error','Delete ' + this.rowData.code + ' announement failed, try again later');
-    })
   }
 
 }

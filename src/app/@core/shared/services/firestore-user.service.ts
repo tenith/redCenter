@@ -15,6 +15,9 @@ export class FirestoreUserService {
   collectionName: string = '/users';
   token: string = '';
 
+  canCreateFlag: boolean = false;
+  canDeleteFlag: boolean = false;
+
   firestoreUser: FirestoreUser;
   firestoreUserDBName: string = 'firestoreUserDBName';
 
@@ -27,8 +30,10 @@ export class FirestoreUserService {
     /**
      * user has been login into system and cache has data.
      */
-    if(localStorage.getItem(this.firestoreUserDBName) != null)
+    if(localStorage.getItem(this.firestoreUserDBName) != null){
       this.firestoreUser = JSON.parse(localStorage.getItem(this.firestoreUserDBName)) as FirestoreUser;
+      this.reviseAuthorization();
+    }
   }
 
   public getFirestoreUser(): FirestoreUser{
@@ -38,6 +43,24 @@ export class FirestoreUserService {
   public setFirestoreUser(firestoreUser: FirestoreUser): void {
     this.firestoreUser = firestoreUser;
     localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
+
+    this.reviseAuthorization();
+  }
+
+  public reviseAuthorization(): void{
+    if(this.firestoreUser.level == 'Admin' || this.firestoreUser.level == 'Moderator')
+      this.canCreateFlag = true;
+
+    if(this.firestoreUser.level == 'Admin')
+      this.canDeleteFlag = true;
+  }
+
+  public canCreate(): boolean{
+    return this.canCreateFlag;
+  }
+
+  public canDelete(): boolean{
+    return this.canDeleteFlag;
   }
 
   public getFirestoreUserFromServer(): Promise<any> {
