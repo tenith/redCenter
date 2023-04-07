@@ -52,6 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     },
   ];
 
+  numberOfNotification: number = 0;
+
   currentTheme = 'default';
   private notification$: Observable<void>;  
   private eventsSubscription!: Subscription;
@@ -113,6 +115,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       )
       .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
 
+    // this.notificationService.setChangeDetectorRefs(this.changeDetectorRefs);
     this.themeService.onThemeChange()
       .pipe(
         map(({ name }) => name),
@@ -132,6 +135,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.listen();
 
     this.listenOnBackground();
+    this.notificationService.loadNotificationFromStorage().then(result => {
+      const temp = [...(result as unknown as Notification[])];
+      this.notificationService.setNotification(temp);
+    }).catch(error=>console.log(error));
 
     this.notification$ = this.notificationService.getNotificationObservable();
     this.eventsSubscription = this.notification$.subscribe(()=>{
@@ -157,11 +164,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   revisedNotification(): void {
+    this.numberOfNotification = this.notificationService.getNotifications().length;
     this.changeDetectorRefs.detectChanges(); 
   }
 
   listenOnBackground(): void {
     this.bc.onmessage = (ev) => { 
+      // let temp = [...JSON.parse(localStorage.getItem('backgroundMessage'))] as unknown as Notification[];
+      // temp.push({ ...JSON.parse(ev.data) } as unknown as Notification);
+      // localStorage.setItem('backgroundMessage',JSON.stringify(temp));
+
+
+
       this.notificationService.addNotification({ ...JSON.parse(ev.data) } as unknown as Notification);
       this.changeDetectorRefs.detectChanges();
     };

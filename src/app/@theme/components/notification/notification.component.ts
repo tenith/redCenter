@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Notification } from '../../../@core/shared/interfaces/notification';
 import { NotificationService } from '../../../@core/shared/services/notification.service';
 import { Router } from '@angular/router';
+import { NbDialogRef } from '@nebular/theme';
 
 
 
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class NotificationComponent implements OnInit {
 
   notifications: Notification[];
-  constructor(private notificationService: NotificationService, private router: Router) { }
+  constructor(private dialogRef: NbDialogRef<NotificationComponent>, private notificationService: NotificationService, private router: Router) { }
 
   ngOnInit(): void {
     this.notifications = this.notificationService.getNotifications();
@@ -33,9 +34,14 @@ export class NotificationComponent implements OnInit {
   }
 
   markAsRead(notification: Notification): void{
-    notification.isRead = 'true';
-    this.notificationService.markAsRead(notification);
-    this.router.navigate([notification.link] ,{queryParams:{code:encodeURIComponent(notification.code)}});
+    // this.notificationService.markAsRead(notification);
+    if(notification.type == 'document')
+      this.router.navigate([notification.link] ,{queryParams:{code:encodeURIComponent(notification.code)}});
+    
+    if(notification.type == 'ets1')
+      this.router.navigate([notification.link] ,{queryParams:{uuid:notification.uuid}});
+
+    this.dialogRef.close();
   }
 
 }

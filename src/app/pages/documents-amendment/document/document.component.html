@@ -27,7 +27,7 @@
                 <p><b>Published by {{ announcement.author }} on {{ announcement.publishedDate | date : 'dd MMM yyy'}}</b></p>
                 <p><b>Effective: {{ announcement.effectiveDate | date : 'dd MMM yyy'}} - {{ announcement.endDate | date : 'dd MMM yyy'}}</b></p>
                 <hr *ngIf="isAcknowledge">
-                <p *ngIf="isAcknowledge"><b>Acknowledging completion at [{{invoice.dateTime | date : ' dd MMM yyy HH:MM:ss'}}]</b></p>
+                <p *ngIf="isAcknowledge"><b>Acknowledging completion at [{{invoice.dateTime | date : ' dd MMM yyy HH:mm:ss'}}]</b></p>
             </nb-card-body>
         </nb-card>
     </div>
@@ -52,7 +52,7 @@
                 <nb-card-header>{{announcement.code}} - [{{announcement.title}}] Acknowledge summary</nb-card-header>
                 <nb-card-body [ngxWatermark]="ngxWaterMarkOptions">
                     <div class="col-12 col-md-12">
-                        <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
+                        <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>                        
                     </div>
                 </nb-card-body>
             </nb-card>

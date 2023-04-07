@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Announcement } from '../../../@core/shared/interfaces/announcement';
 import { Signature } from '../../../@core/shared/interfaces/signature';
 import { AnnouncementService } from '../../../@core/shared/services/announcement.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 import { Invoice } from '../../../@core/shared/interfaces/invoice';
@@ -50,12 +50,10 @@ export class DocumentComponent implements OnInit {
     columns: {
       index: { title:'No', filter: false, sort: false, valuePrepareFunction(value,row,cell){return cell.row.index + 1;}},
       dateTime: { title: 'Date Time of Acknowledge', filter: false, sort:false, valuePrepareFunction: (date) => {
-        const datePipe = new DatePipe('en-US');
-        console.log(date);
-        
+        const datePipe = new DatePipe('en-US');        
         const formattedDate = datePipe.transform(date, 'dd MMM yyyy HH:mm:ss');
 
-        console.log(formattedDate)
+        // console.log(formattedDate)
         return formattedDate.toUpperCase();
       },},
       displayName: { title: 'Name', filter: false, sort:false },
@@ -67,7 +65,7 @@ export class DocumentComponent implements OnInit {
 
   @ViewChild('printSummary', { static: false }) public dataToExport: ElementRef;
   
-  constructor(private notificationService: NotificationService, private announcementService: AnnouncementService, private route: ActivatedRoute, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService) { }
+  constructor(private router:Router, private notificationService: NotificationService, private announcementService: AnnouncementService, private route: ActivatedRoute, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService) { }
 
   setUpAnnouncement(code: string): void {
     this.announcement = this.announcementService.getAnnouncementFromCache(code);
@@ -82,6 +80,11 @@ export class DocumentComponent implements OnInit {
     this.announcementService.getAnnouncement(code).then(doc=>{
       // console.log(JSON.stringify(doc.data()));
       this.announcement = doc.data();
+      if(this.announcement == null){
+        this.router.navigate(['./pages/documents_amendment']);
+        this.toastr.danger('Error','Invalid Document, Please check your dashboard again.', {duration:5000});
+        return;
+      }
       this.loading =  false;
       this.notFound = false;
 
@@ -112,6 +115,8 @@ export class DocumentComponent implements OnInit {
       this.isAcknowledge = true;
       this.invoice = this.firestoreUserService.getInvoice(tempIndex);
     }
+    
+    this.notificationService.deleteNotificationReadOnlyDocuemntByCode(this.announcement.code);
 
     this.signatures = this.announcement.signatures;
     this.source = new LocalDataSource(this.signatures);
@@ -163,7 +168,7 @@ export class DocumentComponent implements OnInit {
         this.revisedAcknowledge();
         this.toastr.primary('Completed','Acknowledge has been save into your device');
 
-        this.notificationService.deleteNotificationByCode(this.announcement.code);
+        this.notificationService.deleteNotificationDocuemntByCode(this.announcement.code);
       })
       .catch(error=>{
         console.log(error);
