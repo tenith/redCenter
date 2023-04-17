@@ -8,6 +8,8 @@ import  firestore  from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { HttpClient, HttpParams } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +20,9 @@ export class AnnouncementService {
 
   cacheAnnouncement: Announcement[];
 
-  constructor(private afs: AngularFirestore, private firestoreUser: FirestoreUserService) { 
+  private cloudFunctionAnnouncement = 'https://us-central1-red-center.cloudfunctions.net/sendNotification';
+
+  constructor(private httpClient:HttpClient, private afs: AngularFirestore, private firestoreUser: FirestoreUserService) { 
     this.collectionRef = this.afs.collection(this.collectionName, ref=> ref.where('audience','array-contains',this.firestoreUser.getFirestoreUser().role));
     this.announcements = this.collectionRef.snapshotChanges().pipe(map(
       actions => actions.map(
@@ -27,6 +31,11 @@ export class AnnouncementService {
           return {...announcement} as Announcement;
         }
       )));
+  }
+
+  makeAnnouncement(id: string): Promise<any>{
+    let params = new HttpParams().set('announcementsID', id).set('timeStamp', new Date().valueOf());
+    return this.httpClient.get<any>(this.cloudFunctionAnnouncement, {params:params}).toPromise();
   }
   
   addAnnouncement(announcement: Announcement): Promise<any>{

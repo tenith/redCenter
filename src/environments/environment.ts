@@ -18,6 +18,7 @@ export const environment = {
     apiKey: "AIzaSyClzKnPCsqH0wIpdRgA1-VNB-WSCQn73rk",
     authDomain: "red-center.firebaseapp.com",
     projectId: "red-center",
+    databaseURL: "red-center.firebaseio.com",
     storageBucket: "red-center.appspot.com",
     messagingSenderId: "880704583837",
     appId: "1:880704583837:web:312aec2438ff06a7017c74",

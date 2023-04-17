@@ -1,0 +1,26 @@
+[debug] [2023-04-17T08:03:24.801Z] ----------------------------------------------------------------------
+[debug] [2023-04-17T08:03:24.802Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\tenit\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-04-17T08:03:24.803Z] CLI Version:   11.27.0
+[debug] [2023-04-17T08:03:24.803Z] Platform:      win32
+[debug] [2023-04-17T08:03:24.803Z] Node Version:  v16.16.0
+[debug] [2023-04-17T08:03:24.803Z] Time:          Mon Apr 17 2023 15:03:24 GMT+0700 (Indochina Time)
+[debug] [2023-04-17T08:03:24.803Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-04-17T08:03:24.846Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-04-17T08:03:24.846Z] > authorizing via signed-in user (wutthichai.ratanapornsompong@gmail.com)
+[debug] [2023-04-17T08:03:24.847Z] [iam] checking project red-center for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-04-17T08:03:24.847Z] > refreshing access token with scopes: []
+[debug] [2023-04-17T08:03:24.849Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-04-17T08:03:24.849Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-17T08:03:25.080Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-04-17T08:03:25.080Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-17T08:03:25.087Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/red-center:testIamPermissions [none]
+[debug] [2023-04-17T08:03:25.088Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/red-center:testIamPermissions x-goog-quota-user=projects/red-center
+[debug] [2023-04-17T08:03:25.088Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/red-center:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-04-17T08:03:26.315Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/red-center:testIamPermissions 200
+[debug] [2023-04-17T08:03:26.315Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/red-center:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-04-17T08:03:26.316Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/red-center/serviceAccounts/red-center@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2023-04-17T08:03:26.316Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/red-center/serviceAccounts/red-center@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2023-04-17T08:03:27.518Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/red-center/serviceAccounts/red-center@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2023-04-17T08:03:27.518Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/red-center/serviceAccounts/red-center@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2023-04-17T08:03:27.520Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/red-center [none]
