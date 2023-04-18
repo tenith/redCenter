@@ -20,7 +20,9 @@ import { NotificationService } from '../../../@core/shared/services/notification
   styleUrls: ['./document.component.scss']
 })
 export class DocumentComponent implements OnInit {
+  acknowledgeRequired: boolean = true;
   isAcknowledge: boolean = false;
+  readOnly: boolean = false;
   loading: boolean = true;
   notFound: boolean = true;
   
@@ -30,9 +32,9 @@ export class DocumentComponent implements OnInit {
   ngxWaterMarkOptions: NgxWatermarkOptions = {
     text: '',
     color: '#999',
-    width: 500,
-    height: 500,
-    alpha: 0.2,
+    width: 300,
+    height: 300,
+    alpha: 0.4,
     degree: -45,
     fontSize: '20px',
   };
@@ -110,6 +112,8 @@ export class DocumentComponent implements OnInit {
   }
 
   revisedAcknowledge(): void {
+    this.acknowledgeRequired = this.announcement.acknowledge == 'No' ? false: true;
+
     const tempIndex  = this.firestoreUserService.isAcknowledge(this.announcement.code);
     if(tempIndex >= 0){
       this.isAcknowledge = true;
@@ -121,6 +125,7 @@ export class DocumentComponent implements OnInit {
     this.signatures = this.announcement.signatures;
     this.source = new LocalDataSource(this.signatures);
 
+    // console.log(JSON.stringify(this.announcement));
     this.ngxWaterMarkOptions.text = this.firestoreUserService.getFirestoreUser().email;
   }
 

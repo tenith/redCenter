@@ -17,8 +17,9 @@
     <div class="col-12 col-md-12">
         <nb-card status="primary">
             <nb-card-header>
-                <nb-icon *ngIf="isAcknowledge" icon="checkmark-square-outline"></nb-icon>
-                <nb-icon *ngIf="!isAcknowledge" icon="question-mark-circle-outline"></nb-icon>
+                <nb-icon *ngIf="!acknowledgeRequired" icon="file-text-outline"></nb-icon>
+                <nb-icon *ngIf="isAcknowledge && acknowledgeRequired" icon="checkmark-square-outline"></nb-icon>
+                <nb-icon *ngIf="!isAcknowledge && acknowledgeRequired" icon="question-mark-circle-outline"></nb-icon>
                 {{announcement.code}} - [{{announcement.title}}]</nb-card-header>
             <nb-card-body [ngxWatermark]="ngxWaterMarkOptions">
                 <div [innerHTML]="announcement.body"></div>
@@ -33,7 +34,7 @@
     </div>
 
     <div *ngIf="!acknowledge" class="col-12 col-md-12 center">
-        <button *ngIf="!isAcknowledge" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
+        <button *ngIf="acknowledgeRequired" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
         <button nbButton [routerLink]="['/pages/documents_amendment']" status="danger">Back to dashboard</button>
     </div>
     <!-- <div *ngIf="preview" class="col-12 col-md-12 center">

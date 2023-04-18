@@ -3,6 +3,7 @@ import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 
 import { aocOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
+import { Invoice } from '../../@core/shared/interfaces/invoice';
 
 @Component({
   selector: 'ngx-home',
@@ -13,10 +14,19 @@ export class HomeComponent implements OnInit {
   firestoreUser: FirestoreUser;
   aocURL : string;
   roleURL : string;
+  invoices: Invoice[] = [];
   constructor(private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
     this.firestoreUser = this.firestoreUserService.getFirestoreUser();
+    this.invoices = this.firestoreUser.invoice;
+
+    console.log('firestore');
+    console.log(JSON.stringify(this.firestoreUser));
+
+    console.log('invoices');
+    console.log(JSON.stringify(this.invoices));
+
     this.aocURL = aocOptions[aocOptions.findIndex(obj => obj.value === this.firestoreUser.aoc)].icon;
     this.roleURL = roleOptions[roleOptions.findIndex(obj => obj.value === this.firestoreUser.role)].icon;
   }

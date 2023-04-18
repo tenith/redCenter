@@ -74,8 +74,11 @@ export class NotificationService {
 
   deleteNotificationReadOnlyDocuemntByCode(code: string): void{
     const tempIndex = this.notifications.findIndex(object=>{return object.code === code;});
+    console.log('temp index ' + tempIndex);
+
     if(tempIndex >= 0){
-      if(this.notifications[tempIndex].acknowledgeRequired == 'false'){
+      console.log(this.notifications[tempIndex].acknowledgeRequired);
+      if(this.notifications[tempIndex].acknowledgeRequired == 'No'){
         this.notifications.splice(tempIndex,1);
         this.updateSubject.next();
       }

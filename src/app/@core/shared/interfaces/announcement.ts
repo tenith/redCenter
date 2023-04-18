@@ -8,7 +8,7 @@ export interface Announcement {
     publishedDate: string;
     effectiveDate: string;
     endDate: string;
-    acknowledge: boolean;
+    acknowledge: string;
     audience: string[];
     signatures: Signature[];
 }

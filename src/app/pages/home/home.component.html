@@ -29,4 +29,14 @@
             </div>
         </nb-card-body>
     </nb-card>
+    <!-- <nb-card status="primary" *ngIf="invoices.length > 0">
+        <nb-card-header><nb-icon icon="award-outline"></nb-icon> My acknowledgements</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <li *ngFor="let invoice of invoices; index as i; first as isFirst">
+                    {{i + 1}}. {{invoice.title}} acknowledged on {{ invoice.dateTime | date : ' dd MMM yyy HH:mm:ss'}} 
+                </li>
+            </div>
+        </nb-card-body>
+    </nb-card> -->
 </div>
