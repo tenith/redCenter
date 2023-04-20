@@ -16,6 +16,7 @@ import { ViewDocumentComponent } from './view-document/view-document.component';
 import { SearchComponent } from './search/search.component';
 import { ReportComponent } from './report/report.component';
 import { NgxWatermarkModule } from 'ngx-watermark';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { NgxWatermarkModule } from 'ngx-watermark';
   ],
   imports: [
     CommonModule,
+    NgxPrintModule,
     NgxWatermarkModule,
     ThemeModule,
     FormsModule,

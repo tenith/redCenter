@@ -49,11 +49,9 @@ export class ReportComponent implements OnInit {
   printPDF(): void{
     const doc = new jsPDF();
     const content = this.dataToExport.nativeElement;
-    // const content = document.getElementById('printSummary');
-
-    console.log(content.innerHTML);
     
-    html2canvas(content.innerHTML).then((canvas) => {
+    
+    html2canvas(content).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const imgWidth = 210;
       const pageHeight = 295;

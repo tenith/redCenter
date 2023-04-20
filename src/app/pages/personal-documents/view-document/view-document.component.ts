@@ -34,7 +34,6 @@ export class ViewDocumentComponent implements OnInit {
   }
 
   saveToLocal(): void{
-    
   }
 
   confirm(): void {

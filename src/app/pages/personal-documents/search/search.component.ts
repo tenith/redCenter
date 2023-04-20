@@ -52,7 +52,7 @@ export class SearchComponent implements OnInit {
       return;
     }
     
-    this.dialogRef = this.dialogService.open(ReportComponent,{});
+    this.dialogRef = this.dialogService.open(ReportComponent,{ hasScroll:true});
   }
 
 }

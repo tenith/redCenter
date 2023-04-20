@@ -1,23 +1,41 @@
-<div #printSummary class="row" style="background-color: white;">
-    <div *ngFor="let x$ of downloadUrl$;let indexOfelement=index;" class="col-12 " style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        <nb-card status="primary">
-            <nb-card-header style="text-align: center;">{{fileUploadInformation[indexOfelement].displayName}} - {{fileUploadInformation[indexOfelement].owner}}</nb-card-header>
-            <nb-card-body style="text-align: center;" [ngxWatermark]="ngxWaterMarkOptions">
-                <img *ngIf="(x$ | async)" [src]="(x$ | async)">
+<div style="background-color: white;overflow-y: auto;max-width: 100%; max-height: 95vh; margin-left: auto; margin-right: auto; margin-top: auto;">
+    <div id="printSummary" #printSummary>
+    <div *ngFor="let x$ of downloadUrl$;let indexOfelement=index;" class="row" style="min-width: 80%; max-width: 80%; margin-left: auto; margin-right: auto; margin-top: auto;">
+        <!-- <div class="form-inline">
+            <div class="col-12">{{fileUploadInformation[indexOfelement].displayName}} - {{fileUploadInformation[indexOfelement].owner}}</div>
+        </div>
+        <div class="form-inline">
+            <div class="col-12">
+                <img style="width: 80%;" *ngIf="(x$ | async)" [src]="(x$ | async)">
+                <p *ngIf="!(x$ | async)">Loading image...</p>         
+            </div>
+        </div> -->
+        <nb-card status="primary" class="col-12">
+            <nb-card-header style="text-align: center; background-color: blue; color: azure;">{{fileUploadInformation[indexOfelement].displayName}} - {{fileUploadInformation[indexOfelement].owner}}</nb-card-header>
+            <nb-card-body style="text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;" [ngxWatermark]="ngxWaterMarkOptions">
+                <br>
+                <br>
+                <img style="min-width: 60%;max-width: 70%; max-height: 700px;" *ngIf="(x$ | async)" [src]="(x$ | async)">
                 <p *ngIf="!(x$ | async)">Loading image...</p>          
             </nb-card-body>
         </nb-card>
+        <div style="page-break-before: always;"> </div>
+    </div>
+    </div>
+    <div class="row" style="background-color: white;">
+        <div class="col-12" style="text-align: center;min-width: 80%; max-width: 80%; margin-left: auto; margin-right: auto; margin-top: auto;">
+            <!-- <nb-icon (click)="saveToLocal()" style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon>&nbsp;&nbsp;&nbsp; -->
+            <button printSectionId="printSummary" [useExistingCss]="true" ngxPrint nbButton>Print</button>&nbsp;&nbsp;&nbsp;
+            <button (click)="cancel()" nbButton>Exit</button>
+            <!-- <nb-icon  style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon> -->
+            <!-- <nb-icon (click)="cancel()" style="font-size: 2.5rem;" size="large" status="danger" icon="close-square-outline"></nb-icon> -->
+        </div>
     </div>
 </div>
-<div class="row" style="background-color: white;">
-    <div class="col-12 col-sm-6 col-md-6" style="text-align: center; min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        <!-- <nb-icon (click)="saveToLocal()" style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon>&nbsp;&nbsp;&nbsp; -->
-        <nb-icon (click)="printPDF()" style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon>
-        <nb-icon (click)="cancel()" style="font-size: 2.5rem;" size="large" status="danger" icon="close-square-outline"></nb-icon>
-    </div>
-</div>
-<div class="row" style="background-color: white;">
+
+
+<!-- <div class="row" style="background-color: white;">
     <div class="col-12 col-sm-6 col-md-6" style="text-align: center; min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
         &nbsp;&nbsp;&nbsp;
     </div>
-</div>
+</div> -->

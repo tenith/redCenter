@@ -3,7 +3,7 @@
     <nb-card-body>
         <form [formGroup]="uploadForm" (ngSubmit)="upload()">
             <div class="form-inline">
-                <input id="fileUpload" name="fileUpload" formControlName="fileUpload" (change)="handleFileInput($event.target.files)" type="file" nbInput>
+                <input id="fileUpload" name="fileUpload" formControlName="fileUpload" (change)="handleFileInput($event.target.files)" type="file" nbInput accept="image/*">
             </div>
             <div class="form-group">
                 <label for="fileDescription" class="label">File description*:</label><label *ngIf="uploadForm.get('fileDescription').invalid && uploadForm.get('fileDescription').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please enter file description.)</label>
