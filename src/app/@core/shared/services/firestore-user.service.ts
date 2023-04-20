@@ -18,6 +18,9 @@ export class FirestoreUserService {
   canCreateFlag: boolean = false;
   canDeleteFlag: boolean = false;
 
+  public isModerator: boolean = false;
+  public isAdmin: boolean = false;
+
   firestoreUser: FirestoreUser;
   firestoreUserDBName: string = 'firestoreUserDBName';
 
@@ -53,6 +56,12 @@ export class FirestoreUserService {
 
     if(this.firestoreUser.level == 'Admin')
       this.canDeleteFlag = true;
+
+    if(this.firestoreUser.level == 'Moderator')
+      this.isModerator = true;
+
+    if(this.firestoreUser.level == 'Admin')
+      this.isAdmin = true;
   }
 
   public canCreate(): boolean{

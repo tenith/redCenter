@@ -1,0 +1,20 @@
+<nb-card status="primary">
+    <nb-card-header>Upload your file</nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="uploadForm" (ngSubmit)="upload()">
+            <div class="form-inline">
+                <input id="fileUpload" name="fileUpload" formControlName="fileUpload" (change)="handleFileInput($event.target.files)" type="file" nbInput>
+            </div>
+            <div class="form-group">
+                <label for="fileDescription" class="label">File description*:</label><label *ngIf="uploadForm.get('fileDescription').invalid && uploadForm.get('fileDescription').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please enter file description.)</label>
+                <input id="fileDescription" name="fileDescription" formControlName="fileDescription" nbInput type="text" fullWidth placeholder="File Description">
+            </div>
+            <div class="form-group">
+                <button nbButton [disabled]="uploadForm.invalid" status="primary" type="submit">Submit</button>
+                &nbsp;&nbsp;&nbsp;
+                <button nbButton [disabled]="!uploadForm.touched" status="danger" type="reset">Reset</button>
+            </div>
+        </form>
+        <br>
+    </nb-card-body>
+</nb-card>

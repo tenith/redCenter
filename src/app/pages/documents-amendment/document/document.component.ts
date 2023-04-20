@@ -152,7 +152,7 @@ export class DocumentComponent implements OnInit {
         heightLeft -= pageHeight;
       }
 
-      doc.save('div.pdf');
+      doc.save('report.pdf');
     }); 
   }
 

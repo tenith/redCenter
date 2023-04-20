@@ -17,6 +17,7 @@ import { SepModule } from './sep/sep.module';
 import { Ets1Module } from './ets1/ets1.module';
 import { DocumentsAmendmentModule } from './documents-amendment/documents-amendment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { PersonalDocumentsModule } from './personal-documents/personal-documents.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
     NbMenuModule,
     DashboardModule,
     ECommerceModule,
+    PersonalDocumentsModule,
     DocumentsAmendmentModule,
     /*
       09 MAR 2023 wutthichair
