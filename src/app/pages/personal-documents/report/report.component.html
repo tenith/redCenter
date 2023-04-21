@@ -12,11 +12,19 @@
         </div> -->
         <nb-card status="primary" class="col-12">
             <nb-card-header style="text-align: center; background-color: blue; color: azure;">{{fileUploadInformation[indexOfelement].displayName}} - {{fileUploadInformation[indexOfelement].owner}}</nb-card-header>
-            <nb-card-body style="text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;" [ngxWatermark]="ngxWaterMarkOptions">
-                <br>
+            <nb-card-body style="text-align: center; ">
+                <!-- <br>
                 <br>
                 <img style="min-width: 60%;max-width: 70%; max-height: 700px;" *ngIf="(x$ | async)" [src]="(x$ | async)">
-                <p *ngIf="!(x$ | async)">Loading image...</p>          
+                <p *ngIf="!(x$ | async)">Loading image...</p>           -->
+                
+                <div class="container" style="text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;">
+                    <div class="layer layer1" style="background-color: rgba(255, 255, 255, 0.1);" [ngxWatermark]="ngxWaterMarkOptions"></div>
+                    <div class="layer layer2" style="text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;">
+                        <img style="min-width: 60%;max-width: 70%; max-height: 700px;" *ngIf="(x$ | async)" [src]="(x$ | async)">
+                        <p *ngIf="!(x$ | async)">Loading image...</p>
+                    </div>
+                  </div>
             </nb-card-body>
         </nb-card>
         <div style="page-break-before: always;"> </div>
