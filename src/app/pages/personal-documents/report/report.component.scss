@@ -1,6 +1,6 @@
 @page {
     size: A4;
-    margin: 0;
+    margin: 20px;
   }
 
   .container {
@@ -24,3 +24,41 @@
   .layer2 {
     z-index: 1;
   }
+
+/* Style the div that contains the table */
+#my-div {
+  width: 100%;
+  height: calc(100% - 42px); /* Take up the full height of the page, minus the top and bottom margins */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* Style the table inside the div */
+#my-table {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  border: 2px solid black;
+}
+
+/* Style the first row of the table */
+#my-table tr:first-child {
+  background-color: lightgray;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+/* Style the first row of the table */
+#my-table tr:nth-child(3) {
+  background-color: lightgray;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+/* Style the image in the second row */
+#my-table tr:nth-child(2) img {
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

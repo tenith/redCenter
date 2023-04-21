@@ -9,6 +9,7 @@ import { NgxWatermarkOptions } from 'ngx-watermark';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-report',
@@ -27,6 +28,9 @@ export class ReportComponent implements OnInit {
     fontSize: '20px',
   };
 
+  generatedBy: string = '';
+  generatedAt: string = '';
+
   downloadUrl$: Observable<string>[] = [];
   fileUploadInformation: FileUploadInformation[] = [];
 
@@ -40,6 +44,14 @@ export class ReportComponent implements OnInit {
       this.downloadUrl$.push(this.fileUploadDatabaseService.getFile(this.fileUploadInformation[i].relativePath));
 
     this.ngxWaterMarkOptions.text = this.firestoreUserService.getFirestoreUser().email;
+    this.generatedBy = this.firestoreUserService.getFirestoreUser().email;
+    this.generatedAt = this.getDate();
+  }
+
+  getDate(): string{
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyy HH:mm:ss');
+    return formattedDate;
   }
 
   print(): void{
