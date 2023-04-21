@@ -17,7 +17,7 @@ export class CustomActionComponent implements OnInit {
 
   @Input() rowData: any;
   canDelete: boolean = false;
-  canAdd: boolean = false;
+  canAdd: boolean = true;
   
   @Output() addEvent = new EventEmitter<string>();
   
@@ -31,8 +31,9 @@ export class CustomActionComponent implements OnInit {
     if(this.rowData.owner == this.firestoreUserService.getFirestoreUser().email)
       this.canDelete = true;
 
-    if(this.firestoreUserService.getFirestoreUser().level != 'Subscriber')
-      this.canAdd = true;
+    
+    // if(this.firestoreUserService.getFirestoreUser().level != 'Subscriber')
+    //   this.canAdd = true;
   }
   
   viewDocument(): void {

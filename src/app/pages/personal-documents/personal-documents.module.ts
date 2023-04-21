@@ -17,6 +17,7 @@ import { SearchComponent } from './search/search.component';
 import { ReportComponent } from './report/report.component';
 import { NgxWatermarkModule } from 'ngx-watermark';
 import { NgxPrintModule } from 'ngx-print';
+import { ReportSummaryComponent } from './report-summary/report-summary.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NgxPrintModule } from 'ngx-print';
     DeleteConfirmationComponent,
     ViewDocumentComponent,
     SearchComponent,
-    ReportComponent
+    ReportComponent,
+    ReportSummaryComponent
   ],
   imports: [
     CommonModule,

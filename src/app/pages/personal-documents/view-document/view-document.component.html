@@ -1,9 +1,9 @@
 <div class="row" style="background-color: white;">
     <div class="col-12 " style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
         <nb-card status="primary">
-            <nb-card-header style="text-align: center;">Your {{data.myCode}}</nb-card-header>
+            <nb-card-header style="text-align: center;">{{data.myCode}}</nb-card-header>
             <nb-card-body style="text-align: center;" [ngxWatermark]="ngxWaterMarkOptions">
-                <img style="max-width: 100%;" *ngIf="(downloadUrl$ | async)" [src]="(downloadUrl$ | async)">
+                <img style="max-width: 600px;max-height: 80%;" *ngIf="(downloadUrl$ | async)" [src]="(downloadUrl$ | async)">
                 <p *ngIf="!(downloadUrl$ | async)">Loading image...</p>          
             </nb-card-body>
         </nb-card>

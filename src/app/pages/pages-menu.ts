@@ -19,14 +19,14 @@ export let menuListDetail = {
     title: 'E-TS1',
     icon: 'file-outline',
     children: [
-      {
-        title: 'My dashboard (Moderator)',
-        link: '/pages/ets1/mworkspace',
-      },
-      {
-        title: 'My dashboard (Instructor)',
-        link: '/pages/ets1/iworkspace',
-      },
+      // {
+      //   title: 'My dashboard (Moderator)',
+      //   link: '/pages/ets1/mworkspace',
+      // },
+      // {
+      //   title: 'My dashboard (Instructor)',
+      //   link: '/pages/ets1/iworkspace',
+      // },
       {
         title: 'My E-TS1',
         link: '/pages/ets1/tworkspace',

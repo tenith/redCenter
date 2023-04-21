@@ -16,10 +16,12 @@ export class SearchComponent implements OnInit {
   searchEmail: string;
 
   dialogRef: NbDialogRef<ReportComponent>;
+  isModerator: boolean = false;
 
   constructor(public toastr: NbToastrService, private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService, private fileReport: FileReportService) { }
 
   ngOnInit(): void {
+    this.isModerator = this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin;
     this.reset();
   }
 
