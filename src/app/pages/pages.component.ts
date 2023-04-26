@@ -4,6 +4,7 @@ import { FirebaseAuthenticationService } from '../@core/shared/services/firebase
 import { FirestoreUserService } from '../@core/shared/services/firestore-user.service';
 
 import { allowMenuByRole, menuListDetail } from './pages-menu';
+import { roleName, userLevel } from '../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-pages',
@@ -33,11 +34,11 @@ export class PagesComponent implements OnInit {
       myList = allowMenuByRole[tempFirestoreUser.role];
     }
 
-    console.log('My menu list' + JSON.stringify(myList));
+    // console.log('My menu list' + JSON.stringify(myList));
     for(let i=0;i<myList.length;i++){
-      console.log('add menu detail ' + myList[i]);
+      // console.log('add menu detail ' + myList[i]);
       if(menuListDetail[myList[i]].title == 'E-TS1'){
-        if(tempFirestoreUser.role == 'Pilot' && tempFirestoreUser.level == 'Subscriber')
+        if(tempFirestoreUser.role == roleName.pilot && tempFirestoreUser.level == userLevel.subscriber)
           menuListDetail[myList[i]].children.splice(0,1);
       }
       tempMenu.push(menuListDetail[myList[i]]);

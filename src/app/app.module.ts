@@ -12,7 +12,6 @@ import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {
-  NbChatModule,
   NbDatepickerModule,
   NbDialogModule,
   NbMenuModule,
@@ -66,9 +65,6 @@ import { dbConfig } from '../environments/myconfigs';
       09 MAR 2023 wutthichair
     */
     NgxIndexedDBModule.forRoot(dbConfig),
-    NbChatModule.forRoot({
-      messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
-    }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
