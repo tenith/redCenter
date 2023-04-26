@@ -33,8 +33,7 @@ export class RoleComponent implements OnInit {
       this.router.navigate(['./pages']);
       return;
     }
-
-    
+        
     this.firestoreUserService.getFirestoreUserFromServer().then((doc)=> {
       if (doc.exists) {
         // console.log('getFirestoreUserFromServer :' + JSON.stringify(doc.data()));
@@ -49,9 +48,10 @@ export class RoleComponent implements OnInit {
       }
       else{
         this.firestoreUserService.initDefaultFirestoreUser();
+        this.tempFirestoreUser = this.firestoreUserService.getFirestoreUser();
         this.loading = false;
       }
-      // console.log(JSON.stringify(this.tempFirestoreUser));
+      // console.log('temp Firestore : ' + JSON.stringify(this.tempFirestoreUser));
     });          
   }
 
