@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 ~$projectHistory.xlsx
 src/app/pages/home/home.component.ts
+.firebase/hosting.ZGlzdA.cache

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
@@ -15,6 +15,8 @@ export class FileUploadComponent implements OnInit {
   uploadForm: FormGroup;
   fileToUpload: File = null;
 
+  uploading: boolean = false;
+  
   constructor(private formBuilder: FormBuilder, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService, private fileUploadDatabaseService: FileUploadDatabaseService) { 
   }
 
@@ -37,7 +39,7 @@ export class FileUploadComponent implements OnInit {
     // console.log('NAME: ' + this.fileToUpload.name);
 
     // console.log('Description: ' + this.uploadForm.get('fileDescription').value);
-
+    this.uploading = true;
     await this.fileUploadDatabaseService.uploadFile(this.fileToUpload,this.uploadForm.get('fileDescription').value)
     .then(response => {
       if(response){
@@ -50,6 +52,7 @@ export class FileUploadComponent implements OnInit {
       }
     })
     .catch(error=> console.log(error));
+    this.uploading = false;
   }
 
   reset(): void{

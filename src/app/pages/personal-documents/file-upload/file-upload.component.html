@@ -1,4 +1,4 @@
-<nb-card status="primary">
+<nb-card *ngIf="!uploading" status="primary">
     <nb-card-header>Upload your file</nb-card-header>
     <nb-card-body>
         <form [formGroup]="uploadForm" (ngSubmit)="upload()">
@@ -16,5 +16,17 @@
             </div>
         </form>
         <br>
+    </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="uploading" status="danger" size="giant" [nbSpinner]="loading"
+            nbSpinnerStatus="danger"
+            nbSpinnerSize="large"
+            nbSpinnerMessage="">
+    <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+    <nb-card-body style="text-align: center;">
+    <p>
+        Please wait, We are uploading your document to the server.
+    </p>
     </nb-card-body>
 </nb-card>
