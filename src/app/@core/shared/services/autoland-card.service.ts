@@ -5,17 +5,18 @@ import { of as observableOf,  Observable } from 'rxjs';
 import { AutolandSepCard } from '../interfaces/autoland-sep-card';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
+import { API } from '../../../../environments/myconfigs';
+import { httpOptions } from '../../../../environments/myconfigs';
+import { localStorageCollection } from '../../../../environments/myconfigs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AutolandCardService {
-  private apiURL = 'https://script.google.com/macros/s/AKfycbyVqLFc02e78IYpjEZYg6YW67fEYQIBiYi9FKXrh1ze3SB8oDz53lCLyxriLmIT72uJ/exec';
-
-  httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" })
-  };
-
-  autoLandCardLocalDBName: string = 'AutoLandCardLocalDBName';
+  private apiURL = API.autolandGoogleSerivce;
+  httpOptions = {headers: new HttpHeaders(httpOptions)};
+    
+  autoLandCardLocalDBName: string = localStorageCollection.autoLandCardCollectionName;
   autoLandCard: AutolandSepCard[];
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient) {
@@ -41,8 +42,6 @@ export class AutolandCardService {
   }
 
   deleteAllSepCards(): void {
-    // this.autoLandCard = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
-    //                      {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}] as AutolandSepCard[];
     localStorage.removeItem(this.autoLandCardLocalDBName);
   }
   
@@ -77,7 +76,6 @@ export class AutolandCardService {
     formData.append('cat',cat);
     formData.append('runway',runway);
     formData.append('airport',airport);
-
   
     return this.httpClient.post(this.apiURL,formData);
   }

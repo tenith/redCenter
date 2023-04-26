@@ -5,7 +5,7 @@ import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { RoleConfirmationComponent } from '../role-confirmation/role-confirmation.component';
 
-import { aocOptions, levelOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
+import { aocOptions, levelOptions, roleOptions } from '../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-role',

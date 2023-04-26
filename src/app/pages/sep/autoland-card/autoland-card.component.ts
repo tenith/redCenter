@@ -7,6 +7,8 @@ import { DatePipe } from '@angular/common';
 import { NbToastrService } from '@nebular/theme';
 import { Observable, Subscription } from 'rxjs';
 
+import { statusConfig } from '../../../../environments/myconfigs';
+
 @Component({
   selector: 'ngx-autoland-card',
   templateUrl: './autoland-card.component.html',
@@ -70,18 +72,18 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
   }
 
   setStatusSuccess(): void{
-    this.myStatus = 'success';
-    this.myIcon = 'checkmark-circle-2';
+    this.myStatus = statusConfig.success.status;
+    this.myIcon = statusConfig.success.icon;
   }
 
   setStatusWarning(): void{
-    this.myStatus = 'warning';
-    this.myIcon = 'alert-triangle';
+    this.myStatus = statusConfig.warning.status;
+    this.myIcon = statusConfig.warning.icon;
   }
 
   setStatusDanger(): void{
-    this.myStatus = 'danger';
-    this.myIcon = 'close-square';    
+    this.myStatus = statusConfig.danger.status;
+    this.myIcon = statusConfig.danger.icon;    
   }
 
   resetAutoLandForm(){

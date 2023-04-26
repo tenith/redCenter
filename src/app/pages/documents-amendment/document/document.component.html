@@ -34,7 +34,7 @@
     </div>
 
     <div *ngIf="!acknowledge" class="col-12 col-md-12 center">
-        <button *ngIf="acknowledgeRequired" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
+        <button *ngIf="acknowledgeRequired && !isAcknowledge" nbButton (click)="sign(announcement.code,announcement.title)" status="primary">Acknowledge</button>&nbsp;&nbsp;&nbsp;
         <button nbButton [routerLink]="['/pages/documents_amendment']" status="danger">Back to dashboard</button>
     </div>
     <!-- <div *ngIf="preview" class="col-12 col-md-12 center">

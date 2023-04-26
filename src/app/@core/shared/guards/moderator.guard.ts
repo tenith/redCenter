@@ -16,8 +16,7 @@ export class ModeratorGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
     const firestoreUser: FirestoreUser = this.firestoreUserService.getFirestoreUser();
-    
-    if(firestoreUser.level == 'Subscriber'){
+    if(!(this.firestoreUserService.isAdmin || this.firestoreUserService.isModerator)){
       this.router.navigate(['./pages/forbidden']);
       return false;
     }

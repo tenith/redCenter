@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
+import { API } from '../../../../environments/myconfigs';
+import { httpOptions } from '../../../../environments/myconfigs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class PerformanceService {
-  private apiURL = 'https://script.google.com/macros/s/AKfycbyAPnu61zvXx0AJ1xP0P8pNN1rkq7wqFi09x31W6vXtR2Ze66AKXgaRx7oXUrz8iz57/exec';
-
-  httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" })
-  };
+  private apiURL = API.performanceGoogleService;
+  httpOptions = {headers: new HttpHeaders(httpOptions)};
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient) { }
 

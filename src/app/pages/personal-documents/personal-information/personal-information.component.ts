@@ -57,6 +57,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
     //   this.email = this.firestoreUserService.getFirestoreUser().email;
     // }
   }
+  
   ngOnDestroy(): void {
     this.fileReportService.resetReport();
   }

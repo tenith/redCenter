@@ -7,6 +7,8 @@ import { FileReportService } from '../../../@core/shared/services/file-report.se
 import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
 import { NgxWatermarkOptions } from 'ngx-watermark';
 
+import { ngxWaterMarkOptions } from '../../../../environments/myconfigs';
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { DatePipe } from '@angular/common';
@@ -18,15 +20,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ReportComponent implements OnInit {
 
-  ngxWaterMarkOptions: NgxWatermarkOptions = {
-    text: '',
-    color: '#999',
-    width: 300,
-    height: 300,
-    alpha: 0.4,
-    degree: -45,
-    fontSize: '20px',
-  };
+  ngxWaterMarkOptions: NgxWatermarkOptions = ngxWaterMarkOptions;
 
   generatedBy: string = '';
   generatedAt: string = '';

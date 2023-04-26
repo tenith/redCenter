@@ -21,13 +21,13 @@ export class NotificationComponent implements OnInit {
   }
 
   clearAllNotification(): void{
-    console.log('clear all notification');
+    // console.log('clear all notification');
     this.notificationService.deleteAllNotification();
     this.notifications = [];
   }
 
   deleteNotification(notification: Notification): void{
-    console.log('delete notification');
+    // console.log('delete notification');
     this.notificationService.deleteNotification(notification);
 
     this.notifications = this.notificationService.getNotifications();

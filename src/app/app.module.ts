@@ -31,24 +31,13 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 /*
   09 MAR 2023 wutthichair
 */
-const dbConfig: DBConfig  = {
-  name: 'MyDb',
-  version: 1,
-  objectStoresMeta: [{
-    store: 'certificates',
-    storeConfig: { keyPath: 'id', autoIncrement: true },
-    storeSchema: [
-      { name: 'link', keypath: 'link', options: { unique: true } },
-      { name: 'uri', keypath: 'uri', options: { unique: false } }
-    ]
-  }]
-};
+import { dbConfig } from '../environments/myconfigs';
 
 @NgModule({
   declarations: [AppComponent],

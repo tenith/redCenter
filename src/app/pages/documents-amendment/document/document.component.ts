@@ -10,6 +10,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { DatePipe } from '@angular/common';
 import { NgxWatermarkOptions } from 'ngx-watermark';
 
+import { ngxWaterMarkOptions } from '../../../../environments/myconfigs';
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { NotificationService } from '../../../@core/shared/services/notification.service';
@@ -29,15 +31,7 @@ export class DocumentComponent implements OnInit {
   invoice: Invoice;
   announcement: Announcement;
 
-  ngxWaterMarkOptions: NgxWatermarkOptions = {
-    text: '',
-    color: '#999',
-    width: 300,
-    height: 300,
-    alpha: 0.4,
-    degree: -45,
-    fontSize: '20px',
-  };
+  ngxWaterMarkOptions: NgxWatermarkOptions = ngxWaterMarkOptions
 
   signatures: Signature[] = [];
 
@@ -106,13 +100,16 @@ export class DocumentComponent implements OnInit {
       }
     );
 
-    const temp = this.firestoreUserService.getFirestoreUser();
-    if(temp.level != 'Subscriber')
-      this.isModerator = true;
+    // const temp = this.firestoreUserService.getFirestoreUser();
+    this.isModerator = this.firestoreUserService.isModerator;
   }
 
   revisedAcknowledge(): void {
     this.acknowledgeRequired = this.announcement.acknowledge == 'No' ? false: true;
+
+    if(!this.acknowledgeRequired){
+      this.isAcknowledge = true;
+    }
 
     const tempIndex  = this.firestoreUserService.isAcknowledge(this.announcement.code);
     if(tempIndex >= 0){
@@ -125,7 +122,6 @@ export class DocumentComponent implements OnInit {
     this.signatures = this.announcement.signatures;
     this.source = new LocalDataSource(this.signatures);
 
-    // console.log(JSON.stringify(this.announcement));
     this.ngxWaterMarkOptions.text = this.firestoreUserService.getFirestoreUser().email;
   }
 

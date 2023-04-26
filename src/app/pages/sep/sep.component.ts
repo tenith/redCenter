@@ -40,7 +40,6 @@ export class SepComponent implements OnInit {
       Loading Information From Cache....
     */
     if(this.sepCardService.isInLocalStorage()){
-      // this.toastr.info('Info','Using SEP data from local storage.', {duration:10000});
       this.oneSepCards = [...(this.sepCardService.getAllSepCardsFromCache())];
       this.loading = false;
 

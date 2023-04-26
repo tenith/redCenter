@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy  } from '@angular/cor
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
-
+import { statusConfig } from '../../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -44,18 +44,18 @@ export class OneSepCardComponent implements OnInit {
   }
 
   setStatusSuccess(): void{
-    this.myStatus = 'success';
-    this.myIcon = 'checkmark-circle-2';
+    this.myStatus = statusConfig.success.status;
+    this.myIcon = statusConfig.success.icon;
   }
 
   setStatusWarning(): void{
-    this.myStatus = 'warning';
-    this.myIcon = 'alert-triangle';
+    this.myStatus = statusConfig.warning.status;
+    this.myIcon = statusConfig.warning.icon;
   }
 
   setStatusDanger(): void{
-    this.myStatus = 'danger';
-    this.myIcon = 'close-square';    
+    this.myStatus = statusConfig.danger.status;
+    this.myIcon = statusConfig.danger.icon;    
   }
 
 }

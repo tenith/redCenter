@@ -4,13 +4,14 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 
 import { FirestoreUserService } from './firestore-user.service';
 
 import  firestore  from 'firebase/compat/app';
-import { Observable } from 'rxjs';
+
+import { firestoreCollection } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadInformationService {
-  collectionName: string = '/fileUploadInformation';
+  collectionName: string = firestoreCollection.fileUploadCollectionName;
   collectionRef: AngularFirestoreCollection<any>;
 
   isModerator: boolean = false;
@@ -19,13 +20,8 @@ export class FileUploadInformationService {
 
   constructor(private afs: AngularFirestore, private firestoreUser: FirestoreUserService) { 
     this.collectionRef = this.afs.collection(this.collectionName);
-
-    const temp = this.firestoreUser.getFirestoreUser();
-    this.email = temp.email;
-    if(temp.level != 'Subscriber'){
-      this.isModerator = true;
-    }
-
+    this.isModerator = this.firestoreUser.isModerator;
+    this.email = this.firestoreUser.getFirestoreUser().email;
     this.init();
   }
 
@@ -46,7 +42,6 @@ export class FileUploadInformationService {
     ref.get()
     .then((docSnapshot)=>{
       if(!docSnapshot.exists){
-        // console.log('init files upload inforation');
         this.collectionRef.doc(this.email).set({files: []});
       }
       else

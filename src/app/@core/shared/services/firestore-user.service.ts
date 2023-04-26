@@ -4,15 +4,18 @@ import { FirebaseUser } from '../interfaces/firebase-user';
 import { FirestoreUser } from '../interfaces/firestore-user';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
-// import * as admin from 'firebase-admin';
 import  firestore  from 'firebase/compat/app';
 import { Invoice } from '../interfaces/invoice';
+
+import { firestoreCollection } from '../../../../environments/myconfigs';
+import { localStorageCollection } from '../../../../environments/myconfigs';
+import { userLevel } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreUserService {
-  collectionName: string = '/users';
+  collectionName: string = firestoreCollection.userCollectionName;
   token: string = '';
 
   canCreateFlag: boolean = false;
@@ -22,10 +25,9 @@ export class FirestoreUserService {
   public isAdmin: boolean = false;
 
   firestoreUser: FirestoreUser;
-  firestoreUserDBName: string = 'firestoreUserDBName';
+  firestoreUserDBName: string = localStorageCollection.firestoreUserDBNameCollectionName;
 
   collectionRef: AngularFirestoreCollection<FirestoreUser>;
-  // firestoreUser: FirestoreUser;
 
   constructor(public afs: AngularFirestore, public firebaseAuthen: FirebaseAuthenticationService) { 
     this.collectionRef = this.afs.collection(this.collectionName);
@@ -50,17 +52,17 @@ export class FirestoreUserService {
     this.reviseAuthorization();
   }
 
-  public reviseAuthorization(): void{
-    if(this.firestoreUser.level == 'Admin' || this.firestoreUser.level == 'Moderator')
+  public reviseAuthorization(): void{    
+    if(this.firestoreUser.level == userLevel.admin || this.firestoreUser.level == userLevel.moderatore)
       this.canCreateFlag = true;
 
-    if(this.firestoreUser.level == 'Admin')
+    if(this.firestoreUser.level == userLevel.admin)
       this.canDeleteFlag = true;
 
-    if(this.firestoreUser.level == 'Moderator')
+    if(this.firestoreUser.level == userLevel.moderatore)
       this.isModerator = true;
 
-    if(this.firestoreUser.level == 'Admin')
+    if(this.firestoreUser.level == userLevel.admin)
       this.isAdmin = true;
   }
 
@@ -94,7 +96,7 @@ export class FirestoreUserService {
       email: tempUser.email,
       aoc: '',
       role: '',
-      level: 'Subscriber',
+      level: userLevel.subscriber,
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
       tokenList: [],
@@ -102,7 +104,7 @@ export class FirestoreUserService {
     };
 
     this.firestoreUser = tempDeafult;
-    // console.log('init default firestoreuser :' + JSON.stringify(this.firestoreUser));
+
     localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).set(tempDeafult);
   }
@@ -136,19 +138,16 @@ export class FirestoreUserService {
     localStorage.setItem(this.firestoreUserDBName,JSON.stringify(this.firestoreUser));
     this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: role})
         .then(()=> {
-          console.log('Set role :' + role + ' completed');
+          // console.log('Set role :' + role + ' completed');
         })
         .catch(err => {
-          console.log('Set Role Error', err);
+          // console.log('Set Role Error', err);
         });
   }
 
   setInitialUser(aoc: string, role:string): Promise<any> {
     this.firestoreUser.role = role;
     this.firestoreUser.aoc = aoc;
-    // console.log('object before update' + JSON.stringify(this.firestoreUser));
-    // console.log(this.firestoreUser.role);
-    // console.log(this.firestoreUser.aoc);
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: this.firestoreUser.role, aoc:this.firestoreUser.aoc});
   }
 
@@ -166,9 +165,9 @@ export class FirestoreUserService {
         // console.log('Update Token array union:' + token + ' error' + error);
       });
 
-    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
+    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection(firestoreCollection.groupTokenListCollectionName);
 
-    roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc('tokenDocument').ref.update({
+    roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc(firestoreCollection.groupTokenDocumentName).ref.update({
         tokenList: firestore.firestore.FieldValue.arrayUnion(token)}).then(()=> {
           // console.log('Update Token array union:' + token + ' to group ' + this.firestoreUser.role + ' completed');
         })
@@ -186,8 +185,8 @@ export class FirestoreUserService {
         // console.log('x Token array remove:' + this.token + ' error' + error);
       });
 
-    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection('groupTokenList');
-    await roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc('tokenDocument').ref.update({
+    const roleCollection: AngularFirestoreCollection<any> = this.afs.collection(firestoreCollection.groupTokenListCollectionName);
+    await roleCollection.doc(this.firestoreUser.aoc).collection(this.firestoreUser.role).doc(firestoreCollection.groupTokenDocumentName).ref.update({
         tokenList: firestore.firestore.FieldValue.arrayRemove(this.token)}).then(()=> {
           // console.log('Update Token array union:' + this.token + ' to group ' + this.firestoreUser.role + ' completed');
         })
@@ -198,12 +197,6 @@ export class FirestoreUserService {
 
   deleteFirestoreUser(firestoreUser: FirestoreUser): Promise<any>{
     return this.collectionRef.doc(firestoreUser.email).delete();
-    // .then(()=> {
-    //     console.log('Delete ' + this.firebaseAuthen.getFirebaseUser().email + ' completed.');
-    //   })
-    //   .catch(error=> {
-    //     console.log(error);
-    //   });
   }
 
   logout(): void{

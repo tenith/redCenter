@@ -4,7 +4,7 @@ import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
-import { aocOptions, levelOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
+import { aocOptions, levelOptions, roleOptions } from '../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-authorization',
@@ -28,9 +28,7 @@ export class AuthorizationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  search(): void {
-    console.log('search() : ' + this.searchEmail);    
-    
+  search(): void {    
     this.firestoreUser = null;
     this.loading = true;
 
@@ -51,18 +49,16 @@ export class AuthorizationComponent implements OnInit {
 
     this.dialogRef = this.dialogService.open(ConfirmationComponent);
     this.dialogRef.onClose.subscribe(confirmation => {
-      console.log('result ' + confirmation);
       if(confirmation == 'confirm'){
-        console.log('delete user');
-        // this.firestoreUserService.deleteFirestoreUser(this.firestoreUser)
-        // .then(()=>{
-        //   this.toastr.primary('Completed','Delete ' + this.firestoreUser.email + ' completed', {duration:5000});
-        //   this.reset();
-        // })
-        // .catch(()=>{
-        //   this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
-        //   this.reset();
-        // });
+        this.firestoreUserService.deleteFirestoreUser(this.firestoreUser)
+        .then(()=>{
+          this.toastr.primary('Completed','Delete ' + this.firestoreUser.email + ' completed', {duration:5000});
+          this.reset();
+        })
+        .catch(()=>{
+          this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
+          this.reset();
+        });
       }
     });
     

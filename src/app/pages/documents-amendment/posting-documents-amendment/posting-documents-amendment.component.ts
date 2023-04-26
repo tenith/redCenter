@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { roleOptions } from '../../../@core/shared/interfaces/aoc-role-level';
+import { roleOptions } from '../../../../environments/myconfigs';
 import { AnnouncementService } from '../../../@core/shared/services/announcement.service';
 import { Announcement } from '../../../@core/shared/interfaces/announcement';
 import { NbToastrService } from '@nebular/theme';

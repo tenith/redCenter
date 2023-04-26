@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreUser } from '../../@core/shared/interfaces/firestore-user';
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 
-import { aocOptions, roleOptions } from '../../@core/shared/interfaces/aoc-role-level';
+import { aocOptions, roleOptions } from '../../../environments/myconfigs';
 import { Invoice } from '../../@core/shared/interfaces/invoice';
 
 @Component({

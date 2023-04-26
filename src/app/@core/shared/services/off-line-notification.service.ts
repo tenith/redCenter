@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 
+import { localDB } from '../../../../environments/myconfigs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class OffLineNotificationService {
 
-  private dbName = 'my-notification-database';
+  private dbName = localDB.dbName;
   private dbVersion = 1;
-  private objectStoreName = 'my-notification-object-store';
+  private objectStoreName = localDB.objectStoreName;
 
   private db: IDBDatabase;
 
@@ -30,7 +32,6 @@ export class OffLineNotificationService {
     };
 
     request.onerror = (event: Event) => {
-      // console.log('Failed to open IndexedDB:', (event.target as IDBRequest).error);
     };
   }
 
@@ -38,7 +39,6 @@ export class OffLineNotificationService {
     return new Promise((resolve) => {
       if (!this.db) {
         const intervalId = setInterval(() => {
-          // console.log('db null');
           if (this.db) {
             clearInterval(intervalId);
             resolve();
@@ -72,10 +72,7 @@ export class OffLineNotificationService {
       const transaction = this.db.transaction(this.objectStoreName, 'readonly');
       const objectStore = transaction.objectStore(this.objectStoreName);
       const request = objectStore.getAll();
-
-      // console.log('request' + JSON.stringify(request.result));
       request.onsuccess = () => {
-        // console.log('request' + JSON.stringify(request.result));
         resolve(request.result);
       };
 

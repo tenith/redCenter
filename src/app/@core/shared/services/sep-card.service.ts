@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { OneSepCard } from '../interfaces/one-sep-card';
-import { oneSepCardsMockUp } from '../../mock/sep-card-mockup-data';
 
-import { of as observableOf,  Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+
+import { API } from '../../../../environments/myconfigs';
+import { httpOptions } from '../../../../environments/myconfigs';
+import { localStorageCollection } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SepCardService {
-  private apiURL = 'https://script.google.com/macros/s/AKfycbyxxKjMeBQgDOj1s1A78fK-xGpOQv-YIXNgaJxQTIWncsFYt4z-szGrbURz3sCCJv3I/exec';
+  private apiURL = API.sepGoogleService;
+  httpOptions = {headers: new HttpHeaders(httpOptions)};
 
-  httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" })
-  };
-
-  sepCardLocalDBName: string = 'SEPCardLocalDBName';  
+  sepCardLocalDBName: string = localStorageCollection.sepLocalDBNameCollectionName;  
   oneSepCards: OneSepCard[];
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient, public dbService: NgxIndexedDBService) { 
@@ -30,9 +30,6 @@ export class SepCardService {
   }
 
   isInLocalStorage(): boolean{
-    // console.log('isInlocalost');
-    // console.log('value: ' + localStorage.getItem(this.sepCardLocalDBName));
-    // console.log(localStorage.getItem(this.sepCardLocalDBName) != '');
     return localStorage.getItem(this.sepCardLocalDBName) != null;
   }
 

@@ -3,16 +3,17 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FirestoreUserService } from './firestore-user.service';
 import { FileUploadInformation } from '../interfaces/file-upload-information';
 import { FileUploadInformationService } from './file-upload-information.service';
-import { error } from 'console';
 import { Observable } from 'rxjs';
+
+import { firebaseDB } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadDatabaseService {
 
-  path: string = '/uploads';
-  absPath: string = 'gs://red-center.appspot.com';
+  path: string = firebaseDB.dbPathName
+  absPath: string = firebaseDB.dbABSPathName;
 
   isModerator: boolean = false;
   email: string = '';
@@ -20,11 +21,9 @@ export class FileUploadDatabaseService {
   constructor(private storage: AngularFireStorage, private firestoreUser: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService) { 
     const temp = this.firestoreUser.getFirestoreUser();
     this.email = temp.email;
-    if(temp.level != 'Subscriber'){
-      this.isModerator = true;
-    }
-
     this.path = this.path + '/' + this.email;
+
+    this.isModerator = this.firestoreUser.isModerator;
   }
 
   public async uploadFile(file: File, fileDescription: string): Promise<boolean> {

@@ -10,17 +10,19 @@ import { map } from 'rxjs/operators';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+import { firestoreCollection } from '../../../../environments/myconfigs';
+import { API } from '../../../../environments/myconfigs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AnnouncementService {
-  collectionName: string = '/announcements';
+  collectionName: string = firestoreCollection.announcementCollectionName;
   collectionRef: AngularFirestoreCollection<Announcement>;
   announcements: Observable<Announcement[]>;
 
-  cacheAnnouncement: Announcement[];
-
-  private cloudFunctionAnnouncement = 'https://us-central1-red-center.cloudfunctions.net/sendNotification';
+  private cloudFunctionAnnouncement = API.cloudFunctionAnnouncement;
+  cacheAnnouncement: Announcement[]; 
 
   constructor(private httpClient:HttpClient, private afs: AngularFirestore, private firestoreUser: FirestoreUserService) { 
     this.collectionRef = this.afs.collection(this.collectionName, ref=> ref.where('audience','array-contains',this.firestoreUser.getFirestoreUser().role));
@@ -44,7 +46,6 @@ export class AnnouncementService {
 
   setAnnouncementInCache(announcements: Announcement[]){
     this.cacheAnnouncement = announcements;
-    // console.log(JSON.stringify(this.cacheAnnouncement));
   }
 
   getAnnouncementFromCache(code: string): Announcement{

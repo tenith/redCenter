@@ -4,24 +4,21 @@ import { Observable } from 'rxjs';
 import { News } from '../interfaces/news';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
+import { API } from '../../../../environments/myconfigs';
+import { httpOptions } from '../../../../environments/myconfigs';
+import { localStorageCollection } from '../../../../environments/myconfigs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
-  private apiURL = 'https://script.google.com/macros/s/AKfycby3jym8YGxvVAo4uOh6D5L1w_nwQzS7Mr_w3Tu-LS-xnkbJeUzvLPaz7Zbuo36mT2RL/exec';
+  private apiURL = API.newsGoogleService;
+  httpOptions = {headers: new HttpHeaders(httpOptions)};
 
-  httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" })
-  };
-
-  newsLocalDBName: string = 'NewsLocalDBName';  
+  newsLocalDBName: string = localStorageCollection.newsLocalDBNameCollectionName;  
   newsList: News[];
 
   constructor(public fireBaseAuthService: FirebaseAuthenticationService, public httpClient: HttpClient) { 
-    /*
-      16 MAR 2023 wutthichair
-        Loading SEP Cards information from localStorage
-    */
     const temp = localStorage.getItem(this.newsLocalDBName);
     this.newsList = JSON.parse(temp) as News[];
   }

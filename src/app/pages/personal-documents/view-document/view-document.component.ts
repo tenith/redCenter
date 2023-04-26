@@ -5,25 +5,17 @@ import { NbDialogRef } from '@nebular/theme';
 import { Observable } from 'rxjs';
 import { NgxWatermarkOptions } from 'ngx-watermark';
 
+import { ngxWaterMarkOptions } from '../../../../environments/myconfigs';
+
 @Component({
   selector: 'ngx-view-document',
   templateUrl: './view-document.component.html',
   styleUrls: ['./view-document.component.scss']
 })
 export class ViewDocumentComponent implements OnInit {
-
   @Input() data: any;
   downloadUrl$: Observable<string>;
-
-  ngxWaterMarkOptions: NgxWatermarkOptions = {
-    text: '',
-    color: '#999',
-    width: 300,
-    height: 300,
-    alpha: 0.4,
-    degree: -45,
-    fontSize: '20px',
-  };
+  ngxWaterMarkOptions: NgxWatermarkOptions = ngxWaterMarkOptions;
 
   constructor(private dialogRef: NbDialogRef<ViewDocumentComponent>, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
 

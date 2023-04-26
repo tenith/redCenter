@@ -6,10 +6,14 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { FirebaseUser } from '../interfaces/firebase-user';
+
+import { localStorageCollection } from '../../../../environments/myconfigs';
+import { settings } from '../../../../environments/myconfigs';
+
 /*
   01 Mar 2023 wutthichair
     Import required modules
@@ -24,17 +28,16 @@ export class FirebaseAuthenticationService {
     01 Mar 2023 wutthichair
   */
   private firebaseUser: FirebaseUser;
-  private firebaseUserStoreKey = "firebaseUserStoreKey";
+  private firebaseUserStoreKey = localStorageCollection.firebaseUserStoreKeyCollectionName;
 
   /*
     01 Mar 2023 wutthichair
       Revise constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router)
   */
-  constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, private toastrService: NbToastrService, public router: Router) {
+  constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router) {
     this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
-    if(this.firebaseUser != null){
-      // console.log('Cache Login');
-    }
+    // if(this.firebaseUser != null)
+      // this.toastrService.warning('Warning','This is cache login, some features will not working.', {duration:5000});
   }
 
   /*
@@ -77,7 +80,8 @@ export class FirebaseAuthenticationService {
             02 Mar 2023 wutthichair
               inhibit check airasia.com domain
           */
-          // throw new Error('Invalid Airasia Email');
+          if(settings.onlyAirasiaLogin)
+            throw new Error('Invalid Airasia Email');
         }
 
         /*
@@ -89,7 +93,6 @@ export class FirebaseAuthenticationService {
         this.router.navigate(['./authorization/role']);
       })
       .catch((error) => {
-        // this.firebaseUser = null;
         this.logout();
         throw new Error(error);
       });
@@ -115,7 +118,6 @@ export class FirebaseAuthenticationService {
   */
   private getDataWithExpiry(key: string){
     const itemStr = localStorage.getItem(key);
-    // if the item doesn't exist, return null
     if (!itemStr) {
       return null;
     }
@@ -125,8 +127,6 @@ export class FirebaseAuthenticationService {
 
     // compare the expiry time of the item with the current time
     if (now.getTime() > item.expiry) {
-      // If the item is expired, delete the item from storage
-      // and return null
       localStorage.removeItem(key);
       return null;
     }

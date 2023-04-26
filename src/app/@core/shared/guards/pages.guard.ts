@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthorizationComponent } from '../../../pages/authorization/authorization.component';
-import { DocumentsAmendmentComponent } from '../../../pages/documents-amendment/documents-amendment.component';
 import { PerformanceComponent } from '../../../pages/performance/performance.component';
-import { PersonalDocumentsComponent } from '../../../pages/personal-documents/personal-documents.component';
 import { SepComponent } from '../../../pages/sep/sep.component';
 import { FirestoreUser } from '../interfaces/firestore-user';
 import { FirestoreUserService } from '../services/firestore-user.service';
+
+import { userLevel } from '../../../../environments/myconfigs';
+import { roleName } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,9 @@ export class PagesGuard implements CanActivate {
     const firestoreUser: FirestoreUser = this.firestoreUserService.getFirestoreUser();
     const thisComponent: ActivatedRouteSnapshot["component"] = route.component;
 
-    console.log('PagesGuard');
-    console.log('User role : ' + firestoreUser.role);
-    console.log('User level : ' + firestoreUser.level);
+    // console.log('PagesGuard');
+    // console.log('User role : ' + firestoreUser.role);
+    // console.log('User level : ' + firestoreUser.level);
 
     /**
     Pilot : home, authorization, documents_amendment, personal_documents, performance, ets1, sep, logout;
@@ -36,7 +37,7 @@ export class PagesGuard implements CanActivate {
     */    
 
     if(thisComponent === AuthorizationComponent){
-      if(firestoreUser.level != 'Admin'){
+      if(firestoreUser.level != userLevel.admin){
         this.router.navigate(['./forbidden']);
         return false;
       }
@@ -45,7 +46,7 @@ export class PagesGuard implements CanActivate {
     }
 
     if(thisComponent === PerformanceComponent){
-      if((firestoreUser.role != 'Pilot')){
+      if((firestoreUser.role != roleName.pilot)){
         this.router.navigate(['./forbidden']);
         return false;
       }
@@ -54,7 +55,7 @@ export class PagesGuard implements CanActivate {
     }
 
     if(thisComponent === SepComponent){
-      if((firestoreUser.role != 'Pilot' && firestoreUser.role != 'Cabin_Crew')){
+      if((firestoreUser.role != roleName.pilot && firestoreUser.role != roleName.cabinCrew)){
         this.router.navigate(['./forbidden']);
         return false;
       }

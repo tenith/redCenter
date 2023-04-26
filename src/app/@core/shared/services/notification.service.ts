@@ -49,7 +49,7 @@ export class NotificationService {
   }
 
   addNotification(notification: Notification): void {
-    console.log('add notification' + JSON.stringify(notification));
+    // console.log('add notification' + JSON.stringify(notification));
     let tempIndex = this.notifications.indexOf(notification);
     if(tempIndex >=0 ) {
       return;
@@ -74,10 +74,10 @@ export class NotificationService {
 
   deleteNotificationReadOnlyDocuemntByCode(code: string): void{
     const tempIndex = this.notifications.findIndex(object=>{return object.code === code;});
-    console.log('temp index ' + tempIndex);
+    // console.log('temp index ' + tempIndex);
 
     if(tempIndex >= 0){
-      console.log(this.notifications[tempIndex].acknowledgeRequired);
+      // console.log(this.notifications[tempIndex].acknowledgeRequired);
       if(this.notifications[tempIndex].acknowledgeRequired == 'No'){
         this.notifications.splice(tempIndex,1);
         this.updateSubject.next();
