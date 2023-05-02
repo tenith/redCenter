@@ -9,11 +9,13 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { API } from '../../../../environments/myconfigs';
 import { httpOptions } from '../../../../environments/myconfigs';
 import { localStorageCollection } from '../../../../environments/myconfigs';
+import { settings } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SepCardService {
+  private redBookTMCURL = API.redBookTMC;
   private apiURL = API.sepGoogleService;
   httpOptions = {headers: new HttpHeaders(httpOptions)};
 
@@ -33,7 +35,20 @@ export class SepCardService {
     return localStorage.getItem(this.sepCardLocalDBName) != null;
   }
 
+  private getAllSepCardsFromTMC(): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-api-key', `xxxxxxxxxxxxxxxxxxxx`);
+
+    let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
+    return this.httpClient.get(this.redBookTMCURL,{params:params});
+  }
+
   getAllSepCards(): Observable<any> {
+    if(settings.redBookTMC)
+      return this.getAllSepCardsFromTMC();
+
+    
     let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
     return this.httpClient.get(this.apiURL,{params:params});
   }

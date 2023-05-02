@@ -50,6 +50,7 @@ export class SepComponent implements OnInit {
       Loading Information From Online Server....
     */
     this.sepCardService.getAllSepCards().subscribe(response => {
+      console.log('JSON REDBOOK API: ' + JSON.stringify(response));
       if(response == null) {
         this.toastr.danger('Error','There is no SEP information from online Server, Please check your internet connection or contact TMS.', {duration:10000});
         return;
