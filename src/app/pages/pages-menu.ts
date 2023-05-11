@@ -2,10 +2,10 @@ import { NbMenuItem } from '@nebular/theme';
 
 // home, authorization, documents_amendment, personal_documents, performance, ets1, sep, logout;
 export let allowMenuByRole = {
-  Admin: ['home', 'authorization', 'documents_amendment', 'personal_documents', 'performance', 'ets1', 'sep', 'logout'],
-  Pilot: ['home', 'documents_amendment', 'personal_documents', 'performance', 'ets1', 'sep', 'logout'],
+  Admin: ['home', 'authorization', 'documents_amendment', 'personal_documents', 'eVR', 'performance', 'ets1', 'sep', 'logout'],
+  Pilot: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'performance', 'ets1', 'sep', 'logout'],
   Cabin_Crew: ['home', 'documents_amendment', 'personal_documents', 'sep', 'logout'],
-  Flight_Operations: ['home', 'documents_amendment', 'personal_documents', 'logout'],
+  Flight_Operations: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'logout'],
   Training: ['home', 'documents_amendment', 'personal_documents', 'ets1', 'logout'],
   Engineer:  ['home', 'documents_amendment', 'personal_documents', 'logout'],
 }
@@ -14,6 +14,18 @@ export let menuListDetail = {
   authorization: { title: 'Authorization', icon: 'shield-outline', link: '/pages/authorization', },
   documents_amendment: { title: 'Documents Amendment', icon: 'flag-outline', link: '/pages/documents_amendment' },
   personal_documents: { title: 'Personal document(s)', icon: 'folder-outline', link: '/pages/personal_documents', },
+  eVR: { title: 'E-VR', icon: 'inbox-outline',  
+    children: [
+      {
+        title: 'Dashboard',
+        link: '/pages/eVR/dashboard',
+      },
+      {
+        title: 'E-VR Form',
+        link: '/pages/eVR/workspace',
+      },
+    ]
+  },
   performance: { title: 'My performance', icon: 'trending-up', link: '/pages/performance', },
   ets1: {
     title: 'E-TS1',

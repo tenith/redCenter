@@ -15,7 +15,7 @@ import { settings } from '../../../../environments/myconfigs';
   providedIn: 'root'
 })
 export class SepCardService {
-  private redBookTMCURL = API.redBookTMCTest;
+  private redBookTMCURL = API.redBookTMC;
   private key = API.redBookTMC_X;
   private apiURL = API.sepGoogleService;
   httpOptions = {headers: new HttpHeaders(httpOptions)};

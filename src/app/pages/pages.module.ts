@@ -16,6 +16,7 @@ import { Ets1Module } from './ets1/ets1.module';
 import { DocumentsAmendmentModule } from './documents-amendment/documents-amendment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { PersonalDocumentsModule } from './personal-documents/personal-documents.module';
+import { EVRModule } from './e-vr/e-vr.module';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { PersonalDocumentsModule } from './personal-documents/personal-documents
     NbMenuModule,
     PersonalDocumentsModule,
     DocumentsAmendmentModule,
+    
     /*
       09 MAR 2023 wutthichair
     */
@@ -32,11 +34,13 @@ import { PersonalDocumentsModule } from './personal-documents/personal-documents
     PerformanceModule,
     SepModule,
     Ets1Module,
+
+    EVRModule,
     
     MiscellaneousModule,
   ],
   declarations: [
-    PagesComponent
+    PagesComponent,
   ],
 })
 export class PagesModule {
