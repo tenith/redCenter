@@ -15,7 +15,8 @@ import { settings } from '../../../../environments/myconfigs';
   providedIn: 'root'
 })
 export class SepCardService {
-  private redBookTMCURL = API.redBookTMC;
+  private redBookTMCURL = API.redBookTMCTest;
+  private key = API.redBookTMC_X;
   private apiURL = API.sepGoogleService;
   httpOptions = {headers: new HttpHeaders(httpOptions)};
 
@@ -38,7 +39,7 @@ export class SepCardService {
   private getAllSepCardsFromTMC(): Observable<any> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    headers.append('x-api-key', `xxxxxxxxxxxxxxxxxxxx`);
+    headers.append('x-api-key', this.key);
 
     let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
     return this.httpClient.get(this.redBookTMCURL,{params:params});

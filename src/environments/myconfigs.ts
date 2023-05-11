@@ -24,7 +24,7 @@ export const roleName = {
 export const settings = {
     debug: false,
     onlyAirasiaLogin: false,
-    redBookTMC: true
+    redBookTMC: false
 };
 
 export const firestoreCollection = {
@@ -79,6 +79,8 @@ export const API = {
     newsGoogleService: 'https://script.google.com/macros/s/AKfycby3jym8YGxvVAo4uOh6D5L1w_nwQzS7Mr_w3Tu-LS-xnkbJeUzvLPaz7Zbuo36mT2RL/exec',
     performanceGoogleService: 'https://script.google.com/macros/s/AKfycbyAPnu61zvXx0AJ1xP0P8pNN1rkq7wqFi09x31W6vXtR2Ze66AKXgaRx7oXUrz8iz57/exec',
     redBookTMC: 'https://red-u.thaiairasia.co.th/training-api-prelaunch/v1/Redbook/GetRedbook',
+    redBookTMCTest: 'http://117.121.215.99:8105/training-api/v1/Redbook/GetRedbook',
+    redBookTMC_X: '7eOOFH0SIRlp9HLlVAMo28YYm56cRZNQ',
 };
 
 export const httpOptions = { "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" };
