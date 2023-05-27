@@ -10,7 +10,6 @@ import { PagesGuard } from '../@core/shared/guards/pages.guard';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { PersonalDocumentsComponent } from './personal-documents/personal-documents.component';
 import { ForbiddenComponent } from './miscellaneous/forbidden/forbidden.component';
-import { EVRComponent } from './e-vr/e-vr.component';
 
 const routes: Routes = [{
   path: '',

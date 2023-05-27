@@ -1,0 +1,4 @@
+<label>Please upload VR (html format only!!!)</label>
+<br>
+<input nbInput type="file" (change)="onFileChange($event)">
+<button nbButton (click)="uploadFile()" status="primary" [disabled]="!file">UPLOAD</button>

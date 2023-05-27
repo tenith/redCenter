@@ -1,4 +1,4 @@
-import { Component, OnDestroy, AfterViewInit, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Output, EventEmitter, ElementRef, Input } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 
 @Component({
@@ -9,6 +9,9 @@ export class TinyMCEComponent implements OnDestroy, AfterViewInit {
 
   @Output() editorKeyup = new EventEmitter<any>();
 
+  @Input() height?:number;
+  @Input() content?: string;
+
   editor: any;
 
   constructor(
@@ -17,6 +20,8 @@ export class TinyMCEComponent implements OnDestroy, AfterViewInit {
   ) { }
 
   ngAfterViewInit() {
+    if(this.height == undefined)
+      this.height = 320;
     tinymce.init({
       target: this.host.nativeElement,
       plugins: ['link', 'paste', 'table',],
@@ -29,8 +34,12 @@ export class TinyMCEComponent implements OnDestroy, AfterViewInit {
           this.editorKeyup.emit(editor.getContent());
         });
       },
-      height: '320',
+      height: this.height,
     });
+
+    if(this.content != undefined){
+      this.editor.setContent(this.content);
+    }
   }
 
   ngOnDestroy() {

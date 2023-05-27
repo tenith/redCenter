@@ -3,6 +3,7 @@ import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
 import { statusConfig } from '../../../../environments/myconfigs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -15,32 +16,32 @@ export class OneSepCardComponent implements OnInit {
   myStatus: string;
   myIcon: string;
 
-  cacheLink: string = '';
+  cacheLink: SafeResourceUrl;
+  uri: string = '';
 
-  constructor(public temp: SepCardService) {}
+  constructor(public temp: SepCardService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void { 
-    this.temp.getURIByLink(this.info.link).subscribe((data)=>{
+    this.temp.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
       if(data != null)
-        this.cacheLink = data.uri;
+        this.uri = data.uri;
     });
+    
+    const msInDay = 24 * 60 * 60 * 1000;
+    const today = new Date().getTime();
+    const expire = new Date(this.info.Expiry).getTime();
+    const diffDate = (expire - today) / msInDay;
 
-    if(this.info.validperiod.toUpperCase() == 'LIFETIME'){
+    if(diffDate < 0)
+      this.setStatusDanger();
+    if(diffDate > 30)
       this.setStatusSuccess();
-    }
-    else{
-      const msInDay = 24 * 60 * 60 * 1000;
-      const today = new Date().getTime();
-      const expire = new Date(this.info.expiry).getTime();
-      const diffDate = (expire - today) / msInDay;
+    if(diffDate <= 30 && diffDate >= 0)
+      this.setStatusWarning();    
+  }
 
-      if(diffDate < 0)
-        this.setStatusDanger();
-      if(diffDate > 30)
-        this.setStatusSuccess();
-      if(diffDate <= 30 && diffDate >= 0)
-        this.setStatusWarning();    
-    }
+  getSafeURL(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
   }
 
   setStatusSuccess(): void{

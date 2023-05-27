@@ -10,6 +10,7 @@ import { API } from '../../../../environments/myconfigs';
 import { httpOptions } from '../../../../environments/myconfigs';
 import { localStorageCollection } from '../../../../environments/myconfigs';
 import { settings } from '../../../../environments/myconfigs';
+import { resolve } from 'dns';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +37,15 @@ export class SepCardService {
     return localStorage.getItem(this.sepCardLocalDBName) != null;
   }
 
-  private getAllSepCardsFromTMC(): Observable<any> {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-api-key', this.key);
+  private getAllSepCardsFromTMC(): Observable<any> { 
+    const myParams = new HttpParams()
+    .set('email', this.fireBaseAuthService.getFirebaseUser().email);
+    
+    const myHeaders = new HttpHeaders()
+    .set('X-API-KEY', this.key)
+    .set('Content-Type', 'application/json');
 
-    let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
-    return this.httpClient.get(this.redBookTMCURL,{params:params});
+    return this.httpClient.get<any>(this.redBookTMCURL,{ params:myParams , headers: myHeaders});
   }
 
   getAllSepCards(): Observable<any> {
@@ -58,21 +61,18 @@ export class SepCardService {
     15 Mar 2023 wutthichair
       Impletement getImage
   */
-  async getBase64ImageFromUrl(imageUrl: string) {
-    var res = await fetch(imageUrl);
-    var blob = await res.blob();
-  
-    return new Promise((resolve, reject) => {
-      var reader  = new FileReader();
-      reader.addEventListener("load", function () {
-          resolve(reader.result);
-      }, false);
-  
-      reader.onerror = () => {
-        return reject(this);
-      };
-      reader.readAsDataURL(blob);
-    })
+  getBase64ImageFromUrl(imageUrl: string, name: string): void {
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/pdf')
+    .set('X-API-KEY', this.key);
+        
+    this.httpClient.get<any>(imageUrl, { headers:headers, responseType: 'blob' as 'json'}).subscribe(data => {
+        var reader  = new FileReader();
+        reader.addEventListener("load", () => {
+          this.dbService.add("certificates",{link:name ,uri:reader.result}).subscribe();
+        });
+        reader.readAsDataURL(data);
+      });
   }
 
   /*
@@ -80,19 +80,17 @@ export class SepCardService {
       Implement save Certificate into database
   */
   saveAllCertificate(): void{
+    console.log('saveAllCert');
     if(this.oneSepCards == null)
       return;
 
     for(let i=0;i<this.oneSepCards.length;i++){
-      if(this.oneSepCards[i].link != ''){
-        this.dbService.getByIndex("certificates",'link',this.oneSepCards[i].link).subscribe((data)=> {
+      if(this.oneSepCards[i].Link != ''){
+        const id = this.oneSepCards[i].Name.replace(/ /g,'_') + this.oneSepCards[i].Attended.replace(/ /g,'_');
+        this.dbService.getByIndex("certificates",'link', id).subscribe((data)=> {
           if(data == null){
-            this.getBase64ImageFromUrl(this.oneSepCards[i].link)
-              .then(result => {
-                console.log(JSON.stringify(result));
-                this.dbService.add("certificates",{link:this.oneSepCards[i].link,uri:result}).subscribe();
-              })
-              .catch(err => console.error(err));
+            console.log('data is null, have to request new one from server');
+            this.getBase64ImageFromUrl(this.oneSepCards[i].Link, id);
           }
         });
       }

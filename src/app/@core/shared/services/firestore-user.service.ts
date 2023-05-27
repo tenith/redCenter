@@ -96,6 +96,7 @@ export class FirestoreUserService {
       email: tempUser.email,
       aoc: '',
       role: '',
+      cId:'',
       level: userLevel.subscriber,
       displayName: tempUser.displayName,
       photoURL: tempUser.photoURL,
@@ -145,10 +146,11 @@ export class FirestoreUserService {
         });
   }
 
-  setInitialUser(aoc: string, role:string): Promise<any> {
+  setInitialUser(cId: string, aoc: string, role:string): Promise<any> {
+    this.firestoreUser.cId = cId;
     this.firestoreUser.role = role;
     this.firestoreUser.aoc = aoc;
-    return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({role: this.firestoreUser.role, aoc:this.firestoreUser.aoc});
+    return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).update({cId: this.firestoreUser.cId , role: this.firestoreUser.role, aoc:this.firestoreUser.aoc});
   }
 
   addToken(token: string): void{

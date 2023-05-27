@@ -1,1 +1,351 @@
-<p>workspace works!</p>
+<div #headerAction>
+    <button nbButton status="info" *ngIf="!readOnly" (click)="init()">Init</button>
+    &nbsp;&nbsp;
+    <button nbButton status="danger" (click)="reset()">Reset</button>
+    &nbsp;&nbsp;
+    <button nbButton status="primary" *ngIf="readOnly" (click)="submit()">Submit</button>
+    &nbsp;&nbsp;
+    <button nbButton status="primary" *ngIf="readOnly" (click)="myPrint()">Generate Report</button>
+</div>
+
+<a name="m__PageN1" rel="noreferrer"></a>
+<form [formGroup]="form">
+
+<table #page1 width="719" border="0" cellspacing="0" cellpadding="0">
+    <tr style="height:1px"><td width="3"></td><td width="9"></td><td width="11"></td><td width="1"></td><td width="51"></td><td width="2"></td><td width="21"></td><td width="9"></td><td width="1"></td><td width="25"></td><td width="7"></td><td width="8"></td><td width="1"></td><td width="2"></td><td width="14"></td><td width="25"></td><td width="2"></td><td width="6"></td><td width="11"></td><td width="12"></td><td width="17"></td><td width="6"></td><td width="14"></td><td width="11"></td><td width="1"></td><td width="3"></td><td width="4"></td><td width="17"></td><td width="2"></td><td width="13"></td><td width="17"></td><td width="22"></td><td width="1"></td><td width="17"></td><td width="28"></td><td width="6"></td><td width="18"></td><td width="12"></td><td width="5"></td><td width="1"></td><td width="20"></td><td width="6"></td><td width="19"></td><td width="11"></td><td width="16"></td><td width="1"></td><td width="12"></td><td width="8"></td><td width="26"></td><td width="3"></td><td width="1"></td><td width="17"></td><td width="10"></td><td width="10"></td><td width="14"></td><td width="11"></td><td width="5"></td><td width="27"></td><td width="4"></td><td width="2"></td><td width="2"></td><td width="5"></td><td width="40"></td><td width="7"></td><td width="1"></td><td width="3"></td><td width="1"></td><td width="1"></td></tr>
+    <tr style="height:18px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="4" class="s0">Page:</td><td></td><td colspan="4" class="s1">1</td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:7px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:6px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:1px">
+    <td colspan="6" rowspan="3" class="s5">LOCAL DATE:</td><td colspan="6" rowspan="3" class="s6">
+        <input *ngIf="!readOnly" id="vrDate" type="text" formControlName="date">
+        <div *ngIf="readOnly">{{form.get('date').value | uppercase}}</div>
+    </td>
+        <td rowspan="8" class="s10" style="font-size:1px"> </td><td colspan="40" class="s8" style="font-size:1px"> </td><td colspan="13" rowspan="8" class="s2" style="font-size:1px">
+        <img src="../../../../assets/images/vrHeader.jpg" width="92" height="50" alt=""></td><td></td><td></td>
+    </tr>
+    <tr style="height:5px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:10px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="8" rowspan="2" class="s3">VOYAGE REPORT</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:9px">
+    <td colspan="12" rowspan="3" class="s7">ID:</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:24px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:1px;">
+    <td rowspan="2"></td>
+        <td colspan="6" rowspan="2" class="s4">Endorsement</td><td rowspan="2" class="s9">
+            <input type="checkbox" class="form-checkbox focus:outline-none focus-visible:outline-none" id="endorsement" name="endorsement" formControlName="endorsement" value="Yes">
+        </td>
+        <td colspan="6" rowspan="2" class="s4">&nbsp;Ferry</td><td rowspan="2" class="s9">
+            <input type="checkbox" id="ferry" name="ferry" formControlName="ferry" value="Yes">                
+        </td>
+        <td colspan="5" rowspan="2" class="s4">&nbsp;Training</td><td rowspan="2" class="s9">
+            <input type="checkbox" id="training" name="training" formControlName="training" value="Yes">
+        </td>
+        <td colspan="3" rowspan="2" class="s4">&nbsp;Test Flt</td><td colspan="2" rowspan="2" class="s9">
+            <input type="checkbox" id="testFlt" name="testFlt" formControlName="testFlt" value="Yes">
+        </td>
+        <td colspan="5" rowspan="2" class="s4">&nbsp;Revenue</td><td colspan="2" rowspan="2" class="s9">
+            <input type="checkbox" id="revenue" name="revenue" formControlName="revenue" value="Yes">
+        </td>
+        <td colspan="5" rowspan="2" class="s4">&nbsp;Charter</td><td rowspan="2" class="s9">
+            <input type="checkbox" id="charter" name="charter" formControlName="charter" value="Yes">
+        </td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:15px">
+    <td colspan="2" rowspan="2" class="s24" style="font-size:1px"> </td><td colspan="8" class="s1">(NMC USE ONLY)</td><td colspan="2" rowspan="2" class="s1" style="font-size:1px"> </td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:5px">
+    <td colspan="8" class="s1" style="font-size:1px"> </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:1px">
+    <td colspan="53" class="s8" style="font-size:1px"> </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:13px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:17px">
+    <td colspan="3" class="s11"><a routerLink="." (click)="newCrew()">#</a></td><td colspan="6" class="s29">AIMS ID</td><td colspan="6" class="s29">POS</td><td colspan="43" class="s30">                              <wbr>&nbsp;&nbsp;NAME</td><td colspan="10" class="s29">REPORT</td>
+    </tr>
+    
+    <tbody formArrayName="crews">
+    <tr *ngFor="let crewFormGroup of getFormArrayByName('crews').controls; let i=index;" [formGroupName]="i" style="height:17px" >
+        <td colspan="3" class="s31"><a routerLink="." (click)="confirmDeleteCrew(i)">{{i + 1}}</a></td>
+        <td colspan="6" class="s32">
+            <input *ngIf="!readOnly" required id="id+{{i}}" type="text" formControlName="id" style="text-align: center;">
+            <div *ngIf="readOnly">{{crewFormGroup.get('id').value | uppercase}}</div>
+        </td>
+        <td colspan="6" class="s32">
+            <select *ngIf="!readOnly" required id="position+{{i}}" formControlName="position">
+                <option *ngFor="let option of vrPostOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <div *ngIf="readOnly">{{crewFormGroup.get('position').value | uppercase}}</div>
+        </td>
+        <td colspan="43" class="s33">
+            <input *ngIf="!readOnly" required id="name+{{i}}" type="text" class="uppercase" formControlName="name">
+            <div *ngIf="readOnly">{{crewFormGroup.get('name').value | uppercase}}</div>
+        </td>
+        <td colspan="10" class="s32">
+            <input *ngIf="!readOnly" required type="time" id="report+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="report">
+            <div *ngIf="readOnly">{{crewFormGroup.get('report').value | uppercase}}</div>
+            <!-- <input id="report+{{i}}" type="text" formControlName="report"> --> 
+        </td>
+    </tr>
+    </tbody>
+
+    <tr style="height:3px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:17px">
+    <td></td><td colspan="6" class="s4">All Time in UTC</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:1px">
+    <td colspan="3" rowspan="2" class="s11"><a routerLink="." (click)="newFlight()">#</a></td><td colspan="2" rowspan="2" class="s29">FLT NO.</td><td colspan="6" rowspan="2" class="s29">REG.</td><td colspan="6" rowspan="2" class="s29">FROM</td><td colspan="5" rowspan="2" class="s29">TO</td><td colspan="7" rowspan="2" class="s29">STD</td><td colspan="3" rowspan="2" class="s29">STA</td><td colspan="4" rowspan="2" class="s29">BLK</td><td colspan="5" rowspan="2" class="s29">OFF CHK</td><td colspan="4" rowspan="2" class="s29">T/O</td><td colspan="5" rowspan="2" class="s29">LDG</td><td colspan="5" rowspan="2" class="s29">ON CHK</td><td colspan="7" rowspan="2" class="s29">ACT BLK</td><td colspan="6" rowspan="2" class="s29">PF</td>
+    </tr>
+    <tr style="height:16px">
+    
+    </tr>
+
+    <tbody formArrayName="flights">
+        <tr *ngFor="let flightFormGroup of getFormArrayByName('flights').controls; let i=index;" [formGroupName]="i" style="height:17px" >
+            <td colspan="3" class="s31"><a routerLink="." (click)="confirmDeleteFlight(i)">{{i + 1}}</a></td>
+            <td colspan="2" class="s32">
+                <input *ngIf="!readOnly" id="fltNO+{{i}}" type="text" formControlName="fltNO" class="uppercase" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('fltNO').value | uppercase}}</div>
+            </td>
+            <td colspan="6" class="s32">
+                <input *ngIf="!readOnly" id="registration+{{i}}" type="text" formControlName="registration" class="uppercase" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('registration').value | uppercase}}</div>
+            </td>
+            <td colspan="6" class="s32">
+                <input *ngIf="!readOnly" id="from+{{i}}" type="text" formControlName="from" class="uppercase" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('from').value | uppercase}}</div>
+            </td>
+            <td colspan="5" class="s32">
+                <input *ngIf="!readOnly" id="to+{{i}}" type="text" formControlName="to" class="uppercase" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('to').value | uppercase}}</div>
+            </td>
+            <td colspan="7" class="s32">
+                <input *ngIf="!readOnly" type="time" id="std+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="std">
+                <div *ngIf="readOnly">{{flightFormGroup.get('std').value | uppercase}}</div>
+            </td>
+            <td colspan="3" class="s32">
+                <input *ngIf="!readOnly" type="time" id="sta+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="sta">
+                <div *ngIf="readOnly">{{flightFormGroup.get('sta').value | uppercase}}</div>
+            </td>
+            <td colspan="4" class="s32">
+                <input *ngIf="!readOnly" type="time" id="blk+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="blk" readonly>
+                <div *ngIf="readOnly">{{flightFormGroup.get('blk').value | uppercase}}</div>
+            </td>
+            <td colspan="5" class="s32">
+                <input *ngIf="!readOnly" type="time" id="offChk+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="offChk">
+                <div *ngIf="readOnly">{{flightFormGroup.get('offChk').value | uppercase}}</div>
+            </td>
+            <td colspan="4" class="s32">
+                <input *ngIf="!readOnly" type="time" id="takeOff+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="takeOff">
+                <div *ngIf="readOnly">{{flightFormGroup.get('takeOff').value | uppercase}}</div>
+            </td>
+            <td colspan="5" class="s32">
+                <input *ngIf="!readOnly" type="time" id="landing+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="landing">
+                <div *ngIf="readOnly">{{flightFormGroup.get('landing').value | uppercase}}</div>
+            </td>
+            <td colspan="5" class="s32">
+                <input *ngIf="!readOnly" type="time" id="onChk+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="onChk">
+                <div *ngIf="readOnly">{{flightFormGroup.get('onChk').value | uppercase}}</div>
+            </td>
+            <td colspan="7" class="s32">
+                <input *ngIf="!readOnly" type="time" id="actBlk+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="actBlk" readonly>
+                <div *ngIf="readOnly">{{flightFormGroup.get('actBlk').value | uppercase}}</div>
+            </td>
+            <td colspan="6" class="s32">
+                <div *ngIf="readOnly">{{flightFormGroup.get('PFId').value | uppercase}}</div>
+                <input *ngIf="!readOnly" id="PFId+{{i}}" type="text" formControlName="PFId" style="text-align: center;">
+                <!-- <select id="PFId+{{i}}" formControlName="PFId">
+                    <ng-container *ngFor="let crew of crewList;">
+                        <option *ngIf="crew.position == 'CP*' || crew.position == 'CP' || crew.position == 'SFO' || crew.position == 'FO'" [value]="crew.id">{{ crew.id }}</option>
+                    </ng-container>
+                </select> -->
+            </td>                
+        </tr>
+    </tbody>
+    <tr style="height:10px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:15px">
+    <td></td><td></td><td></td><td></td><td colspan="12" class="s15">FUEL</td><td colspan="38" class="s34">DEPARTURE DELAY</td><td colspan="13" class="s34">ARRIVAL DELAY</td><td></td>
+    </tr>
+    <tr style="height:15px">
+    <td colspan="4" class="s16">#</td><td colspan="4" class="s35">UPLIFT (LTR)</td><td colspan="8" class="s35">BURN OFF</td><td colspan="7" class="s36">TIME</td><td colspan="8" class="s36">CODE</td><td colspan="4" class="s36">TIME</td><td colspan="7" class="s36">CODE</td><td colspan="6" class="s36">TIME</td><td colspan="6" class="s36">CODE</td><td colspan="5" class="s36">TIME</td><td colspan="8" class="s36">CODE</td><td></td>
+    </tr>
+
+    <tbody formArrayName="flights">
+        <tr *ngFor="let flightFormGroup of getFormArrayByName('flights').controls; let i=index;" [formGroupName]="i" style="height:17px" >
+            <td colspan="4" class="s37">{{i + 1}}</td>
+            <td colspan="4" class="s38">
+                <input *ngIf="!readOnly" id="uplift+{{i}}" type="text" class="uppercase" formControlName="uplift">
+                <div *ngIf="readOnly">{{flightFormGroup.get('uplift').value | uppercase}}</div>
+            </td>
+            <td colspan="8" class="s38">
+                <input *ngIf="!readOnly" id="burn+{{i}}" type="text" class="uppercase" formControlName="burn">
+                <div *ngIf="readOnly">{{flightFormGroup.get('burn').value | uppercase}}</div>
+            </td>
+            <td colspan="7" class="s38">
+                <input *ngIf="!readOnly" type="time" id="departureDelayTime1+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="departureDelayTime1">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayTime1').value | uppercase}}</div>
+            </td>
+            <td colspan="8" class="s38">
+                <input *ngIf="!readOnly" id="departureDelayCode1+{{i}}" type="text" class="uppercase" formControlName="departureDelayCode1" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayCode1').value | uppercase}}</div>
+            </td>
+            <td colspan="4" class="s38">
+                <input *ngIf="!readOnly" type="time" id="departureDelayTime2+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="departureDelayTime2">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayTime2').value | uppercase}}</div>
+            </td>
+            <td colspan="7" class="s38">
+                <input *ngIf="!readOnly" id="departureDelayCode2+{{i}}" type="text" class="uppercase" formControlName="departureDelayCode2" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayCode2').value | uppercase}}</div>
+            </td>
+            <td colspan="6" class="s38">
+                <input *ngIf="!readOnly" type="time" id="departureDelayTime3+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="departureDelayTime3">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayTime3').value | uppercase}}</div>
+            </td>
+            <td colspan="6" class="s38">
+                <input *ngIf="!readOnly" id="departureDelayCode3+{{i}}" type="text" class="uppercase" formControlName="departureDelayCode3" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('departureDelayCode3').value | uppercase}}</div>
+            </td>
+            <td colspan="5" class="s38">
+                <input *ngIf="!readOnly" type="time" id="arrivalDelayTime1+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="arrivalDelayTime1">
+                <div *ngIf="readOnly">{{flightFormGroup.get('arrivalDelayTime1').value | uppercase}}</div>
+            </td>
+            <td colspan="8" class="s38">
+                <input *ngIf="!readOnly" id="arrivalDelayCode1+{{i}}" type="text" class="uppercase" formControlName="arrivalDelayCode1" style="text-align: center;">
+                <div *ngIf="readOnly">{{flightFormGroup.get('arrivalDelayCode1').value | uppercase}}</div>
+            </td>
+            <td></td>             
+        </tr>
+    </tbody>
+    <tr style="height:11px;">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    
+    <tr style="height:17px">
+        <td></td><td colspan="66" class="s4">Duty Information [my duty time: {{myDutyTime}}] / [max duty time: {{maxDutyTime}}]<td></td>
+    </tr>
+
+    <tbody *ngIf="extended">
+    <tr>
+        <td colspan="68" style="font-size:1px;" class="s252"></td>
+    </tr>
+    <tr style="height:40px">
+        <td colspan="24" rowspan="3" class="s26" style="font-size:1px"> </td><td colspan="19" class="s3111" style="font-size:10px"></td>
+        <td colspan="25" rowspan="3" class="s311" [style.background-color]="isRequired('extendedSignature') && form.get('extendedSignature').value == '' ? '#ff8e8e' : ''">
+            <!-- <img *ngIf="eTS1.signatureInstructor != ''" align="center" src="{{eTS1.signatureInstructor}}" [ngStyle]="{'background-color': eTS1.signatureInstructor == '' ? '#FFCCCB' : null}" (click)="openInstructorDialog()" width="250" height="50">
+            <img *ngIf="eTS1.signatureInstructor == ''" align="center" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" [ngStyle]="{'background-color': eTS1.signatureInstructor == '' ? '#FFCCCB' : null}" (click)="openInstructorDialog()" width="250" height="50"> -->
+            <img *ngIf="form.get('extendedSignature').value != ''" style="display: block; margin-left: auto; margin-right: auto;" src="{{form.get('extendedSignature').value}}" width="140" height="70">
+            <img *ngIf="form.get('extendedSignature').value == '' && isRequired('extendedSignature')" style="display: block; margin-left: auto; margin-right: auto;" src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" (click)="openSignaturePad('extendedSignature')" width="140" height="70">
+        </td>
+        <!-- 239.95 x 71-->
+    </tr>
+    <tr style="height:15px">
+    <td colspan="2" rowspan="4" class="s27" style="font-size:1px"> </td><td colspan="17" class="s22">FDP/FT Extension / Rest <wbr>Reduction Statement</td>
+    <!-- <td colspan="25" rowspan="2" class="s311">my extend signature</td> -->
+    </tr>
+    <tr style="height:11px">
+    <td colspan="17" rowspan="2" class="s23">I certify that the Crew were <wbr>fit for extension <br>(as required).</td>
+    </tr>
+    <tr style="height:15px">
+    <td colspan="24" class="s41">Extn&nbsp;/&nbsp;Rest&nbsp;FDP/FT&nbsp;&nbsp;&nbsp;<wbr>Hours:&nbsp;{{extended?hExtended:''}}&nbsp;Minutes:&nbsp;{{extended?mExtended:''}}&nbsp;</td><td colspan="6" rowspan="2" class="s274" style="font-size:1px"> </td><td colspan="8" class="s18">SIGNATURE</td><td colspan="11" rowspan="2" class="s271" style="font-size:1px"> </td>
+    </tr>
+    <tr style="height:4px">
+    <td colspan="24" class="s28" style="font-size:1px"> </td><td colspan="17" class="s27" style="font-size:1px"> </td><td colspan="8" class="s27" style="font-size:1px"> </td>
+    </tr>
+    <tr style="height:20px">
+        <td colspan="68" style="font-size:1px;"></td>
+    </tr>
+    </tbody>
+    <tr style="height:58px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td colspan="17" rowspan="4" [style.background-color]="isRequired('vrSignature') && form.get('vrSignature').value == '' ? '#ff8e8e' : ''">
+            <img *ngIf="form.get('vrSignature').value != ''" style="display: block; margin-left: auto; margin-right: auto;" src="{{form.get('vrSignature').value}}" width="160" height="80">
+            <img *ngIf="form.get('vrSignature').value == '' && canSign()" style="display: block; margin-left: auto; margin-right: auto;" src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" (click)="openSignaturePad('vrSignature')" width="160" height="80">
+        </td>
+        <!-- 193.55 x 98-->
+        <td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:15px">
+        <td colspan="19" class="s181">Use opposite side for <wbr>additional comments</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+    </tr>
+    <tr style="height:11px">
+        <td colspan="18" rowspan="2" class="s181">Version: 18/02</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+    </tr>
+    <tr style="height:4px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+    </tr>
+    <tr style="height:14px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="17" class="s18">CAPTAIN&#39;S SIGNATURE AND DATE</td><td></td><td></td><td></td><td></td>
+    </tr>
+</table>
+<br>
+<hr>
+<br>
+<a name="m__PageN2" rel="noreferrer"></a>
+<table #page2 width="719" border="0" cellspacing="0" cellpadding="0">
+    <tr style="height:1px"><td width="3"></td><td width="9"></td><td width="11"></td><td width="1"></td><td width="51"></td><td width="2"></td><td width="21"></td><td width="9"></td><td width="1"></td><td width="25"></td><td width="7"></td><td width="8"></td><td width="1"></td><td width="2"></td><td width="14"></td><td width="25"></td><td width="2"></td><td width="6"></td><td width="11"></td><td width="12"></td><td width="17"></td><td width="6"></td><td width="14"></td><td width="11"></td><td width="1"></td><td width="3"></td><td width="4"></td><td width="17"></td><td width="2"></td><td width="13"></td><td width="17"></td><td width="22"></td><td width="1"></td><td width="17"></td><td width="28"></td><td width="6"></td><td width="18"></td><td width="12"></td><td width="5"></td><td width="1"></td><td width="20"></td><td width="6"></td><td width="19"></td><td width="11"></td><td width="16"></td><td width="1"></td><td width="12"></td><td width="8"></td><td width="26"></td><td width="3"></td><td width="1"></td><td width="17"></td><td width="10"></td><td width="10"></td><td width="14"></td><td width="11"></td><td width="5"></td><td width="27"></td><td width="4"></td><td width="2"></td><td width="2"></td><td width="5"></td><td width="40"></td><td width="7"></td><td width="1"></td><td width="3"></td><td width="1"></td><td width="1"></td></tr>
+    <tr style="height:18px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="4" class="s0">Page:</td><td></td><td colspan="4" class="s1">2</td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:7px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:6px">
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:15px">
+    <td colspan="68" class="s42">ADDITIONAL COMMENTS:</td>
+    </tr>
+    <tr style="height:800px">
+    <td colspan="68" class="s25">
+        <textarea hidden id="comment" formControlName="comment" placeholder="Please enter body. You can enter HTML code."></textarea>
+        <!-- <editor [init]="{plugins: 'link'}"></editor> -->
+        <ngx-tiny-mce *ngIf="!readOnly" (editorKeyup)="edit($event)" [content]="form.get('comment').value" [height]="750"></ngx-tiny-mce>
+        <div style="height: 750px; align-items: center; width: 95%; margin-left: auto; margin-right: auto; display: block;" *ngIf="readOnly" [innerHTML]="form.get('comment').value"></div>
+    </td>
+    </tr>
+    <tr style="height:58px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td colspan="17" rowspan="4" [style.background-color]="isRequired('vrSignature') && form.get('vrSignature').value == '' ? '#ff8e8e' : ''">
+            <img *ngIf="form.get('vrSignature').value != ''" style="display: block; margin-left: auto; margin-right: auto;" src="{{form.get('vrSignature').value}}" width="160" height="80">
+            <img *ngIf="form.get('vrSignature').value == '' && canSign()" style="display: block; margin-left: auto; margin-right: auto;" src="data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" (click)="openSignaturePad('vrSignature')" width="160" height="80">
+        </td>
+        <td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:15px">
+        <td colspan="19" class="s181"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr style="height:11px">
+        <td colspan="18" rowspan="2" class="s181">Version: 18/02</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+    </tr>
+    <tr style="height:4px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        
+    </tr>
+    <tr style="height:14px">
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="17" class="s18">CAPTAIN&#39;S SIGNATURE AND DATE</td><td></td><td></td><td></td><td></td>
+    </tr>
+</table>
+</form>

@@ -56,11 +56,10 @@ export class RoleComponent implements OnInit {
   }
 
   setInitialUser(): void{
-    // console.log(JSON.stringify(this.tempFirestoreUser));
-
     this.dialogRef = this.dialogService.open(RoleConfirmationComponent,{
       context: {
         data: {
+          cId:this.tempFirestoreUser.cId,
           role:this.tempFirestoreUser.role,
           aoc:this.tempFirestoreUser.aoc, 
         }
@@ -69,7 +68,7 @@ export class RoleComponent implements OnInit {
     
     this.dialogRef.onClose.subscribe(confirm => {
       if(confirm == 'affirm'){
-        this.firestoreUserService.setInitialUser(this.tempFirestoreUser.aoc, this.tempFirestoreUser.role)
+        this.firestoreUserService.setInitialUser(this.tempFirestoreUser.cId, this.tempFirestoreUser.aoc, this.tempFirestoreUser.role)
         .then(()=>{
           this.router.navigate(['./pages']);  
         })

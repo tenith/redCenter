@@ -12,6 +12,8 @@ import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbCardModu
 import { RoleComponent } from './role/role.component';
 import { RoleConfirmationComponent } from './role-confirmation/role-confirmation.component';
 
+import { NbInputModule } from '@nebular/theme';
+
 @NgModule({
   declarations: [
     AuthorizationComponent,
@@ -20,6 +22,7 @@ import { RoleConfirmationComponent } from './role-confirmation/role-confirmation
   ],
   imports: [
     CommonModule,
+    NbInputModule,
     NbSelectModule,
     FormsModule,
     AuthorizationRoutingModule,

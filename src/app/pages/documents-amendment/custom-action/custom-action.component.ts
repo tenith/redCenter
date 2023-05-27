@@ -37,7 +37,6 @@ export class CustomActionComponent implements OnInit {
   }
 
   makeAnnouncement(): void{
-    console.log('delte' + this.rowData.code);
     this.confirmDialogRef = this.dialogService.open(AnnouncementConfirmationComponent,{
       context: {
         data: {

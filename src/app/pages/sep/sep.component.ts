@@ -56,10 +56,14 @@ export class SepComponent implements OnInit {
         return;
       } 
 
-      const tempSubjects = response['courses'];
+      const tempSubjects = response['Courses'];
+
       let temp: OneSepCard[] = [];
       for(let i: number = 0; i < tempSubjects.length; i++){
-        temp.push(response[tempSubjects[i]][0]);
+        if(response[tempSubjects[i]] != undefined){
+          console.log('Push: ' +  JSON.stringify(response[tempSubjects[i]][0]));
+          temp.push(response[tempSubjects[i]][0]);
+        }
       }
 
       this.loading = false;
@@ -96,18 +100,18 @@ export class SepComponent implements OnInit {
     for(let i=0;i<this.oneSepCards.length;i++){
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
-      const expire = new Date(this.oneSepCards[i].expiry).getTime();
+      const expire = new Date(this.oneSepCards[i].Expiry).getTime();
       const diffDate = (expire - today) / msInDay;
 
       if(diffDate < 0)
-        this.expiredList.push(this.oneSepCards[i].name);
+        this.expiredList.push(this.oneSepCards[i].Name);
       if(diffDate > 30)
-        this.validList.push(this.oneSepCards[i].name);
+        this.validList.push(this.oneSepCards[i].Name);
       if(diffDate <= 30 && diffDate >= 0)
-        this.aboutList.push(this.oneSepCards[i].name);
+        this.aboutList.push(this.oneSepCards[i].Name);
 
-      if(this.oneSepCards[i].expiry == '')
-        this.validList.push(this.oneSepCards[i].name);
+      if(this.oneSepCards[i].Expiry == '')
+        this.validList.push(this.oneSepCards[i].Name);
     }
   }
 
@@ -174,7 +178,7 @@ export class SepComponent implements OnInit {
       return false;
     
     for(let i: number = 0; i < this.oneSepCards.length; i++)
-      if(this.oneSepCards[i].name.includes('LVO'))
+      if(this.oneSepCards[i].Name.includes('LVO'))
         return true;
     
     return false;
