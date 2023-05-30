@@ -44,6 +44,7 @@ export class SepComponent implements OnInit {
       this.loading = false;
 
       this.loadAutolandCards();
+      this.updateSummary();
     }
           
     /*

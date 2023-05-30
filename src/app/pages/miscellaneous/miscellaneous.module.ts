@@ -6,6 +6,7 @@ import { MiscellaneousRoutingModule } from './miscellaneous-routing.module';
 import { MiscellaneousComponent } from './miscellaneous.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { OfflineComponent } from './offline/offline.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,10 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
     MiscellaneousComponent,
     NotFoundComponent,
     ForbiddenComponent,
+    OfflineComponent,
   ],
+  exports: [
+    OfflineComponent,
+  ]
 })
 export class MiscellaneousModule { }

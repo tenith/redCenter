@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy  } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy  } from '@angular/core';
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
 import { statusConfig } from '../../../../environments/myconfigs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Subscription, interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -11,21 +13,29 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./one-sep-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OneSepCardComponent implements OnInit {
+export class OneSepCardComponent implements OnInit, OnDestroy {
   @Input() info!: OneSepCard;
   myStatus: string;
   myIcon: string;
 
   cacheLink: SafeResourceUrl;
   uri: string = '';
+  dataReady: boolean = false;
 
-  constructor(public temp: SepCardService, private sanitizer: DomSanitizer) {}
+  private pollSubscription: Subscription;
+  safeURL: SafeResourceUrl;
+
+  constructor(public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
+  ngOnDestroy(): void {
+    this.stopPolling();
+  }
 
   ngOnInit(): void { 
-    this.temp.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
-      if(data != null)
-        this.uri = data.uri;
-    });
+    this.startPolling();
+    // this.temp.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
+    //   if(data != null)
+    //     this.uri = data.uri;
+    // });
     
     const msInDay = 24 * 60 * 60 * 1000;
     const today = new Date().getTime();
@@ -40,8 +50,43 @@ export class OneSepCardComponent implements OnInit {
       this.setStatusWarning();    
   }
 
+  startPolling() {
+    this.pollSubscription = interval(2000) // Adjust the polling interval as per your requirements
+      .pipe(take(100)) // Limit the number of polls to avoid infinite looping
+      .subscribe(() => {
+        this.checkFileStatus();
+      });
+  }
+
+  stopPolling() {
+    this.dataReady = true;
+    this.cdr.detectChanges();
+    if (this.pollSubscription) {
+      this.pollSubscription.unsubscribe();
+    }
+  }
+
+  checkFileStatus(): void {
+    if(this.info.Link == '')
+      this.stopPolling();
+    else{
+      this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
+        if(data != null){
+          this.uri = data.uri;
+          this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+          this.cdr.detectChanges();
+          this.stopPolling();
+        }
+      });
+    }  
+  }
+
+  // openURIWithData(): void {
+  //   window.open(this.uri);
+  // }
+
   getSafeURL(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+    return this.safeURL;
   }
 
   setStatusSuccess(): void{

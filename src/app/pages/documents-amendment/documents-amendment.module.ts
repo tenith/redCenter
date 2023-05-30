@@ -32,6 +32,7 @@ import { ModeratorGuard } from '../../@core/shared/guards/moderator.guard';
 import { NgxWatermarkModule } from 'ngx-watermark';
 import { AnnouncementConfirmationComponent } from './announcement-confirmation/announcement-confirmation.component';
 
+
 const routes: Routes = [{
   path: '',
   component: DocumentsAmendmentComponent,
@@ -53,9 +54,10 @@ const routes: Routes = [{
     CustomLinkComponent,
     CustomActionComponent,
     DeleteConfirmationComponent,
-    AnnouncementConfirmationComponent,
+    AnnouncementConfirmationComponent
   ],
   imports: [
+    
     NgxWatermarkModule,
     Ng2SmartTableModule,
     ThemeModule,
