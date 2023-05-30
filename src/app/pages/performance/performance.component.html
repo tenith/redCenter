@@ -1,4 +1,20 @@
-<nb-card status="primary">
+<div *ngIf="!online">
+    <div class="row">
+        <div class="col-md-12">
+          <nb-card>
+            <nb-card-body>
+              <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
+                <h2 class="title">Offline Mode</h2>
+                <small class="sub-title">Your connection has been lost. This module will recovery when your connection re-establish.</small>
+                <img src="../../../../assets/images/offline.png" style="max-width: 50%; margin-left: auto; margin-right: auto; display: block;">
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </div>
+    </div>
+</div>
+
+<nb-card *ngIf="online" status="primary">
     <nb-card-header>Flight Operation Performance MockUp Data!!!!</nb-card-header>
     <nb-card-body>
         <nb-accordion>
@@ -22,7 +38,7 @@
 </nb-card>
 
 
-<nb-card status="info">
+<nb-card *ngIf="online" status="info">
     <nb-card-header>Fuel Performance  MockUp Data!!!!</nb-card-header>
     <nb-card-body>
         <nb-accordion>
@@ -49,7 +65,7 @@
     </nb-card-body>
 </nb-card>
 
-<nb-card status="warning">
+<nb-card *ngIf="online" status="warning">
     <nb-card-header>Flight Safety Performance MockUp Data!!!!</nb-card-header>
     <nb-card-body>
         <nb-accordion>

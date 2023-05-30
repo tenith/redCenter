@@ -115,6 +115,7 @@ export class SepCardService {
   }
 
   saveAllSepCards(oneSepCards: OneSepCard[]): void {
+    this.oneSepCards = oneSepCards;
     localStorage.setItem(this.sepCardLocalDBName,JSON.stringify(oneSepCards));
     this.saveAllCertificate();
   }

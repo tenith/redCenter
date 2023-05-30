@@ -23,7 +23,7 @@ export const roleName = {
 
 export const settings = {
     debug: false,
-    onlyAirasiaLogin: false,
+    onlyAirasiaLogin: true,
     redBookTMC: true
 };
 

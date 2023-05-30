@@ -46,7 +46,7 @@
                             <a href="javascript:void(0)" (click)="openURIWithData()">Click to open</a>
                         </div> -->
                         <div *ngIf="dataReady" class="col-12">
-                            <iframe *ngIf="dataReady" [src]="getSafeURL()" width="100%" frameborder="0" type='application/pdf'></iframe>
+                            <iframe *ngIf="uri != ''" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
                             <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
                         </div>
                     </div>

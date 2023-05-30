@@ -28,10 +28,8 @@ import { CustomActionComponent } from './custom-action/custom-action.component';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { ModeratorGuard } from '../../@core/shared/guards/moderator.guard';
 
-
 import { NgxWatermarkModule } from 'ngx-watermark';
 import { AnnouncementConfirmationComponent } from './announcement-confirmation/announcement-confirmation.component';
-
 
 const routes: Routes = [{
   path: '',
@@ -54,10 +52,9 @@ const routes: Routes = [{
     CustomLinkComponent,
     CustomActionComponent,
     DeleteConfirmationComponent,
-    AnnouncementConfirmationComponent
+    AnnouncementConfirmationComponent,
   ],
   imports: [
-    
     NgxWatermarkModule,
     Ng2SmartTableModule,
     ThemeModule,
