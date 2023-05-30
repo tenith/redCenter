@@ -27,6 +27,8 @@ import { UploadComponent } from './upload/upload.component';
 
 import { NbDialogModule } from '@nebular/theme';
 
+import { NgxPrintModule } from 'ngx-print';
+
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CustomActionComponent } from './custom-action/custom-action.component';
 import { VrListconfirmationComponent } from './vr-listconfirmation/vr-listconfirmation.component';
@@ -57,6 +59,7 @@ const routes: Routes = [{
     imports: [
         NbThemeModule,
         NbDialogModule,
+        NgxPrintModule,
         Ng2SmartTableModule,
         ThemeModule,
         CommonModule,

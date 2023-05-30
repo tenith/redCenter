@@ -32,40 +32,72 @@ export class DashboardComponent implements OnInit {
           return formattedDate.toUpperCase();
         },
       },
-      crews: { title: 'Flight Crews', type: 'string', 
-        valuePrepareFunction: (crews: CrewDetail[] ) => {
-          const flightCrews = crews;
-          let temp = '';
+      formattedCrew: { title: 'Flight Crew',  filter: true, type: 'html',},
+      formattedFlight: { title: 'Flight Duty', filter: true, type: 'html',},
+      // crews: { title: 'Flight Crews', type: 'string', 
+      //   valuePrepareFunction: (crews: CrewDetail[] ) => {
+      //     const flightCrews = crews;
+      //     console.log(JSON.stringify(flightCrews));
+      //     let temp = '';
 
-          for(let i=0;i<flightCrews.length;i++){
-            if(flightCrews[i].position == 'CP*' || flightCrews[i].position == 'CP' ||  flightCrews[i].position == 'SFO' || flightCrews[i].position == 'FO')
-              temp = temp + flightCrews[i].id + ": " + flightCrews[i].position + " " + flightCrews[i].name + "\n";
-          }
-          return temp;
-        },
-      },
-      flights: { title: 'Flight Duty', 
-        valuePrepareFunction: (flights: FlightDetail[]) => { 
-          const flightDetail = flights;
-          let temp = '';
+      //     for(let i=0;i<flightCrews.length;i++){
+      //       if(flightCrews[i].position == 'CP*' || flightCrews[i].position == 'CP' ||  flightCrews[i].position == 'SFO' || flightCrews[i].position == 'FO')
+      //         temp = temp + flightCrews[i].id + ": " + flightCrews[i].position + " " + flightCrews[i].name + "\n";
+      //     }
+      //     return temp;
+      //   },
+      // },
+      // flights: { title: 'Flight Duty', 
+      //   valuePrepareFunction: (flights: FlightDetail[]) => { 
+      //     const flightDetail = flights;
+      //     let temp = '';
 
-          for(let i=0;i<flightDetail.length;i++){
-            temp = temp + flightDetail[i].fltNO + ": " + flightDetail[i].from + "-" + flightDetail[i].to + "\n";
-          }
-          return temp;
-        },
-      },
+      //     for(let i=0;i<flightDetail.length;i++){
+      //       temp = temp + flightDetail[i].fltNO + ": " + flightDetail[i].from + "-" + flightDetail[i].to + "\n";
+      //     }
+      //     return temp;
+      //   },
+      // },
     },
   };
 
   source: LocalDataSource;
 
-  vrList: VrDetail[];
+  vrList: any[];
   constructor(private vrService: VrService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.vrService.getAllVR().subscribe(data => {
-      this.vrList = [...data];
+      this.vrList = [...data] as any;
+
+      this.vrList.forEach(item=> {
+        const flightCrews = item.crews;
+        let temp = '';
+
+        for(let i=0;i<flightCrews.length;i++){
+          if(flightCrews[i].position == 'CP*' || flightCrews[i].position == 'CP' ||  flightCrews[i].position == 'SFO' || flightCrews[i].position == 'FO'){
+            if(temp != '')
+              temp = temp + "<br>";
+            temp = temp + "<b>" + flightCrews[i].id + "</b>: " + flightCrews[i].position + " " + flightCrews[i].name.split(' ')[0];
+          }
+        }
+        
+        item.formattedCrew = temp;
+      });
+
+      this.vrList.forEach(item=> {
+        const flightDuty = item.flights;
+        let temp = '';
+
+        for(let i=0;i<flightDuty.length;i++){
+          if(temp != '')
+              temp = temp + "<br>";
+          temp = temp + "<b>" + flightDuty[i].fltNO + "</b>: " + flightDuty[i].from + "-" + flightDuty[i].to;
+        }
+        
+        item.formattedFlight = temp;
+      });
+
       this.refresh();
     });
   }

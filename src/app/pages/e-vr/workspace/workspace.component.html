@@ -5,13 +5,15 @@
     &nbsp;&nbsp;
     <button nbButton status="primary" *ngIf="readOnly" (click)="submit()">Submit</button>
     &nbsp;&nbsp;
-    <button nbButton status="primary" *ngIf="readOnly" (click)="myPrint()">Generate Report</button>
+    <button nbButton [useExistingCss]="true" printSectionId="print-section" ngxPrint status="primary">print</button>
+    <!-- <button nbButton status="primary" *ngIf="readOnly" (click)="myPrint()">Generate Report</button> -->
+    <!-- <button ngxPrint printSectionId="print-section" nbButton status="primary" >Generate Report</button> -->
 </div>
 
 <a name="m__PageN1" rel="noreferrer"></a>
 <form [formGroup]="form">
-
-<table #page1 width="719" border="0" cellspacing="0" cellpadding="0">
+<div id="print-section">  
+<table #page1 width="719px" border="0" cellspacing="0" cellpadding="0">
     <tr style="height:1px"><td width="3"></td><td width="9"></td><td width="11"></td><td width="1"></td><td width="51"></td><td width="2"></td><td width="21"></td><td width="9"></td><td width="1"></td><td width="25"></td><td width="7"></td><td width="8"></td><td width="1"></td><td width="2"></td><td width="14"></td><td width="25"></td><td width="2"></td><td width="6"></td><td width="11"></td><td width="12"></td><td width="17"></td><td width="6"></td><td width="14"></td><td width="11"></td><td width="1"></td><td width="3"></td><td width="4"></td><td width="17"></td><td width="2"></td><td width="13"></td><td width="17"></td><td width="22"></td><td width="1"></td><td width="17"></td><td width="28"></td><td width="6"></td><td width="18"></td><td width="12"></td><td width="5"></td><td width="1"></td><td width="20"></td><td width="6"></td><td width="19"></td><td width="11"></td><td width="16"></td><td width="1"></td><td width="12"></td><td width="8"></td><td width="26"></td><td width="3"></td><td width="1"></td><td width="17"></td><td width="10"></td><td width="10"></td><td width="14"></td><td width="11"></td><td width="5"></td><td width="27"></td><td width="4"></td><td width="2"></td><td width="2"></td><td width="5"></td><td width="40"></td><td width="7"></td><td width="1"></td><td width="3"></td><td width="1"></td><td width="1"></td></tr>
     <tr style="height:18px">
     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="4" class="s0">Page:</td><td></td><td colspan="4" class="s1">1</td><td></td><td></td><td></td>
@@ -48,19 +50,19 @@
             <input type="checkbox" class="form-checkbox focus:outline-none focus-visible:outline-none" id="endorsement" name="endorsement" formControlName="endorsement" value="Yes">
         </td>
         <td colspan="6" rowspan="2" class="s4">&nbsp;Ferry</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="ferry" name="ferry" formControlName="ferry" value="Yes">                
+            <input type="checkbox" id="ferry" name="ferry" formControlName="ferry">                
         </td>
         <td colspan="5" rowspan="2" class="s4">&nbsp;Training</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="training" name="training" formControlName="training" value="Yes">
+            <input type="checkbox" id="training" name="training" formControlName="training">
         </td>
         <td colspan="3" rowspan="2" class="s4">&nbsp;Test Flt</td><td colspan="2" rowspan="2" class="s9">
-            <input type="checkbox" id="testFlt" name="testFlt" formControlName="testFlt" value="Yes">
+            <input type="checkbox" id="testFlt" name="testFlt" formControlName="testFlt">
         </td>
         <td colspan="5" rowspan="2" class="s4">&nbsp;Revenue</td><td colspan="2" rowspan="2" class="s9">
-            <input type="checkbox" id="revenue" name="revenue" formControlName="revenue" value="Yes">
+            <input type="checkbox" id="revenue" name="revenue" formControlName="revenue">
         </td>
         <td colspan="5" rowspan="2" class="s4">&nbsp;Charter</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="charter" name="charter" formControlName="charter" value="Yes">
+            <input type="checkbox" id="charter" name="charter" formControlName="charter">
         </td><td></td><td></td><td></td>
     </tr>
     <tr style="height:15px">
@@ -302,8 +304,9 @@
 <br>
 <hr>
 <br>
+<div class="page_break"></div>
 <a name="m__PageN2" rel="noreferrer"></a>
-<table #page2 width="719" border="0" cellspacing="0" cellpadding="0">
+<table #page2 width="719px" border="0" cellspacing="0" cellpadding="0">
     <tr style="height:1px"><td width="3"></td><td width="9"></td><td width="11"></td><td width="1"></td><td width="51"></td><td width="2"></td><td width="21"></td><td width="9"></td><td width="1"></td><td width="25"></td><td width="7"></td><td width="8"></td><td width="1"></td><td width="2"></td><td width="14"></td><td width="25"></td><td width="2"></td><td width="6"></td><td width="11"></td><td width="12"></td><td width="17"></td><td width="6"></td><td width="14"></td><td width="11"></td><td width="1"></td><td width="3"></td><td width="4"></td><td width="17"></td><td width="2"></td><td width="13"></td><td width="17"></td><td width="22"></td><td width="1"></td><td width="17"></td><td width="28"></td><td width="6"></td><td width="18"></td><td width="12"></td><td width="5"></td><td width="1"></td><td width="20"></td><td width="6"></td><td width="19"></td><td width="11"></td><td width="16"></td><td width="1"></td><td width="12"></td><td width="8"></td><td width="26"></td><td width="3"></td><td width="1"></td><td width="17"></td><td width="10"></td><td width="10"></td><td width="14"></td><td width="11"></td><td width="5"></td><td width="27"></td><td width="4"></td><td width="2"></td><td width="2"></td><td width="5"></td><td width="40"></td><td width="7"></td><td width="1"></td><td width="3"></td><td width="1"></td><td width="1"></td></tr>
     <tr style="height:18px">
     <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="4" class="s0">Page:</td><td></td><td colspan="4" class="s1">2</td><td></td><td></td><td></td>
@@ -348,4 +351,5 @@
         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="17" class="s18">CAPTAIN&#39;S SIGNATURE AND DATE</td><td></td><td></td><td></td><td></td>
     </tr>
 </table>
+</div>
 </form>

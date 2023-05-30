@@ -33,6 +33,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+import { NgxPrintModule } from 'ngx-print';
+
 /*
   09 MAR 2023 wutthichair
 */
@@ -56,6 +58,9 @@ import { dbConfig } from '../environments/myconfigs';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+
+    NgxPrintModule,
+    
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),

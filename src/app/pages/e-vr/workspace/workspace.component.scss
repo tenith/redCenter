@@ -1,4 +1,17 @@
 .page_break {page-break-before: always;}
+
+@media print {
+    @page {
+        size: A4;
+    }
+    
+    table {
+        margin: 0 auto;
+        zoom: 200%;
+    }
+
+}
+
 input {
     border:0;
     outline:0;

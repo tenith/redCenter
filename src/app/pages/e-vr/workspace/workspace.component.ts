@@ -253,13 +253,13 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeDetectorRefs.detectChanges();
   }
 
-  async myPrint(): Promise<void>{
-    const pdf = new jsPDF('p', 'px', 'a4', true);
+  async myPrint(): Promise<void>{    
+    let pdf = new jsPDF('p', 'px', 'a4', true);
     const p1C = this.p1.nativeElement;    
     const p2C = this.p2.nativeElement;     
-
+    
     //SAVE PAGE1....
-    await html2canvas(p1C, { scale: 2, allowTaint: true, foreignObjectRendering: false } ).then((canvas) => {
+    await html2canvas(p1C, { useCORS: true, scale: 2, allowTaint: true , logging: true, } ).then((canvas) => {
       const offset = 15;
       const tableWidth = p1C.offsetWidth;
       const tableHeight = p1C.offsetHeight;       
@@ -280,7 +280,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     }); 
 
     //SAVE PAGE2....
-    await html2canvas(p2C, { scale: 2, allowTaint: true, foreignObjectRendering: false} ).then((canvas) => {
+    await html2canvas(p2C, { useCORS: true, scale: 2, allowTaint: true , logging: true,  } ).then((canvas) => {
       const offset = 15;
       const tableWidth = p2C.offsetWidth;
       const tableHeight = p2C.offsetHeight;       
@@ -302,8 +302,9 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       pdf.addImage(imgData, 'PNG', offset, offset, scaledWidth, scaledHeight);
     });
     
-    // Save the PDF document
-    pdf.save('report.pdf');
+
+    var blob = pdf.output('blob');
+    window.open(URL.createObjectURL(blob));
   }
 
   canSign(): boolean {
@@ -375,7 +376,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   addFlight(flightDetail: FlightDetail): void {
     const newFlightForm = this.formBuilder.group({
       fltNO: [flightDetail.fltNO, [Validators.required, Validators.pattern("[0-9]{1,4}[a-zA-Z]?$")]],
-      registration: [flightDetail.registration, [Validators.required, Validators.pattern('^HS-[A-Z]{3}$') ]],
+      registration: [flightDetail.registration, [Validators.required, Validators.pattern("^[hH]{1}[sS]{1}-[a-zA-Z]{3}$") ]],
       from: [flightDetail.from, [Validators.required, Validators.pattern('^[a-zA-Z]{3}$') ]],
       to: [flightDetail.to, [Validators.required, Validators.pattern('^[a-zA-Z]{3}$') ]],
 

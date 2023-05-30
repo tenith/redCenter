@@ -1,14 +1,19 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
+  "appData": {
+    "version": "0.1.1",
+    "changelog": "This update fixes a serious bug."
+  },
   "assetGroups": [
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/favicon.ico",
           "/index.html",
+          "/favicon.ico",          
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
