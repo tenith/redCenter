@@ -24,11 +24,21 @@ export class DashboardComponent implements OnInit {
       perPage: 10
     },
     columns: {
-      myCommand: { title:'Action & Status', width:'12%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
-      date: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'15%', type: 'date',
+      myCommand: { title:'Action & Status', width:'10%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
+      date: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'10%', type: 'date',
         valuePrepareFunction: (date) => {
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyyy');
+          return formattedDate.toUpperCase();
+        },
+      },
+      submitTime: { title: 'Submit Date Time', sortDirection: 'desc', filter: false, width:'10%', type: 'date',
+        valuePrepareFunction: (date) => {
+          if(date == '')
+            return '';
+
+          const datePipe = new DatePipe('en-US');
+          const formattedDate = datePipe.transform(date, 'dd MMM yyyy HH:mm');
           return formattedDate.toUpperCase();
         },
       },

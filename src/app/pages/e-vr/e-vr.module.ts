@@ -32,6 +32,9 @@ import { NgxPrintModule } from 'ngx-print';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CustomActionComponent } from './custom-action/custom-action.component';
 import { VrListconfirmationComponent } from './vr-listconfirmation/vr-listconfirmation.component';
+import { QrCodeComponent } from './qr-code/qr-code.component';
+
+import { QRCodeModule } from 'angularx-qrcode';
 
 const routes: Routes = [{
   path: '',
@@ -54,11 +57,13 @@ const routes: Routes = [{
         UploadComponent,
         CustomActionComponent,
         VrListconfirmationComponent,
+        QrCodeComponent,
     ],
     exports: [RouterModule],
     imports: [
         NbThemeModule,
         NbDialogModule,
+        QRCodeModule,
         NgxPrintModule,
         Ng2SmartTableModule,
         ThemeModule,

@@ -17,6 +17,7 @@ export interface VrDetail {
     extendedTime: string;
     extendedSignature: string;
     vrSignature: string;
+    submitTime: string;
 }
 
 export const defaultVR: VrDetail = {
@@ -34,5 +35,7 @@ export const defaultVR: VrDetail = {
     comment: "",
     extendedTime: "",
     extendedSignature: "",
-    vrSignature: ""
+    vrSignature: "",
+    submitTime: ""
+
 }

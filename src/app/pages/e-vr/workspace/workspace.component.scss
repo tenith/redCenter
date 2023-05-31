@@ -7,9 +7,12 @@
     
     table {
         margin: 0 auto;
-        zoom: 200%;
+        zoom: 100%;
     }
 
+    .no-print {
+        display: none;
+    }
 }
 
 input {
@@ -25,14 +28,14 @@ select {
     text-overflow: '';
 }
 
-input[type="checkbox"] {
-    width: 95%;
-    height: 100%;
-    outline: 0px solid #F00;
-    background: transparent;
-    border: 0px solid black;
-    content: '';
-}
+// input[type="checkbox"] {
+//     width: 95%;
+//     height: 100%;
+//     outline: 0px solid #F00;
+//     background: transparent;
+//     border: 0px solid black;
+//     content: '';
+// }
 
 
 input[type="text"] {
@@ -60,6 +63,10 @@ input.ng-invalid {
 
 select.ng-invalid {
     background-color: #ff8e8e;
+}
+
+table {
+    background-color: #FFFFFF;
 }
 
 .s0 {

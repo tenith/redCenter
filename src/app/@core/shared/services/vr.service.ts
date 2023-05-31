@@ -8,6 +8,7 @@ import * as uuid from 'uuid';
 import { FirestoreUserService } from './firestore-user.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,13 @@ export class VrService {
   }
   
   public saveVR(vr: VrDetail): Promise<any> {
+    return this.collectionRef.doc(vr.uuid).set(vr);
+  }
+
+  public saveVRwithSubmitTime(vr: VrDetail): Promise<any> {
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyy HH:mm:ss');
+    vr.submitTime = formattedDate;
     return this.collectionRef.doc(vr.uuid).set(vr);
   }
 }

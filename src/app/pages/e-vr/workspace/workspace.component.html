@@ -1,13 +1,21 @@
 <div #headerAction>
-    <button nbButton status="info" *ngIf="!readOnly" (click)="init()">Init</button>
-    &nbsp;&nbsp;
-    <button nbButton status="danger" (click)="reset()">Reset</button>
-    &nbsp;&nbsp;
-    <button nbButton status="primary" *ngIf="readOnly" (click)="submit()">Submit</button>
-    &nbsp;&nbsp;
-    <button nbButton [useExistingCss]="true" printSectionId="print-section" ngxPrint status="primary">print</button>
-    <!-- <button nbButton status="primary" *ngIf="readOnly" (click)="myPrint()">Generate Report</button> -->
-    <!-- <button ngxPrint printSectionId="print-section" nbButton status="primary" >Generate Report</button> -->
+    <table #page1 width="719px" border="0" cellspacing="0" cellpadding="0" style="text-align: center;">
+        <tr>
+            <td>
+                <button nbButton status="info" *ngIf="!readOnly" (click)="init()">Init</button>
+                &nbsp;&nbsp;
+                <button nbButton status="danger" *ngIf="canReset" (click)="reset()">Reset</button>
+                &nbsp;&nbsp;
+                <button nbButton status="primary" *ngIf="!submitStatus" (click)="submit()">Submit</button>
+                <!-- &nbsp;&nbsp;
+                <button nbButton status="primary" (click)="qr()">Show QR</button> -->
+                &nbsp;&nbsp;
+                <button *ngIf="!android && readOnly && submitStatus" nbButton [useExistingCss]="true" printSectionId="print-section" ngxPrint status="primary">print</button>
+                <button nbButton status="primary" *ngIf="readOnly && android && submitStatus" (click)="myPrint()">Generate Report</button>
+                <!-- <button ngxPrint printSectionId="print-section" nbButton status="primary" >Generate Report</button> -->
+            </td>
+        </tr>
+    </table>    
 </div>
 
 <a name="m__PageN1" rel="noreferrer"></a>
@@ -47,22 +55,28 @@
     <tr style="height:1px;">
     <td rowspan="2"></td>
         <td colspan="6" rowspan="2" class="s4">Endorsement</td><td rowspan="2" class="s9">
-            <input type="checkbox" class="form-checkbox focus:outline-none focus-visible:outline-none" id="endorsement" name="endorsement" formControlName="endorsement" value="Yes">
+            <input *ngIf="!readOnly" type="checkbox" id="endorsement" name="endorsement" formControlName="endorsement">
+            <div *ngIf="readOnly">{{form.get('endorsement').value ? '&#10003;' : '&#9634;'}}</div>
         </td>
         <td colspan="6" rowspan="2" class="s4">&nbsp;Ferry</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="ferry" name="ferry" formControlName="ferry">                
+            <input *ngIf="!readOnly" type="checkbox" id="ferry" name="ferry" formControlName="ferry">              
+            <div *ngIf="readOnly">{{form.get('ferry').value ? '&#10003;' : '&#9634;'}}</div>  
         </td>
         <td colspan="5" rowspan="2" class="s4">&nbsp;Training</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="training" name="training" formControlName="training">
+            <input *ngIf="!readOnly" type="checkbox" id="training" name="training" formControlName="training">
+            <div *ngIf="readOnly">{{form.get('training').value ? '&#10003;' : '&#9634;'}}</div>  
         </td>
         <td colspan="3" rowspan="2" class="s4">&nbsp;Test Flt</td><td colspan="2" rowspan="2" class="s9">
-            <input type="checkbox" id="testFlt" name="testFlt" formControlName="testFlt">
+            <input *ngIf="!readOnly" type="checkbox" id="testFlt" name="testFlt" formControlName="testFlt">
+            <div *ngIf="readOnly">{{form.get('testFlt').value ? '&#10003;' : '&#9634;'}}</div>  
         </td>
         <td colspan="5" rowspan="2" class="s4">&nbsp;Revenue</td><td colspan="2" rowspan="2" class="s9">
-            <input type="checkbox" id="revenue" name="revenue" formControlName="revenue">
+            <input *ngIf="!readOnly" type="checkbox" id="revenue" name="revenue" formControlName="revenue">
+            <div *ngIf="readOnly">{{form.get('revenue').value ? '&#10003;' : '&#9634;'}}</div>
         </td>
-        <td colspan="5" rowspan="2" class="s4">&nbsp;Charter</td><td rowspan="2" class="s9">
-            <input type="checkbox" id="charter" name="charter" formControlName="charter">
+        <td colspan="5" rowspan="2" class="s4">&nbsp;Charter</td><td rowspan="2" class="s9">            
+            <input *ngIf="!readOnly" type="checkbox" id="charter" name="charter" formControlName="charter">
+            <div *ngIf="readOnly">{{form.get('charter').value ? '&#10003;' : '&#9634;'}}</div>  
         </td><td></td><td></td><td></td>
     </tr>
     <tr style="height:15px">
@@ -101,7 +115,6 @@
         <td colspan="10" class="s32">
             <input *ngIf="!readOnly" required type="time" id="report+{{i}}" pattern="[0-2][0-9]:[0-5][0-9]" formControlName="report">
             <div *ngIf="readOnly">{{crewFormGroup.get('report').value | uppercase}}</div>
-            <!-- <input id="report+{{i}}" type="text" formControlName="report"> --> 
         </td>
     </tr>
     </tbody>
@@ -302,7 +315,9 @@
     </tr>
 </table>
 <br>
-<hr>
+<div class="no-print">
+    <hr>
+</div>
 <br>
 <div class="page_break"></div>
 <a name="m__PageN2" rel="noreferrer"></a>

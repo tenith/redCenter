@@ -24,6 +24,7 @@ import { debounceTime } from 'rxjs/operators';
 
 import { localStorageCollection } from '../../../../environments/myconfigs';
 import { TinyMCEComponent } from '../../../@theme/components';
+import { QrCodeComponent } from '../qr-code/qr-code.component';
 
 @Component({
   selector: 'ngx-workspace',
@@ -42,6 +43,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
   signatureRef: NbDialogRef<SignatureDialogComponent>;
+  qrRef: NbDialogRef<QrCodeComponent>;
 
   myDutyTime: string;
   maxDutyTime: string;
@@ -53,6 +55,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   readOnly: boolean = false;
 
   vr: VrDetail;
+  canReset: boolean = false;
+
+  android: boolean = true;
+  submitStatus: boolean = false;
 
   @ViewChild('page1', { static: false }) public p1: ElementRef;
   @ViewChild('page2', { static: false }) public p2: ElementRef;
@@ -66,6 +72,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.android = navigator.userAgent.indexOf('Android') != -1; 
     this.softReset();
 
     //LOAD FROM FIRESTORE....
@@ -104,9 +111,11 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.form.get('extendedTime').setValue(this.vr.extendedTime);
     this.form.get('vrSignature').setValue(this.vr.vrSignature);
     this.form.get('comment').setValue(this.vr.comment);
-
-    // console.log('load vr comment: ' + this.vr.comment);
-    // this.tinymceComponent.setContent(this.vr.comment);   
+    
+    if(this.vr.submitTime != '' && this.vr.submitTime != undefined)
+      this.submitStatus = true;
+    else  
+      this.submitStatus = false;
 
     this.loadCrews();
     this.loadFlights();
@@ -155,6 +164,18 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   saveForm(): void {
     console.log('saveform: ' + JSON.stringify(this.form.value));
     localStorage.setItem(localStorageCollection.vrLocalDBNameCollectionName, JSON.stringify(this.form.value));
+  }
+
+  qr(): void {
+    let vr: VrDetail = this.prepareData();
+    console.log('qr data: ' + JSON.stringify(vr));    
+    this.qrRef = this.dialogService.open(QrCodeComponent,{
+      context: {
+        data: JSON.stringify(vr)
+      }
+    });
+    
+    this.qrRef.onClose.subscribe(confirm => {});
   }
 
   calMyDuty(): string {
@@ -213,7 +234,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     let crewGroup = this.getFormArrayByName('crews') as FormArray;
     crewGroup.clear();   
 
+    this.canReset = false;
     for(let i=0;i<this.crewList.length;i++){
+      if(this.firestoreUser.getFirestoreUser().cId == this.crewList[i].id)
+        this.canReset = true;
       this.addCrew(this.crewList[i]);
     }
   }
@@ -694,24 +718,21 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  submit(): void {
-    let vr: VrDetail = {...this.form.value} as VrDetail;
-    console.log('submit : ' + JSON.stringify(this.form.value));
-    console.log('submit : ' + JSON.stringify(vr));
-    console.log(vr.uuid);
-    console.log(JSON.stringify(vr.crews));
-    
-    const crews: CrewDetail[] = [...vr.crews as CrewDetail[]];
-    
+  prepareData(): VrDetail {
+    let vr: VrDetail = {...this.form.value} as VrDetail;    
+    const crews: CrewDetail[] = [...vr.crews as CrewDetail[]];    
 
     let idList: string[] = [];
     for(let i=0;i<crews.length;i++)
       idList.push(crews[i].id);
 
     vr.crewsId = idList;
-    console.log('crews : ' + vr.crewsId);
+    return vr;
+  }
 
-    this.vrService.saveVR(vr);
+  submit(): void {
+    let vr: VrDetail = this.prepareData();
+    this.vrService.saveVRwithSubmitTime(vr).then(()=> this.submitStatus = true).catch(e=>console.log(e));
   }
 
 }

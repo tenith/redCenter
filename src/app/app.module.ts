@@ -60,7 +60,6 @@ import { dbConfig } from '../environments/myconfigs';
     AppRoutingModule,
 
     NgxPrintModule,
-    
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),
