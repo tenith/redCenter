@@ -19,6 +19,9 @@ import { NgxWatermarkModule } from 'ngx-watermark';
 import { NgxPrintModule } from 'ngx-print';
 import { ReportSummaryComponent } from './report-summary/report-summary.component';
 
+import { NbCheckboxModule } from '@nebular/theme';
+import { NbSelectModule } from '@nebular/theme';
+
 @NgModule({
   declarations: [
     PersonalDocumentsComponent,
@@ -34,9 +37,11 @@ import { ReportSummaryComponent } from './report-summary/report-summary.componen
   imports: [
     CommonModule,
     NgxPrintModule,
+    NbSelectModule,
     NgxWatermarkModule,
     ThemeModule,
     FormsModule,
+    NbCheckboxModule,
     ReactiveFormsModule,
     CommonModule,
     NbCardModule,

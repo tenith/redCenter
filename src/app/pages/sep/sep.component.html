@@ -80,6 +80,13 @@
         </div>
     </div>
 
+    <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
+    <div class="row">
+        <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
+            <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+        </div>
+    </div>
+
     <!-- SHOW SEP CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">

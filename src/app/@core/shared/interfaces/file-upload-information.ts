@@ -7,4 +7,11 @@ export interface FileUploadInformation {
     description: string;
     uploadTime: string;
     fileType: string;
+    
+    fileCategory: string;
+    showSEP: string;
+    issueDate: string;
+    hasExpiry: string;
+    expiryDate: string;
+    issueBy: string;   
 }

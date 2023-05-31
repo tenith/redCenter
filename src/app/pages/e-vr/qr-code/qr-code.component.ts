@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
+import { NfcService } from '../../../@core/shared/services/nfc.service';
 
 @Component({
   selector: 'ngx-qr-code',
@@ -11,7 +12,7 @@ export class QrCodeComponent implements OnInit {
   @Input() data: string;
   qrData: string = '';
 
-  constructor(private dialogRef: NbDialogRef<QrCodeComponent>) { }
+  constructor(private dialogRef: NbDialogRef<QrCodeComponent>, private nfcService: NfcService) { }
 
   ngOnInit(): void {
     if(!(this.data == null || this.data == undefined)){
@@ -51,5 +52,34 @@ export class QrCodeComponent implements OnInit {
 
     return zippedRepresentation;
   }
+
+  // async initializeNfc() {
+  //   const initialized = await this.nfcService.initializeNfc();
+  //   if (initialized) {
+  //     console.log('NFC initialized successfully.');
+  //   } else {
+  //     console.log('NFC initialization failed.');
+  //   }
+  // }
+
+  // async writeData() {
+  //   const data = this.data;
+  //   const success = await this.nfcService.writeDataToTag(data);
+  //   if (success) {
+  //     console.log('Data written to NFC tag successfully.');
+  //   } else {
+  //     console.log('Failed to write data to NFC tag.');
+  //   }
+  // }
+
+  // async startNfcReading() {
+  //   const result = await this.nfcService.startNfcReading();
+  //   console.log(result);
+  // }
+
+  // async stopNfcReading() {
+  //   const result = await this.nfcService.stopNfcReading();
+  //   console.log(result);
+  // }
 
 }

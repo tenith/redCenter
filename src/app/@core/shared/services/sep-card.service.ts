@@ -80,11 +80,11 @@ export class SepCardService {
       Implement save Certificate into database
   */
   saveAllCertificate(): void{
-    console.log('saveAllCert');
+    // console.log('saveAllCert');
     if(this.oneSepCards == null)
       return;
 
-    for(let i=0;i<this.oneSepCards.length;i++){
+    for(let i=0;i<this.oneSepCards.length;i++){     
       if(this.oneSepCards[i].Link != ''){
         const id = this.oneSepCards[i].Name.replace(/ /g,'_') + this.oneSepCards[i].Attended.replace(/ /g,'_');
         this.dbService.getByIndex("certificates",'link', id).subscribe((data)=> {

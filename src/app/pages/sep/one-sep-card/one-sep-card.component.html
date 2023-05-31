@@ -13,17 +13,20 @@
                             {{info.Type}}
                         </div>
             
-                        <div class="col-4">
+                        <div *ngIf="!isPersonalDocument" class="col-4">
                             <b>Attended</b>
+                        </div>
+                        <div *ngIf="isPersonalDocument" class="col-4">
+                            <b>Issue Date</b>
                         </div>
                         <div class="col-8">
                             {{info.Attended}}
                         </div>
             
-                        <div *ngIf="info.Validperiod!=undefined" class="col-4">
+                        <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-4">
                             <b>Validity</b>
                         </div>
-                        <div *ngIf="info.Validperiod!=undefined" class="col-8">
+                        <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-8">
                             {{info.Validperiod}}
                         </div>
             
@@ -45,8 +48,11 @@
                         <!-- <div *ngIf="dataReady" class="col-8">
                             <a href="javascript:void(0)" (click)="openURIWithData()">Click to open</a>
                         </div> -->
+                        <div *ngIf="isPersonalDocument && uri != ''" class="col-12">
+                            <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">
+                        </div>
                         <div *ngIf="dataReady" class="col-12">
-                            <iframe *ngIf="uri != ''" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
+                            <iframe *ngIf="uri != '' && !isPersonalDocument" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
                             <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
                         </div>
                     </div>

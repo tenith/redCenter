@@ -1,12 +1,12 @@
 <div #headerAction>
-    <table #page1 width="719px" border="0" cellspacing="0" cellpadding="0" style="text-align: center;">
+    <table width="719px" border="0" cellspacing="0" cellpadding="0" style="text-align: center;">
         <tr>
             <td>
-                <button nbButton status="info" *ngIf="!readOnly" (click)="init()">Init</button>
+                <button nbButton status="info" (click)="init()">Load new VR from server</button>
                 &nbsp;&nbsp;
                 <button nbButton status="danger" *ngIf="canReset" (click)="reset()">Reset</button>
                 &nbsp;&nbsp;
-                <button nbButton status="primary" *ngIf="!submitStatus" (click)="submit()">Submit</button>
+                <button nbButton status="primary" *ngIf="!submitStatus && form.valid" (click)="submit()">Submit</button>
                 <!-- &nbsp;&nbsp;
                 <button nbButton status="primary" (click)="qr()">Show QR</button> -->
                 &nbsp;&nbsp;

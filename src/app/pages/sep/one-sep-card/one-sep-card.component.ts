@@ -4,8 +4,10 @@ import { SepCardService } from '../../../@core/shared/services/sep-card.service'
 
 import { statusConfig } from '../../../../environments/myconfigs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Subscription, interval } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
+import { ManualCardService } from '../../../@core/shared/services/manual-card.service';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -22,20 +24,24 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   uri: string = '';
   dataReady: boolean = false;
 
+  isPersonalDocument: boolean = false;
+  downloadUrl$: Observable<string>;
+
   private pollSubscription: Subscription;
   safeURL: SafeResourceUrl;
 
-  constructor(public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
+  constructor(private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
   ngOnDestroy(): void {
     this.stopPolling();
   }
 
   ngOnInit(): void { 
-    this.startPolling();
-    // this.temp.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
-    //   if(data != null)
-    //     this.uri = data.uri;
-    // });
+    if(this.info.Type == 'Personal Upload'){
+      this.isPersonalDocument = true;
+      this.downloadUrl$ = this.fileUploadDatabaseService.getFile(this.info.Link);
+    }
+
+    this.startPolling();    
     
     const msInDay = 24 * 60 * 60 * 1000;
     const today = new Date().getTime();
@@ -70,20 +76,29 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     if(this.info.Link == '')
       this.stopPolling();
     else{
-      this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
-        if(data != null){
-          this.uri = data.uri;
-          this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
-          this.cdr.detectChanges();
-          this.stopPolling();
-        }
-      });
+      if(!this.isPersonalDocument){
+        this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
+          if(data != null){
+            this.uri = data.uri;
+            this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+            this.cdr.detectChanges();
+            this.stopPolling();
+          }
+        });
+      }
+
+      if(this.isPersonalDocument){
+        this.manualCardService.getURIByLink(this.info.Link).subscribe((data)=>{
+          if(data != null){
+            this.uri = data.uri;
+            this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+            this.cdr.detectChanges();
+            this.stopPolling();
+          }
+        });
+      }
     }  
   }
-
-  // openURIWithData(): void {
-  //   window.open(this.uri);
-  // }
 
   getSafeURL(): SafeResourceUrl {
     return this.safeURL;

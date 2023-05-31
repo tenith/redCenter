@@ -26,7 +26,7 @@ export class FileUploadDatabaseService {
     this.isModerator = this.firestoreUser.isModerator;
   }
 
-  public async uploadFile(file: File, fileDescription: string): Promise<boolean> {
+  public async uploadFile(file: File, form: any): Promise<boolean> {
     let completed = false;
     const newFileName = new Date().valueOf() + '_' + file.name;
     const fileRef = this.storage.ref(this.path + '/' + newFileName);
@@ -39,9 +39,15 @@ export class FileUploadDatabaseService {
         displayName: this.firestoreUser.getFirestoreUser().displayName,
         relativePath: this.path + '/' + newFileName,
         path: fileAbsPath,
-        description: fileDescription,
+        description: form.fileDescription,
         uploadTime: new Date().toLocaleString(),
-        fileType: file.type
+        fileType: file.type,
+        fileCategory: form.fileCategory,
+        showSEP: form.showSEP,
+        issueDate: form.issueDate,
+        hasExpiry: form.hasExpiry,
+        expiryDate: form.expiryDate,
+        issueBy: form.issueBy,
       }      
 
       await this.fileUploadInformationService.addFileUploadInformation(temp, this.email)
@@ -63,8 +69,8 @@ export class FileUploadDatabaseService {
 
   public async deleteFile(path: string, fileUploadInformation: FileUploadInformation): Promise<boolean> {
     let completed = false;
-    if(!this.isModerator)
-      return;
+    // if(!this.isModerator)
+    //   return;
 
     await this.fileUploadInformationService.removeFileUploadInformation(fileUploadInformation, fileUploadInformation.owner)
     .then(async () => {

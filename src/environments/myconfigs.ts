@@ -47,6 +47,7 @@ export const localStorageCollection = {
     firestoreUserDBNameCollectionName: 'firestoreUserDBName',
     newsLocalDBNameCollectionName: 'NewsLocalDBName',
     sepLocalDBNameCollectionName: 'SEPCardLocalDBName',
+    manualLocalDBNameCollectionName: 'ManualCardLocalDBName',
     vrLocalDBNameCollectionName: 'VRLocalDBName'
 };
 

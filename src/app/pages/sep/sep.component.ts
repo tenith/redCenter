@@ -1,4 +1,4 @@
-import { ViewportScroller } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { Subject } from 'rxjs';
@@ -7,6 +7,10 @@ import { OneSepCard } from '../../@core/shared/interfaces/one-sep-card';
 import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
 import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
 import { SepCardService } from '../../@core/shared/services/sep-card.service';
+import { FileUploadInformationService } from '../../@core/shared/services/file-upload-information.service';
+import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
+import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload-information';
+import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
 @Component({
   selector: 'ngx-sep',
@@ -22,7 +26,8 @@ export class SepComponent implements OnInit {
   expiredList: string[] = [];
 
   loading: boolean = true;
-  oneSepCards : OneSepCard[];
+  manualCards: OneSepCard[] = [];
+  oneSepCards : OneSepCard[] = [];
   autoLandCards : AutolandSepCard[];
 
   changeEvent: Subject<void> = new Subject<void>();
@@ -30,7 +35,7 @@ export class SepComponent implements OnInit {
   showAutoLand: boolean = false;
   firstTimeAlert: boolean = true;
 
-  constructor(public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
+  constructor(private manualCardService: ManualCardService, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
@@ -46,6 +51,51 @@ export class SepComponent implements OnInit {
       this.loadAutolandCards();
       this.updateSummary();
     }
+
+    if(this.manualCardService.isInLocalStorage()){
+      this.manualCards = [...(this.manualCardService.getAllSepCardsFromCache())];
+      this.loading = false;
+
+      
+      this.updateSummary();
+    }
+
+    /*
+      Loading Information From personal file upload....
+    */
+    this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
+      let tempOneSepCard: OneSepCard[] = [];
+      if(docSnapshot.exists){
+        const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+        for(let i=0; i<temp.length;i++){
+          if(temp[i].showSEP == 'Yes'){
+            // console.log(JSON.stringify(temp[i]));
+            let tempSepCard: OneSepCard = {
+              Name: temp[i].fileCategory,
+              Attended: this.formatDate(temp[i].issueDate),
+              Type: 'Personal Upload',
+              Validperiod: '',
+              Expiry: this.formatDate(temp[i].expiryDate),
+              Instructor: temp[i].issueBy,
+              Remark: temp[i].description,
+              Link: temp[i].relativePath
+            };
+
+            tempOneSepCard.push(tempSepCard);
+          }
+        }
+      }
+
+      if(tempOneSepCard.length > 0){
+        // console.log('we got : ' + JSON.stringify(tempOneSepCard));
+        this.manualCards = tempOneSepCard;
+        this.manualCardService.deleteAllCards();
+        this.manualCardService.saveAllCards(this.manualCards);
+
+        this.updateSummary();
+      }
+    });
+      
           
     /*
       Loading Information From Online Server....
@@ -62,27 +112,33 @@ export class SepComponent implements OnInit {
       let temp: OneSepCard[] = [];
       for(let i: number = 0; i < tempSubjects.length; i++){
         if(response[tempSubjects[i]] != undefined){
-          console.log('Push: ' +  JSON.stringify(response[tempSubjects[i]][0]));
           temp.push(response[tempSubjects[i]][0]);
         }
       }
 
       this.loading = false;
       this.toastr.primary('Completed','Updated SEP from online server completed', {duration:10000});
-      this.oneSepCards = [...temp];
+      // this.oneSepCards = [...temp,...this.oneSepCards];
+      this.oneSepCards = temp;
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
       this.loadAutolandCards();
-      // this.loading = false;
-
       this.updateSummary();
     });
   }
 
+
+
   public jumpTo(elementId: string): void { 
     const elmnt = document.getElementById(elementId);
     elmnt.scrollIntoView({behavior: "auto", block: "center", inline: "nearest"});
+  }
+
+  private formatDate(x: string): string{
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(new Date(x), 'dd MMM yyy');
+    return formattedDate;
   }
 
   updateSummary(): void {
@@ -111,8 +167,25 @@ export class SepComponent implements OnInit {
       if(diffDate <= 30 && diffDate >= 0)
         this.aboutList.push(this.oneSepCards[i].Name);
 
-      if(this.oneSepCards[i].Expiry == '')
+      if(this.oneSepCards[i].Expiry == '-')
         this.validList.push(this.oneSepCards[i].Name);
+    }
+
+    for(let i=0;i<this.manualCards.length;i++){
+      const msInDay = 24 * 60 * 60 * 1000;
+      const today = new Date().getTime();
+      const expire = new Date(this.manualCards[i].Expiry).getTime();
+      const diffDate = (expire - today) / msInDay;
+
+      if(diffDate < 0)
+        this.expiredList.push(this.manualCards[i].Name);
+      if(diffDate > 30)
+        this.validList.push(this.manualCards[i].Name);
+      if(diffDate <= 30 && diffDate >= 0)
+        this.aboutList.push(this.manualCards[i].Name);
+
+      if(this.manualCards[i].Expiry == '-')
+        this.validList.push(this.manualCards[i].Name);
     }
   }
 
