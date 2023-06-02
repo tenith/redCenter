@@ -51,8 +51,8 @@
                         <div *ngIf="isPersonalDocument && uri != ''" class="col-12">
                             <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">
                         </div>
-                        <div *ngIf="dataReady" class="col-12">
-                            <iframe *ngIf="uri != '' && !isPersonalDocument" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
+                        <div *ngIf="!isPersonalDocument && safeURL != undefined" class="col-12">
+                            <iframe *ngIf="safeURL" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
                             <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
                         </div>
                     </div>

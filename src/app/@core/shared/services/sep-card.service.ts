@@ -69,7 +69,10 @@ export class SepCardService {
     this.httpClient.get<any>(imageUrl, { headers:headers, responseType: 'blob' as 'json'}).subscribe(data => {
         var reader  = new FileReader();
         reader.addEventListener("load", () => {
-          this.dbService.add("certificates",{link:name ,uri:reader.result}).subscribe();
+          // console.log(reader.result);
+          // console.log('imageURL: ' + imageUrl);
+          if(!(reader.result == undefined || reader.result == '' || reader.result == null))
+            this.dbService.add("certificates",{link:name ,uri:reader.result}).subscribe();
         });
         reader.readAsDataURL(data);
       });

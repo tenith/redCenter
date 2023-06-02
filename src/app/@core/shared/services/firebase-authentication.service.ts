@@ -37,14 +37,11 @@ export class FirebaseAuthenticationService {
   */
   constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router) {
     this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
-    this.afAuth.authState.subscribe((user)=>{
-      // if(user){
-      //   user.getIdTokenResult().then(tokenResult => { console.log('tokenresult: ' + JSON.stringify(tokenResult));});
-      // }
-      console.log(JSON.stringify(user));
-      if(!user)
-        this.logout();
-    });
+    // this.afAuth.authState.subscribe((user)=>{
+    //   console.log(JSON.stringify(user));
+    //   if(!user)
+    //     this.logout();
+    // });
     // if(this.firebaseUser != null)
       // this.toastrService.warning('Warning','This is cache login, some features will not working.', {duration:5000});
   }

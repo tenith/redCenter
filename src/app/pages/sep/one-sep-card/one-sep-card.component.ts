@@ -79,6 +79,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       if(!this.isPersonalDocument){
         this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
           if(data != null){
+
+            console.log('one: ' + data.uri);
             this.uri = data.uri;
             this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
             this.cdr.detectChanges();

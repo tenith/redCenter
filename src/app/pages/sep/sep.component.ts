@@ -112,7 +112,10 @@ export class SepComponent implements OnInit {
       let temp: OneSepCard[] = [];
       for(let i: number = 0; i < tempSubjects.length; i++){
         if(response[tempSubjects[i]] != undefined){
-          temp.push(response[tempSubjects[i]][0]);
+          // console.log('length: ' + response[tempSubjects[i]].length);
+          const last = response[tempSubjects[i]].length - 1;
+
+          temp.push(response[tempSubjects[i]][last]);
         }
       }
 
