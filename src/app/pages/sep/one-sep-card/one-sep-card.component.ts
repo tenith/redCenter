@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy  } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, EventEmitter, Output  } from '@angular/core';
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
@@ -17,6 +17,7 @@ import { ManualCardService } from '../../../@core/shared/services/manual-card.se
 })
 export class OneSepCardComponent implements OnInit, OnDestroy {
   @Input() info!: OneSepCard;
+  @Output() postCompleteEvent = new EventEmitter<string>();
   myStatus: string;
   myIcon: string;
 
@@ -41,8 +42,26 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       this.downloadUrl$ = this.fileUploadDatabaseService.getFile(this.info.Link);
     }
 
-    this.startPolling();    
+    this.startPolling();      
     
+    if(this.info.Expiry == 'NO DATA'){
+      this.setStatusDanger();
+
+      //Temporary solution to get data from google sheets....
+      this.sepService.getAllSepCardsFromGoogleAPI(this.info.Name).subscribe(response => {
+        console.log('JSON Google API: ' + JSON.stringify(response));
+        if(response != null && Object.keys(response).length != 0){
+          this.info = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
+          this.reviseStatus();
+          this.postCompleteEvent.emit(JSON.stringify(response));
+        }});
+    }
+    else{
+      this.reviseStatus();
+    }
+  }
+
+  reviseStatus(): void {
     const msInDay = 24 * 60 * 60 * 1000;
     const today = new Date().getTime();
     const expire = new Date(this.info.Expiry).getTime();
@@ -54,6 +73,11 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       this.setStatusSuccess();
     if(diffDate <= 30 && diffDate >= 0)
       this.setStatusWarning();    
+
+    if(this.info.Expiry == '-')
+      this.setStatusSuccess();
+
+    this.cdr.detectChanges();
   }
 
   startPolling() {
@@ -80,7 +104,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
           if(data != null){
 
-            console.log('one: ' + data.uri);
+            // console.log('one: ' + data.uri);
             this.uri = data.uri;
             this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
             this.cdr.detectChanges();

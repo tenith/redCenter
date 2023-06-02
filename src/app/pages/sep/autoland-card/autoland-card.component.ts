@@ -115,8 +115,8 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
           else
             this.info = {...temp[1]};
           
-          // console.log(JSON.stringify(this.info));
           this.autoLandingForm.reset();
+          this.postCompleteEvent.emit('post completed');
           this.toastr.primary('Completed','Updated Autoland history completed', {duration:10000, preventDuplicates: true});
           this.reviseAutoLandCard();
 

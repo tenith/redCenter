@@ -20,11 +20,20 @@
             Show displayname in uppercase
     -->
     <div class="col-12" id="home">
-        <nb-card accent="primary">
-            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information</nb-card-header>
+        <nb-card status="primary">
+            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp; <nb-icon icon="refresh" (click)="downloadSEP()"></nb-icon></nb-card-header>
             <nb-card-body>
                 <div class="col-3"><B>NAME</B></div>
                 <div class="col-9">{{fireBaseAuth.getFirebaseUser().displayName | uppercase}}</div>
+
+                <div class="col-3"><B>TAA ID</B></div>
+                <div class="col-9">{{firestoreUser.getFirestoreUser().cId | uppercase}}</div>
+
+                <div class="col-3"><B>ROLE</B></div>
+                <div class="col-9">{{firestoreUser.getFirestoreUser().role | uppercase}}</div>
+
+                <div class="col-3"><B>&nbsp;</B></div>
+                <div class="col-9">my picture</div>
                 
                 <div class="col-12" style="margin-top: 0.5rem;"><B>Summary</B></div>
                 <!-- success -->
@@ -34,7 +43,8 @@
                             <nb-accordion-item-header><nb-icon icon="checkmark-circle-2" status="success"></nb-icon>&nbsp;&nbsp;Valid [{{validList.length}}]</nb-accordion-item-header>
                             <nb-accordion-item-body>
                                 <div *ngFor="let valid of validList; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd">
-                                    {{i+1}}. {{valid}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(valid)"></nb-icon>
+                                    <!-- {{i+1}}. {{valid}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}"></nb-icon> -->
+                                    {{i+1}}. {{valid}}
                                 </div>
                             </nb-accordion-item-body>
                         </nb-accordion-item>
@@ -47,7 +57,8 @@
                             <nb-accordion-item-header><nb-icon icon="alert-triangle" status="warning"></nb-icon>&nbsp;&nbsp;About to expire [{{aboutList.length}}]</nb-accordion-item-header>
                             <nb-accordion-item-body>
                                 <div *ngFor="let about of aboutList; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd">
-                                    {{i+1}}. {{about}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(about)"></nb-icon>
+                                    <!-- {{i+1}}. {{about}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(about)"></nb-icon> -->
+                                    {{i+1}}. {{about}}
                                 </div>
                             </nb-accordion-item-body>
                         </nb-accordion-item>
@@ -57,11 +68,12 @@
                 <div class="col-12">
                     <nb-accordion accent="danger">
                         <nb-accordion-item>
-                            <nb-accordion-item-header><nb-icon icon="close-square" status="danger"></nb-icon>&nbsp;&nbsp;Expired [{{expiredList.length}}]</nb-accordion-item-header>
+                            <nb-accordion-item-header><nb-icon icon="close-square" status="danger"></nb-icon>&nbsp;&nbsp;Invalid [{{expiredList.length}}]</nb-accordion-item-header>
                             <nb-accordion-item-body>
                                 <div *ngFor="let expired of expiredList; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd">
                                     <!-- {{i+1}}. <a href="./pages/sep/#{{expired}}">{{expired}}</a> -->
-                                    {{i+1}}. {{expired}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(expired)"></nb-icon>
+                                    <!-- {{i+1}}. {{expired}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(expired)"></nb-icon> -->
+                                    {{i+1}}. {{expired}}
                                 </div>
                             </nb-accordion-item-body>
                         </nb-accordion-item>
@@ -83,14 +95,14 @@
     <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+            <ngx-one-sep-card [info]="oneSepCard" ></ngx-one-sep-card>
         </div>
     </div>
 
     <!-- SHOW SEP CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard"></ngx-one-sep-card>
+            <ngx-one-sep-card [info]="oneSepCard" (postCompleteEvent)="newDataFromGoogleAPI($event)"></ngx-one-sep-card>
         </div>
     </div>
 </div>
