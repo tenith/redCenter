@@ -18,8 +18,11 @@ import { ManualCardService } from '../../../@core/shared/services/manual-card.se
 export class OneSepCardComponent implements OnInit, OnDestroy {
   @Input() info!: OneSepCard;
   @Output() postCompleteEvent = new EventEmitter<string>();
+  @Output() refreshEvent = new EventEmitter<string>();
   myStatus: string;
   myIcon: string;
+
+  pdfLink: string;
 
   cacheLink: SafeResourceUrl;
   uri: string = '';
@@ -27,6 +30,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
   isPersonalDocument: boolean = false;
   downloadUrl$: Observable<string>;
+
+  pdfSupport: boolean = false;
 
   private pollSubscription: Subscription;
   safeURL: SafeResourceUrl;
@@ -37,6 +42,9 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void { 
+    if ("application/pdf" in navigator.mimeTypes)
+      this.pdfSupport = true;
+      
     if(this.info.Type == 'Personal Upload'){
       this.isPersonalDocument = true;
       this.downloadUrl$ = this.fileUploadDatabaseService.getFile(this.info.Link);
@@ -61,6 +69,55 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  generateDownloadLink() {
+    const blob = this.base64ToBlob(this.uri.split(',')[1], 'application/pdf');
+    const url = URL.createObjectURL(blob);
+    this.pdfLink = url;
+  }
+
+  downloadPdf() {
+    this.generateDownloadLink();
+    // window.open(this.pdfLink, '_blank');
+    const shareData = {
+      title: 'PDF File',
+      text: 'Download the PDF file',
+      url: this.pdfLink
+    };
+  
+    if (navigator.share && navigator.canShare(shareData)) {
+      navigator.share(shareData)
+        .then(() => {
+          // console.log('Sharing succeeded.');
+        })
+        .catch((error) => {
+          // console.error('Sharing failed:', error);
+        });
+    } else {
+      window.open(this.pdfLink, '_blank');
+    }
+  }
+
+  base64ToBlob(base64Data: string, contentType: string) {
+    const sliceSize = 1024;
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
+
   reviseStatus(): void {
     const msInDay = 24 * 60 * 60 * 1000;
     const today = new Date().getTime();
@@ -81,7 +138,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   startPolling() {
-    this.pollSubscription = interval(2000) // Adjust the polling interval as per your requirements
+    this.pollSubscription = interval(3000) // Adjust the polling interval as per your requirements
       .pipe(take(100)) // Limit the number of polls to avoid infinite looping
       .subscribe(() => {
         this.checkFileStatus();
@@ -91,6 +148,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   stopPolling() {
     this.dataReady = true;
     this.cdr.detectChanges();
+    this.refreshEvent.emit('');
     if (this.pollSubscription) {
       this.pollSubscription.unsubscribe();
     }
@@ -101,29 +159,47 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       this.stopPolling();
     else{
       if(!this.isPersonalDocument){
-        this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
-          if(data != null){
-
-            // console.log('one: ' + data.uri);
-            this.uri = data.uri;
-            this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
-            this.cdr.detectChanges();
-            this.stopPolling();
-          }
-        });
+        try{
+          this.sepService.getURIByLink(this.info.Name.replace(/ /g,'_')+this.info.Attended.replace(/ /g,'_')).subscribe((data)=>{
+            if(data != null && data != ''){
+              this.uri = data.uri;
+              this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+              this.cdr.detectChanges();
+              this.stopPolling();
+            }
+          });
+        }
+        catch(e) {
+          console.log(e);
+        }
       }
 
       if(this.isPersonalDocument){
-        this.manualCardService.getURIByLink(this.info.Link).subscribe((data)=>{
-          if(data != null){
-            this.uri = data.uri;
-            this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
-            this.cdr.detectChanges();
-            this.stopPolling();
-          }
-        });
+        try{
+          this.manualCardService.getURIByLink(this.info.Link).subscribe((data)=>{
+            if(data != null){
+              this.uri = data.uri;
+              this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.uri);
+              this.cdr.detectChanges();
+              this.stopPolling();
+            }
+          });
+        }
+        catch(e){
+          console.log(e);
+        }
       }
     }  
+  }
+
+  openPDF(): void {
+    if(!this.isPersonalDocument){
+      const link = document.createElement('a');
+      link.href = this.uri;
+      link.download = this.info.Name + '.pdf';
+      link.target = '_blank';
+      link.click();
+    }
   }
 
   getSafeURL(): SafeResourceUrl {

@@ -83,6 +83,11 @@ export class SepCardService {
       });
   }
 
+  clearCertificateCache(): void {
+    console.log('clear cert cache');
+    this.dbService.clear("certificates");
+  }
+
   /*
     15 Mar 2023 wutthichair
       Implement save Certificate into database
@@ -94,6 +99,10 @@ export class SepCardService {
 
     for(let i=0;i<this.oneSepCards.length;i++){     
       if(this.oneSepCards[i].Link != ''){
+        //wait for dbService ready...
+        const randomTime = Math.floor(Math.random() * (10)) + 1;
+        setTimeout(() => {} , randomTime * 10);
+
         const id = this.oneSepCards[i].Name.replace(/ /g,'_') + this.oneSepCards[i].Attended.replace(/ /g,'_');
         this.dbService.getByIndex("certificates",'link', id).subscribe((data)=> {
           if(data == null){
@@ -113,7 +122,7 @@ export class SepCardService {
     // console.log('delete certificate');
     // this.dbService.deleteDatabase().subscribe(data=>{});
   }
-  
+
   /*
     15 Mar 2023 wutthichair
       Loading data from cache

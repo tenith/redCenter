@@ -43,7 +43,8 @@
                             {{info.remark}}
                         </div> -->
                         <div *ngIf="dataReady && info.Link != ''" class="col-12">
-                            <b>Certificate</b>
+                            <b>Certificate &nbsp; <nb-icon icon="download-outline" (click)="downloadPdf()"></nb-icon></b>
+                            
                         </div>
                         <!-- <div *ngIf="dataReady" class="col-8">
                             <a href="javascript:void(0)" (click)="openURIWithData()">Click to open</a>
@@ -51,7 +52,7 @@
                         <div *ngIf="isPersonalDocument && uri != ''" class="col-12">
                             <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">
                         </div>
-                        <div *ngIf="!isPersonalDocument && safeURL != undefined" class="col-12">
+                        <div *ngIf="!isPersonalDocument && safeURL != undefined && pdfSupport" class="col-12">
                             <iframe *ngIf="safeURL" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
                             <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
                         </div>

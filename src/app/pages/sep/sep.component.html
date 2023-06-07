@@ -102,7 +102,7 @@
     <!-- SHOW SEP CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" (postCompleteEvent)="newDataFromGoogleAPI($event)"></ngx-one-sep-card>
+            <ngx-one-sep-card [info]="oneSepCard" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
         </div>
     </div>
 </div>

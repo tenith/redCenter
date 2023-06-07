@@ -56,7 +56,6 @@ export class SepComponent implements OnInit {
       this.loading = false;
 
       this.loadAutolandCards();
-      this.updateSummary();
     }
 
     if(this.manualCardService.isInLocalStorage()){
@@ -71,101 +70,109 @@ export class SepComponent implements OnInit {
   }
 
   downloadSEP(): void {
+    this.loading = true;
+    this.cdr.detectChanges();
+    
+    this.sepCardService.clearCertificateCache();
+
     /*
       Loading Information From personal file upload....
     */
-      this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
-        let tempOneSepCard: OneSepCard[] = [];
-        if(docSnapshot.exists){
-          const temp = [...docSnapshot.data().files] as FileUploadInformation[];
-          for(let i=0; i<temp.length;i++){
-            if(temp[i].showSEP == 'Yes'){
-              // console.log(JSON.stringify(temp[i]));
-              let tempSepCard: OneSepCard = {
-                Name: temp[i].fileCategory,
-                Attended: this.formatDate(temp[i].issueDate),
-                Type: 'Personal Upload',
-                Validperiod: '',
-                Expiry: this.formatDate(temp[i].expiryDate),
-                Instructor: temp[i].issueBy,
-                Remark: temp[i].description,
-                Link: temp[i].relativePath
-              };
-  
-              tempOneSepCard.push(tempSepCard);
-            }
+    this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
+      let tempOneSepCard: OneSepCard[] = [];
+      if(docSnapshot.exists){
+        const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+        for(let i=0; i<temp.length;i++){
+          if(temp[i].showSEP == 'Yes'){
+            // console.log(JSON.stringify(temp[i]));
+            let tempSepCard: OneSepCard = {
+              Name: temp[i].fileCategory,
+              Attended: this.formatDate(temp[i].issueDate),
+              Type: 'Personal Upload',
+              Validperiod: '',
+              Expiry: this.formatDate(temp[i].expiryDate),
+              Instructor: temp[i].issueBy,
+              Remark: temp[i].description,
+              Link: temp[i].relativePath
+            };
+
+            tempOneSepCard.push(tempSepCard);
           }
         }
-  
-        if(tempOneSepCard.length > 0){
-          // console.log('we got : ' + JSON.stringify(tempOneSepCard));
-          this.manualCards = tempOneSepCard;
-          this.manualCardService.deleteAllCards();
-          this.manualCardService.saveAllCards(this.manualCards);
-  
-          this.updateSummary();
-        }
-      });
+      }
+
+      if(tempOneSepCard.length > 0){
+        // console.log('we got : ' + JSON.stringify(tempOneSepCard));
+        this.manualCards = tempOneSepCard;
+        this.manualCardService.deleteAllCards();
+        this.manualCardService.saveAllCards(this.manualCards);
+
+        this.updateSummary();
+      }
+    });
         
             
-      /*
-        Loading Information From Online Server....
-      */
-      this.sepCardService.getAllSepCards().subscribe(response => {
-        console.log('JSON REDBOOK API: ' + JSON.stringify(response));
-        if(response == null) {
-          this.toastr.danger('Error','There is no SEP information from online Server, Please check your internet connection or contact TMS.', {duration:10000});
-          return;
-        } 
+    /*
+      Loading Information From Online Server....
+    */
+    this.sepCardService.getAllSepCards().subscribe(response => {
+      console.log('JSON REDBOOK API: ' + JSON.stringify(response));
+      if(response == null) {
+        this.toastr.danger('Error','There is no SEP information from online Server, Please check your internet connection or contact TMS.', {duration:10000});
+        return;
+      } 
+
+      const tempSubjects = response['Courses'];
+
+      let temp: OneSepCard[] = [];
+      for(let i: number = 0; i < tempSubjects.length; i++){
+        // console.log('Try to process: ' + tempSubjects[i]);
+        const courseName = tempSubjects[i];
+        if(this.isRequiredToShow(courseName)){
+          if(response[tempSubjects[i]] != undefined){
+            // console.log('length: ' + response[tempSubjects[i]].length);
+            const last = response[tempSubjects[i]].length - 1;
   
-        const tempSubjects = response['Courses'];
-  
-        let temp: OneSepCard[] = [];
-        for(let i: number = 0; i < tempSubjects.length; i++){
-          // console.log('Try to process: ' + tempSubjects[i]);
-          const courseName = tempSubjects[i];
-          if(this.isRequiredToShow(courseName)){
-            if(response[tempSubjects[i]] != undefined){
-              // console.log('length: ' + response[tempSubjects[i]].length);
-              const last = response[tempSubjects[i]].length - 1;
-    
-              temp.push(response[tempSubjects[i]][last]);
-            }
-            else{
-              //create null card to show....
-              const x: OneSepCard = {
-                Name: courseName,
-                Attended: 'NO DATA',
-                Type: 'NO DATA',
-                Validperiod: 'NO DATA',
-                Expiry: 'NO DATA',
-                Instructor: 'NO DATA',
-                Remark: 'NO DATA',
-                Link: ''
-              };
-  
-              temp.push(x);
-            }
-          }        
-        }
-  
-        this.loading = false;
-        this.toastr.primary('Completed','Updated SEP from TMC server completed', {duration:10000});
-        // this.oneSepCards = [...temp,...this.oneSepCards];
-        this.oneSepCards = temp;
-        this.sepCardService.deleteAllSepCards();
-        this.sepCardService.saveAllSepCards(this.oneSepCards);
-  
-        this.loadAutolandCards();
-        this.updateSummary();
-      });
+            temp.push(response[tempSubjects[i]][last]);
+          }
+          else{
+            //create null card to show....
+            const x: OneSepCard = {
+              Name: courseName,
+              Attended: 'NO DATA',
+              Type: 'NO DATA',
+              Validperiod: 'NO DATA',
+              Expiry: 'NO DATA',
+              Instructor: 'NO DATA',
+              Remark: 'NO DATA',
+              Link: ''
+            };
+
+            temp.push(x);
+          }
+        }        
+      }
+
+      this.loading = false;
+      this.toastr.primary('Completed','Updated SEP from TMC server completed', {duration:10000});
+      // this.oneSepCards = [...temp,...this.oneSepCards];
+      this.oneSepCards = temp;
+      this.sepCardService.deleteAllSepCards();
+      this.sepCardService.saveAllSepCards(this.oneSepCards);
+
+      this.loadAutolandCards();
+    });
   }
 
+  detectChanges(): void {
+  }
 
   private isRequiredToShow(search: string): boolean {
     const role = this.firestoreUser.getFirestoreUser().role;
     const mainCourse = sepCourseOptions[role] as string[];
     return mainCourse.includes(search);
+
+    
   }
 
   private formatDate(x: string): string{
@@ -186,7 +193,6 @@ export class SepComponent implements OnInit {
         this.sepCardService.saveAllSepCards(this.oneSepCards);
 
         this.loadAutolandCards();
-        this.updateSummary();
         break;
       }
     }
@@ -198,8 +204,6 @@ export class SepComponent implements OnInit {
     this.expiredList = [];
 
     this.updateSEPSummary();
-    // this.updateAutoLandSummary();
-
     this.cdr.detectChanges();
   }
 
@@ -300,8 +304,8 @@ export class SepComponent implements OnInit {
       this.autoLandCards = [...autoLandCards];
       // console.log('GET AUTOLAND JSON :' + JSON.stringify(this.autoLandCards));
 
-      if(!this.firstTimeAlert)
-        this.toastr.primary('Completed','Updated Autoland history from online server completed', {duration:10000, preventDuplicates: true});
+      // if(!this.firstTimeAlert)
+      //   this.toastr.primary('Completed','Updated Autoland history from online server completed', {duration:10000, preventDuplicates: true});
 
       this.firstTimeAlert = false;
       this.showAutoLand = true;
