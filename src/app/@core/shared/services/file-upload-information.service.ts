@@ -44,8 +44,10 @@ export class FileUploadInformationService {
       if(!docSnapshot.exists){
         this.collectionRef.doc(this.email).set({files: []});
       }
-      else
+      else{
         this.fileUploadInformations = [...docSnapshot.data().files] as FileUploadInformation[];
+        console.log(JSON.stringify(this.fileUploadInformations));
+      }
     });
   }
 
@@ -56,11 +58,21 @@ export class FileUploadInformationService {
     return newRef.get();
   }
 
-  public async addFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{
+  public async addFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{    
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayUnion(fileUploadInformation)});
   }
 
+  public removeFileUploadByName(name: string, email: string): Promise<any>{
+    let tempFileInformation: FileUploadInformation;
+    for(let i=0;i<this.fileUploadInformations.length;i++){
+      if(this.fileUploadInformations[i].name == name)
+        tempFileInformation = this.fileUploadInformations[i];
+    }
+    return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayRemove(tempFileInformation)});
+  }
+
   public removeFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{
+    console.log('delete Upload FILE INFO: ' + JSON.stringify(fileUploadInformation));
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayRemove(fileUploadInformation)});
   }
 }

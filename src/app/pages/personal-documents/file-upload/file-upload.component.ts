@@ -4,7 +4,6 @@ import { FirestoreUserService } from '../../../@core/shared/services/firestore-u
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { NbToastrService } from '@nebular/theme';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'ngx-file-upload',
@@ -23,6 +22,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   
   constructor(private formBuilder: FormBuilder, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService, private fileUploadDatabaseService: FileUploadDatabaseService) { 
   }
+
   ngAfterViewInit(): void {
     this.uploadFormSubject = this.uploadForm.valueChanges.subscribe((value)=>{ this.reviseRequired();});
   }
@@ -81,9 +81,6 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 
     console.log('Upload...');
     console.log(JSON.stringify(this.uploadForm.value));
-
-    // console.log('TYPE: ' + typeof this.fileToUpload);
-    // console.log('NAME: ' + this.fileToUpload.name);
     
     this.uploading = true;
     await this.fileUploadDatabaseService.uploadFile(this.fileToUpload,this.uploadForm.value)

@@ -32,8 +32,10 @@
                 <div class="col-3"><B>ROLE</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().role | uppercase}}</div>
 
-                <div class="col-3"><B>&nbsp;</B></div>
-                <div class="col-9">my picture</div>
+                <!-- <div class="col-3"><B>MY PICTURE</B></div>
+                <div class="col-9">
+                    <ngx-profile-picture></ngx-profile-picture>
+                </div> -->
                 
                 <div class="col-12" style="margin-top: 0.5rem;"><B>Summary</B></div>
                 <!-- success -->
@@ -82,6 +84,21 @@
             </nb-card-body>
         </nb-card>
     </div>
+
+    <!-- Mandatory Card -->
+    <div class="row">
+        <div *ngFor="let cardName of mandatoryCourseName" class="col-12 col-sm-4 col-md-4">
+            <ngx-mandatory-card-post [name]="cardName" (postCompleteEvent)="downloadSEP()"></ngx-mandatory-card-post>
+        </div>
+    </div>
+
+    <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
+    <div class="row">
+        <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
+            <ngx-one-sep-card [info]="oneSepCard" [canDelete]="true" (deleteEvent)="downloadSEP()"></ngx-one-sep-card>
+        </div>
+    </div>
+
     <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
     <div *ngIf="showAutoLand" class="row">
         <div class="col-12 col-sm-4 col-md-4" id="AUTOLAND - ONLINE">
@@ -90,19 +107,12 @@
         <div class="col-12 col-sm-4 col-md-4" id="AUTOLAND - SIMULATOR">
             <ngx-autoland-card *ngIf="autoLandCards[1]!=null" [info]="autoLandCards[1]" [events]="changeEvent.asObservable()" (postCompleteEvent)="loadAutolandCards()"></ngx-autoland-card>
         </div>
-    </div>
-
-    <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
-    <div class="row">
-        <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" ></ngx-one-sep-card>
-        </div>
-    </div>
+    </div>    
 
     <!-- SHOW SEP CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-4 col-md-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
+            <ngx-one-sep-card [info]="oneSepCard" [canDelete]="false" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
         </div>
     </div>
 </div>

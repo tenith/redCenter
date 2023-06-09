@@ -14,17 +14,26 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { NbAccordionModule } from '@nebular/theme';
+import { MandatoryCardPostComponent } from './mandatory-card-post/mandatory-card-post.component';
+
+import { NbSelectModule } from '@nebular/theme';
+import { NbInputModule } from '@nebular/theme';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
     SepComponent,
     OneSepCardComponent,
-    AutolandCardComponent
+    AutolandCardComponent,
+    MandatoryCardPostComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
+    NbInputModule,
     CommonModule,
     NbCardModule,
     NbIconModule,
+    NbSelectModule,
     NbSpinnerModule,
     FormsModule,
     ReactiveFormsModule,

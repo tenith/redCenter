@@ -8,6 +8,10 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { ManualCardService } from '../../../@core/shared/services/manual-card.service';
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
+import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
+import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -16,13 +20,17 @@ import { ManualCardService } from '../../../@core/shared/services/manual-card.se
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OneSepCardComponent implements OnInit, OnDestroy {
-  @Input() info!: OneSepCard;
+  @Input() info?: OneSepCard;
+  @Input() canDelete: boolean = false;
   @Output() postCompleteEvent = new EventEmitter<string>();
+  @Output() deleteEvent = new EventEmitter<string>();
   @Output() refreshEvent = new EventEmitter<string>();
   myStatus: string;
   myIcon: string;
 
-  pdfLink: string;
+  postRequired: boolean = false;
+
+  pdfLink: string; 
 
   cacheLink: SafeResourceUrl;
   uri: string = '';
@@ -36,12 +44,15 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   private pollSubscription: Subscription;
   safeURL: SafeResourceUrl;
 
-  constructor(private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
+  dialogRef: NbDialogRef<DeleteConfirmationComponent>;
+
+  constructor(private firestoreUser: FirestoreUserService ,private toastr: NbToastrService, private dialogService: NbDialogService, private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
   ngOnDestroy(): void {
     this.stopPolling();
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {     
+
     if ("application/pdf" in navigator.mimeTypes)
       this.pdfSupport = true;
       
@@ -50,6 +61,10 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       this.downloadUrl$ = this.fileUploadDatabaseService.getFile(this.info.Link);
     }
 
+    this.setupCard();
+  }
+
+  setupCard(): void {
     this.startPolling();      
     
     if(this.info.Expiry == 'NO DATA'){
@@ -70,9 +85,18 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   generateDownloadLink() {
-    const blob = this.base64ToBlob(this.uri.split(',')[1], 'application/pdf');
+    let type = 'application/pdf';
+    if(!this.uri.split(',')[0].includes('pdf'))
+      type = 'image/png';
+
+    const blob = this.base64ToBlob(this.uri.split(',')[1], type);
     const url = URL.createObjectURL(blob);
     this.pdfLink = url;
+  }
+
+  postCompletedUpdateThisCard(): void {
+    console.log('postCompletedUpdateThisCard');
+    this.setupCard();
   }
 
   downloadPdf() {
@@ -116,6 +140,31 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
+  }
+
+  deleteDocument(): void{
+    this.dialogRef = this.dialogService.open(DeleteConfirmationComponent,{
+      context: {
+        data: {
+          myCode:this.info.Name
+        }
+      }
+    });
+
+    this.dialogRef.onClose.subscribe(confirm => {
+      if(confirm == 'affirm'){
+        const user = this.firestoreUser.getFirestoreUser();
+
+        this.fileUploadDatabaseService.deleteFileByName(this.info.Link, user.email).then(()=>{
+          this.toastr.primary('Completed','Delete ' + this.info.Name + ' document completed');
+          this.deleteEvent.emit();
+        })
+        .catch(error=>{
+          console.log(error);
+          this.toastr.danger('error','Delete ' + this.info.Name + ' document failed, try again later');
+        });
+      }
+    });
   }
 
   reviseStatus(): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { localStorageCollection } from '../../../../environments/myconfigs';
+import { localStorageCollection, profileDBLink } from '../../../../environments/myconfigs';
 import { OneSepCard } from '../interfaces/one-sep-card';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
@@ -20,6 +20,21 @@ export class ManualCardService {
 
   isInLocalStorage(): boolean{
     return localStorage.getItem(this.manualCardLocalDBName) != null;
+  }
+
+  async saveProfilePicture(path: string): Promise<void> {
+    await this.getImageFromFireDB(path).then(async downloadURL => {
+      await this.getBase64ImageFromUrl(downloadURL)
+        .then(result => {
+          console.log('get data: ' + result);
+          try{
+           this.dbService.deleteByKey("certificates",profileDBLink);
+          }
+          catch(e){ console.log(e);}
+          this.dbService.add("certificates",{link:profileDBLink,uri:result}).subscribe();
+        })
+        .catch(err => console.error(err));
+    });
   }
 
   saveAllCertificate(): void{

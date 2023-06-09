@@ -36,6 +36,9 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       myCommand: { title:'Action & Status', width:'12%', type:'custom', filter: false, sort:false,renderComponent: CustomActionComponent},
       uploadTime: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'15%', type: 'date',
         valuePrepareFunction: (date) => {
+          if(date == '' || date == '-')
+            return '-';
+            
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
           return formattedDate.toUpperCase();
@@ -45,6 +48,9 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       description: { title: 'Description', },
       issueDate: { title: 'Issue Date', filter: false, width:'15%', type: 'date',
         valuePrepareFunction: (date) => {
+          if(date == '' || date == '-')
+            return '-';
+
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyy');
           return formattedDate.toUpperCase();

@@ -12,7 +12,7 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload-information';
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
-import { sepCourseOptions } from '../../../environments/myconfigs';
+import { sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-sep',
@@ -38,15 +38,15 @@ export class SepComponent implements OnInit {
   firstTimeAlert: boolean = true;
 
   isPilot: boolean = false;
+  mandatoryCourseName: string[] = [];
 
   constructor(private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
-    // if(this.firestoreUser.getFirestoreUser().role == roleOptions[0].value)
-    //   this.isPilot = true;
-
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
                            {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];
+
+    this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];
 
     /*
       Loading Information From Cache....
@@ -61,12 +61,21 @@ export class SepComponent implements OnInit {
     if(this.manualCardService.isInLocalStorage()){
       this.manualCards = [...(this.manualCardService.getAllSepCardsFromCache())];
       this.loading = false;
-      
+           
       this.updateSummary();
+      this.reviseMandatoryCourse();
     }
 
     if(this.loading)
       this.downloadSEP();
+  }
+
+  reviseMandatoryCourse(): void {
+    this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];
+    console.log(JSON.stringify(this.mandatoryCourseName));
+    for(let i=0;i<this.manualCards.length;i++)
+      if(this.mandatoryCourseName.includes(this.manualCards[i].Name))
+        this.mandatoryCourseName = this.mandatoryCourseName.filter((obj) => obj !== this.manualCards[i].Name);
   }
 
   downloadSEP(): void {
@@ -79,6 +88,7 @@ export class SepComponent implements OnInit {
       Loading Information From personal file upload....
     */
     this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
+      console.log('get some data from firebase');
       let tempOneSepCard: OneSepCard[] = [];
       if(docSnapshot.exists){
         const temp = [...docSnapshot.data().files] as FileUploadInformation[];
@@ -102,12 +112,35 @@ export class SepComponent implements OnInit {
       }
 
       if(tempOneSepCard.length > 0){
-        // console.log('we got : ' + JSON.stringify(tempOneSepCard));
-        this.manualCards = tempOneSepCard;
+        
+        
+        const tempS: OneSepCard[] = [];
+        for(let i=0;i<sepMandatory[this.firestoreUser.getFirestoreUser().role].length;i++){
+          for(let j=0;j<tempOneSepCard.length;j++){
+            // console.log(sepMandatory[this.firestoreUser.getFirestoreUser().role]);
+            // console.log(tempOneSepCard[j]);
+            if(sepMandatory[this.firestoreUser.getFirestoreUser().role][i] == tempOneSepCard[j].Name){
+              tempS.push(tempOneSepCard[j]);
+              break;
+            }
+          }
+        }
+        console.log(JSON.stringify(tempS));
+
+        this.manualCards = tempS;
         this.manualCardService.deleteAllCards();
         this.manualCardService.saveAllCards(this.manualCards);
 
         this.updateSummary();
+        this.reviseMandatoryCourse();
+      }
+      else{
+        this.manualCards = [];
+        this.manualCardService.deleteAllCards();
+        this.manualCardService.saveAllCards(this.manualCards);
+
+        this.updateSummary();
+        this.reviseMandatoryCourse();
       }
     });
         
@@ -176,13 +209,15 @@ export class SepComponent implements OnInit {
   }
 
   private formatDate(x: string): string{
+    if(x == '' || x == '-')
+      return "-";
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(new Date(x), 'dd MMM yyy');
     return formattedDate;
   }
 
   newDataFromGoogleAPI(data: string): void {
-    console.log('new Data from Google API');
+    // console.log('new Data from Google API');
 
     const newData = {...JSON.parse(data)} as OneSepCard;
     for(let i=0;i<this.oneSepCards.length;i++){
@@ -199,6 +234,8 @@ export class SepComponent implements OnInit {
   }
 
   updateSummary(): void {
+    this.reviseMandatoryCourse();
+
     this.validList = [];
     this.aboutList = [];
     this.expiredList = [];
@@ -210,6 +247,10 @@ export class SepComponent implements OnInit {
   updateSEPSummary(): void{
     if(this.oneSepCards == null)
       return;
+
+    for(let i=0;i<this.mandatoryCourseName.length;i++){
+      this.expiredList.push(this.mandatoryCourseName[i]);
+    }
 
     for(let i=0;i<this.oneSepCards.length;i++){
       const msInDay = 24 * 60 * 60 * 1000;

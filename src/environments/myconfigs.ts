@@ -140,8 +140,15 @@ export const  aocOptions = [
     { value: 'QZ', label: 'QZ - Indonesia', icon: 'assets/images/flags/indonesia.png'},
 ];
 
+export const sepMandatory = {
+    Pilot: ["My Picture", "Pilot License", "Medical License", "Passport", "English Proficiency"],
+    Cabin_Crew: ["My Picture", "Medical License", "Passport"],
+}
+
 export const sepCourseOptions = {
     Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "ETOPS A320", "RHS", "UPRT", "VVDN COMPETENCY", "VVCR COMPETENCY", "LVO CAT II", "LVO CAT IIIA", "A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
     Cabin_Crew: ["A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
 }
+
+export const profileDBLink = 'myProfilePicture';
   

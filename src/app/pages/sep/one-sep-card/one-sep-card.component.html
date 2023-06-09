@@ -1,10 +1,14 @@
 <nb-accordion>
     <nb-accordion-item expanded="{{myStatus != 'success'}}">
-        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name}}</b></nb-accordion-item-header>
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name}}</b>
+            &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
+            &nbsp;<nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
+            &nbsp;<nb-icon *ngIf="canDelete" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
+        </nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-card accent="{{myStatus}}">
                 <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
-                <nb-card-body>
+                <nb-card-body *ngIf="info.Name != 'My Picture'">
                     <div class="row">
                         <div class="col-4">
                             <b>Type</b>
@@ -58,11 +62,15 @@
                         </div>
                     </div>
                 </nb-card-body>
+                <nb-card-body *ngIf="info.Name == 'My Picture'">
+                    <div *ngIf="dataReady && info.Link != ''" class="col-12">
+                        <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">                        
+                    </div>
+                </nb-card-body>
             </nb-card>
         </nb-accordion-item-body>
        </nb-accordion-item>
 </nb-accordion>
-
 
 <!-- <div *ngIf="info.name.includes('LVO')" >
     <div><ngx-autoland-card [name]="'AUTOLAND - ONLINE'"></ngx-autoland-card></div>

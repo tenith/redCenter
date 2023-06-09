@@ -131,6 +131,10 @@ export class SepCardService {
     return this.dbService.getByIndex("certificates", 'link', linkURL);
   }
 
+  addProfileImage(): void {
+    
+  }
+
   saveAllSepCards(oneSepCards: OneSepCard[]): void {
     this.oneSepCards = oneSepCards;
     localStorage.setItem(this.sepCardLocalDBName,JSON.stringify(oneSepCards));

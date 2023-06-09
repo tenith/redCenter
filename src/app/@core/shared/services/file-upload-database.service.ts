@@ -67,6 +67,42 @@ export class FileUploadDatabaseService {
     return this.storage.ref(fullPath).getDownloadURL();
   }
 
+  // public async deleteFileByType(type: string, email: string): Promise<boolean> {
+  //   let completed = false;
+
+  //   await this.fileUploadInformationService.removeFileUploadByType(type, email)
+  //   .then(async () => {
+  //     const fileRef = this.storage.ref(path);
+  //     await fileRef.delete().toPromise().then(() => { console.log('delete completed');});
+  //     completed = true;
+  //   })
+  //   .catch(error => console.log(error));
+    
+    
+  //   return completed;
+  // }
+
+  public async deleteFileByName(path: string, email: string): Promise<boolean> {
+    let completed = false;
+    // if(!this.isModerator)
+    //   return;
+
+    console.log('Path: ' + path);
+    console.log('File Info:' + JSON.stringify(path.split('/')[3]));
+
+    await this.fileUploadInformationService.removeFileUploadByName(path.split('/')[3], email)
+    .then(async () => {
+      const fileRef = this.storage.ref(path);
+      await fileRef.delete().toPromise().then(() => { console.log('delete completed');});
+      completed = true;
+    })
+    .catch(error => console.log(error));
+    
+    
+    return completed;
+
+  }
+
   public async deleteFile(path: string, fileUploadInformation: FileUploadInformation): Promise<boolean> {
     let completed = false;
     // if(!this.isModerator)

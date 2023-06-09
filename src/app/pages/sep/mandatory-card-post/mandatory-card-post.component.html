@@ -1,0 +1,85 @@
+
+<nb-accordion *ngIf="!uploading">
+    <nb-accordion-item expanded="true">
+        <nb-accordion-item-header><nb-icon icon="close-square" status="danger"></nb-icon><b>&nbsp;&nbsp;{{name}}</b>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <form [formGroup]="uploadForm" (ngSubmit)="upload()">
+                <div class="form-inline">
+                    <input id="fileUpload" name="fileUpload" formControlName="fileUpload" (change)="handleFileInput($event.target.files)" type="file" nbInput accept="image/*">
+                    <input id="fileCategory" name="fileCategory" formControlName="fileCategory" nbInput fullWidth type="text" hidden value="{{name}}">
+                    <input id="fileDescription" name="fileDescription" formControlName="fileDescription" nbInput fullWidth type="text" hidden value="{{name}}_manualUpload">
+                    <input id="showSEP" name="showSEP" formControlName="showSEP" nbInput fullWidth type="text" hidden value="Yes">
+                    <input id="hasExpiry" name="hasExpiry" formControlName="hasExpiry" nbInput fullWidth type="text" hidden value="Yes">
+                </div>
+        
+                <!-- <div class="form-group">
+                    <label for="fileCategory" class="label">File category*:</label><label *ngIf="uploadForm.get('fileCategory').invalid && uploadForm.get('fileCategory').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please select file category)</label>
+                    <nb-select id="fileCategory" nbInput fullWidth formControlName="fileCategory">
+                        <nb-option value="LICENSE">License</nb-option>
+                        <nb-option value="MEDICAL">Medical</nb-option>
+                        <nb-option value="PASSPORT">Passport</nb-option>
+                        <nb-option value="ENGLISH PROFICIENCY">English Proficiency</nb-option>
+                        <nb-option value="OTHER">Other</nb-option>
+                    </nb-select>
+                </div> -->
+        
+                <!-- <div class="form-group">
+                    <label for="fileDescription" class="label">File description*:</label><label *ngIf="uploadForm.get('fileDescription').invalid && uploadForm.get('fileDescription').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please enter file description.)</label>
+                    <input id="fileDescription" name="fileDescription" formControlName="fileDescription" nbInput type="text" fullWidth placeholder="File Description">
+                </div> -->
+        
+                <!-- <div class="form-group">
+                    <label for="showSEP" class="label">Do you want to show this file on SEP Module*:</label>
+                    <nb-select id="showSEP" fullWidth formControlName="showSEP">
+                        <nb-option value="Yes">Yes</nb-option>
+                        <nb-option value="No">No</nb-option>
+                    </nb-select>
+                    <input id="showSEP" name="showSEP" formControlName="showSEP" nbInput type="checkbox" fullWidth placeholder="Do you want to show this file on SEP Module">
+                </div> -->
+        
+                <div *ngIf="!isProfile" class="form-group">
+                    <label for="issueBy" class="label">Issue By*:</label>
+                    <input id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue by">
+                </div>
+        
+                <div *ngIf="!isProfile" class="form-group">
+                    <label for="issueDate" class="label">Issue Date*:</label>
+                    <input id="issueDate" name="issueDate" formControlName="issueDate" nbInput type="date" fullWidth placeholder="Issue Date">
+                </div>
+        
+                <!-- <div *ngIf="toShowSEP" class="form-group">
+                    <label for="hasExpiry" class="label">Is this file has expiry date?*:</label>
+                    <nb-select id="hasExpiry" fullWidth formControlName="hasExpiry">
+                        <nb-option value="Yes">Yes</nb-option>
+                        <nb-option value="No">No</nb-option>
+                    </nb-select>
+                </div> -->
+        
+                <div *ngIf="!isProfile" class="form-group">
+                    <label for="expiryDate" class="label">Expiry Date*:</label>
+                    <input id="expiryDate" name="expiryDate" formControlName="expiryDate" nbInput type="date" fullWidth placeholder="Expiry Date">
+                </div>
+                
+                <div class="form-group">
+                    <button nbButton [disabled]="uploadForm.invalid" status="primary" type="submit">Submit</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button nbButton [disabled]="!uploadForm.touched" status="danger" type="reset">Reset</button>
+                </div>
+            </form>
+        </nb-accordion-item-body>
+    </nb-accordion-item>
+</nb-accordion>
+    
+
+<nb-card *ngIf="uploading" status="danger" size="giant" [nbSpinner]="loading"
+            nbSpinnerStatus="danger"
+            nbSpinnerSize="large"
+            nbSpinnerMessage="">
+    <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+    <nb-card-body style="text-align: center;">
+    <p>
+        Please wait, We are uploading your document to the server.
+    </p>
+    </nb-card-body>
+</nb-card>
