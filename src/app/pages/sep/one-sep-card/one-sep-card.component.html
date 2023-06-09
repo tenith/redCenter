@@ -3,7 +3,7 @@
         <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name}}</b>
             &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
             &nbsp;<nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
-            &nbsp;<nb-icon *ngIf="canDelete" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
+            &nbsp;<nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-card accent="{{myStatus}}">

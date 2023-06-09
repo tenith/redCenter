@@ -44,6 +44,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   private pollSubscription: Subscription;
   safeURL: SafeResourceUrl;
 
+  offline:boolean = true;
+
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
 
   constructor(private firestoreUser: FirestoreUserService ,private toastr: NbToastrService, private dialogService: NbDialogService, private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
@@ -52,6 +54,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {     
+    this.offline = !navigator.onLine;
 
     if ("application/pdf" in navigator.mimeTypes)
       this.pdfSupport = true;
