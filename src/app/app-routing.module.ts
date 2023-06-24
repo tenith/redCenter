@@ -1,7 +1,5 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-
-import { FirebaseAuthenticationService } from './@core/shared/services/firebase-authentication.service';
 import { AuthenticationGuard } from './@core/shared/guards/authentication.guard';
 
 export const routes: Routes = [

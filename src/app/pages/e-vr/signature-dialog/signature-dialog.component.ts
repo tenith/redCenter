@@ -12,6 +12,9 @@ export class SignatureDialogComponent implements OnInit {
   @Input() data: any;
   @ViewChild(SignaturePad) signaturePad!: SignaturePad;
 
+  @Input() width?: number;
+  @Input() height?: number;
+
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     'canvasWidth': 400,
@@ -21,16 +24,16 @@ export class SignatureDialogComponent implements OnInit {
   constructor(private dialogRef: NbDialogRef<SignatureDialogComponent>) { }
 
   ngOnInit(): void {
+    this.signaturePadOptions = {
+      'minWidth': 2,
+      'canvasWidth': this.width? this.width: 400,
+      'canvasHeight': this.height? this.height: 300
+    }
   }
 
   ngAfterViewInit() {
-    console.log('afterviewinit');
     this.signaturePad.fromDataURL('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
   }
-
-  drawStart() {}
-
-  drawComplete() {}
 
   clearSignature(){
     this.signaturePad.clear();

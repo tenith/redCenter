@@ -27,24 +27,7 @@ export let menuListDetail = {
     ]
   },
   performance: { title: 'My performance', icon: 'trending-up', link: '/pages/performance', },
-  ets1: {
-    title: 'E-TS1',
-    icon: 'file-outline',
-    children: [
-      // {
-      //   title: 'My dashboard (Moderator)',
-      //   link: '/pages/ets1/mworkspace',
-      // },
-      // {
-      //   title: 'My dashboard (Instructor)',
-      //   link: '/pages/ets1/iworkspace',
-      // },
-      {
-        title: 'My E-TS1',
-        link: '/pages/ets1/tworkspace',
-      }
-    ],
-  },
+  ets1: { title: 'E-TS1', icon: 'file-outline', link: '/pages/ets1/workspace'},
   sep: { title: 'SEP Card', icon: 'book-outline', link: '/pages/sep', },
   logout: { title: 'Log out', icon: 'log-out', link: '/authentication/logout', },
 }

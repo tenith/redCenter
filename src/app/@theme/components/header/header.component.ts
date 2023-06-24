@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   title = 'af-notification';
   message:any = null;
 
+  currentApplicationVersion = environment.appVersion;
+
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;

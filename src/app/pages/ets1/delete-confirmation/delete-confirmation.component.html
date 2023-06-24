@@ -1,9 +1,11 @@
 <div class="row" style="background-color: white;">
     <div class="col-12 col-sm-6 col-md-6" style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        <nb-card status="primary">
-            <nb-card-header style="text-align: center;">Please sign your name, Be careful this operation cannot be undone!!!!</nb-card-header>
+        <nb-card status="danger">
+            <nb-card-header style="text-align: center;">{{data.title}}</nb-card-header>
             <nb-card-body style="text-align: center;">
-                <signature-pad [options]="signaturePadOptions"></signature-pad>
+                {{data.information}}<br>
+                Are you sure? 
+                
             </nb-card-body>
         </nb-card>
     </div>

@@ -59,7 +59,7 @@ const routes: Routes = [{
         VrListconfirmationComponent,
         QrCodeComponent,
     ],
-    exports: [RouterModule],
+    exports: [RouterModule, SignatureDialogComponent],
     imports: [
         NbThemeModule,
         NbDialogModule,

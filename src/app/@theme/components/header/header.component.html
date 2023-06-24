@@ -7,15 +7,16 @@
       01 MAR 2023 by wutthichair
         change title 'ngx-admin' to 'Red Center'
     -->
-    <a class="logo" href="#" (click)="navigateHome()"><font style="color: red;"><b>Red</b></font> Center</a>
+    <a class="logo" href="#" (click)="navigateHome()" style="font-size: min(6vw, 25px);"><font style="color: red;"><b>Red</b></font> Center <font style="font-size: min(3vw, 15px);">{{currentApplicationVersion}}</font></a>
   </div>
-  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+  <!-- <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
     <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
-  </nb-select>
+  </nb-select> -->
 </div>
 
 <div class="header-container">
   <nb-actions size="small">
+    
     <!--       
       01 MAR 2023 by wutthichair
       remove rotate-layout, email-outline, bell-outline features 

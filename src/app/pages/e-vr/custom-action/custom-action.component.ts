@@ -15,9 +15,7 @@ export class CustomActionComponent implements OnInit {
   constructor(private vrService: VrService, private dialogService: NbDialogService) { 
   }
 
-  ngOnInit(): void {
-    console.log(JSON.stringify(this.rowData));
-  }
+  ngOnInit(): void { }
 
   deleteVR(): void {
     this.dialogRef = this.dialogService.open(DeleteConfirmationComponent,{

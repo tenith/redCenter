@@ -28,6 +28,7 @@ export const settings = {
 };
 
 export const firestoreCollection = {
+    eTS1CollectionName: '/eTS1',
     userCollectionName: '/users',
     vrCollectionName: '/vr',
     announcementCollectionName: '/announcements',
@@ -42,6 +43,7 @@ export const firebaseDB = {
 };
 
 export const localStorageCollection = {
+    tabCollectionName: 'tabLocalName',
     autoLandCardCollectionName: 'AutoLandCardLocalDBName',
     firebaseUserStoreKeyCollectionName : 'firebaseUserStoreKey',
     firestoreUserDBNameCollectionName: 'firestoreUserDBName',
@@ -55,6 +57,11 @@ export const localDB = {
     dbName: 'my-notification-database',
     objectStoreName: 'my-notification-object-store',
 };
+
+export const instructorList = [
+    "wutthichair@airasia.com",
+    "adisakh@airasia.com"
+]
 
 export const dbConfig: DBConfig  = {
     name: 'MyDb',
@@ -84,6 +91,7 @@ export const API = {
     performanceGoogleService: 'https://script.google.com/macros/s/AKfycbyAPnu61zvXx0AJ1xP0P8pNN1rkq7wqFi09x31W6vXtR2Ze66AKXgaRx7oXUrz8iz57/exec',
 
     vrGoogleService: 'https://script.google.com/macros/s/AKfycbzwDk-vZNTX4NGy7buN2wDFErz3MzBaFC8wniDIX9BVkOUVTeeXJXKhDTtpKXwJxGaz/exec',
+    eTS1GoogleService: 'https://script.google.com/macros/s/AKfycbxW1rmS__ee8VXQsn35v-1URReJYWLCVe_1bOeyoft0wHTrWnDReX-aDg1MiNkJAnWc/exec',    
 
     redBookTMC: 'https://red-u.thaiairasia.co.th/training-api-prelaunch/v1/Redbook/GetRedbook',
     // redBookTMC: 'http://117.121.215.99:8105/training-api/v1/Redbook/GetRedbook',

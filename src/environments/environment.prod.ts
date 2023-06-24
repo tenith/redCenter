@@ -4,6 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 export const environment = {
+  appVersion: require('../../package.json').version,
   production: true,
   /*
     01 Mar 2023 wutthichair
@@ -21,3 +22,5 @@ export const environment = {
     vapidKey: "BCuIfA9ISlQR9IMblIGlnwiLfuo71eJViwltkPuteEiRVKjw7pdRoUrbEiV1hVgPdr6qDpnO-iiE3Kq_x_8rCt8"
   }
 };
+
+export const showMenu = ['Home', 'Authorization', 'SEP Card', 'Log out'];

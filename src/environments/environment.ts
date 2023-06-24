@@ -9,6 +9,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
+  appVersion: require('../../package.json').version + '-dev',
   production: false,
   /*
     01 Mar 2023 wutthichair
@@ -26,3 +27,5 @@ export const environment = {
     vapidKey: "BCuIfA9ISlQR9IMblIGlnwiLfuo71eJViwltkPuteEiRVKjw7pdRoUrbEiV1hVgPdr6qDpnO-iiE3Kq_x_8rCt8"
   }
 };
+
+export const showMenu = ['Home', 'Authorization', 'Documents Amendment', 'Personal document(s)', 'E-VR', 'My performance', 'E-TS1', 'SEP Card', 'Log out'];
