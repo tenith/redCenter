@@ -52,7 +52,7 @@ export class SepCardService {
     if(settings.redBookTMC)
       return this.getAllSepCardsFromTMC();
     
-    let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);
+    let params = new HttpParams().set('email', this.fireBaseAuthService.getFirebaseUser().email);    
     return this.httpClient.get(this.apiURL,{params:params});
   }
 

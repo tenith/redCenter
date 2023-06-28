@@ -46,7 +46,7 @@ export class FileUploadInformationService {
       }
       else{
         this.fileUploadInformations = [...docSnapshot.data().files] as FileUploadInformation[];
-        console.log(JSON.stringify(this.fileUploadInformations));
+        // console.log(JSON.stringify(this.fileUploadInformations));
       }
     });
   }
@@ -72,7 +72,7 @@ export class FileUploadInformationService {
   }
 
   public removeFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{
-    console.log('delete Upload FILE INFO: ' + JSON.stringify(fileUploadInformation));
+    // console.log('delete Upload FILE INFO: ' + JSON.stringify(fileUploadInformation));
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayRemove(fileUploadInformation)});
   }
 }

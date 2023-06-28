@@ -75,7 +75,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
       //Temporary solution to get data from google sheets....
       this.sepService.getAllSepCardsFromGoogleAPI(this.info.Name).subscribe(response => {
-        console.log('JSON Google API: ' + JSON.stringify(response));
+        // console.log('JSON Google API: ' + JSON.stringify(response));
         if(response != null && Object.keys(response).length != 0){
           this.info = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
           this.reviseStatus();
@@ -172,8 +172,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
   reviseStatus(): void {
     const msInDay = 24 * 60 * 60 * 1000;
-    const today = new Date().getTime();
-    const expire = new Date(this.info.Expiry).getTime();
+    const today = new Date().getTime() + msInDay;
+    const expire = new Date(this.info.Expiry).getTime() + msInDay;
     const diffDate = (expire - today) / msInDay;
 
     if(diffDate < 0)

@@ -93,11 +93,11 @@ export const API = {
     vrGoogleService: 'https://script.google.com/macros/s/AKfycbzwDk-vZNTX4NGy7buN2wDFErz3MzBaFC8wniDIX9BVkOUVTeeXJXKhDTtpKXwJxGaz/exec',
     eTS1GoogleService: 'https://script.google.com/macros/s/AKfycbxW1rmS__ee8VXQsn35v-1URReJYWLCVe_1bOeyoft0wHTrWnDReX-aDg1MiNkJAnWc/exec',    
 
-    redBookTMC: 'https://red-u.thaiairasia.co.th/training-api-prelaunch/v1/Redbook/GetRedbook',
-    // redBookTMC: 'http://117.121.215.99:8105/training-api/v1/Redbook/GetRedbook',
-    redBookTMCTest: 'http://117.121.215.99:8105/training-api/v1/Redbook/GetRedbook',
-    redBookTMC_X: '7eOOFH0SIRlp9HLlVAMo28YYm56cRZNQ',
+    // redBookTMC: 'https://red-u.thaiairasia.co.th/training-api-prelaunch/v1/Redbook/GetRedbook',
+    // redBookTMC_X: '7eOOFH0SIRlp9HLlVAMo28YYm56cRZNQ',
 
+    redBookTMC: 'https://red-u.thaiairasia.co.th/training-api/v1/Redbook/GetRedbook',
+    redBookTMC_X: 'cbHBWdeRODn2f6H1xca52FYSIRc4WfC9',
 };
 
 export const httpOptions = { "Content-Type": "text/plain;charset=utf-8", "mode":"no-cors" };

@@ -57,7 +57,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
   reviseAutoLandCard(): void{
     const msInDay = 24 * 60 * 60 * 1000;
     const today = new Date().getTime();
-    const expire = new Date(this.info.expiry).getTime();
+    const expire = new Date(this.info.expiry).getTime() + msInDay;
     const diffDate = (expire - today) / msInDay;
 
     if(diffDate < 0)

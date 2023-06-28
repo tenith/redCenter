@@ -46,7 +46,7 @@ export class SepComponent implements OnInit {
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
                            {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];
 
-    this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];
+    this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];   
 
     /*
       Loading Information From Cache....
@@ -54,7 +54,7 @@ export class SepComponent implements OnInit {
     if(this.sepCardService.isInLocalStorage()){
       this.oneSepCards = [...(this.sepCardService.getAllSepCardsFromCache())];
       this.loading = false;
-
+      
       this.loadAutolandCards();
     }
 
@@ -68,11 +68,13 @@ export class SepComponent implements OnInit {
 
     if(this.loading)
       this.downloadSEP();
+
+    this.updateSummary();
   }
 
   reviseMandatoryCourse(): void {
     this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];
-    console.log(JSON.stringify(this.mandatoryCourseName));
+    // console.log(JSON.stringify(this.mandatoryCourseName));
     for(let i=0;i<this.manualCards.length;i++)
       if(this.mandatoryCourseName.includes(this.manualCards[i].Name))
         this.mandatoryCourseName = this.mandatoryCourseName.filter((obj) => obj !== this.manualCards[i].Name);
@@ -88,7 +90,7 @@ export class SepComponent implements OnInit {
       Loading Information From personal file upload....
     */
     this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
-      console.log('get some data from firebase');
+      // console.log('get some data from firebase');
       let tempOneSepCard: OneSepCard[] = [];
       if(docSnapshot.exists){
         const temp = [...docSnapshot.data().files] as FileUploadInformation[];
@@ -111,37 +113,30 @@ export class SepComponent implements OnInit {
         }
       }
 
-      if(tempOneSepCard.length > 0){
-        
-        
+      if(tempOneSepCard.length > 0){               
         const tempS: OneSepCard[] = [];
         for(let i=0;i<sepMandatory[this.firestoreUser.getFirestoreUser().role].length;i++){
           for(let j=0;j<tempOneSepCard.length;j++){
-            // console.log(sepMandatory[this.firestoreUser.getFirestoreUser().role]);
-            // console.log(tempOneSepCard[j]);
             if(sepMandatory[this.firestoreUser.getFirestoreUser().role][i] == tempOneSepCard[j].Name){
               tempS.push(tempOneSepCard[j]);
               break;
             }
           }
         }
-        console.log(JSON.stringify(tempS));
+        // console.log(JSON.stringify(tempS));
 
         this.manualCards = tempS;
         this.manualCardService.deleteAllCards();
         this.manualCardService.saveAllCards(this.manualCards);
-
-        this.updateSummary();
-        this.reviseMandatoryCourse();
       }
       else{
         this.manualCards = [];
         this.manualCardService.deleteAllCards();
         this.manualCardService.saveAllCards(this.manualCards);
-
-        this.updateSummary();
-        this.reviseMandatoryCourse();
       }
+      
+      this.updateSummary();
+      this.reviseMandatoryCourse();
     });
         
             
@@ -193,6 +188,7 @@ export class SepComponent implements OnInit {
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
+      this.updateSEPSummary();
       this.loadAutolandCards();
     });
   }
@@ -244,7 +240,7 @@ export class SepComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  updateSEPSummary(): void{
+  updateSEPSummary(): void {
     if(this.oneSepCards == null)
       return;
 
@@ -255,7 +251,7 @@ export class SepComponent implements OnInit {
     for(let i=0;i<this.oneSepCards.length;i++){
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
-      const expire = new Date(this.oneSepCards[i].Expiry).getTime();
+      const expire = new Date(this.oneSepCards[i].Expiry).getTime() + msInDay;
       const diffDate = (expire - today) / msInDay;
 
       //It's expired course name if expiry date is NO DATA
@@ -278,7 +274,7 @@ export class SepComponent implements OnInit {
     for(let i=0;i<this.manualCards.length;i++){
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
-      const expire = new Date(this.manualCards[i].Expiry).getTime();
+      const expire = new Date(this.manualCards[i].Expiry).getTime() + msInDay;
       const diffDate = (expire - today) / msInDay;
 
       //It's expired course name if expiry date is NO DATA
@@ -303,7 +299,7 @@ export class SepComponent implements OnInit {
       for(let i=0;i<this.autoLandCards.length;i++){
         const msInDay = 24 * 60 * 60 * 1000;
         const today = new Date().getTime();
-        const expire = new Date(this.autoLandCards[i].expiry).getTime();
+        const expire = new Date(this.autoLandCards[i].expiry).getTime() + msInDay;
         const diffDate = (expire - today) / msInDay;
 
         if(diffDate < 0)

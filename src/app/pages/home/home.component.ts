@@ -21,11 +21,11 @@ export class HomeComponent implements OnInit {
     this.firestoreUser = this.firestoreUserService.getFirestoreUser();
     this.invoices = this.firestoreUser.invoice;
 
-    console.log('firestore');
-    console.log(JSON.stringify(this.firestoreUser));
+    // console.log('firestore');
+    // console.log(JSON.stringify(this.firestoreUser));
 
-    console.log('invoices');
-    console.log(JSON.stringify(this.invoices));
+    // console.log('invoices');
+    // console.log(JSON.stringify(this.invoices));
 
     this.aocURL = aocOptions[aocOptions.findIndex(obj => obj.value === this.firestoreUser.aoc)].icon;
     this.roleURL = roleOptions[roleOptions.findIndex(obj => obj.value === this.firestoreUser.role)].icon;
