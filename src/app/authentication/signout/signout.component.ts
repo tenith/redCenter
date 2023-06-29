@@ -6,6 +6,7 @@ import { FirebaseAuthenticationService } from '../../@core/shared/services/fireb
 import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
 import { NewsService } from '../../@core/shared/services/news.service';
 import { SepCardService } from '../../@core/shared/services/sep-card.service';
+import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
 @Component({
   selector: 'ngx-signout',
@@ -14,7 +15,7 @@ import { SepCardService } from '../../@core/shared/services/sep-card.service';
 })
 export class SignoutComponent implements OnInit {
 
-  constructor(public firestoreUserService: FirestoreUserService, public newsService: NewsService, public firebaseAuthen : FirebaseAuthenticationService, public sepCardService: SepCardService, public autolandCardService: AutolandCardService, public router: Router, public location: Location) { }
+  constructor(private manualCardService: ManualCardService,public firestoreUserService: FirestoreUserService, public newsService: NewsService, public firebaseAuthen : FirebaseAuthenticationService, public sepCardService: SepCardService, public autolandCardService: AutolandCardService, public router: Router, public location: Location) { }
 
   ngOnInit(): void {
     if(this.firebaseAuthen.getFirebaseUser() == null)
@@ -32,6 +33,7 @@ export class SignoutComponent implements OnInit {
   public async logout(): Promise<any>{    
     await this.firestoreUserService.deleteToken();
     this.sepCardService.deleteAllSepCards();
+    this.manualCardService.deleteAllCards();
     this.autolandCardService.deleteAllSepCards();
     this.newsService.deleteAllNewsFromCache();
     

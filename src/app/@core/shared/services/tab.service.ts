@@ -59,4 +59,9 @@ export class TabService {
   getViewUUIDTabs(): string[]{
     return this.viewUUIDTabs;
   }
+
+  clearTab(): void {
+    this.viewUUIDTabs = [];
+    this.saveCurrectStateTabs();
+  }
 }

@@ -79,4 +79,8 @@ export class VrService {
     vr.submitTime = formattedDate;
     return this.collectionRef.doc(vr.uuid).set(vr);
   }
+
+  clearVR(): void {
+    
+  }
 }

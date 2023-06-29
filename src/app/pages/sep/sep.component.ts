@@ -52,16 +52,16 @@ export class SepComponent implements OnInit {
       Loading Information From Cache....
     */
     if(this.sepCardService.isInLocalStorage()){
-      this.oneSepCards = [...(this.sepCardService.getAllSepCardsFromCache())];
       this.loading = false;
-      
+      this.oneSepCards = [...(this.sepCardService.getAllSepCardsFromCache())];
+            
       this.loadAutolandCards();
     }
 
     if(this.manualCardService.isInLocalStorage()){
-      this.manualCards = [...(this.manualCardService.getAllSepCardsFromCache())];
       this.loading = false;
-           
+      this.manualCards = [...(this.manualCardService.getAllSepCardsFromCache())];
+                 
       this.updateSummary();
       this.reviseMandatoryCourse();
     }
@@ -69,7 +69,7 @@ export class SepComponent implements OnInit {
     if(this.loading)
       this.downloadSEP();
 
-    this.updateSummary();
+    // this.updateSummary();
   }
 
   reviseMandatoryCourse(): void {
@@ -154,13 +154,10 @@ export class SepComponent implements OnInit {
 
       let temp: OneSepCard[] = [];
       for(let i: number = 0; i < tempSubjects.length; i++){
-        // console.log('Try to process: ' + tempSubjects[i]);
         const courseName = tempSubjects[i];
         if(this.isRequiredToShow(courseName)){
           if(response[tempSubjects[i]] != undefined){
-            // console.log('length: ' + response[tempSubjects[i]].length);
-            const last = response[tempSubjects[i]].length - 1;
-  
+            const last = response[tempSubjects[i]].length - 1;  
             temp.push(response[tempSubjects[i]][last]);
           }
           else{
@@ -200,8 +197,6 @@ export class SepComponent implements OnInit {
     const role = this.firestoreUser.getFirestoreUser().role;
     const mainCourse = sepCourseOptions[role] as string[];
     return mainCourse.includes(search);
-
-    
   }
 
   private formatDate(x: string): string{
@@ -213,17 +208,19 @@ export class SepComponent implements OnInit {
   }
 
   newDataFromGoogleAPI(data: string): void {
-    // console.log('new Data from Google API');
-
     const newData = {...JSON.parse(data)} as OneSepCard;
     for(let i=0;i<this.oneSepCards.length;i++){
       if(newData.Name == this.oneSepCards[i].Name){
         this.oneSepCards[i] = newData;       
 
+        console.log('newDataFromGoogleAPI: ' + data);
+        console.log(newData.Name);
+
         this.sepCardService.deleteAllSepCards();
         this.sepCardService.saveAllSepCards(this.oneSepCards);
 
         this.loadAutolandCards();
+        this.updateSummary();
         break;
       }
     }
