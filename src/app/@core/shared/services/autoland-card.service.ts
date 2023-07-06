@@ -5,9 +5,9 @@ import { of as observableOf,  Observable } from 'rxjs';
 import { AutolandSepCard } from '../interfaces/autoland-sep-card';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
-import { API } from '../../../../environments/myconfigs';
 import { httpOptions } from '../../../../environments/myconfigs';
 import { localStorageCollection } from '../../../../environments/myconfigs';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

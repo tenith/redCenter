@@ -30,13 +30,16 @@ export class FirebaseAuthenticationService {
   private firebaseUser: FirebaseUser;
   private firebaseUserStoreKey = localStorageCollection.firebaseUserStoreKeyCollectionName;
   
+  offline:boolean = true;
 
   /*
     01 Mar 2023 wutthichair
       Revise constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router)
   */
   constructor(public afs: AngularFirestore, public afAuth: AngularFireAuth, public router: Router) {
-    this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
+    this.offline = !navigator.onLine;
+    if(this.offline)
+      this.firebaseUser = JSON.parse(this.getDataWithExpiry(this.firebaseUserStoreKey)) as FirebaseUser;
     // this.afAuth.authState.subscribe((user)=>{
     //   console.log(JSON.stringify(user));
     //   if(!user)

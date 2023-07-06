@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { API, httpOptions } from '../../../../environments/myconfigs';
+import { httpOptions } from '../../../../environments/myconfigs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ETS1Data } from '../interfaces/e-ts1-data';
 import { Observable } from 'rxjs';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

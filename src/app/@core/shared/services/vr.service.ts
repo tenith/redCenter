@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { API, firestoreCollection, httpOptions, localStorageCollection } from '../../../../environments/myconfigs';
+import { firestoreCollection, httpOptions, localStorageCollection } from '../../../../environments/myconfigs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { VrDetail } from '../interfaces/vr-detail';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
@@ -9,6 +9,7 @@ import { FirestoreUserService } from './firestore-user.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { firestoreCollection } from '../../../../environments/myconfigs';
-import { API } from '../../../../environments/myconfigs';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

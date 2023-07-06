@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 
-import { API } from '../../../../environments/myconfigs';
 import { httpOptions } from '../../../../environments/myconfigs';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

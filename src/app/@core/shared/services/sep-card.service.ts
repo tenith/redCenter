@@ -6,11 +6,10 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 
-import { API } from '../../../../environments/myconfigs';
 import { httpOptions } from '../../../../environments/myconfigs';
 import { localStorageCollection } from '../../../../environments/myconfigs';
 import { settings } from '../../../../environments/myconfigs';
-import { resolve } from 'dns';
+import { API } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

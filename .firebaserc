@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "red-center"
-  }
+    "default": "red-center",
+    "testing": "lightredcenter"
+  },
+  "targets": {},
+  "etags": {}
 }
