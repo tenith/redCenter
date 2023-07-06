@@ -34,10 +34,10 @@ export class PagesComponent implements OnInit {
       myList = allowMenuByRole[tempFirestoreUser.role];
 
     for(let i=0;i<myList.length;i++){
-      if(menuListDetail[myList[i]].title == 'E-TS1'){
-        if(tempFirestoreUser.role == roleName.pilot && tempFirestoreUser.level == userLevel.subscriber)
-          menuListDetail[myList[i]].children.splice(0,1);
-      }
+      // if(menuListDetail[myList[i]].title == 'E-TS1'){
+      //   if(tempFirestoreUser.role == roleName.pilot && tempFirestoreUser.level == userLevel.subscriber)
+      //     menuListDetail[myList[i]].children.splice(0,1);
+      // }
 
       if(showMenu.includes(menuListDetail[myList[i]].title))
         tempMenu.push(menuListDetail[myList[i]]);

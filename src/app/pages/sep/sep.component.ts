@@ -185,7 +185,7 @@ export class SepComponent implements OnInit {
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
-      this.updateSEPSummary();
+      this.updateSummary();
       this.loadAutolandCards();
     });
   }

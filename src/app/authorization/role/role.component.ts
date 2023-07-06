@@ -29,10 +29,8 @@ export class RoleComponent implements OnInit {
 
   ngOnInit(): void {
     //Already has role, user can process to pages.
-    if(this.firestoreUserService.hasRole()){
-      this.router.navigate(['./pages']);
-      return;
-    }
+    if(this.firestoreUserService.hasRole())
+      this.router.navigate(['/pages']);
         
     this.firestoreUserService.getFirestoreUserFromServer().then((doc)=> {
       if (doc.exists) {
@@ -42,7 +40,7 @@ export class RoleComponent implements OnInit {
         this.firestoreUserService.setFirestoreUser(this.tempFirestoreUser);
         
         if(this.tempFirestoreUser.role != '')
-          this.router.navigate(['./pages']);
+          this.router.navigate(['/pages']);
 
         this.loading = false;
       }
@@ -70,7 +68,7 @@ export class RoleComponent implements OnInit {
       if(confirm == 'affirm'){
         this.firestoreUserService.setInitialUser(this.tempFirestoreUser.cId, this.tempFirestoreUser.aoc, this.tempFirestoreUser.role)
         .then(()=>{
-          this.router.navigate(['./pages']);  
+          this.router.navigate(['/pages']);  
         })
         .catch(()=>{ 
           this.toastr.danger('Error','There is something wrong Please try again.', {duration:5000});
