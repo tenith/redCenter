@@ -4,7 +4,7 @@
         <nb-accordion-item-header><nb-icon icon="close-square" status="danger"></nb-icon><b>&nbsp;&nbsp;{{name}}</b>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
-            <form [formGroup]="uploadForm" (ngSubmit)="upload()">
+            <form *ngIf="!offline" [formGroup]="uploadForm" (ngSubmit)="upload()">
                 <div class="form-inline">
                     <input id="fileUpload" name="fileUpload" formControlName="fileUpload" (change)="handleFileInput($event.target.files)" type="file" nbInput accept="image/*">
                     <input id="fileCategory" name="fileCategory" formControlName="fileCategory" nbInput fullWidth type="text" hidden value="{{name}}">

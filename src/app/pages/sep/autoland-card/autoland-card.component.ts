@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AutolandSepCard } from '../../../@core/shared/interfaces/autoland-sep-card';
 import { AutolandCardService } from '../../../@core/shared/services/autoland-card.service';
 
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NbToastrService } from '@nebular/theme';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 
 import { statusConfig } from '../../../../environments/myconfigs';
 
@@ -32,15 +32,22 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
   landingRunway = '';
   landingAirport = '';
 
+  offline:boolean = true;
+  offlineEvent: Observable<Event>;
+  onlineEvent: Observable<Event>;
+  subscriptions: Subscription[] = [];
+
   minDate : string | null = ''; 
   todayDate = this.datePipe.transform(new Date(), 'YYYY-MM-dd');
 
   @ViewChild('autoLandingForm', {static: false}) autoLandingForm!: NgForm;
 
-  constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe, public toastr: NbToastrService) { }
+  constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe, public toastr: NbToastrService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {     
     // console.log(JSON.stringify(this.info));
+    this.handleAppConnectivityChanges();
+
     this.reviseAutoLandCard();
     this.eventsSubscription = this.events.subscribe(() => {
       this.reviseAutoLandCard();
@@ -50,8 +57,28 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  private handleAppConnectivityChanges(): void {
+    this.offline = !navigator.onLine;
+    
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline');
+
+    this.subscriptions.push(this.onlineEvent.subscribe(e => {
+      // handle online mode
+      this.offline = false;
+      this.cdr.detectChanges();
+    }));
+
+    this.subscriptions.push(this.offlineEvent.subscribe(e => {
+      // handle offline mode
+      this.offline = true;
+      this.cdr.detectChanges();
+    }));
+  }
+
   ngOnDestroy(): void {
     this.eventsSubscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   reviseAutoLandCard(): void{

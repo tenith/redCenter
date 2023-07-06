@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 import { NbToastrService } from '@nebular/theme';
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'ngx-mandatory-card-post',
@@ -20,10 +21,16 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   @Input() name!: string;
   @Output() postCompleteEvent = new EventEmitter<string>();
 
+  offline:boolean = true;
+  offlineEvent: Observable<Event>;
+  onlineEvent: Observable<Event>;
+  subscriptions: Subscription[] = [];
+
   constructor(private formBuilder: FormBuilder, 
     private toastr: NbToastrService, 
     private firestoreUserService: FirestoreUserService, 
     private fileUploadInformationService: FileUploadInformationService, 
+    private cdr: ChangeDetectorRef,
     private fileUploadDatabaseService: FileUploadDatabaseService) { }
 
   ngAfterViewInit(): void {
@@ -33,6 +40,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   ngOnDestroy(): void {
     // if(!this.uploadFormSubject)
     //   this.uploadFormSubject.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   ngOnInit(): void {
@@ -53,6 +61,27 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
       this.uploadForm.get('expiryDate').clearValidators();
       this.uploadForm.get('issueBy').clearValidators();
     }
+
+    this.handleAppConnectivityChanges();
+  }
+
+  private handleAppConnectivityChanges(): void {
+    this.offline = !navigator.onLine;
+    
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline');
+
+    this.subscriptions.push(this.onlineEvent.subscribe(e => {
+      // handle online mode
+      this.offline = false;
+      this.cdr.detectChanges();
+    }));
+
+    this.subscriptions.push(this.offlineEvent.subscribe(e => {
+      // handle offline mode
+      this.offline = true;
+      this.cdr.detectChanges();
+    }));
   }
 
   handleFileInput(files: FileList) {

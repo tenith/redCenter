@@ -4,7 +4,7 @@ import { SepCardService } from '../../../@core/shared/services/sep-card.service'
 
 import { statusConfig } from '../../../../environments/myconfigs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Observable, Subscription, interval } from 'rxjs';
+import { Observable, Subscription, fromEvent, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { ManualCardService } from '../../../@core/shared/services/manual-card.service';
@@ -46,15 +46,21 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
   offline:boolean = true;
 
+  offlineEvent: Observable<Event>;
+  onlineEvent: Observable<Event>;
+  subscriptions: Subscription[] = [];
+
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
 
   constructor(private firestoreUser: FirestoreUserService ,private toastr: NbToastrService, private dialogService: NbDialogService, private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
   ngOnDestroy(): void {
     this.stopPolling();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   ngOnInit(): void {     
     this.offline = !navigator.onLine;
+    this.handleAppConnectivityChanges();
 
     if ("application/pdf" in navigator.mimeTypes)
       this.pdfSupport = true;
@@ -65,6 +71,25 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     }
 
     this.setupCard();
+  }
+
+  private handleAppConnectivityChanges(): void {
+    this.offline = !navigator.onLine;
+    
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline');
+
+    this.subscriptions.push(this.onlineEvent.subscribe(e => {
+      // handle online mode
+      this.offline = false;
+      this.cdr.detectChanges();
+    }));
+
+    this.subscriptions.push(this.offlineEvent.subscribe(e => {
+      // handle offline mode
+      this.offline = true;
+      this.cdr.detectChanges();
+    }));
   }
 
   setupCard(): void {

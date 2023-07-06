@@ -153,30 +153,56 @@ export class SepComponent implements OnInit {
       const tempSubjects = response['Courses'];
 
       let temp: OneSepCard[] = [];
-      for(let i: number = 0; i < tempSubjects.length; i++){
-        const courseName = tempSubjects[i];
-        if(this.isRequiredToShow(courseName)){
-          if(response[tempSubjects[i]] != undefined){
-            const last = response[tempSubjects[i]].length - 1;  
-            temp.push(response[tempSubjects[i]][last]);
-          }
-          else{
-            //create null card to show....
-            const x: OneSepCard = {
-              Name: courseName,
-              Attended: 'NO DATA',
-              Type: 'NO DATA',
-              Validperiod: 'NO DATA',
-              Expiry: 'NO DATA',
-              Instructor: 'NO DATA',
-              Remark: 'NO DATA',
-              Link: ''
-            };
+      const role = this.firestoreUser.getFirestoreUser().role;
+      const mainCourse = sepCourseOptions[role] as string[];
 
-            temp.push(x);
-          }
-        }        
+      for(let i:number = 0; i<mainCourse.length;i++){
+        const courseName = mainCourse[i];
+        if(response[courseName] != undefined){
+          const last = response[courseName].length - 1;  
+          temp.push(response[courseName][last]);
+        }
+        else{
+          //create null card to show....
+          const x: OneSepCard = {
+            Name: courseName,
+            Attended: 'NO DATA',
+            Type: 'NO DATA',
+            Validperiod: 'NO DATA',
+            Expiry: 'NO DATA',
+            Instructor: 'NO DATA',
+            Remark: 'NO DATA',
+            Link: ''
+          };
+
+          temp.push(x);
+        }
       }
+
+      // for(let i: number = 0; i < tempSubjects.length; i++){
+      //   const courseName = tempSubjects[i];
+      //   if(this.isRequiredToShow(courseName)){
+      //     if(response[tempSubjects[i]] != undefined){
+      //       const last = response[tempSubjects[i]].length - 1;  
+      //       temp.push(response[tempSubjects[i]][last]);
+      //     }
+      //     else{
+      //       //create null card to show....
+      //       const x: OneSepCard = {
+      //         Name: courseName,
+      //         Attended: 'NO DATA',
+      //         Type: 'NO DATA',
+      //         Validperiod: 'NO DATA',
+      //         Expiry: 'NO DATA',
+      //         Instructor: 'NO DATA',
+      //         Remark: 'NO DATA',
+      //         Link: ''
+      //       };
+
+      //       temp.push(x);
+      //     }
+      //   }        
+      // }
 
       this.loading = false;
       this.toastr.primary('Completed','Updated SEP from TMC server completed', {duration:10000});
