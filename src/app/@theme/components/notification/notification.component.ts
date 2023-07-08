@@ -35,6 +35,9 @@ export class NotificationComponent implements OnInit {
 
   markAsRead(notification: Notification): void{
     // this.notificationService.markAsRead(notification);
+    if(notification.type == 'VR')
+      this.router.navigate([notification.link] ,{queryParams:{id:notification.uuid}});
+
     if(notification.type == 'document')
       this.router.navigate([notification.link] ,{queryParams:{code:encodeURIComponent(notification.code)}});
     

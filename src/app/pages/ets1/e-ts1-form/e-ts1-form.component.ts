@@ -20,6 +20,7 @@ import jsPDF from 'jspdf';
 import { ETS1GoogleSheetsService } from '../../../@core/shared/services/e-ts1-google-sheets.service';
 import { loft2023H2ETS1Data } from '../../../@core/shared/data/loft2023H2ETS1Data';
 import { coft2023H2ETS1Data } from '../../../@core/shared/data/coft2023H2ETS1Data';
+import { ETS1NotificationService } from '../../../@core/shared/services/ets1Notification.service';
 
 @Component({
   selector: 'ngx-e-ts1-form',
@@ -59,7 +60,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
   signatureRef: NbDialogRef<SignatureDialogComponent>;
 
-  constructor(private eTS1GoogleSheetService: ETS1GoogleSheetsService,private tabService: TabService, private dialogService: NbDialogService, private eTS1Service : ETS1Service, private firestoreUserService : FirestoreUserService, private allStarService: AllStarService, private datePipe: DatePipe, private router : Router) { 
+  constructor(private notiService: ETS1NotificationService, private eTS1GoogleSheetService: ETS1GoogleSheetsService,private tabService: TabService, private dialogService: NbDialogService, private eTS1Service : ETS1Service, private firestoreUserService : FirestoreUserService, private allStarService: AllStarService, private datePipe: DatePipe, private router : Router) { 
   }
 
   openSignaturePad(name: string, width: number, height: number): void {
@@ -308,6 +309,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.save();
         this.reviseReadOnly();
 
+        this.notiService.ETS1Notification(this.uuid,this.eTS1.ownerEmail);
         this.tabService.removeViewTab(this.uuid);
       }
     });

@@ -74,9 +74,7 @@ export class VrService {
     return this.collectionRef.doc(vr.uuid).set(vr);
   }
 
-  public saveVRwithSubmitTime(vr: VrDetail): Promise<any> {
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyy HH:mm:ss');
+  public saveVRwithSubmitTime(vr: VrDetail, formattedDate: string): Promise<any> {
     vr.submitTime = formattedDate;
     return this.collectionRef.doc(vr.uuid).set(vr);
   }

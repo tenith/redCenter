@@ -1,5 +1,6 @@
 import { CrewDetail } from "./crew-detail";
 import { FlightDetail } from "./flight-detail";
+import { CommentDetail } from "./comment";
 
 export interface VrDetail {
     uuid: string;
@@ -13,6 +14,7 @@ export interface VrDetail {
     crewsId: string[];
     crews: CrewDetail[];
     flights: FlightDetail[];
+    comments: CommentDetail[];
     comment: string;
     extendedTime: string;
     extendedSignature: string;
@@ -32,6 +34,7 @@ export const defaultVR: VrDetail = {
     crewsId: [],
     crews: [],
     flights: [],
+    comments: [],
     comment: "",
     extendedTime: "",
     extendedSignature: "",

@@ -19,83 +19,200 @@ catch(error){
     console.log('Unable to initializeApp : ' + error);
 }
 
+export const sendETS1Notification = functions.https.onRequest(async (req, res) => {
+    corsHandler(req, res, async () => { 
+        //Your code here
+
+        res.set('Access-Control-Allow-Origin', "*");
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
+
+        let ets1ID = req.query.ets1ID as string;
+        let ownerEmail = req.query.ownerEmail as string;
+        console.log('Server V1 got ETS1 ID: ' + ets1ID);
+        
+        // Set up the notification payload
+        const payload: admin.messaging.MessagingPayload = {
+            data: {
+            owner: ownerEmail,
+            subject: 'New ETS1 submitted',
+            short_subject: 'New ETS1 submitted',
+            link: './pages/ets1/workspace',
+            icon: 'file-text-outline',
+            type: 'ets1',
+            uuid: ets1ID
+            },
+            notification: {
+            title: 'New ETS1 submitted',
+            body: ownerEmail + ' has submitted a new ETS1.',
+            icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
+            click_action: 'https://lightredcenter.web.app/pages/ets1/workspace',
+            link: 'https://lightredcenter.web.app/pages/ets1/workspace',
+            }
+        };
+
+        const audienceList = ['Training'];
+        console.log('Audience Group: ' + JSON.stringify(audienceList));
+
+        for(let j=0;j<audienceList.length;j++){
+            let groupTokenSnapshot: any;
+            await getGroupTokenList(audienceList[j])
+            .then(doc=> {
+                    if(doc.exists){
+                        groupTokenSnapshot = doc.data().tokenList as string[];
+                    }
+                    else
+                    groupTokenSnapshot = null;
+                })
+                .catch(error=> {
+                    groupTokenSnapshot = null;
+                    res.status(500).send('ERROR' + error);
+                });
+
+            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            sendMessageUsingArray(groupTokenSnapshot,payload);
+        }
+        
+        res.status(200).send('Notification sent');
+      });
+  
+});
+
+export const sendVRNotification = functions.https.onRequest(async (req, res) => {
+    corsHandler(req, res, async () => { 
+        //Your code here
+
+        res.set('Access-Control-Allow-Origin', "*");
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
+
+        let vrID = req.query.vrID as string;
+        let ownerEmail = req.query.ownerEmail as string;
+        console.log('Server V1 got VR ID: ' + vrID);
+        
+        // Set up the notification payload
+        const payload: admin.messaging.MessagingPayload = {
+            data: {
+            owner: ownerEmail,
+            subject: 'New VR submitted',
+            short_subject: 'New VR submitted',
+            link: './pages/eVR/workspace',
+            icon: 'file-text-outline',
+            type: 'VR',
+            uuid: vrID
+            },
+            notification: {
+            title: 'New VR submitted',
+            body: ownerEmail + ' has submitted a new VR.',
+            icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
+            click_action: 'https://lightredcenter.web.app/pages/eVR/dashboard',
+            link: 'https://lightredcenter.web.app/pages/eVR/dashboard',
+            }
+        };
+
+        const audienceList = ['Flight_Operations'];
+        console.log('Audience Group: ' + JSON.stringify(audienceList));
+        console.log('click_action: ' + 'https://lightredcenter.web.app/pages/eVR/workspace?id='+vrID);
+
+        for(let j=0;j<audienceList.length;j++){
+            let groupTokenSnapshot: any;
+            await getGroupTokenList(audienceList[j])
+            .then(doc=> {
+                    if(doc.exists){
+                        groupTokenSnapshot = doc.data().tokenList as string[];
+                    }
+                    else
+                    groupTokenSnapshot = null;
+                })
+                .catch(error=> {
+                    groupTokenSnapshot = null;
+                    res.status(500).send('ERROR' + error);
+                });
+
+            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            sendMessageUsingArray(groupTokenSnapshot,payload);
+        }
+        
+        res.status(200).send('Notification sent');
+      });
+  
+});
+
 export const sendNotification = functions.https.onRequest(async (req, res) => {
     corsHandler(req, res, async () => { 
         //Your code here
 
         res.set('Access-Control-Allow-Origin', "*");
-  res.set('Access-Control-Allow-Methods', 'GET, POST');
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
 
 
-  let announcementsID = req.query.announcementsID as string;
-//   console.log('Server got Announcements ID: ' + announcementsID);
-  announcementsID = encodeURIComponent(announcementsID);
+        let announcementsID = req.query.announcementsID as string;
+        //   console.log('Server got Announcements ID: ' + announcementsID);
+        announcementsID = encodeURIComponent(announcementsID);
                                                    
-//   console.log('Server try to request: ');
-//   console.log(`/announcements/${announcementsID}`);
+        //   console.log('Server try to request: ');
+        //   console.log(`/announcements/${announcementsID}`);
 
-  let announcementsSnapshot: any;
-  await getAnnouncement(announcementsID)
-    .then(doc=> {
-            if(doc.exists){
-                // console.log(JSON.stringify(doc.data()));
-                announcementsSnapshot = doc.data();
+        let announcementsSnapshot: any;
+        await getAnnouncement(announcementsID)
+        .then(doc=> {
+                if(doc.exists){
+                    // console.log(JSON.stringify(doc.data()));
+                    announcementsSnapshot = doc.data();
+                }
+                else
+                announcementsSnapshot = null;
+            })
+            .catch(error=> {
+                announcementsSnapshot = null;
+                res.status(500).send('ERROR' + error);
+            });
+        //   console.log('Server got Announcements information: ' + JSON.stringify(announcementsSnapshot));
+
+        // Set up the notification payload
+        const payload: admin.messaging.MessagingPayload = {
+            data: {
+            owner: announcementsSnapshot.author,
+            subject: 'New document amendment',
+            short_subject: announcementsSnapshot.code,
+            link: './pages/documents_amendment/document',
+            acknowledgeRequired: announcementsSnapshot.acknowledge,
+            icon: 'file-text-outline',
+            type: 'document',
+            uuid: '',
+            code: announcementsSnapshot.code
+            },
+            notification: {
+            title: 'New document amendment',
+            body: 'This is a new document amendment for you',
+            icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
+            click_action: 'https://lightredcenter.web.app/pages/documents_amendment/dashboard',
+            link: 'https://lightredcenter.web.app/pages/documents_amendment/dashboard',
             }
-            else
-            announcementsSnapshot = null;
-        })
-        .catch(error=> {
-            announcementsSnapshot = null;
-            res.status(500).send('ERROR' + error);
-        });
-//   console.log('Server got Announcements information: ' + JSON.stringify(announcementsSnapshot));
+        };
 
-  // Set up the notification payload
-  const payload: admin.messaging.MessagingPayload = {
-    data: {
-      owner: announcementsSnapshot.author,
-      subject: 'New document amendment',
-      short_subject: announcementsSnapshot.code,
-      link: './pages/documents_amendment/document',
-      acknowledgeRequired: announcementsSnapshot.acknowledge,
-      icon: 'file-text-outline',
-      type: 'document',
-      uuid: '',
-      code: announcementsSnapshot.code
-    },
-    notification: {
-      title: 'New document amendment',
-      body: 'This is a new document amendment for you',
-      icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
-      click_action: 'http://localhost:4200/pages/documents_amendment/dashboard',
-      url: 'http://localhost:4200/pages/documents_amendment/dashboard'
-    }
-  };
+        const audienceList = announcementsSnapshot.audience as string[];
+        console.log('Audience Group: ' + JSON.stringify(audienceList));
 
-  const audienceList = announcementsSnapshot.audience as string[];
-  console.log('Audience Group: ' + JSON.stringify(audienceList));
+        for(let j=0;j<audienceList.length;j++){
+            let groupTokenSnapshot: any;
+            await getGroupTokenList(audienceList[j])
+            .then(doc=> {
+                    if(doc.exists){
+                        // console.log(JSON.stringify(doc.data()));
+                        groupTokenSnapshot = doc.data().tokenList as string[];
+                    }
+                    else
+                    groupTokenSnapshot = null;
+                })
+                .catch(error=> {
+                    groupTokenSnapshot = null;
+                    res.status(500).send('ERROR' + error);
+                });
 
-  for(let j=0;j<audienceList.length;j++){
-    let groupTokenSnapshot: any;
-    await getGroupTokenList(audienceList[j])
-    .then(doc=> {
-            if(doc.exists){
-                // console.log(JSON.stringify(doc.data()));
-                groupTokenSnapshot = doc.data().tokenList as string[];
-            }
-            else
-            groupTokenSnapshot = null;
-        })
-        .catch(error=> {
-            groupTokenSnapshot = null;
-            res.status(500).send('ERROR' + error);
-        });
-
-    console.log('Number of notifications: ' + groupTokenSnapshot.length);
-    sendMessageUsingArray(groupTokenSnapshot,payload);
-  }
-  
-  res.status(200).send('Notification sent');
+            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            sendMessageUsingArray(groupTokenSnapshot,payload);
+        }
+        
+        res.status(200).send('Notification sent');
       });
   
 });
