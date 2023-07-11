@@ -35,6 +35,10 @@ export class NotificationComponent implements OnInit {
 
   markAsRead(notification: Notification): void{
     // this.notificationService.markAsRead(notification);
+
+    if(notification.type == 'PERSONAL_DOCUMENT')
+      this.router.navigate([notification.link] ,{queryParams:{email:notification.uuid}});
+
     if(notification.type == 'VR')
       this.router.navigate([notification.link] ,{queryParams:{id:notification.uuid}});
 
@@ -42,7 +46,8 @@ export class NotificationComponent implements OnInit {
       this.router.navigate([notification.link] ,{queryParams:{code:encodeURIComponent(notification.code)}});
     
     if(notification.type == 'ets1')
-      this.router.navigate([notification.link] ,{queryParams:{uuid:notification.uuid}});
+      // this.router.navigate([notification.link] ,{queryParams:{uuid:notification.uuid}});
+      this.router.navigate([notification.link]);
 
     this.dialogRef.close();
   }

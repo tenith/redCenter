@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
 import { FileReportService } from '../../../@core/shared/services/file-report.service';
 import { ReportComponent } from '../report/report.component';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-search',
@@ -15,14 +16,23 @@ export class SearchComponent implements OnInit {
   emails: string[];
   searchEmail: string;
 
+  @Input() preSelected?: string = '';
+
   dialogRef: NbDialogRef<ReportComponent>;
   isModerator: boolean = false;
 
-  constructor(public toastr: NbToastrService, private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService, private fileReport: FileReportService) { }
+  constructor(private route: ActivatedRoute, public toastr: NbToastrService, private dialogService: NbDialogService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService, private fileReport: FileReportService) { }
 
   ngOnInit(): void {
+    // this.preSelected = this.route.snapshot.queryParamMap.get('email') == null ? '' : this.route.snapshot.queryParamMap.get('email');
     this.isModerator = this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin;
     this.reset();
+
+    if(this.isModerator)
+      if(this.preSelected != ''){
+        this.searchEmail = this.preSelected;
+        this.search(); 
+      }
   }
 
   search(): void {

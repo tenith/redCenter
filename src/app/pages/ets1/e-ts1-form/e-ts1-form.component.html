@@ -54,7 +54,7 @@
         </tr> 
         <tr *ngIf="eTS1.submitDateTime == ''">
             <td style="border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan="40" align="center" valign="middle">
-                <button nbButton status="warning" (click)="setDummy()">DUMMY</button>
+                <button nbButton status="warning" (click)="setDummy()">TESTING DATA</button>
             </td>
         </tr>
         <tr>
@@ -68,7 +68,7 @@
         </tr> -->
         <tr>
             <td style="border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan="40" align="center" valign="middle">
-                <button *ngIf="eTS1.submitDateTime == ''" nbButton status="primary" (click)="saveToLocal()">SAVE INTO MY DEVICE</button>&nbsp;<button nbButton status="danger" (click)="exitForm()">CLOSE THIS FORM</button><br>
+                <button *ngIf="eTS1.submitDateTime == ''" nbButton status="primary" (click)="saveToLocal()">SAVE DRAFT</button>&nbsp;<button nbButton status="danger" (click)="exitForm()">CLOSE THIS FORM</button><br>
             </td>
         </tr>
     </table>

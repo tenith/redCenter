@@ -4,6 +4,7 @@ import { FirestoreUserService } from '../../../@core/shared/services/firestore-u
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { NbToastrService } from '@nebular/theme';
+import { PersonalNotificationService } from '../../../@core/shared/services/personalDocumentNotification.service';
 
 @Component({
   selector: 'ngx-file-upload',
@@ -20,7 +21,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   toShowSEP: boolean = false;
   toShowExpiry: boolean = false;
   
-  constructor(private formBuilder: FormBuilder, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService, private fileUploadDatabaseService: FileUploadDatabaseService) { 
+  constructor(private personalDocNotification: PersonalNotificationService, private formBuilder: FormBuilder, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService, private fileUploadDatabaseService: FileUploadDatabaseService) { 
   }
 
   ngAfterViewInit(): void {
@@ -87,6 +88,7 @@ export class FileUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     .then(response => {
       if(response){
         this.toastr.primary('Completed','Upload file completed', {duration:5000});
+        this.personalDocNotification.PersonalDocumentNotification(this.uploadForm.get('fileCategory').value, this.firestoreUserService.getFirestoreUser().email);
         this.reset();
       }
       else { 

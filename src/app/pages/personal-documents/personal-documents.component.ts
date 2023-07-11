@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, fromEvent } from 'rxjs';
 
 @Component({
@@ -12,14 +13,16 @@ export class PersonalDocumentsComponent implements OnInit, OnDestroy {
   offlineEvent: Observable<Event>;
   onlineEvent: Observable<Event>;
   subscriptions: Subscription[] = [];
+  preSelected: string = '';
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute) { }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   ngOnInit(): void {
+    this.preSelected = this.route.snapshot.queryParamMap.get('email') == null ? '' : this.route.snapshot.queryParamMap.get('email');
     this.handleAppConnectivityChanges();
   }
 

@@ -19,6 +19,65 @@ catch(error){
     console.log('Unable to initializeApp : ' + error);
 }
 
+export const sendPersonalDocNotification = functions.https.onRequest(async (req, res) => {
+    corsHandler(req, res, async () => { 
+        //Your code here
+
+        res.set('Access-Control-Allow-Origin', "*");
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
+
+        let docName = req.query.docName as string;
+        let ownerEmail = req.query.ownerEmail as string;
+        console.log('Server V1 got docName: ' + docName);
+        
+        // Set up the notification payload
+        const payload: admin.messaging.MessagingPayload = {
+            data: {
+            owner: ownerEmail,
+            subject: 'New Personal Document submitted ' + docName,
+            short_subject: 'New Personal Document submitted',
+            link: './pages/personal_documents',
+            icon: 'file-text-outline',
+            type: 'PERSONAL_DOCUMENT',
+            uuid: ownerEmail
+            },
+            notification: {
+            title: 'New Personal Document submitted ' + docName,
+            body: ownerEmail + ' has submitted ' + docName, 
+            icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
+            click_action: 'https://lightredcenter.web.app/pages/personal_documents',
+            link: 'https://lightredcenter.web.app/pages/personal_documents',
+            }
+        };
+
+        const audienceList = ['Flight_Operations'];
+        // console.log('Audience Group: ' + JSON.stringify(audienceList));
+        // console.log('click_action: ' + 'https://lightredcenter.web.app/pages/eVR/workspace?id='+vrID);
+
+        for(let j=0;j<audienceList.length;j++){
+            let groupTokenSnapshot: any;
+            await getGroupTokenList(audienceList[j])
+            .then(doc=> {
+                    if(doc.exists){
+                        groupTokenSnapshot = doc.data().tokenList as string[];
+                    }
+                    else
+                    groupTokenSnapshot = null;
+                })
+                .catch(error=> {
+                    groupTokenSnapshot = null;
+                    res.status(500).send('ERROR' + error);
+                });
+
+            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            sendMessageUsingArray(groupTokenSnapshot,payload);
+        }
+        
+        res.status(200).send('Notification sent');
+      });
+  
+});
+
 export const sendETS1Notification = functions.https.onRequest(async (req, res) => {
     corsHandler(req, res, async () => { 
         //Your code here
