@@ -58,6 +58,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   readOnlySectionH = false;
   readOnlySectionI = false; 
 
+  fileName: string = '';
+
   signatureRef: NbDialogRef<SignatureDialogComponent>;
 
   constructor(private notiService: ETS1NotificationService, private eTS1GoogleSheetService: ETS1GoogleSheetsService,private tabService: TabService, private dialogService: NbDialogService, private eTS1Service : ETS1Service, private firestoreUserService : FirestoreUserService, private allStarService: AllStarService, private datePipe: DatePipe, private router : Router) { 
@@ -80,6 +82,45 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       if(confirm != '')
         this.eTS1[name] = confirm;
     });
+  }
+
+  reviseFileName(): void {
+    if(this.eTS1 == null)
+      return;
+
+    let tempFileName = '';
+    tempFileName += this.eTS1.staffNo1 + "_";
+    if(this.eTS1.linePilot == 'true')
+      tempFileName += 'LINEPILOT_';
+    if(this.eTS1.ioe == 'true')
+      tempFileName += 'IOE_';
+    if(this.eTS1.ccq == 'true')
+      tempFileName += 'CCQ_';
+    if(this.eTS1.cuc == 'true')
+      tempFileName += 'STC_';
+    
+    if(this.eTS1.loft == 'true')
+      tempFileName += 'LOFT_';
+    if(this.eTS1.skillTest == 'true')
+      tempFileName += this.eTS1.skillTestDetail + '_';
+    
+    if(this.eTS1.ffs == 'true')
+      tempFileName += this.eTS1.ffsDetail + '_';
+    if(this.eTS1.aq == 'true')
+      tempFileName += this.eTS1.aqDetail + '_' + this.eTS1.aqNarrative + '_';
+    
+    if(this.eTS1.rhs == 'true')
+      tempFileName += this.eTS1.rhsDetail + '_';
+
+    if(this.eTS1.ilc == 'true')
+      tempFileName += this.eTS1.ilcDetail + '_';
+    if(this.eTS1.specialOps == 'true')
+      tempFileName += this.eTS1.specialDetail + '_';
+
+    tempFileName += this.eTS1.date;
+
+    this.fileName = tempFileName.replace(/ /g,"_").replace(/,/g,"");
+    console.log('FILE NAME: ' + this.fileName);
   }
 
   exitForm(): void {
@@ -115,7 +156,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {   
     this.isAdmin = this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin;    
-    let localETS1 = this.loadFromLocal();
+    let localETS1 = this.loadFromLocal();    
 
     // LOAD FROM LOCALSTORAGE IF NOT EXISTS LOAD FROM SERVER
 
@@ -135,10 +176,13 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         else
           this.eTS1.ownerEmail = this.firestoreUserService.getFirestoreUser().email;
     
+        this.reviseFileName();  
         this.setName3();
         this.reviseReadOnly();
       });
     }
+
+    this.reviseFileName();
   }
 
   saveToLocalOnly(): void {
