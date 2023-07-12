@@ -78,7 +78,7 @@ export class NotificationService {
       this.offlineNotificationService.delete(notification.code);
     }
     catch(e){
-      console.log(e);
+      // console.log(e);
     }
   }
 
