@@ -13,6 +13,6 @@ export class ETS1NotificationService {
 
   ETS1Notification(ets1ID: string, ownerEmail:string): Promise<any>{
     let params = new HttpParams().set('ets1ID', ets1ID).set('ownerEmail', ownerEmail);
-    return this.httpClient.get<any>(this.cloudFunctionAnnouncement, {params:params}).toPromise();
+    return this.httpClient.get(this.cloudFunctionAnnouncement, {params:params, responseType:'text'}).toPromise();
   }
 }

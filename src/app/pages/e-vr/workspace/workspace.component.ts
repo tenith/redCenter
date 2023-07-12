@@ -183,7 +183,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   qr(): void {
     let vr: VrDetail = this.prepareData();
-    console.log('qr data: ' + JSON.stringify(vr));    
+    // console.log('qr data: ' + JSON.stringify(vr));    
     this.qrRef = this.dialogService.open(QrCodeComponent,{
       context: {
         data: JSON.stringify(vr)
@@ -288,7 +288,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     
     for(let i=0;i<commentGroup.length;i++){      
       const detail = commentGroup.at(i).get('detail').value;    
-      console.log('index: ' + i + " , " + (detail == '-'));  
+      // console.log('index: ' + i + " , " + (detail == '-'));  
       if(detail == '-'){
         commentGroup.at(i).get('flightNumber').clearValidators();
         commentGroup.at(i).get('area').clearValidators();
@@ -308,7 +308,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
         commentGroup.at(i).get('areaOfComment').updateValueAndValidity({ emitEvent: false });   
       }
       else{
-        console.log('set validator: ' + i);
+        // console.log('set validator: ' + i);
         commentGroup.at(i).get('flightNumber').setValidators([Validators.required]);
         commentGroup.at(i).get('area').setValidators([Validators.required]);
         commentGroup.at(i).get('phaseOfFlight').setValidators([Validators.required]);

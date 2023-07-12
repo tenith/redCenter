@@ -64,7 +64,7 @@ export class CustomActionComponent implements OnInit {
           this.toastr.primary('Completed','Delete ' + this.rowData.name.split('_')[1] + ' announement completed');
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
           this.toastr.danger('error','Delete ' + this.rowData.name.split('_')[1] + ' announement failed, try again later');
         });
       }

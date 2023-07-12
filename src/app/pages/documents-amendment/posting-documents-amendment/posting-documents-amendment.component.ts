@@ -92,7 +92,7 @@ export class PostingDocumentsAmendmentComponent implements OnInit, OnDestroy {
       this.router.navigate(['./pages/documents_amendment/']);
     })
     .catch(error => {
-      console.log(JSON.stringify(error));
+      // console.log(JSON.stringify(error));
       this.toastr.danger('error','Make an announement failed');
     });
   }

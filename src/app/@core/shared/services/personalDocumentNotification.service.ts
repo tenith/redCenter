@@ -11,8 +11,8 @@ export class PersonalNotificationService {
 
   constructor(private httpClient:HttpClient) { }
 
-  PersonalDocumentNotification(docName: string, ownerEmail:string): Promise<any>{
-    let params = new HttpParams().set('docName', docName).set('ownerEmail', ownerEmail);
-    return this.httpClient.get<any>(this.cloudFunctionAnnouncement, {params:params}).toPromise();
+  PersonalDocumentNotification(docName: string, ownerEmail:string, keyCode: string): Promise<any>{
+    let params = new HttpParams().set('docName', docName).set('ownerEmail', ownerEmail).set('keyCode', keyCode);
+    return this.httpClient.get(this.cloudFunctionAnnouncement, {params:params, responseType:'text'}).toPromise();
   }
 }

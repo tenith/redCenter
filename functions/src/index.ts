@@ -34,6 +34,7 @@ export const sendPersonalDocNotification = functions.https.onRequest(async (req,
         const payload: admin.messaging.MessagingPayload = {
             data: {
             owner: ownerEmail,
+            code: new Date().getTime().toString(),
             subject: 'New Personal Document submitted ' + docName,
             short_subject: 'New Personal Document submitted',
             link: './pages/personal_documents',
@@ -98,7 +99,8 @@ export const sendETS1Notification = functions.https.onRequest(async (req, res) =
             link: './pages/ets1/workspace',
             icon: 'file-text-outline',
             type: 'ets1',
-            uuid: ets1ID
+            uuid: ets1ID,
+            code: ets1ID + new Date().getTime().toString(),
             },
             notification: {
             title: 'New ETS1 submitted',
@@ -156,7 +158,8 @@ export const sendVRNotification = functions.https.onRequest(async (req, res) => 
             link: './pages/eVR/workspace',
             icon: 'file-text-outline',
             type: 'VR',
-            uuid: vrID
+            uuid: vrID,
+            code: vrID
             },
             notification: {
             title: 'New VR submitted',

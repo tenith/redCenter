@@ -5,6 +5,9 @@ import { NbToastrService } from '@nebular/theme';
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { Observable, Subscription, fromEvent } from 'rxjs';
+import { PersonalNotificationService } from '../../../@core/shared/services/personalDocumentNotification.service';
+
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'ngx-mandatory-card-post',
@@ -27,6 +30,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   subscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder, 
+    private personalDocNotification: PersonalNotificationService,
     private toastr: NbToastrService, 
     private firestoreUserService: FirestoreUserService, 
     private fileUploadInformationService: FileUploadInformationService, 
@@ -103,6 +107,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     .then(response => {
       if(response){
         this.toastr.primary('Completed','Upload file completed', {duration:5000});
+        this.personalDocNotification.PersonalDocumentNotification(this.uploadForm.get('fileCategory').value, this.firestoreUserService.getFirestoreUser().email, uuid.v4());
         this.reset();
         this.postCompleteEvent.emit('');
       }

@@ -13,6 +13,6 @@ export class VrNotificationService {
 
   VRNotification(vrId: string, ownerEmail:string): Promise<any>{
     let params = new HttpParams().set('vrID', vrId).set('ownerEmail', ownerEmail);
-    return this.httpClient.get<any>(this.cloudFunctionAnnouncement, {params:params}).toPromise();
+    return this.httpClient.get(this.cloudFunctionAnnouncement, {params:params, responseType:'text'}).toPromise();
   }
 }

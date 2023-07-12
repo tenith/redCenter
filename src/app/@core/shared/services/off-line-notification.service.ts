@@ -8,7 +8,7 @@ import { localDB } from '../../../../environments/myconfigs';
 export class OffLineNotificationService {
 
   private dbName = localDB.dbName;
-  private dbVersion = 1;
+  private dbVersion = 2;
   private objectStoreName = localDB.objectStoreName;
 
   private db: IDBDatabase;
@@ -22,12 +22,14 @@ export class OffLineNotificationService {
 
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       const db = (event.target as IDBOpenDBRequest).result;
-      db.createObjectStore(this.objectStoreName,{ keyPath: 'code' });   
+      db.createObjectStore(this.objectStoreName,{ keyPath: 'code', autoIncrement: false });   
 
+      // console.log('onupgrad');
       this.db = db;
     };
 
     request.onsuccess = (event: Event) => {
+      // console.log('onsuccess');
       this.db = (event.target as IDBRequest<IDBDatabase>).result;
     };
 
@@ -54,9 +56,13 @@ export class OffLineNotificationService {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.objectStoreName, 'readwrite');
       const objectStore = transaction.objectStore(this.objectStoreName);
-      const request = objectStore.put(value, key);
+
+      // console.log('key: ' + key);
+      // console.log('value: ' + JSON.stringify(value));
+      const request = objectStore.put(value);
 
       request.onsuccess = () => {
+        // console.log('onsuccess');
         resolve();
       };
 

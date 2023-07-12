@@ -172,12 +172,12 @@ export class DocumentComponent implements OnInit {
         this.notificationService.deleteNotificationDocuemntByCode(this.announcement.code);
       })
       .catch(error=>{
-        console.log(error);
+        // console.log(error);
         this.toastr.danger('error','Acknowledge has been failed to save into your device');
       });
     })
     .catch(error=>{
-      console.log(error);
+      // console.log(error);
       this.toastr.danger('error','Acknowledge failed');
     });
   }

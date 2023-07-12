@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Notification } from '../interfaces/notification';
-import { NbDialogRef } from '@nebular/theme';
 import { OffLineNotificationService } from './off-line-notification.service';
 
 @Injectable({
@@ -12,7 +11,8 @@ export class NotificationService {
 
   updateSubject: Subject<void> = new Subject<void>();
 
-  constructor(private offlineNotificationService: OffLineNotificationService) {}
+  constructor(private offlineNotificationService: OffLineNotificationService) {
+  }
 
   setNotification(notifications: Notification[]): void{
     this.notifications = notifications;
@@ -45,7 +45,10 @@ export class NotificationService {
   }
 
   removeDuplicationFromStorage(notification : Notification): void{
-    this.offlineNotificationService.delete(notification.code);
+    try{
+      this.offlineNotificationService.delete(notification.code);
+    }
+    catch(e){}
   }
 
   addNotification(notification: Notification): void {
@@ -55,7 +58,9 @@ export class NotificationService {
       return;
     }
 
-    this.removeDuplicationFromStorage(notification);
+    // this.removeDuplicationFromStorage(notification);    
+    // this.offlineNotificationService.save(notification);
+    this.offlineNotificationService.save(notification.code,notification);
 
     this.notifications.push(notification);
     this.updateSubject.next();    
@@ -69,7 +74,12 @@ export class NotificationService {
       this.updateSubject.next();
     }
 
-    this.offlineNotificationService.delete(notification.code);
+    try{
+      this.offlineNotificationService.delete(notification.code);
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 
   deleteNotificationReadOnlyDocuemntByCode(code: string): void{

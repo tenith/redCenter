@@ -120,7 +120,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     tempFileName += this.eTS1.date;
 
     this.fileName = tempFileName.replace(/ /g,"_").replace(/,/g,"");
-    console.log('FILE NAME: ' + this.fileName);
+    // console.log('FILE NAME: ' + this.fileName);
   }
 
   exitForm(): void {
@@ -211,10 +211,10 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       // Set the maximum width of the PDF page
       const maxWidth = pdf.internal.pageSize.getWidth() - offset*2;
 
-      console.log('tableWidth: ' + tableWidth);
-      console.log('tableHeight: ' + tableHeight);
+      // console.log('tableWidth: ' + tableWidth);
+      // console.log('tableHeight: ' + tableHeight);
 
-      console.log('maxwidth: ' + maxWidth);
+      // console.log('maxwidth: ' + maxWidth);
 
       // Calculate the scale ratio based on the table width and maximum PDF page width
       const scaleRatio = maxWidth / tableWidth;
@@ -223,7 +223,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       const scaledWidth = tableWidth * scaleRatio;
       const scaledHeight = tableHeight * scaleRatio;
 
-      console.log('scaleRatio: ' + scaleRatio);
+      // console.log('scaleRatio: ' + scaleRatio);
 
       // Convert the canvas to an image data URL with the scaled dimensions
       const imgData = canvas.toDataURL('image/png', 1.0);

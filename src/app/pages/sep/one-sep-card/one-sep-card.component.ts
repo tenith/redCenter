@@ -123,7 +123,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   postCompletedUpdateThisCard(): void {
-    console.log('postCompletedUpdateThisCard');
+    // console.log('postCompletedUpdateThisCard');
     this.setupCard();
   }
 
@@ -188,7 +188,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           this.deleteEvent.emit();
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
           this.toastr.danger('error','Delete ' + this.info.Name + ' document failed, try again later');
         });
       }
@@ -247,7 +247,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           });
         }
         catch(e) {
-          console.log(e);
+          // console.log(e);
         }
       }
 
@@ -263,7 +263,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           });
         }
         catch(e){
-          console.log(e);
+          // console.log(e);
         }
       }
     }  

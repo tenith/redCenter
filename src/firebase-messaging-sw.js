@@ -31,7 +31,7 @@ messaging.onBackgroundMessage(function(payload) {
 
 function saveDataToIndexedDB(data) {
     // Open a connection to the database
-    let request = self.indexedDB.open('my-notification-database', 1);
+    let request = self.indexedDB.open('my-notification-database', 2);
   
     // Handle errors
     request.onerror = function(event) {
@@ -41,7 +41,7 @@ function saveDataToIndexedDB(data) {
     // Create the object store and save the data
     request.onupgradeneeded = function(event) {
       let db = event.target.result;
-      let objectStore = db.createObjectStore('my-notification-object-store', { keyPath: 'code' });
+      let objectStore = db.createObjectStore('my-notification-object-store', { keyPath: 'code' , autoIncrement: false });
       objectStore.transaction.oncomplete = function(event) {
         let objectStore = db.transaction('my-notification-object-store', 'readwrite').objectStore('my-notification-object-store');
         objectStore.add(data);

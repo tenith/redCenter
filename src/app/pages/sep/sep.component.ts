@@ -85,6 +85,7 @@ export class SepComponent implements OnInit {
     this.cdr.detectChanges();
     
     this.sepCardService.clearCertificateCache();
+    this.manualCards = [];
 
     /*
       Loading Information From personal file upload....
@@ -239,8 +240,8 @@ export class SepComponent implements OnInit {
       if(newData.Name == this.oneSepCards[i].Name){
         this.oneSepCards[i] = newData;       
 
-        console.log('newDataFromGoogleAPI: ' + data);
-        console.log(newData.Name);
+        // console.log('newDataFromGoogleAPI: ' + data);
+        // console.log(newData.Name);
 
         this.sepCardService.deleteAllSepCards();
         this.sepCardService.saveAllSepCards(this.oneSepCards);
