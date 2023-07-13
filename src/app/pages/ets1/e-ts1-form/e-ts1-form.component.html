@@ -4414,7 +4414,17 @@
                 </td>
                 <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle  sdnum="1033;0;0">
                     <select *ngIf="eTS1.noteDetails[i-1] != ''" id="PC{{i}}" name="PC{{i}}" #PC{{i}}="ngModel" style="width:22px; text-align: left;border:1px; font-size:12px;" [(ngModel)]="eTS1.pcScores[i]" [ngStyle]="{'background-color': eTS1.pcScores[i] === '' && (eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != '')? '#FFCCCB' : null}" [disabled]="readOnlySectionG" [required]="eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != ''"> 
-                        <optgroup label="Others">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <!-- <optgroup label="Others">
                             <option value="0">&nbsp;&nbsp;0&nbsp;</option>
                         </optgroup>
                         <optgroup label="Application of knowledge (KNO)">
@@ -4444,12 +4454,18 @@
                         </optgroup>
                         <optgroup label="Situational awareness and management of information (SAW)">
                             <option value="9.1">9.1</option>
-                        </optgroup>
+                        </optgroup> -->
                     </select>
                 </td>
                 <td style="border-top: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle  sdnum="1033;0;0">
                     <select *ngIf="eTS1.noteDetails[i-1] != ''" id="IEC{{i}}" name="IEC{{i}}" #IEC{{i}}="ngModel" style="width:22px; text-align: left;border:1px; font-size:12px;" [(ngModel)]="eTS1.iecScores[i]" [ngStyle]="{'background-color': eTS1.iecScores[i] === '' && (eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != '') ? '#FFCCCB' : null}" [disabled]="readOnlySectionG" [required]="eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != ''"> 
-                        <optgroup label="Others">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <!-- <optgroup label="Others">
                             <option value="0">&nbsp;&nbsp;0&nbsp;</option>
                         </optgroup>
                         <optgroup label="Pilot competencies">
@@ -4467,7 +4483,7 @@
                         </optgroup>
                         <optgroup label="Assessment and evaluation">
                             <option value="5.1">5.1</option>
-                        </optgroup>
+                        </optgroup> -->
                     </select></td>
                 <td style="border-top: 1px solid #000000; border-bottom: 0px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" colspan=36 align="left" valign=middle >
                     <input *ngIf="eTS1.noteDetails[i-1] != ''" id="detail{{i}}" name="detail{{i}}" #detail{{i}}="ngModel" style="display: inline;width: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;border: none;text-align:left;" [ngModel]="eTS1.noteDetails[i]" (ngModelChange)="eTS1.noteDetails[i] = $event.toUpperCase()" [ngStyle]="{'background-color': eTS1.noteDetails[i] === '' && (eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != '') ? '#FFCCCB' : null}" (blur)="revisedSectionG()" [readonly]="readOnlySectionG" [required]="eTS1.deScores[i] != '' || eTS1.pcScores[i] != '' || eTS1.iecScores[i] != '' || eTS1.noteDetails[i] != ''"> 
