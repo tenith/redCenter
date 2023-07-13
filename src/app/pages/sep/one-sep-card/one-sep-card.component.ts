@@ -94,6 +94,20 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
   setupCard(): void {
     this.startPolling();      
+
+    if(this.info.Name == 'RHS' || this.info.Name == 'LINE CHECK'){
+      if(this.info.InitialDate == '' || this.info.InitialDate == null || this.info.InitialDate == undefined){
+        // console.log(this.info.Name + ' Initial Date incompleted.');
+        //Temporary solution to get data from google sheets....
+        this.sepService.getAllSepCardsFromGoogleAPI(this.info.Name).subscribe(response => {
+        // console.log('JSON Google API: ' + JSON.stringify(response));
+        if(response != null && Object.keys(response).length != 0){
+          let temp = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
+          this.info.InitialDate = temp.InitialDate;
+          this.reviseStatus();
+        }});
+      }
+    }
     
     if(this.info.Expiry == 'NO DATA'){
       this.setStatusDanger();

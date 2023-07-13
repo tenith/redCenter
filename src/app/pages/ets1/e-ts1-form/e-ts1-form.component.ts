@@ -263,8 +263,11 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     const myEmail = this.firestoreUserService.getFirestoreUser().email;
     
     //ADMIN PERMISSION.....
-    if(this.allStarService.getRole(myEmail) == 'ADMIN'){
-
+    /*
+      13 JUL 2023 by wutthichair@airasia.com
+      change checking admin status from service to be paramter 'this.isAdmin'
+    */
+    if(this.isAdmin){
       if(this.eTS1.submitDateTime != ''){
         this.readOnlySectionA = true;
         this.readOnlySectionB = true;

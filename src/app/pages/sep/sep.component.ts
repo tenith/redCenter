@@ -161,7 +161,15 @@ export class SepComponent implements OnInit {
         const courseName = mainCourse[i];
         if(response[courseName] != undefined){
           const last = response[courseName].length - 1;  
-          temp.push(response[courseName][last]);
+          let myProcessOneSepCard: OneSepCard = response[courseName][last];
+
+          for(let i=0;i<response[courseName].length;i++)
+            if(response[courseName][i].Type.toString().toUpperCase() == 'INITIAL'){
+              myProcessOneSepCard.InitialDate = response[courseName][i].InitialDate;
+              continue;
+            }
+
+          temp.push(myProcessOneSepCard);
         }
         else{
           //create null card to show....
@@ -179,31 +187,6 @@ export class SepComponent implements OnInit {
           temp.push(x);
         }
       }
-
-      // for(let i: number = 0; i < tempSubjects.length; i++){
-      //   const courseName = tempSubjects[i];
-      //   if(this.isRequiredToShow(courseName)){
-      //     if(response[tempSubjects[i]] != undefined){
-      //       const last = response[tempSubjects[i]].length - 1;  
-      //       temp.push(response[tempSubjects[i]][last]);
-      //     }
-      //     else{
-      //       //create null card to show....
-      //       const x: OneSepCard = {
-      //         Name: courseName,
-      //         Attended: 'NO DATA',
-      //         Type: 'NO DATA',
-      //         Validperiod: 'NO DATA',
-      //         Expiry: 'NO DATA',
-      //         Instructor: 'NO DATA',
-      //         Remark: 'NO DATA',
-      //         Link: ''
-      //       };
-
-      //       temp.push(x);
-      //     }
-      //   }        
-      // }
 
       this.loading = false;
       this.toastr.primary('Completed','Updated SEP from TMC server completed', {duration:10000});
@@ -239,9 +222,6 @@ export class SepComponent implements OnInit {
     for(let i=0;i<this.oneSepCards.length;i++){
       if(newData.Name == this.oneSepCards[i].Name){
         this.oneSepCards[i] = newData;       
-
-        // console.log('newDataFromGoogleAPI: ' + data);
-        // console.log(newData.Name);
 
         this.sepCardService.deleteAllSepCards();
         this.sepCardService.saveAllSepCards(this.oneSepCards);

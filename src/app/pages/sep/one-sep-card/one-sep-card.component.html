@@ -9,6 +9,27 @@
             <nb-card accent="{{myStatus}}">
                 <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
                 <nb-card-body *ngIf="info.Name != 'My Picture'">
+                    <div *ngIf="info.Name == 'RHS' || info.Name == 'LINE CHECK'" class="row">
+                        <div class="col-4">
+                            <b>Type</b>
+                        </div>
+                        <div class="col-8">
+                            Initial
+                        </div>
+            
+                        <div *ngIf="!isPersonalDocument" class="col-4">
+                            <b>Attended</b>
+                        </div>
+                        <div *ngIf="isPersonalDocument" class="col-4">
+                            <b>Issue Date</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.InitialDate == undefined || info.InitialDate == '' || info.InitialDate == null ? 'NO DATA' : info.InitialDate }}
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-4">
                             <b>Type</b>
