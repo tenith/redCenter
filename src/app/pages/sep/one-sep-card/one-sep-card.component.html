@@ -1,6 +1,6 @@
 <nb-accordion>
     <nb-accordion-item expanded="{{myStatus != 'success'}}">
-        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name}}</b>
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name | uppercase}}</b>
             &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
             &nbsp;<nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
             &nbsp;<nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
@@ -9,12 +9,13 @@
             <nb-card accent="{{myStatus}}">
                 <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
                 <nb-card-body *ngIf="info.Name != 'My Picture'">
-                    <div *ngIf="info.Name == 'RHS' || info.Name == 'LINE CHECK'" class="row">
+                    <!-- <div *ngIf="info.InitialDate != 'NO DATA'" class="row"> -->
+                    <div *ngIf="showInitial && !(info.InitialDate == undefined || info.InitialDate == '' || info.InitialDate == null)" class="row">
                         <div class="col-4">
                             <b>Type</b>
                         </div>
                         <div class="col-8">
-                            Initial
+                            INITIAL
                         </div>
             
                         <div *ngIf="!isPersonalDocument" class="col-4">
@@ -30,12 +31,13 @@
                             <hr>
                         </div>
                     </div>
-                    <div class="row">
+                    <div *ngFor="let x of allHistory ; first as isFirst; last as isLast">
+                    <div  *ngIf="showHistory && ( x.Type.toString().toUpperCase() != 'INITIAL' ) && !isLast " class="row">
                         <div class="col-4">
                             <b>Type</b>
                         </div>
                         <div class="col-8">
-                            {{info.Type}}
+                            {{x.Type | uppercase}}
                         </div>
             
                         <div *ngIf="!isPersonalDocument" class="col-4">
@@ -45,21 +47,43 @@
                             <b>Issue Date</b>
                         </div>
                         <div class="col-8">
-                            {{info.Attended}}
+                            {{x.Attended | uppercase}}
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <b>Type</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.Type | uppercase}}
+                        </div>
+            
+                        <div *ngIf="!isPersonalDocument" class="col-4">
+                            <b>Attended</b>
+                        </div>
+                        <div *ngIf="isPersonalDocument" class="col-4">
+                            <b>Issue Date</b>
+                        </div>
+                        <div class="col-8">
+                            {{info.Attended | uppercase}}
                         </div>
             
                         <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-4">
                             <b>Validity</b>
                         </div>
                         <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-8">
-                            {{info.Validperiod}}
+                            {{info.Validperiod | uppercase}}
                         </div>
             
                         <div *ngIf="info.Expiry!=''" class="col-4">
                             <b>Expiry</b>
                         </div>
                         <div class="col-8">
-                            {{info.Expiry}}
+                            {{info.Expiry | uppercase}}
                         </div>
                         <!-- <div *ngIf="info.remark!=''" class="col-12">
                             <b>Remark</b>

@@ -40,6 +40,8 @@ export class SepComponent implements OnInit {
   isPilot: boolean = false;
   mandatoryCourseName: string[] = [];
 
+  fullHistory: OneSepCard[][] = [];
+  
   constructor(private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
@@ -106,7 +108,8 @@ export class SepComponent implements OnInit {
               Expiry: this.formatDate(temp[i].expiryDate),
               Instructor: temp[i].issueBy,
               Remark: temp[i].description,
-              Link: temp[i].relativePath
+              Link: temp[i].relativePath,
+              InitialDate: 'NO DATA',
             };
 
             tempOneSepCard.push(tempSepCard);
@@ -160,13 +163,17 @@ export class SepComponent implements OnInit {
       for(let i:number = 0; i<mainCourse.length;i++){
         const courseName = mainCourse[i];
         if(response[courseName] != undefined){
+          // console.log('HISTORY: ' + courseName + " : " + JSON.stringify({courseName: response[courseName]}));
+          
+          // localStorage.setItem(courseName + 'History', JSON.stringify(response[courseName]));
+          this.fullHistory[courseName] = response[courseName];
           const last = response[courseName].length - 1;  
           let myProcessOneSepCard: OneSepCard = response[courseName][last];
-
+          myProcessOneSepCard.InitialDate = 'NO DATA';
           for(let i=0;i<response[courseName].length;i++)
             if(response[courseName][i].Type.toString().toUpperCase() == 'INITIAL'){
-              myProcessOneSepCard.InitialDate = response[courseName][i].InitialDate;
-              continue;
+              myProcessOneSepCard.InitialDate = response[courseName][i].Attended;
+              break;
             }
 
           temp.push(myProcessOneSepCard);
@@ -175,6 +182,7 @@ export class SepComponent implements OnInit {
           //create null card to show....
           const x: OneSepCard = {
             Name: courseName,
+            InitialDate: 'NO DATA',
             Attended: 'NO DATA',
             Type: 'NO DATA',
             Validperiod: 'NO DATA',
@@ -217,10 +225,27 @@ export class SepComponent implements OnInit {
     return formattedDate;
   }
 
+  private JSONcompare(obj1, obj2) {
+    const commonKeys = [...new Set([...Object.keys(obj1), ...Object.keys(obj2)])];
+  
+    for (const key of commonKeys) {
+      if (obj1[key] !== obj2[key]) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
+
   newDataFromGoogleAPI(data: string): void {
     const newData = {...JSON.parse(data)} as OneSepCard;
     for(let i=0;i<this.oneSepCards.length;i++){
       if(newData.Name == this.oneSepCards[i].Name){
+        
+        if(this.JSONcompare(newData, this.oneSepCards[i])){
+          break;
+        }
+
         this.oneSepCards[i] = newData;       
 
         this.sepCardService.deleteAllSepCards();

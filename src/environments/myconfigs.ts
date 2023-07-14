@@ -49,6 +49,7 @@ export const localStorageCollection = {
     firestoreUserDBNameCollectionName: 'firestoreUserDBName',
     newsLocalDBNameCollectionName: 'NewsLocalDBName',
     sepLocalDBNameCollectionName: 'SEPCardLocalDBName',
+    sepHistoricalCollectionName: 'SEPHistoricalDBName',
     manualLocalDBNameCollectionName: 'ManualCardLocalDBName',
     vrLocalDBNameCollectionName: 'VRLocalDBName'
 };
@@ -156,6 +157,36 @@ export const sepMandatory = {
 export const sepCourseOptions = {
     Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "ETOPS A320", "RHS", "UPRT", "VVDN COMPETENCY", "VVCR COMPETENCY", "VNKT COMPETENCY", "LVO CAT II", "LVO CAT IIIA", "A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
     Cabin_Crew: ["A321", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
+}
+
+export const sepCourseDisplayOptions = {
+    "TCAS": { Initial: false, ShowHistory: false},
+    "RNP/BRNAV": { Initial: false, ShowHistory: false},
+    "RVSM": { Initial: false, ShowHistory: false},
+    "ETOPS A320": { Initial: false, ShowHistory: false},
+    "RHS": { Initial: true, ShowHistory: false},
+
+    "UPRT": { Initial: false, ShowHistory: false},
+    "VVDN COMPETENCY": { Initial: false, ShowHistory: false},
+    "VVCR COMPETENCY": { Initial: false, ShowHistory: false},
+    "VNKT COMPETENCY": { Initial: false, ShowHistory: false},
+    "LVO CAT II": { Initial: false, ShowHistory: false},
+
+    "LVO CAT IIIA": { Initial: false, ShowHistory: false},
+    "A321": { Initial: false, ShowHistory: false},
+    "LINE CHECK": { Initial: true, ShowHistory: false},
+    "SEP DOOR DRILL": { Initial: false, ShowHistory: false},
+    "SEP WET DRILL": { Initial: false, ShowHistory: false},
+
+    "SEP FIRE DRILL": { Initial: false, ShowHistory: false},
+    "SEP SLIDE DRILL": { Initial: false, ShowHistory: false},
+    "SEP FIRST AID": { Initial: false, ShowHistory: false},
+    "DANGEROUS GOOD AWARENESS": { Initial: false, ShowHistory: false},
+    "CREW RESOURCE MANAGEMENT": { Initial: false, ShowHistory: false},
+
+    "SMS CLASS": { Initial: false, ShowHistory: false},
+    "AVSEC": { Initial: false, ShowHistory: false},
+    "Ground Check": { Initial: false, ShowHistory: false},
 }
 
 export const profileDBLink = 'myProfilePicture';

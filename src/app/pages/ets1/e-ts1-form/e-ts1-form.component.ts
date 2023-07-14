@@ -310,7 +310,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     }
 
     //USER PERMISSION.....
-    if(this.allStarService.getRole(myEmail) == 'USER'){
+    if(!this.isAdmin){
       //ONLY ADMIN CAN EDIT SECTION I.....
       this.readOnlySectionI = true;
 

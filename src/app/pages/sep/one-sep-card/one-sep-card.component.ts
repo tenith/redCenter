@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, O
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
-import { statusConfig } from '../../../../environments/myconfigs';
+import { sepCourseDisplayOptions, statusConfig } from '../../../../environments/myconfigs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, Subscription, fromEvent, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
+import { SepHistoicalService } from '../../../@core/shared/services/sepHistorical.service';
 
 @Component({
   selector: 'ngx-one-sep-card',
@@ -21,12 +22,15 @@ import { FirestoreUserService } from '../../../@core/shared/services/firestore-u
 })
 export class OneSepCardComponent implements OnInit, OnDestroy {
   @Input() info?: OneSepCard;
+  @Input() allHistory?: OneSepCard[];
   @Input() canDelete: boolean = false;
   @Output() postCompleteEvent = new EventEmitter<string>();
   @Output() deleteEvent = new EventEmitter<string>();
   @Output() refreshEvent = new EventEmitter<string>();
   myStatus: string;
   myIcon: string;
+
+  displayOption = sepCourseDisplayOptions;
 
   postRequired: boolean = false;
 
@@ -50,9 +54,12 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   onlineEvent: Observable<Event>;
   subscriptions: Subscription[] = [];
 
+  showInitial:boolean = false;
+  showHistory:boolean = false;
+
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
 
-  constructor(private firestoreUser: FirestoreUserService ,private toastr: NbToastrService, private dialogService: NbDialogService, private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
+  constructor(private sepHistoricalService: SepHistoicalService, private firestoreUser: FirestoreUserService ,private toastr: NbToastrService, private dialogService: NbDialogService, private manualCardService: ManualCardService, private fileUploadDatabaseService: FileUploadDatabaseService, public sepService: SepCardService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
   ngOnDestroy(): void {
     this.stopPolling();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -61,6 +68,19 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {     
     this.offline = !navigator.onLine;
     this.handleAppConnectivityChanges();
+
+    if(this.info.Name in this.displayOption){
+      this.showInitial = this.displayOption[this.info.Name].Initial;
+      this.showHistory = this.displayOption[this.info.Name].ShowHistory;
+    }
+
+    if(this.allHistory == null){
+      const temp = this.sepHistoricalService.getHistorical(this.info.Name);
+      if(temp.length > 0)
+        this.allHistory = temp;
+    }
+    else
+      this.sepHistoricalService.addHistorical(this.info.Name, this.allHistory);
 
     if ("application/pdf" in navigator.mimeTypes)
       this.pdfSupport = true;
@@ -96,15 +116,14 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     this.startPolling();      
 
     if(this.info.Name == 'RHS' || this.info.Name == 'LINE CHECK'){
-      if(this.info.InitialDate == '' || this.info.InitialDate == null || this.info.InitialDate == undefined){
-        // console.log(this.info.Name + ' Initial Date incompleted.');
-        //Temporary solution to get data from google sheets....
+      if(this.info.InitialDate == 'NO DATA' || this.info.InitialDate == null || this.info.InitialDate == undefined){
         this.sepService.getAllSepCardsFromGoogleAPI(this.info.Name).subscribe(response => {
-        // console.log('JSON Google API: ' + JSON.stringify(response));
+        console.log('JSON Google API: ' + JSON.stringify(response));
         if(response != null && Object.keys(response).length != 0){
           let temp = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
           this.info.InitialDate = temp.InitialDate;
           this.reviseStatus();
+          this.cdr.detectChanges();
         }});
       }
     }
@@ -114,11 +133,17 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
       //Temporary solution to get data from google sheets....
       this.sepService.getAllSepCardsFromGoogleAPI(this.info.Name).subscribe(response => {
-        // console.log('JSON Google API: ' + JSON.stringify(response));
+        console.log(this.info.Name);
+        console.log('JSON Google API: ' + JSON.stringify(response));
         if(response != null && Object.keys(response).length != 0){
-          this.info = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
+          // this.info = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
+          let temp = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
+          // console.log('NO DATA: ' + JSON.stringify(temp));
+          temp.InitialDate = 'NO DATA';
+          // console.log('INIT DATA: ' + JSON.stringify(temp.InitialDate));
+          this.info = temp;
           this.reviseStatus();
-          this.postCompleteEvent.emit(JSON.stringify(response));
+          this.postCompleteEvent.emit(JSON.stringify(this.info));
         }});
     }
     else{
