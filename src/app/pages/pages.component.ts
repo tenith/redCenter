@@ -12,7 +12,7 @@ import { showMenu } from '../../environments/environment';
   styleUrls: ['pages.component.scss'],
   template: `
     <ngx-one-column-layout>
-      <nb-menu [items]="menu"></nb-menu>
+      <nb-menu [items]="menu" expanded="false"></nb-menu>
       <router-outlet></router-outlet>
     </ngx-one-column-layout>
   `,

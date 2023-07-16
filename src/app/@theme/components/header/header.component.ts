@@ -127,6 +127,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       this.menuService.onItemClick().subscribe(( event ) => {
         this.onItemSelection(event.item.title);
+        if(event.item.title != 'E-VR'){
+          this.toggleSidebar();
+        }
       });
 
     /*

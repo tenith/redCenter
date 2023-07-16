@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NbToastrService } from '@nebular/theme';
+import { NbMenuService, NbSidebarService, NbToastrService } from '@nebular/theme';
 import { Subject } from 'rxjs';
 import { AutolandSepCard } from '../../@core/shared/interfaces/autoland-sep-card';
 import { OneSepCard } from '../../@core/shared/interfaces/one-sep-card';
@@ -13,6 +13,7 @@ import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
 import { sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
+import { LayoutService } from '../../@core/utils';
 
 @Component({
   selector: 'ngx-sep',
@@ -45,6 +46,7 @@ export class SepComponent implements OnInit {
   constructor(private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
 
   ngOnInit(): void {
+
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
                            {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];
 
