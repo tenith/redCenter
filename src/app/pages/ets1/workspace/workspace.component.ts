@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TabService } from '../../../@core/shared/services/tab.service';
 import { NbTabsetComponent } from '@nebular/theme';
 import { Observable, Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { ETS1Service } from '../../../@core/shared/services/e-ts1.service';
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.scss']
 })
-export class WorkspaceComponent implements OnInit, OnDestroy {
+export class WorkspaceComponent implements OnInit, OnDestroy, AfterViewInit {
   activeUUID: string = '';
   uuidList: string[] = [];  
 
@@ -22,8 +22,27 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.uuidList = this.tabService.getViewUUIDTabs();
     this.newTab$ = this.tabService.getObservable();
   }
+
+  ngAfterViewInit(): void {
+    // this.reviseTab();
+  }
+
   ngOnDestroy(): void {
     this.newTabSub.unsubscribe();
+  }
+
+  reviseTab(): void {    
+    // let tempT = this.tabsetEl.tabs;
+    // for(let i=1; i<tempT.length;i++){
+    //   const tempUUID = tempT.get(i).tabTitle;
+    //   if(tempUUID.split('-').length > 1){
+    //     const temp = this.eTS1Service.geteTS1FromCacheByUUID(tempUUID);
+    //     if(temp == null)
+    //       return;
+    //     tempT.get(i).tabTitle = temp.rank1 + ": " + temp.name1.split(' ')[0];
+    //   }
+    // }
+    // this.cdr.detectChanges();
   }
 
   ngOnInit(): void { 
@@ -38,6 +57,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     // this.eTS1Service.neweTS1(uuid);
     this.cdr.detectChanges();
     this.gotoTab(uuid);
+    // this.reviseTab();
   }
 
   gotoTab(uuid: string): void {

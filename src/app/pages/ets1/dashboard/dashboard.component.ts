@@ -88,7 +88,8 @@ export class DashboardComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, private eTS1Service: ETS1Service, private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
-    this.isInstructor = instructorList.includes(this.firestoreUserService.getFirestoreUser().email);
+    this.isInstructor = true;
+    // this.isInstructor = instructorList.includes(this.firestoreUserService.getFirestoreUser().email);
 
     this.eTS1Service.getAlleTS1().subscribe(data => {
       this.eTS1List = data;

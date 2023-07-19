@@ -57,7 +57,7 @@ export class FileUploadInformationService {
       return null;
     return newRef.get();
   }
-
+  
   public async addFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{    
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayUnion(fileUploadInformation)});
   }

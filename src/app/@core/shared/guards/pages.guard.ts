@@ -9,6 +9,7 @@ import { FirestoreUserService } from '../services/firestore-user.service';
 
 import { userLevel } from '../../../../environments/myconfigs';
 import { roleName } from '../../../../environments/myconfigs';
+import { DocumentsAmendmentComponent } from '../../../pages/documents-amendment/documents-amendment.component';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,20 @@ export class PagesGuard implements CanActivate {
     Flight_Operations : home, documents_amendment, personal_documents, logout;
     Training : home, documents_amendment, personal_documents, ets1, logout;
     Engineer : home, documents_amendment, personal_documents, logout;
+    CCD_TEAM : home, personal_documents, logout;
     */    
 
     if(thisComponent === AuthorizationComponent){
       if(firestoreUser.level != userLevel.admin){
+        this.router.navigate(['./forbidden']);
+        return false;
+      }
+
+      return true;
+    }
+
+    if(thisComponent === DocumentsAmendmentComponent){
+      if((firestoreUser.role == roleName.ccd_team)){
         this.router.navigate(['./forbidden']);
         return false;
       }

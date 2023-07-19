@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMenuService, NbSidebarService, NbToastrService } from '@nebular/theme';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent } from 'rxjs';
 import { AutolandSepCard } from '../../@core/shared/interfaces/autoland-sep-card';
 import { OneSepCard } from '../../@core/shared/interfaces/one-sep-card';
 import { AutolandCardService } from '../../@core/shared/services/autoland-card.service';
@@ -13,14 +13,13 @@ import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
 import { sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
-import { LayoutService } from '../../@core/utils';
 
 @Component({
   selector: 'ngx-sep',
   templateUrl: './sep.component.html',
   styleUrls: ['./sep.component.scss']
 })
-export class SepComponent implements OnInit {
+export class SepComponent implements OnInit, OnDestroy {
   /*
     15 Mar 2023 wutthichair
   */
@@ -42,10 +41,39 @@ export class SepComponent implements OnInit {
   mandatoryCourseName: string[] = [];
 
   fullHistory: OneSepCard[][] = [];
+
+  offlineEvent: Observable<Event>;
+  onlineEvent: Observable<Event>;
+  subscriptions: Subscription[] = [];
+
+  offline:boolean = false;
   
   constructor(private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  private handleAppConnectivityChanges(): void {
+    this.offline = !navigator.onLine;
+    
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline');
+
+    this.subscriptions.push(this.onlineEvent.subscribe(e => {
+      // handle online mode
+      this.offline = false;
+      this.cdr.detectChanges();
+    }));
+
+    this.subscriptions.push(this.offlineEvent.subscribe(e => {
+      // handle offline mode
+      this.offline = true;
+      this.cdr.detectChanges();
+    }));
+  }
 
   ngOnInit(): void {
+    this.handleAppConnectivityChanges();
 
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
                            {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];

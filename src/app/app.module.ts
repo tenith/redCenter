@@ -65,7 +65,7 @@ import { dbConfig } from '../environments/myconfigs';
     NbDatepickerModule.forRoot(),
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
-    NbToastrModule.forRoot(),
+    NbToastrModule.forRoot(),    
     /*
       09 MAR 2023 wutthichair
     */

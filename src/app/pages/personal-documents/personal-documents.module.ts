@@ -21,6 +21,7 @@ import { ReportSummaryComponent } from './report-summary/report-summary.componen
 
 import { NbCheckboxModule } from '@nebular/theme';
 import { NbSelectModule } from '@nebular/theme';
+import { EditPersonalDocumentComponent } from './edit-personal-document/edit-personal-document.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NbSelectModule } from '@nebular/theme';
     ViewDocumentComponent,
     SearchComponent,
     ReportComponent,
-    ReportSummaryComponent
+    ReportSummaryComponent,
+    EditPersonalDocumentComponent,
   ],
   imports: [
     CommonModule,
@@ -41,8 +43,8 @@ import { NbSelectModule } from '@nebular/theme';
     NgxWatermarkModule,
     ThemeModule,
     FormsModule,
-    NbCheckboxModule,
     ReactiveFormsModule,
+    NbCheckboxModule,    
     CommonModule,
     NbCardModule,
     NbIconModule,
@@ -50,7 +52,6 @@ import { NbSelectModule } from '@nebular/theme';
     NbInputModule,
     NbToastrModule,
     NbTooltipModule,
-    FormsModule,
     Ng2SmartTableModule
   ],
 })

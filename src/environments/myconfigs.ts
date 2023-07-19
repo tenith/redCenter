@@ -19,6 +19,7 @@ export const roleName = {
     fltOPS: 'Flight_Operations',
     training: 'Training',
     engineer: 'Engineer',
+    ccd_team: 'CCD_TEAM'
 }
 
 export const settings = {
@@ -135,6 +136,7 @@ export const roleOptions = [
     { value: 'Flight_Operations', label: 'Flight Operations', icon: 'assets/images/operation.png' },
     { value: 'Training', label: 'Training', icon: 'assets/images/training.png'},
     { value: 'Engineer', label: 'Engineer', icon: 'assets/images/engineer.png' },
+    { value: 'CCD_TEAM', label: 'CCD Team', icon: 'assets/images/operation.png' },
 ];
 
 export const levelOptions = [
@@ -175,17 +177,17 @@ export const sepCourseDisplayOptions = {
     "LVO CAT IIIA": { Initial: false, ShowHistory: false},
     "A321": { Initial: false, ShowHistory: false},
     "LINE CHECK": { Initial: true, ShowHistory: false},
-    "SEP DOOR DRILL": { Initial: false, ShowHistory: false},
-    "SEP WET DRILL": { Initial: false, ShowHistory: false},
+    "SEP DOOR DRILL": { Initial: true, ShowHistory: false},
+    "SEP WET DRILL": { Initial: true, ShowHistory: false},
 
-    "SEP FIRE DRILL": { Initial: false, ShowHistory: false},
-    "SEP SLIDE DRILL": { Initial: false, ShowHistory: false},
-    "SEP FIRST AID": { Initial: false, ShowHistory: false},
-    "DANGEROUS GOOD AWARENESS": { Initial: false, ShowHistory: false},
-    "CREW RESOURCE MANAGEMENT": { Initial: false, ShowHistory: false},
+    "SEP FIRE DRILL": { Initial: true, ShowHistory: false},
+    "SEP SLIDE DRILL": { Initial: true, ShowHistory: false},
+    "SEP FIRST AID": { Initial: true, ShowHistory: false},
+    "DANGEROUS GOOD AWARENESS": { Initial: true, ShowHistory: true},
+    "CREW RESOURCE MANAGEMENT": { Initial: true, ShowHistory: false},
 
-    "SMS CLASS": { Initial: false, ShowHistory: false},
-    "AVSEC": { Initial: false, ShowHistory: false},
+    "SMS CLASS": { Initial: true, ShowHistory: false},
+    "AVSEC": { Initial: true, ShowHistory: true},
     "Ground Check": { Initial: false, ShowHistory: false},
 }
 

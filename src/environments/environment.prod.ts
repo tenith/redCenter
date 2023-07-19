@@ -28,6 +28,7 @@ export const API = {
   cloudFunctionVRNotification: 'https://us-central1-red-center.cloudfunctions.net/sendVRNotification',
   cloudFunctionETS1Notification: 'https://us-central1-red-center.cloudfunctions.net/sendETS1Notification',
   cloudFunctionPersonalDocNotification: 'https://us-central1-red-center.cloudfunctions.net/sendPersonalDocNotification',
+  cloudFunctionCCDTEAMPersonalDocNotification: 'https://us-central1-red-center.cloudfunctions.net/sendCCDPersonalDocNotification',
   
   // sepGoogleService: 'https://script.google.com/macros/s/AKfycbyxxKjMeBQgDOj1s1A78fK-xGpOQv-YIXNgaJxQTIWncsFYt4z-szGrbURz3sCCJv3I/exec',
   sepGoogleService: 'https://script.google.com/macros/s/AKfycbwmXXEWXuc9wgU-Wp579t5ssz3MIwZe7Zyz1qlOz-Ox99nIsrhWiHemkezY7T3ClY7N/exec',    

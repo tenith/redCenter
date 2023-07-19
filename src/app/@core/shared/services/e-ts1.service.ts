@@ -118,7 +118,7 @@ export class ETS1Service {
     let temp: ETS1Data;
     for(let i=0;i<this.eTS1ListCache.length;i++){
       if(this.eTS1ListCache[i].uuid == uuid)
-        temp = this.addeTS1InCache[i];
+        temp = this.eTS1ListCache[i];
     }
     return temp;
   }

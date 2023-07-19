@@ -143,7 +143,7 @@
     
                 
                 <!-- eTS1.name1 -->
-                <input type="text" id="name1" name="name1" #name1="ngModel" style="margin-left : 5px;width:280px; " [ngModel]="eTS1.name1" (ngModelChange)="eTS1.name1 = $event.toUpperCase()" [ngStyle]="{'background-color': name1.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionA" required>
+                <input type="text" id="name1" name="name1" #name1="ngModel" style="font-size: clamp(9px, 1.5vw, 11px); margin-left : 5px;width:280px; " [ngModel]="eTS1.name1" (ngModelChange)="eTS1.name1 = $event.toUpperCase()" [ngStyle]="{'background-color': name1.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionA" required>
                 <!-- eTS1.name1 -->
     
             </td>
@@ -217,7 +217,7 @@
                 <!-- eTS1.rank2 -->
                 
                 <!-- eTS1.name2 -->
-                <input type="text" id="name2" name="name2" #name2="ngModel" style="width:233px; text-align:center; " [ngModel]="eTS1.name2" (ngModelChange)="eTS1.name2 = $event.toUpperCase()" [ngStyle]="{'background-color': name2.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionA" required>
+                <input type="text" id="name2" name="name2" #name2="ngModel" style="font-size: clamp(9px, 1.5vw, 11px); width:233px; text-align:center; " [ngModel]="eTS1.name2" (ngModelChange)="eTS1.name2 = $event.toUpperCase()" [ngStyle]="{'background-color': name2.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionA" required>
                 <!-- eTS1.name2 -->
     
             </td>
@@ -4991,7 +4991,7 @@
             <td style="border-top: 1px solid #000000; border-bottom: 0px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=11 rowspan=3 align="left" valign=top><font size=1 color="#000000">Name of Instructor/ Examiner</font>
                 
                 <!-- eTS1.name3 -->
-                <input type="text" id="name3" name="name3" #name3="ngModel" style="margin-top:10px;font: size 13px;display: inline;width: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;border: none;text-align:center;" [ngModel]="eTS1.name3" (ngModelChange)="eTS1.name3 = $event.toUpperCase()" [ngStyle]="{'background-color': name3.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionH" required>
+                <input type="text" id="name3" name="name3" #name3="ngModel" style="font-size: clamp(9px, 1.5vw, 11px); margin-top:10px;font: size 13px;display: inline;width: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;border: none;text-align:center;" [ngModel]="eTS1.name3" (ngModelChange)="eTS1.name3 = $event.toUpperCase()" [ngStyle]="{'background-color': name3.invalid ? '#FFCCCB' : null}" [readonly]="readOnlySectionH" required>
                 <!-- eTS1.name3 -->
     
             </td>
@@ -5006,7 +5006,7 @@
             <td style="border-top: 1px solid #000000; border-bottom: 0px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=19 rowspan=3 align="left" valign=top><font size=1 color="#000000">Name of Trainee</font>
     
                 <!-- eTS1.name1 -->
-                <input type="text" id="name1Show" name="name1Show" #name1Show style="margin-top:10px;font: size 13px;display: inline;width: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;border: none;text-align:center;" [(ngModel)]="eTS1.name1" aria-readonly="true" readonly required>
+                <input type="text" id="name1Show" name="name1Show" #name1Show style="font-size: clamp(9px, 1.5vw, 11px); margin-top:10px;font: size 13px;display: inline;width: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;border: none;text-align:center;" [(ngModel)]="eTS1.name1" aria-readonly="true" readonly required>
                 <!-- eTS1.name1 -->
     
             </td>
@@ -5112,32 +5112,32 @@
         <tr *ngIf="isAdmin">
             <td style="border-top: 2px solid #000000; border-left: 2px solid #000000" height="18" align="center" valign=middle bgcolor="#000000"><font color="#FFFFFF">I.</font></td>
             <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan=24 align="left" valign=middle bgcolor="#D9D9D9"><font color="#000000">For Official Use Only</font></td>
-            <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 0px solid #000000; border-right: 2px solid #000000" colspan=15 align="left" valign=middle bgcolor="#D9D9D9"><font color="#000000">Chief Pilot Training and Standards</font></td>
+            <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 0px solid #000000; border-right: 2px solid #000000" colspan=15 align="left" valign=middle bgcolor="#D9D9D9"><font color="#000000"><span (click)="setChiefPilotSignature()">Chief Pilot Training and Standards</span></font></td>
             </tr>
         <tr *ngIf="isAdmin">
             <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan=3 rowspan=3 height="54" align="left" valign=middle>
                 
                 <!-- eTS1.formCompleted -->
-                <div id="container">
-                    <div id="navi"></div>
-                    <div id="infoi"><input type="checkbox" id="formCompleted" name="formCompleted" #formCompleted="ngModel" [ngModel]="eTS1.formCompleted=='true'?true:false" (ngModelChange)="eTS1.formCompleted=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
+                <div id="admincontainer">
+                    <div id="adminnavi"></div>
+                    <div id="admininfoi"><input type="checkbox" id="formCompleted" name="formCompleted" #formCompleted="ngModel" [ngModel]="eTS1.formCompleted=='true'?true:false" (ngModelChange)="eTS1.formCompleted=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
                 </div>
                 <!-- eTS1.formCompleted -->
     
             </td>
             
-            <td colspan=9 rowspan="3" align="left" style="border-top: 2px solid #000000" valign=middle><b><font size=1 color="#000000">  Form is proper and complete</font></b></td>
+            <td colspan=9 rowspan="3" align="left" style="border-top: 2px solid #000000" valign=middle><b><font size=1 color="#000000">  <span (click)="setStaffSignature(1)">Form is proper and complete</span></font></b></td>
             <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 0px solid #000000" colspan=3 rowspan=3 align="left" valign=middle>
                 
                 <!-- eTS1.validityDate -->
-                <div id="container">
-                    <div id="navi"></div>
-                    <div id="infoi"><input type="checkbox" id="validityDate" name="validityDate" #validityDate="ngModel" [ngModel]="eTS1.validityDate=='true'?true:false" (ngModelChange)="eTS1.validityDate=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
+                <div id="admincontainer">
+                    <div id="adminnavi"></div>
+                    <div id="admininfoi"><input type="checkbox" id="validityDate" name="validityDate" #validityDate="ngModel" [ngModel]="eTS1.validityDate=='true'?true:false" (ngModelChange)="eTS1.validityDate=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
                 </div>
                 <!-- eTS1.validityDate -->
     
             </td>
-            <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan=10 rowspan=3 align="left" valign=middle><b><font size=1 color="#000000">  Validity date in CMS update</font></b></td>
+            <td style="border-top: 2px solid #000000; border-bottom: 0px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan=10 rowspan=3 align="left" valign=middle><b><font size=1 color="#000000">  <span (click)="setStaffSignature(2)">Validity date in CMS update</span></font></b></td>
             <td style="border-top: 2px solid #000000" align="center" valign=middle></td>
             <td style="border-top: 2px solid #000000" align="center" valign=middle></td>
             <td style="border-top: 2px solid #000000" align="center" valign=middle></td>
@@ -5200,9 +5200,9 @@
             <td style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 2px solid #000000" colspan=3 rowspan=3 height="54" align="left" valign=middle>
                 
                 <!-- eTS1.copyCAAT -->
-                <div id="container">
-                    <div id="navi"></div>
-                    <div id="infoi"><input type="checkbox" id="copyCAAT" name="copyCAAT" #copyCAAT="ngModel" [ngModel]="eTS1.copyCAAT=='true'?true:false" (ngModelChange)="eTS1.copyCAAT=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
+                <div id="admincontainer">
+                    <div id="adminnavi"></div>
+                    <div id="admininfoi"><input type="checkbox" id="copyCAAT" name="copyCAAT" #copyCAAT="ngModel" [ngModel]="eTS1.copyCAAT=='true'?true:false" (ngModelChange)="eTS1.copyCAAT=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
                 </div>
                 <!-- eTS1.copyCAAT -->
     
@@ -5211,9 +5211,9 @@
             <td style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 0px solid #000000" colspan=3 rowspan=3 align="left" valign=middle>
                 
                 <!-- eTS1.cmsUpdate -->
-                <div id="container">
-                    <div id="navi"></div>
-                    <div id="infoi"><input type="checkbox" id="cmsUpdate" name="cmsUpdate" #cmsUpdate="ngModel" [ngModel]="eTS1.cmsUpdate=='true'?true:false" (ngModelChange)="eTS1.cmsUpdate=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
+                <div id="admincontainer">
+                    <div id="adminnavi"></div>
+                    <div id="admininfoi"><input type="checkbox" id="cmsUpdate" name="cmsUpdate" #cmsUpdate="ngModel" [ngModel]="eTS1.cmsUpdate=='true'?true:false" (ngModelChange)="eTS1.cmsUpdate=$event?'true':'false'" [disabled]="readOnlySectionI"></div>
                 </div>
                 <!-- eTS1.cmsUpdate -->
     
@@ -5275,7 +5275,7 @@
             <td align="left" valign=middle><font size=1 color="#000000"><br></font></td>
             <td align="left" valign=middle><font size=1 color="#000000"><br></font></td>
             <td align="left" valign=middle><font size=1 color="#000000"><br></font></td>
-            <td colspan=14 align="right" valign=middle><font face="Arial" size=1 color="#000000">Rev. :06 / 08 JAN 22</font></td>
+            <td colspan=14 align="right" valign=middle><font face="Arial" size=1 color="#000000"><span (click)="toggleReadOnly()">Rev. :06 / 08 JAN 22</span></font></td>
             <td align="left" valign=middle></td>
         </tr>
     </table>

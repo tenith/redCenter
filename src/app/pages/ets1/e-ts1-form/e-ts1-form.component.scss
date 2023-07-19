@@ -104,6 +104,32 @@ input[type="text"]{
       page-break-after: always; 
     } /* page-break-after works, as well */
   }
+
+  #admincontainer {
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    display: flex;
+  }
+  #adminnavi,
+  #admininfoi {
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  #admininfoi {
+    z-index: 10;
+  }
+
+  #admininfoi input[type="checkbox"] {
+    width: 30px; /*Desired width*/
+    height: 30px; /*Desired height*/
+    zoom:1.5;
+  }
   
   #container {
     margin: auto;

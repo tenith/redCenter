@@ -21,7 +21,7 @@
     -->
     <div class="col-12" id="home">
         <nb-card status="primary">
-            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp; <nb-icon icon="refresh" (click)="downloadSEP()"></nb-icon></nb-card-header>
+            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp; <nb-icon *ngIf="!offline" icon="refresh" (click)="downloadSEP()"></nb-icon></nb-card-header>
             <nb-card-body>
                 <div class="col-3"><B>NAME</B></div>
                 <div class="col-9">{{fireBaseAuth.getFirebaseUser().displayName | uppercase}}</div>

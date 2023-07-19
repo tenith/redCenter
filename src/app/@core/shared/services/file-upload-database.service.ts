@@ -84,11 +84,6 @@ export class FileUploadDatabaseService {
 
   public async deleteFileByName(path: string, email: string): Promise<boolean> {
     let completed = false;
-    // if(!this.isModerator)
-    //   return;
-
-    // console.log('Path: ' + path);
-    // console.log('File Info:' + JSON.stringify(path.split('/')[3]));
 
     await this.fileUploadInformationService.removeFileUploadByName(path.split('/')[3], email)
     .then(async () => {
@@ -100,8 +95,7 @@ export class FileUploadDatabaseService {
     })
     .catch(error => 
       console.log(error)
-    );
-    
+    );    
     
     return completed;
 

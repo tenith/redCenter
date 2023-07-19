@@ -19,6 +19,66 @@ catch(error){
     console.log('Unable to initializeApp : ' + error);
 }
 
+export const sendCCDPersonalDocNotification = functions.https.onRequest(async (req, res) => {
+    corsHandler(req, res, async () => { 
+        //Your code here
+
+        res.set('Access-Control-Allow-Origin', "*");
+        res.set('Access-Control-Allow-Methods', 'GET, POST');
+
+        let docName = req.query.docName as string;
+        let ownerEmail = req.query.ownerEmail as string;
+        // console.log('Server V1 got docName: ' + docName);
+        
+        // Set up the notification payload
+        const payload: admin.messaging.MessagingPayload = {
+            data: {
+            owner: ownerEmail,
+            code: new Date().getTime().toString(),
+            subject: 'New Medical Document submitted ' + docName,
+            short_subject: 'New Medical Document submitted',
+            link: './pages/personal_documents',
+            icon: 'file-text-outline',
+            type: 'PERSONAL_DOCUMENT',
+            uuid: ownerEmail
+            },
+            notification: {
+            title: 'New Medical Document submitted ' + docName,
+            body: ownerEmail + ' has submitted ' + docName, 
+            icon: 'https://cdn-icons-png.flaticon.com/512/9746/9746449.png',
+            click_action: 'https://lightredcenter.web.app/pages/personal_documents',
+            link: 'https://lightredcenter.web.app/pages/personal_documents',
+            }
+        };
+
+        const audienceList = ['CCD_TEAM'];
+        // console.log('Audience Group: ' + JSON.stringify(audienceList));
+        // console.log('click_action: ' + 'https://lightredcenter.web.app/pages/eVR/workspace?id='+vrID);
+
+        for(let j=0;j<audienceList.length;j++){
+            let groupTokenSnapshot: any;
+            await getGroupTokenList(audienceList[j])
+            .then(doc=> {
+                    if(doc.exists){
+                        groupTokenSnapshot = doc.data().tokenList as string[];
+                    }
+                    else
+                    groupTokenSnapshot = null;
+                })
+                .catch(error=> {
+                    groupTokenSnapshot = null;
+                    res.status(500).send('ERROR' + error);
+                });
+
+            // console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            sendMessageUsingArray(groupTokenSnapshot,payload);
+        }
+        
+        res.status(200).send('Notification sent');
+      });
+  
+});
+
 export const sendPersonalDocNotification = functions.https.onRequest(async (req, res) => {
     corsHandler(req, res, async () => { 
         //Your code here
@@ -28,7 +88,7 @@ export const sendPersonalDocNotification = functions.https.onRequest(async (req,
 
         let docName = req.query.docName as string;
         let ownerEmail = req.query.ownerEmail as string;
-        console.log('Server V1 got docName: ' + docName);
+        // console.log('Server V1 got docName: ' + docName);
         
         // Set up the notification payload
         const payload: admin.messaging.MessagingPayload = {
@@ -70,7 +130,7 @@ export const sendPersonalDocNotification = functions.https.onRequest(async (req,
                     res.status(500).send('ERROR' + error);
                 });
 
-            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            // console.log('Number of notifications: ' + groupTokenSnapshot.length);
             sendMessageUsingArray(groupTokenSnapshot,payload);
         }
         
@@ -88,7 +148,7 @@ export const sendETS1Notification = functions.https.onRequest(async (req, res) =
 
         let ets1ID = req.query.ets1ID as string;
         let ownerEmail = req.query.ownerEmail as string;
-        console.log('Server V1 got ETS1 ID: ' + ets1ID);
+        // console.log('Server V1 got ETS1 ID: ' + ets1ID);
         
         // Set up the notification payload
         const payload: admin.messaging.MessagingPayload = {
@@ -112,7 +172,7 @@ export const sendETS1Notification = functions.https.onRequest(async (req, res) =
         };
 
         const audienceList = ['Training'];
-        console.log('Audience Group: ' + JSON.stringify(audienceList));
+        // console.log('Audience Group: ' + JSON.stringify(audienceList));
 
         for(let j=0;j<audienceList.length;j++){
             let groupTokenSnapshot: any;
@@ -129,7 +189,7 @@ export const sendETS1Notification = functions.https.onRequest(async (req, res) =
                     res.status(500).send('ERROR' + error);
                 });
 
-            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            // console.log('Number of notifications: ' + groupTokenSnapshot.length);
             sendMessageUsingArray(groupTokenSnapshot,payload);
         }
         
@@ -147,7 +207,7 @@ export const sendVRNotification = functions.https.onRequest(async (req, res) => 
 
         let vrID = req.query.vrID as string;
         let ownerEmail = req.query.ownerEmail as string;
-        console.log('Server V1 got VR ID: ' + vrID);
+        // console.log('Server V1 got VR ID: ' + vrID);
         
         // Set up the notification payload
         const payload: admin.messaging.MessagingPayload = {
@@ -171,8 +231,8 @@ export const sendVRNotification = functions.https.onRequest(async (req, res) => 
         };
 
         const audienceList = ['Flight_Operations'];
-        console.log('Audience Group: ' + JSON.stringify(audienceList));
-        console.log('click_action: ' + 'https://lightredcenter.web.app/pages/eVR/workspace?id='+vrID);
+        // console.log('Audience Group: ' + JSON.stringify(audienceList));
+        // console.log('click_action: ' + 'https://lightredcenter.web.app/pages/eVR/workspace?id='+vrID);
 
         for(let j=0;j<audienceList.length;j++){
             let groupTokenSnapshot: any;
@@ -189,7 +249,7 @@ export const sendVRNotification = functions.https.onRequest(async (req, res) => 
                     res.status(500).send('ERROR' + error);
                 });
 
-            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            // console.log('Number of notifications: ' + groupTokenSnapshot.length);
             sendMessageUsingArray(groupTokenSnapshot,payload);
         }
         
@@ -252,7 +312,7 @@ export const sendNotification = functions.https.onRequest(async (req, res) => {
         };
 
         const audienceList = announcementsSnapshot.audience as string[];
-        console.log('Audience Group: ' + JSON.stringify(audienceList));
+        // console.log('Audience Group: ' + JSON.stringify(audienceList));
 
         for(let j=0;j<audienceList.length;j++){
             let groupTokenSnapshot: any;
@@ -270,7 +330,7 @@ export const sendNotification = functions.https.onRequest(async (req, res) => {
                     res.status(500).send('ERROR' + error);
                 });
 
-            console.log('Number of notifications: ' + groupTokenSnapshot.length);
+            // console.log('Number of notifications: ' + groupTokenSnapshot.length);
             sendMessageUsingArray(groupTokenSnapshot,payload);
         }
         
@@ -299,7 +359,7 @@ function sendMessageUsingArray(deviceToken: string[], payload: any): void{
 function sendMessage(deviceToken: string[], payload: any): void{
     admin.messaging().sendToDevice(deviceToken, payload)
     .then(response => {
-        console.log(`FCM Message sent successfully: ${response.successCount} messages sent.`);
+        // console.log(`FCM Message sent successfully: ${response.successCount} messages sent.`);
     })
     .catch(error => {
         console.error('Error sending FCM message:', error);

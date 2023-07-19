@@ -1,6 +1,6 @@
 <!-- <nb-icon icon="maximize-outline" [routerLink]="['/pages/documents_amendment/document', encodeTitle(rowData.code)]"></nb-icon>&nbsp; -->
 <nb-icon icon="maximize-outline" nbTooltip="Click to view more details of this document" (click)="viewDocument()" nbTooltipStatus="primary"></nb-icon>&nbsp;
-
+<nb-icon *ngIf="canEdit" nbTooltip="Click to edit this document" (click)="editDocument()" nbTooltipStatus="primary" status="primary" icon="edit-2-outline"></nb-icon><span *ngIf="canEdit">&nbsp;</span>
 <nb-icon *ngIf="canDelete" nbTooltip="Click to delete this document" (click)="deleteDocument()" nbTooltipStatus="danger" status="danger" icon="trash-2-outline"></nb-icon>&nbsp;
 
 <nb-icon *ngIf="canAdd" nbTooltip="add this document to report" (click)="addDocument()" nbTooltipStatus="primary" status="primary" icon="plus-circle-outline"></nb-icon>&nbsp;
