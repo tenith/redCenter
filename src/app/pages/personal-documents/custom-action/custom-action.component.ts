@@ -31,12 +31,12 @@ export class CustomActionComponent implements OnInit {
   constructor(private formBuilder:FormBuilder, private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
 
   ngOnInit(): void {
-    if(this.rowData.owner == this.firestoreUserService.getFirestoreUser().email){
+    if(this.rowData.owner == this.firestoreUserService.getFirestoreUser().email)
       this.canDelete = true;
-      if(this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin)
-        if(this.rowData.hasExpiry == 'Yes')
-          this.canEdit = true;
-    }    
+      
+    if(this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin)
+      if(this.rowData.hasExpiry == 'Yes')
+        this.canEdit = true;
   }
 
   editDocument(): void {
