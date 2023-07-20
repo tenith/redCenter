@@ -9,4 +9,5 @@ export interface OneSepCard {
     Link: string;
 
     InitialDate?: string;
+    verify?: boolean;
 }

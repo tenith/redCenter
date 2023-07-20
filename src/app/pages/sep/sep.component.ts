@@ -12,7 +12,8 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload-information';
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
-import { sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
+import { requiredVerify, sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
+import { verify } from 'crypto';
 
 @Component({
   selector: 'ngx-sep',
@@ -25,6 +26,7 @@ export class SepComponent implements OnInit, OnDestroy {
   */
   validList: string[] = [];
   aboutList: string[] = [];
+  pendingList: string[] = [];
   expiredList: string[] = [];
 
   loading: boolean = true;
@@ -48,7 +50,8 @@ export class SepComponent implements OnInit, OnDestroy {
 
   offline:boolean = false;
   
-  constructor(private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
+  constructor(
+    private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -73,6 +76,7 @@ export class SepComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // this.fileUploadSerivce.reloadData();
     this.handleAppConnectivityChanges();
 
     this.autoLandCards = [{name: 'AUTOLAND - ONLINE', airport: '', perform: '', validperiod: '', expiry: ''},
@@ -129,7 +133,7 @@ export class SepComponent implements OnInit, OnDestroy {
         const temp = [...docSnapshot.data().files] as FileUploadInformation[];
         for(let i=0; i<temp.length;i++){
           if(temp[i].showSEP == 'Yes'){
-            // console.log(JSON.stringify(temp[i]));
+            console.log(JSON.stringify(temp[i]));
             let tempSepCard: OneSepCard = {
               Name: temp[i].fileCategory,
               Attended: this.formatDate(temp[i].issueDate),
@@ -140,6 +144,7 @@ export class SepComponent implements OnInit, OnDestroy {
               Remark: temp[i].description,
               Link: temp[i].relativePath,
               InitialDate: 'NO DATA',
+              verify: temp[i].verify,
             };
 
             tempOneSepCard.push(tempSepCard);
@@ -157,7 +162,7 @@ export class SepComponent implements OnInit, OnDestroy {
             }
           }
         }
-        // console.log(JSON.stringify(tempS));
+        console.log(JSON.stringify(tempS));
 
         this.manualCards = tempS;
         this.manualCardService.deleteAllCards();
@@ -168,7 +173,7 @@ export class SepComponent implements OnInit, OnDestroy {
         this.manualCardService.deleteAllCards();
         this.manualCardService.saveAllCards(this.manualCards);
       }
-      
+
       this.updateSummary();
       this.reviseMandatoryCourse();
     });
@@ -219,7 +224,7 @@ export class SepComponent implements OnInit, OnDestroy {
             Expiry: 'NO DATA',
             Instructor: 'NO DATA',
             Remark: 'NO DATA',
-            Link: ''
+            Link: '',
           };
 
           temp.push(x);
@@ -293,6 +298,7 @@ export class SepComponent implements OnInit, OnDestroy {
 
     this.validList = [];
     this.aboutList = [];
+    this.pendingList = [];
     this.expiredList = [];
 
     this.updateSEPSummary();
@@ -317,7 +323,7 @@ export class SepComponent implements OnInit, OnDestroy {
       if(this.oneSepCards[i].Expiry == 'NO DATA'){
         this.expiredList.push(this.oneSepCards[i].Name);
         continue;
-      }
+      }      
 
       if(diffDate < 0)
         this.expiredList.push(this.oneSepCards[i].Name);
@@ -330,7 +336,9 @@ export class SepComponent implements OnInit, OnDestroy {
         this.validList.push(this.oneSepCards[i].Name);
     }
 
+    // console.log('number of manual cards: ' + this.manualCards.length);
     for(let i=0;i<this.manualCards.length;i++){
+      // console.log('index: ' + i + " -> " + JSON.stringify(this.manualCards[i]));
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
       const expire = new Date(this.manualCards[i].Expiry).getTime() + msInDay;
@@ -341,6 +349,24 @@ export class SepComponent implements OnInit, OnDestroy {
         this.expiredList.push(this.manualCards[i].Name);
         continue;
       }
+
+      // console.log('hasverify:  ' + ('verify' in this.manualCards[i]));
+      // console.log(this.manualCards[i].verify);
+      if(this.manualCards[i].verify != undefined){
+        if(this.manualCards[i].verify == false){
+          this.pendingList.push(this.manualCards[i].Name);
+          continue;
+        }
+      }
+      else{
+        // console.log('no verify: ' + JSON.stringify(this.manualCards[i]));
+        // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name));
+        if(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name)){
+          this.pendingList.push(this.manualCards[i].Name);
+          continue;
+        }
+      }
+      
 
       if(diffDate < 0)
         this.expiredList.push(this.manualCards[i].Name);

@@ -5,7 +5,7 @@ import { FileUploadInformation } from '../interfaces/file-upload-information';
 import { FileUploadInformationService } from './file-upload-information.service';
 import { Observable } from 'rxjs';
 
-import { firebaseDB } from '../../../../environments/myconfigs';
+import { firebaseDB, requiredVerify, roleName, sepMandatory } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,9 @@ export class FileUploadDatabaseService {
     let completed = false;
     const newFileName = new Date().valueOf() + '_' + file.name;
     const fileRef = this.storage.ref(this.path + '/' + newFileName);
-    const fileAbsPath = this.absPath + this.path + '/' + newFileName;
+    const fileAbsPath = this.absPath + this.path + '/' + newFileName;  
+
+    let needVerify = !requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(form.fileCategory);
 
     await fileRef.put(file).then(async () => {
       let temp: FileUploadInformation = {
@@ -48,6 +50,7 @@ export class FileUploadDatabaseService {
         hasExpiry: form.hasExpiry,
         expiryDate: form.expiryDate,
         issueBy: form.issueBy,
+        verify: needVerify,
       }      
 
       await this.fileUploadInformationService.addFileUploadInformation(temp, this.email)
@@ -84,7 +87,6 @@ export class FileUploadDatabaseService {
 
   public async deleteFileByName(path: string, email: string): Promise<boolean> {
     let completed = false;
-
     await this.fileUploadInformationService.removeFileUploadByName(path.split('/')[3], email)
     .then(async () => {
       const fileRef = this.storage.ref(path);

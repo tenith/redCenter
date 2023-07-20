@@ -37,7 +37,7 @@ export class FileUploadInformationService {
     return this.fileUploadInformations;
   }
 
-  private init(): void{
+  public async reloadData(): Promise<any> {
     const ref = this.collectionRef.doc(this.email).ref;
     ref.get()
     .then((docSnapshot)=>{
@@ -51,6 +51,17 @@ export class FileUploadInformationService {
     });
   }
 
+  private init(): void{
+    this.reloadData();
+    this.sub();
+  }
+
+  private sub(): void {
+    this.collectionRef.doc(this.email).valueChanges().subscribe(()=>{
+      this.reloadData();
+    })
+  }
+
   public getFileUploadInformation(email: string): Promise<any>{
     const newRef = this.afs.collection(this.collectionName).doc(email).ref;
     if(newRef == null || newRef == undefined)
@@ -62,12 +73,16 @@ export class FileUploadInformationService {
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayUnion(fileUploadInformation)});
   }
 
-  public removeFileUploadByName(name: string, email: string): Promise<any>{
-    let tempFileInformation: FileUploadInformation;
+  public async removeFileUploadByName(name: string, email: string): Promise<any>{
+    let tempFileInformation: FileUploadInformation;   
+
     for(let i=0;i<this.fileUploadInformations.length;i++){
-      if(this.fileUploadInformations[i].name == name)
+      if(this.fileUploadInformations[i].name == name){
         tempFileInformation = this.fileUploadInformations[i];
-    }
+        break;
+      }
+    }   
+
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayRemove(tempFileInformation)});
   }
 

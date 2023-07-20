@@ -14,4 +14,6 @@ export interface FileUploadInformation {
     hasExpiry: string;
     expiryDate: string;
     issueBy: string;   
+
+    verify?: boolean;
 }

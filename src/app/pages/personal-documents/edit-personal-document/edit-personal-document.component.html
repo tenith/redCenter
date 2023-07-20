@@ -1,6 +1,24 @@
 <div class="row" style="background-color: white;">
     <div class="col-12 " style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
         <nb-card status="primary">
+            <nb-card-header style="text-align: center;">Document Preview</nb-card-header>
+            <nb-card-body style="text-align: center;" >
+                <div class="container">
+                    <div class="layer layer1" style="background-color: rgba(255, 255, 255, 0.1);" [ngxWatermark]="ngxWaterMarkOptions"></div>
+                    <div class="layer layer2">
+                        <img style="min-width: 60%;max-width: 70%; max-height: 700px;" *ngIf="(downloadUrl$ | async)" [src]="(downloadUrl$ | async)">
+                        <p *ngIf="!(downloadUrl$ | async)">Loading image...</p>
+                    </div>
+                  </div>
+                          
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+<div class="row" style="background-color: white;">
+    <div class="col-12 " style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
+        <nb-card status="primary">
             <nb-card-header style="text-align: center;">EDIT PERSONAL DOCUMENT (ISSUE DATE AND EXPIRY DATE)</nb-card-header>
             <nb-card-body style="text-align: LEFT;" >
                 <div class="container">
@@ -14,7 +32,12 @@
                                 <form *ngIf="!offline" [formGroup]="uploadForm" (ngSubmit)="upload()">
                                     <div class="form-inline">
                                         <input id="hasExpiry" name="hasExpiry" formControlName="hasExpiry" nbInput fullWidth type="text" hidden value="Yes">
-                                    </div>        
+                                    </div>    
+
+                                    <div class="form-group">
+                                        <label for="issueBy" class="label">Issue By*:</label>
+                                        <input id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue By">
+                                    </div>    
                                     
                                     <div class="form-group">
                                         <label for="issueDate" class="label">Issue Date*:</label>
@@ -27,7 +50,7 @@
                                     </div>
                                     
                                     <div class="form-group" style="text-align: center;">
-                                        <button nbButton [disabled]="uploadForm.invalid || !uploadForm.touched" status="primary" (click)="upload()">Submit</button>
+                                        <button nbButton [disabled]="uploadForm.invalid || !uploadForm.touched" status="primary" (click)="upload()">Verify</button>
                                         &nbsp;&nbsp;&nbsp;
                                         <button nbButton status="danger" (click)="cancel()">Close</button>
                                     </div>

@@ -39,7 +39,7 @@
                 
                 <div class="col-12" style="margin-top: 0.5rem;"><B>Summary</B></div>
                 <!-- success -->
-                <div class="col-12" style="margin-top: 0.25rem;">
+                <div *ngIf="validList.length > 0" class="col-12" style="margin-top: 0.25rem;">
                     <nb-accordion accent="success">
                         <nb-accordion-item>
                             <nb-accordion-item-header><nb-icon icon="checkmark-circle-2" status="success"></nb-icon>&nbsp;&nbsp;Valid [{{validList.length}}]</nb-accordion-item-header>
@@ -53,7 +53,7 @@
                     </nb-accordion>
                 </div>
                 <!-- warning -->
-                <div class="col-12">
+                <div *ngIf="aboutList.length > 0" class="col-12">
                     <nb-accordion accent="warning">
                         <nb-accordion-item>
                             <nb-accordion-item-header><nb-icon icon="alert-triangle" status="warning"></nb-icon>&nbsp;&nbsp;About to expire [{{aboutList.length}}]</nb-accordion-item-header>
@@ -66,8 +66,22 @@
                         </nb-accordion-item>
                     </nb-accordion>
                 </div>
+                <!-- warning -->
+                <div *ngIf="pendingList.length > 0" class="col-12">
+                    <nb-accordion accent="warning">
+                        <nb-accordion-item>
+                            <nb-accordion-item-header><nb-icon icon="question-mark-circle" status="warning"></nb-icon>&nbsp;&nbsp;Pending Verification [{{pendingList.length}}]</nb-accordion-item-header>
+                            <nb-accordion-item-body>
+                                <div *ngFor="let about of pendingList; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd">
+                                    <!-- {{i+1}}. {{about}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(about)"></nb-icon> -->
+                                    {{i+1}}. {{about}}
+                                </div>
+                            </nb-accordion-item-body>
+                        </nb-accordion-item>
+                    </nb-accordion>
+                </div>
                 <!-- danger -->
-                <div class="col-12">
+                <div *ngIf="expiredList.length > 0" class="col-12">
                     <nb-accordion accent="danger">
                         <nb-accordion-item>
                             <nb-accordion-item-header><nb-icon icon="close-square" status="danger"></nb-icon>&nbsp;&nbsp;Invalid [{{expiredList.length}}]</nb-accordion-item-header>

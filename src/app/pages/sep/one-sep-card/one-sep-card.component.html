@@ -55,6 +55,13 @@
                     </div>
                     </div>
                     <div class="row">
+                        <div *ngIf="pendingStatus" class="col-12" style="text-align: center;">
+                            <font color="red">- Pending Verification -</font>
+                        </div>
+                        <div *ngIf="pendingStatus" class="col-12" style="text-align: center;">
+                            <hr>
+                        </div>
+
                         <div class="col-4">
                             <b>Type</b>
                         </div>
@@ -91,6 +98,7 @@
                         <div class="col-12">
                             {{info.remark}}
                         </div> -->
+                        
                         <div *ngIf="dataReady && info.Link != ''" class="col-12">
                             <b>Certificate &nbsp; <nb-icon icon="download-outline" (click)="downloadPdf()"></nb-icon></b>
                             

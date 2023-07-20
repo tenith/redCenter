@@ -82,6 +82,7 @@ export const statusConfig = {
     success: { status: 'success', icon: 'checkmark-circle-2'},
     warning: { status: 'warning', icon: 'alert-triangle'},
     danger: { status: 'danger', icon: 'close-square'},
+    pending: { status: 'warning', icon: 'question-mark-circle'},
 };
 
 // export const API = {
@@ -154,6 +155,11 @@ export const  aocOptions = [
 export const sepMandatory = {
     Pilot: ["My Picture", "Pilot License", "Medical License", "Passport", "English Proficiency"],
     Cabin_Crew: ["My Picture", "Medical License", "Passport"],
+}
+
+export const requiredVerify = {
+    Pilot: [],
+    Cabin_Crew: ["Medical License",],
 }
 
 export const sepCourseOptions = {

@@ -9,6 +9,7 @@ import { FileReportService } from '../../../@core/shared/services/file-report.se
 import { ViewDocumentComponent } from '../view-document/view-document.component';
 import { EditPersonalDocumentComponent } from '../edit-personal-document/edit-personal-document.component';
 import { FormBuilder, Validators } from '@angular/forms';
+import { requiredVerify } from '../../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-custom-action',
@@ -21,6 +22,8 @@ export class CustomActionComponent implements OnInit {
   canDelete: boolean = false;
   canAdd: boolean = true;
   canEdit: boolean = false;
+
+  waitingVerify = true;
   
   @Output() addEvent = new EventEmitter<string>();
   
@@ -30,6 +33,15 @@ export class CustomActionComponent implements OnInit {
 
   constructor(private formBuilder:FormBuilder, private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
 
+  reviseVerify(): void {
+    if(this.rowData.verify != undefined){
+      if(this.rowData.verify == false)
+        this.waitingVerify = true;
+     else
+      this.waitingVerify = requiredVerify[this.firestoreUserService.getFirestoreUser().role].includes(this.rowData.Name);
+    }
+  }
+
   ngOnInit(): void {
     if(this.rowData.owner == this.firestoreUserService.getFirestoreUser().email)
       this.canDelete = true;
@@ -37,14 +49,16 @@ export class CustomActionComponent implements OnInit {
     if(this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin)
       if(this.rowData.hasExpiry == 'Yes')
         this.canEdit = true;
+      
+    this.reviseVerify();    
   }
 
   editDocument(): void {
-    console.log('send data: ' + JSON.stringify(this.rowData));
     this.dialogService.open(EditPersonalDocumentComponent,{
       context: {
         data: {...this.rowData},
         formBuilder: this.formBuilder.group({
+          issueBy: [this.rowData.issueBy, Validators.required],
           issueDate: [this.rowData.issueDate, Validators.required],
           hasExpiry: [this.rowData.hasExpiry], 
           expiryDate: [this.rowData.expiryDate, Validators.required]
