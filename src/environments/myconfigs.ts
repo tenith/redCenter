@@ -158,7 +158,7 @@ export const sepMandatory = {
 }
 
 export const requiredVerify = {
-    Pilot: [],
+    Pilot: ["Medical License",],
     Cabin_Crew: ["Medical License",],
 }
 

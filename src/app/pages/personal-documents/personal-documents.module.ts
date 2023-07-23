@@ -54,5 +54,11 @@ import { EditPersonalDocumentComponent } from './edit-personal-document/edit-per
     NbTooltipModule,
     Ng2SmartTableModule
   ],
+  exports: [
+    CustomActionComponent,
+    DeleteConfirmationComponent,
+    ViewDocumentComponent,
+    EditPersonalDocumentComponent,
+  ]
 })
 export class PersonalDocumentsModule { }

@@ -51,7 +51,10 @@ export class FileUploadDatabaseService {
         expiryDate: form.expiryDate,
         issueBy: form.issueBy,
         verify: needVerify,
-      }      
+      }     
+      
+      if(needVerify == true)
+        this.fileUploadInformationService.setNeedVerify(this.email, true);
 
       await this.fileUploadInformationService.addFileUploadInformation(temp, this.email)
       .then(()=>{
@@ -64,7 +67,7 @@ export class FileUploadDatabaseService {
     });
 
     return completed;
-  }
+  }  
 
   public getFile(fullPath: string):  Observable<any>{
     return this.storage.ref(fullPath).getDownloadURL();

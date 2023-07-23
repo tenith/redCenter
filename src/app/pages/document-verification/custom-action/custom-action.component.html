@@ -1,0 +1,8 @@
+<nb-icon icon="maximize-outline" nbTooltip="Click to view more details of this document" (click)="viewDocument()" nbTooltipStatus="primary"></nb-icon>&nbsp;
+<nb-icon *ngIf="canEdit" nbTooltip="Click to edit this document" (click)="editDocument()" nbTooltipStatus="primary" status="primary" icon="edit-2-outline"></nb-icon><span *ngIf="canEdit">&nbsp;</span>
+<nb-icon *ngIf="canDelete" nbTooltip="Click to delete this document" (click)="deleteDocument()" nbTooltipStatus="danger" status="danger" icon="trash-2-outline"></nb-icon><span *ngIf="canDelete">&nbsp;</span>
+
+<!-- <nb-icon *ngIf="canAdd" nbTooltip="add this document to report" (click)="addDocument()" nbTooltipStatus="primary" status="primary" icon="plus-circle-outline"></nb-icon><span *ngIf="canAdd">&nbsp;</span>
+<nb-icon *ngIf="canAdd" nbTooltip="remove this document from report" (click)="removeDocument()" nbTooltipStatus="primary" status="danger" icon="minus-circle-outline"></nb-icon><span *ngIf="canAdd">&nbsp;</span> -->
+<nb-icon *ngIf="canEdit && waitingVerify" nbTooltip="This Document need verification" nbTooltipStatus="danger" status="danger" icon="close-square"></nb-icon><span *ngIf="canEdit && waitingVerify">&nbsp;</span>
+<nb-icon *ngIf="canEdit && !waitingVerify" nbTooltip="Document has been verify" nbTooltipStatus="primary" status="primary" icon="checkmark-circle-2"></nb-icon><span *ngIf="canEdit && !waitingVerify">&nbsp;</span>

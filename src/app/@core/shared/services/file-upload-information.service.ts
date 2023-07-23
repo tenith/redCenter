@@ -5,7 +5,7 @@ import { FirestoreUserService } from './firestore-user.service';
 
 import  firestore  from 'firebase/compat/app';
 
-import { firestoreCollection } from '../../../../environments/myconfigs';
+import { firestoreCollection, requiredVerify } from '../../../../environments/myconfigs';
 
 @Injectable({
   providedIn: 'root'
@@ -42,11 +42,50 @@ export class FileUploadInformationService {
     ref.get()
     .then((docSnapshot)=>{
       if(!docSnapshot.exists){
-        this.collectionRef.doc(this.email).set({files: []});
+        this.collectionRef.doc(this.email).set({files: [], needVerify: false});
       }
       else{
         this.fileUploadInformations = [...docSnapshot.data().files] as FileUploadInformation[];
-        // console.log(JSON.stringify(this.fileUploadInformations));
+        let needVerify = false;
+        for(let i=0;i<this.fileUploadInformations.length;i++){
+          if(this.fileUploadInformations[i].verify == undefined){
+            const thisVerify = requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.fileUploadInformations[i].fileCategory);
+            this.removeFileUploadInformation(this.fileUploadInformations[i], this.email);
+            this.fileUploadInformations[i].verify = !thisVerify;
+            needVerify = needVerify || thisVerify;
+            this.addFileUploadInformation(this.fileUploadInformations[i],this.email);
+          }
+          if(this.fileUploadInformations[i].verify == false){
+            needVerify = true;
+            break;
+          }
+        }
+
+        if(docSnapshot.data().needVerify == undefined)
+          this.setNeedVerify(this.email,needVerify);
+        else
+          if(docSnapshot.data().needVerify != needVerify)
+            this.setNeedVerify(this.email,needVerify);
+      }
+    });
+  }
+
+  public checkVerifyNeed(email: string): void {
+    const ref = this.collectionRef.doc(email).ref;
+    ref.get()
+    .then((docSnapshot)=>{
+      if(docSnapshot.exists){
+        const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+        let needVerify = false;
+        for(let i=0;i<temp.length;i++){
+          if(temp[i].verify == undefined)
+            continue;
+          if(temp[i].verify == false){
+            needVerify = true;
+            break;
+          }
+        }
+        this.setNeedVerify(email, needVerify);
       }
     });
   }
@@ -71,6 +110,10 @@ export class FileUploadInformationService {
   
   public async addFileUploadInformation(fileUploadInformation: FileUploadInformation, email: string): Promise<any>{    
     return this.collectionRef.doc(email).ref.update({files:firestore.firestore.FieldValue.arrayUnion(fileUploadInformation)});
+  }
+
+  public setNeedVerify(email: string, result: boolean): Promise<any>{    
+    return this.collectionRef.doc(email).ref.update({needVerify:result});
   }
 
   public async removeFileUploadByName(name: string, email: string): Promise<any>{

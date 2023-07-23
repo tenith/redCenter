@@ -49,4 +49,4 @@ export const API = {
 
 export const clickActionVR = 'https://red-center.web.app/pages/eVR/workspace?id=';
 
-export const showMenu = ['Home', 'Authorization', 'SEP Card', 'Log out'];
+export const showMenu = ['Home', 'Authorization', 'Documents verification', 'SEP Card', 'Log out'];

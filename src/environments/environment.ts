@@ -62,4 +62,4 @@ export const API = {
 
 export const clickActionVR = 'https://lightredcenter.web.app/pages/eVR/workspace?id=';
 
-export const showMenu = ['Home', 'Authorization', 'Documents Amendment', 'Personal document(s)', 'E-VR', 'My performance', 'E-TS1', 'SEP Card', 'Log out'];
+export const showMenu = ['Home', 'Authorization', 'Documents Amendment', 'Personal document(s)', 'Documents verification', 'E-VR', 'My performance', 'E-TS1', 'SEP Card', 'Log out'];

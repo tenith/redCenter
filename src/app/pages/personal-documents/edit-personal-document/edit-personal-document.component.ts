@@ -48,8 +48,9 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
 
     this.uploadForm.controls['issueDate'].valueChanges.subscribe(value => {
       this.reviseExpireDate();
-    })
+    });
     
+    this.ngxWaterMarkOptions.text = this.firestoreUserService.getFirestoreUser().email;
     this.initData = {...this.data};
   }
 
@@ -71,6 +72,7 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
 
     this.fileUploadInfoService.removeFileUploadInformation(this.initData as FileUploadInformation, this.data.owner);
     this.fileUploadInfoService.addFileUploadInformation(this.data as FileUploadInformation, this.data.owner);
+    this.fileUploadInfoService.checkVerifyNeed(this.data.owner);
 
     this.cancel();
   }

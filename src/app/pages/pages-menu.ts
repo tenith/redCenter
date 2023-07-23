@@ -2,19 +2,20 @@ import { NbMenuItem } from '@nebular/theme';
 
 // home, authorization, documents_amendment, personal_documents, performance, ets1, sep, logout;
 export let allowMenuByRole = {
-  Admin: ['home', 'authorization', 'documents_amendment', 'personal_documents', 'eVR', 'performance', 'ets1', 'sep', 'logout'],
+  Admin: ['home', 'authorization', 'documents_amendment', 'document_verification', 'personal_documents',  'eVR', 'performance', 'ets1', 'sep', 'logout'],
   Pilot: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'performance', 'ets1', 'sep', 'logout'],
   Cabin_Crew: ['home', 'documents_amendment', 'personal_documents', 'sep', 'logout'],
-  Flight_Operations: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'logout'],
+  Flight_Operations: ['home', 'documents_amendment', 'document_verification', 'personal_documents',  'eVR', 'logout'],
   Training: ['home', 'documents_amendment', 'personal_documents', 'ets1', 'logout'],
   Engineer:  ['home', 'documents_amendment', 'personal_documents', 'logout'],
-  CCD_TEAM: ['home', 'personal_documents', 'logout'],
+  CCD_TEAM: ['home', 'personal_documents', 'document_verification', 'logout'],
 }
 
 export let menuListDetail = {
   home: { title: 'Home', icon: 'home-outline', link: '/pages/home', home: true,},
   authorization: { title: 'Authorization', icon: 'shield-outline', link: '/pages/authorization', },
   documents_amendment: { title: 'Documents Amendment', icon: 'flag-outline', link: '/pages/documents_amendment' },
+  document_verification: { title: 'Documents verification', icon: 'pricetags-outline', link: '/pages/document_verification', },
   personal_documents: { title: 'Personal document(s)', icon: 'folder-outline', link: '/pages/personal_documents', },
   eVR: { title: 'E-VR', icon: 'inbox-outline',  
     children: [
