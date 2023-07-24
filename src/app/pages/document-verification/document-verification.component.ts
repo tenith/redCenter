@@ -32,12 +32,13 @@ export class DocumentVerificationComponent implements OnInit {
         valuePrepareFunction: (date) => {
           if(date == '' || date == '-')
             return '-';
-            
+          
           const datePipe = new DatePipe('en-US');
           const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
           return formattedDate.toUpperCase();
         },
       },
+      owner: { title: 'Owner Email', width:'12%',},
       fileCategory: { title: 'Category', width:'12%',},
       description: { title: 'Description', },
       issueDate: { title: 'Issue Date', filter: false, width:'15%', type: 'date',

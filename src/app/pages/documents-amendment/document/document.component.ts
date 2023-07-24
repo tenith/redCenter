@@ -155,7 +155,10 @@ export class DocumentComponent implements OnInit {
   sign(code: string, title: string): void{
     let firestoreUser = this.firestoreUserService.getFirestoreUser();
 
-    const timeStamp = new Date().toLocaleString();
+    const datePipe = new DatePipe('en-US');        
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+
+    const timeStamp = formattedDate;
     const tempSignature = {email:firestoreUser.email,displayName:firestoreUser.displayName,dateTime: timeStamp} as Signature;
     const invoice = {uuid: encodeURIComponent(code),title:title, dateTime: timeStamp} as Invoice;
 

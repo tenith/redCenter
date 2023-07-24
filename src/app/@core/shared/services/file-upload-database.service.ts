@@ -6,6 +6,7 @@ import { FileUploadInformationService } from './file-upload-information.service'
 import { Observable } from 'rxjs';
 
 import { firebaseDB, requiredVerify, roleName, sepMandatory } from '../../../../environments/myconfigs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,13 @@ export class FileUploadDatabaseService {
 
     let needVerify = !requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(form.fileCategory);
 
+    /**
+     * 24 Jul 2023 
+     * Fix bug change from toLocalDateString() to be format dd MMM yyy HH:mm:ss
+     */
+    const datePipe = new DatePipe('en-US');        
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+
     await fileRef.put(file).then(async () => {
       let temp: FileUploadInformation = {
         owner: this.email,
@@ -42,7 +50,7 @@ export class FileUploadDatabaseService {
         relativePath: this.path + '/' + newFileName,
         path: fileAbsPath,
         description: form.fileDescription,
-        uploadTime: new Date().toLocaleString(),
+        uploadTime: formattedDate,
         fileType: file.type,
         fileCategory: form.fileCategory,
         showSEP: form.showSEP,

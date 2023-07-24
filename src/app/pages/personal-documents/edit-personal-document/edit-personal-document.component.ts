@@ -64,10 +64,13 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
   }
 
   upload(): void {
+    const datePipe = new DatePipe('en-US');        
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+
     this.data.issueBy = this.uploadForm.get('issueBy').value;
     this.data.issueDate = this.uploadForm.get('issueDate').value;
     this.data.expiryDate = this.uploadForm.get('expiryDate').value;
-    this.data.uploadTime = new Date().toLocaleString();
+    this.data.uploadTime = formattedDate;
     this.data.verify = true;
 
     this.fileUploadInfoService.removeFileUploadInformation(this.initData as FileUploadInformation, this.data.owner);
