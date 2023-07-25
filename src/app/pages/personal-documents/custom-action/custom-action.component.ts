@@ -10,6 +10,7 @@ import { ViewDocumentComponent } from '../view-document/view-document.component'
 import { EditPersonalDocumentComponent } from '../edit-personal-document/edit-personal-document.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { requiredVerify } from '../../../../environments/myconfigs';
+import { ReportComponent } from '../report/report.component';
 
 @Component({
   selector: 'ngx-custom-action',
@@ -30,8 +31,11 @@ export class CustomActionComponent implements OnInit {
 
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
   viewDialogRef: NbDialogRef<ViewDocumentComponent>;
+  reportDialogRef: NbDialogRef<ReportComponent>;
 
-  constructor(private formBuilder:FormBuilder, private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
+  constructor(private formBuilder:FormBuilder, 
+    private fileReportService: FileReportService,
+    private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
 
   reviseVerify(): void {
     if(this.rowData.verify != undefined){
@@ -68,14 +72,21 @@ export class CustomActionComponent implements OnInit {
   }
   
   viewDocument(): void {
-    this.viewDialogRef = this.dialogService.open(ViewDocumentComponent,{
-      context: {
-        data: {
-          myCode:this.rowData.name.split('_')[1],
-          path:this.rowData.path,
-          fileInfo: {...this.rowData}
-        }
-      }
+    // this.viewDialogRef = this.dialogService.open(ViewDocumentComponent,{
+    //   context: {
+    //     data: {
+    //       myCode:this.rowData.name.split('_')[1],
+    //       path:this.rowData.path,
+    //       fileInfo: {...this.rowData}
+    //     }
+    //   }
+    // });
+    this.fileReportService.resetReport();
+    this.fileReportService.addFileToReport(this.rowData);
+    
+    this.reportDialogRef = this.dialogService.open(ReportComponent,{ hasScroll:true});
+    this.reportDialogRef.onClose.subscribe(()=>{
+      this.fileReportService.resetReport();
     });
   }
 
@@ -109,5 +120,7 @@ export class CustomActionComponent implements OnInit {
   removeDocument(): void{
     this.reportService.deleteFileFromReport({...this.rowData} as FileUploadInformation);
   }
+
+  
 
 }

@@ -12,7 +12,7 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload-information';
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
-import { requiredVerify, sepCourseOptions, sepMandatory } from '../../../environments/myconfigs';
+import { requiredVerify, sepCourseOptions, sepMandatory, strictVerify } from '../../../environments/myconfigs';
 import { verify } from 'crypto';
 
 @Component({
@@ -133,7 +133,7 @@ export class SepComponent implements OnInit, OnDestroy {
         const temp = [...docSnapshot.data().files] as FileUploadInformation[];
         for(let i=0; i<temp.length;i++){
           if(temp[i].showSEP == 'Yes'){
-            console.log(JSON.stringify(temp[i]));
+            // console.log(JSON.stringify(temp[i]));
             let tempSepCard: OneSepCard = {
               Name: temp[i].fileCategory,
               Attended: this.formatDate(temp[i].issueDate),
@@ -162,7 +162,7 @@ export class SepComponent implements OnInit, OnDestroy {
             }
           }
         }
-        console.log(JSON.stringify(tempS));
+        // console.log(JSON.stringify(tempS));
 
         this.manualCards = tempS;
         this.manualCardService.deleteAllCards();
@@ -354,14 +354,16 @@ export class SepComponent implements OnInit, OnDestroy {
       // console.log(this.manualCards[i].verify);
       if(this.manualCards[i].verify != undefined){
         if(this.manualCards[i].verify == false){
-          this.pendingList.push(this.manualCards[i].Name);
-          continue;
+          if(strictVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name)){
+            this.pendingList.push(this.manualCards[i].Name);
+            continue;
+          }
         }
       }
       else{
         // console.log('no verify: ' + JSON.stringify(this.manualCards[i]));
         // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name));
-        if(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name)){
+        if(strictVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name)){
           this.pendingList.push(this.manualCards[i].Name);
           continue;
         }

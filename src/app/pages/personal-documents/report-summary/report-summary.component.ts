@@ -43,6 +43,7 @@ export class ReportSummaryComponent implements OnInit {
   constructor(public toastr: NbToastrService, private dialogService: NbDialogService, private fileReportService: FileReportService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.fileReportService.resetReport();
     this.downloadUrl$ = this.fileReportService.getObservable();
     this.downloadUrl$.subscribe(()=>{
       // console.log('subscribe alert');

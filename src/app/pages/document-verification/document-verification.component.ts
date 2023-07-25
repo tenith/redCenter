@@ -5,6 +5,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { CustomActionComponent } from './custom-action/custom-action.component';
 
 import { DatePipe } from '@angular/common';
+import { FirestoreUserService } from '../../@core/shared/services/firestore-user.service';
+import { levelOptions, roleName, userLevel } from '../../../environments/myconfigs';
 
 @Component({
   selector: 'ngx-document-verification',
@@ -33,8 +35,15 @@ export class DocumentVerificationComponent implements OnInit {
           if(date == '' || date == '-')
             return '-';
           
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
+          let formattedDate = '';
+          console.log(date);
+          try{
+            formattedDate = new DatePipe('en-US').transform(date, 'dd MMM yyyy HH:mm:ss');
+          }
+          catch(e){
+            formattedDate = new DatePipe('en_GB').transform(date, 'dd MMM yyyy HH:mm:ss');
+          }
+          console.log(formattedDate);
           return formattedDate.toUpperCase();
         },
       },
@@ -68,7 +77,7 @@ export class DocumentVerificationComponent implements OnInit {
     },
   };
 
-  constructor(private fileVerifyService: FileVerificationService) { }
+  constructor(private fileVerifyService: FileVerificationService, private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
     this.fileVerifyService.getNeedVerifyList().subscribe(data=>{
@@ -78,7 +87,8 @@ export class DocumentVerificationComponent implements OnInit {
         for(let j=0; j < data[i].files.length; j++){
           const temp = data[i].files[j] as FileUploadInformation;
           if(temp.verify == false)
-            this.fileInforList.push(temp);
+            this.shouldISeeIt(temp);
+            // this.fileInforList.push(temp);
         }
       }
 
@@ -89,6 +99,39 @@ export class DocumentVerificationComponent implements OnInit {
   refresh(): void {
     const temp = this.fileInforList;
     this.source = new LocalDataSource([...temp]);
+  }
+
+  shouldISeeIt(fileUploadInfo: FileUploadInformation): void {
+    const level = this.firestoreUserService.getFirestoreUser().level;
+    // console.log('level: ' + level);
+    /*
+      Admin can see all fileUploadInfo
+    */
+    if(level == userLevel.admin){
+      this.fileInforList.push(fileUploadInfo);
+      return;
+    }
+    
+    let myRole = this.firestoreUserService.getFirestoreUser().role;
+    myRole = roleName.fltOPS;
+    // console.log('role: ' + myRole);
+    // console.log(JSON.stringify(fileUploadInfo));
+    /**
+     * CCD_TEAM: See only medical
+     */
+    if(myRole == roleName.ccd_team){
+      if(fileUploadInfo.fileCategory == 'Medical License' && fileUploadInfo.description.includes('[' + roleName.cabinCrew + ']'))
+        this.fileInforList.push(fileUploadInfo);
+    }
+
+    /**
+     * Flight Operation: See all document
+     */
+    if(myRole == roleName.fltOPS){
+      if(!(fileUploadInfo.fileCategory == 'Medical License' && fileUploadInfo.description.includes('[' + roleName.cabinCrew + ']')))
+        this.fileInforList.push(fileUploadInfo);
+    }
+
   }
 
 }

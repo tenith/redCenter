@@ -4,12 +4,14 @@ import { FirestoreUserService } from '../../../@core/shared/services/firestore-u
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, Subscription, fromEvent } from 'rxjs';
-import { NbDialogRef } from '@nebular/theme';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
 import { DatePipe } from '@angular/common';
 import { ngxWaterMarkOptions } from '../../../../environments/myconfigs';
 import { NgxWatermarkOptions } from 'ngx-watermark';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
+import { FileReportService } from '../../../@core/shared/services/file-report.service';
+import { ReportComponent } from '../report/report.component';
 
 @Component({
   selector: 'ngx-edit-personal-document',
@@ -32,12 +34,16 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
   offlineEvent: Observable<Event>;
   onlineEvent: Observable<Event>;
   subscriptions: Subscription[] = [];
+
+  reportDialogRef: NbDialogRef<ReportComponent>;
   
   constructor(
     private fileUploadDatabaseService: FileUploadDatabaseService,
-    private dialogRef: NbDialogRef<EditPersonalDocumentComponent>,
     private fileUploadInfoService: FileUploadInformationService, 
     private cdr: ChangeDetectorRef,    
+    private fileReportService: FileReportService,
+    private dialogService: NbDialogService,
+    private dialogRef: NbDialogRef<EditPersonalDocumentComponent>,
     private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
@@ -53,6 +59,16 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
     this.ngxWaterMarkOptions.text = this.firestoreUserService.getFirestoreUser().email;
     this.initData = {...this.data};
   }
+
+  // report(): void {
+  //   this.fileReportService.resetReport();
+  //   this.fileReportService.addFileToReport(this.data);
+  //   console.log('add data to report service: ' + this.data);
+  //   this.reportDialogRef = this.dialogService.open(ReportComponent,{ hasScroll:true});
+  //   this.reportDialogRef.onClose.subscribe(()=>{
+  //     this.fileReportService.resetReport();
+  //   });
+  // }
 
   private reviseExpireDate(): void {
     const attendedDateString = new Date(this.uploadForm.get('issueDate').value); 

@@ -28,7 +28,7 @@ export class FileReportService {
     
     const tempIndex = this.fileUploadInformations.findIndex(object=> { return object.path === fileUploadInformation.path});
     if(tempIndex < 0){
-      this.toastr.primary('Completed','Add file ' + fileUploadInformation.name.split('_')[1] + ' to report completed');
+      // this.toastr.primary('Completed','Add file ' + fileUploadInformation.name.split('_')[1] + ' to report completed');
       this.fileUploadInformations.push(fileUploadInformation);
       this.dataSubject.next("new");
     }

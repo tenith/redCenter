@@ -6,11 +6,10 @@
                 <div class="container">
                     <div class="layer layer1" style="background-color: rgba(255, 255, 255, 0.1);" [ngxWatermark]="ngxWaterMarkOptions"></div>
                     <div class="layer layer2">
-                        <img style="min-width: 60%;max-width: 70%; max-height: 700px;" *ngIf="(downloadUrl$ | async)" [src]="(downloadUrl$ | async)">
+                        <img style="max-width: 100%; max-height: 100%;" *ngIf="(downloadUrl$ | async)" [src]="(downloadUrl$ | async)">
                         <p *ngIf="!(downloadUrl$ | async)">Loading image...</p>
                     </div>
                   </div>
-                          
             </nb-card-body>
         </nb-card>
     </div>

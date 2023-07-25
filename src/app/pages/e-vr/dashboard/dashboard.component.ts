@@ -27,8 +27,14 @@ export class DashboardComponent implements OnInit {
       myCommand: { title:'Action & Status', width:'10%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
       date: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'10%', type: 'date',
         valuePrepareFunction: (date) => {
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyyy');
+          let formattedDate = '';
+          
+          try{
+            formattedDate = new DatePipe('en-US').transform(date, 'dd MMM yyyy HH:mm:ss');
+          }
+          catch(e){
+            formattedDate = new DatePipe('en_GB').transform(date, 'dd MMM yyyy HH:mm:ss');
+          }
           return formattedDate.toUpperCase();
         },
       },
@@ -37,8 +43,14 @@ export class DashboardComponent implements OnInit {
           if(date == '')
             return '';
 
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyyy HH:mm');
+         let formattedDate = '';
+          
+          try{
+            formattedDate = new DatePipe('en-US').transform(date, 'dd MMM yyyy');
+          }
+          catch(e){
+            formattedDate = new DatePipe('en_GB').transform(date, 'dd MMM yyyy');
+          }
           return formattedDate.toUpperCase();
         },
       },

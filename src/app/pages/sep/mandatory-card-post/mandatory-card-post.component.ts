@@ -55,7 +55,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     this.uploadForm = this.formBuilder.group({
       fileUpload: ['', Validators.required],
       fileCategory: [this.name, ],
-      fileDescription: [this.name + '_manualUpload',],     
+      fileDescription: [this.name + '_manualUpload, ROLE: ['+this.firestoreUserService.getFirestoreUser().role+']',],     
       showSEP: ['Yes', ],
       issueDate: ['', Validators.required],
       hasExpiry: ['Yes', ],

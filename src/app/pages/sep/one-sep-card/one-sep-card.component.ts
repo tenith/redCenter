@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, O
 import { OneSepCard } from '../../../@core/shared/interfaces/one-sep-card';
 import { SepCardService } from '../../../@core/shared/services/sep-card.service';
 
-import { requiredVerify, sepCourseDisplayOptions, statusConfig } from '../../../../environments/myconfigs';
+import { requiredVerify, sepCourseDisplayOptions, statusConfig, strictVerify } from '../../../../environments/myconfigs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, Subscription, fromEvent, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -252,23 +252,21 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
     if(this.info.verify != undefined){
       if(this.info.verify == false){
-        this.setPending();        
-        this.pendingStatus = true;
-        this.cdr.detectChanges();
-        return;
+        if(strictVerify[this.firestoreUser.getFirestoreUser().role].includes(this.info.Name)){
+          this.setPending();        
+          this.pendingStatus = true;
+          this.cdr.detectChanges();
+          return;
+        }
       }
     }
     else{
-      // console.log('undefine verify : ' + JSON.stringify(this.info));
-      // console.log('name: ' + this.info.Name);
-      // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.info.Name));
-      if(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.info.Name)){
+      if(strictVerify[this.firestoreUser.getFirestoreUser().role].includes(this.info.Name)){
         this.setPending();
         this.pendingStatus = true;
         this.cdr.detectChanges();
         return;
       }
-
     }
 
     if(diffDate < 0)
