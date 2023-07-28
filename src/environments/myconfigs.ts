@@ -158,8 +158,8 @@ export const sepMandatory = {
 }
 
 export const requiredVerify = {
-    Pilot: [],
-    Cabin_Crew: ["Medical License",],
+    Pilot: ["Pilot License", "Medical License", "Passport", "English Proficiency"],
+    Cabin_Crew: ["Medical License", "Passport"],
 }
 
 export const strictVerify = {
@@ -199,8 +199,22 @@ export const sepCourseDisplayOptions = {
 
     "SMS CLASS": { Initial: true, ShowHistory: false},
     "AVSEC": { Initial: true, ShowHistory: true},
-    "Ground Check": { Initial: false, ShowHistory: false},
+    "Ground Check": { Initial: false, ShowHistory: false}, 
 }
 
 export const profileDBLink = 'myProfilePicture';
+
+export const predefinedListOfIssueBy = {
+    "Pilot License": ["THE CIVIL AVIATION AUTHORITY OF THAILAND"],
+    "Medical License": [
+        "BANGKOK HOSPITAL",
+        "B. CARE MEDICAL CENTER HOSPITAL",
+        "INSTITUE OF AVIATION MEDICINE, RTAF",
+        "PAOLO CHOCKCHAI 4 HOSPITAL",
+        "PAOLO KASET HOSPITAL",
+        "SAMITIVEJ HOSPITAL",
+        ],
+    "Passport": ["MINISTRY OF FOREIGN AFFAIRS OF THAILAND"],
+    "English Proficiency": ["THE CIVIL AVIATION AUTHORITY OF THAILAND"]
+}
   

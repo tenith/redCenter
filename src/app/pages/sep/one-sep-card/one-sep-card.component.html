@@ -1,8 +1,9 @@
 <nb-accordion>
     <nb-accordion-item expanded="{{myStatus != 'success'}}">
-        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name | uppercase}}</b>
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;
+            <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
+            &nbsp;{{info.Name | uppercase}}</b>
             &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
-            &nbsp;<nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
             &nbsp;<nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
@@ -67,6 +68,13 @@
                         </div>
                         <div class="col-8">
                             {{info.Type | uppercase}}
+                        </div>
+
+                        <div *ngIf="info.Instructor != ''" class="col-4">
+                            <b>Issue By</b>
+                        </div>
+                        <div *ngIf="info.Instructor != ''" class="col-8">
+                            {{info.Instructor | uppercase}}
                         </div>
             
                         <div *ngIf="!isPersonalDocument" class="col-4">

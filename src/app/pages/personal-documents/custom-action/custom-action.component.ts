@@ -86,7 +86,8 @@ export class CustomActionComponent implements OnInit {
     
     this.reportDialogRef = this.dialogService.open(ReportComponent,{ hasScroll:true});
     this.reportDialogRef.onClose.subscribe(()=>{
-      this.fileReportService.resetReport();
+      this.fileReportService.deleteFileFromReport(this.rowData);
+      this.fileReportService.resetReport();      
     });
   }
 

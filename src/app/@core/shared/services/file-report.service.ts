@@ -50,7 +50,7 @@ export class FileReportService {
   deleteFileFromReport(fileUploadInformation: FileUploadInformation){
     const tempIndex = this.fileUploadInformations.findIndex(object=> { return object.path === fileUploadInformation.path});
     if(tempIndex >= 0){
-      this.toastr.primary('Completed','Remove file ' + fileUploadInformation.name.split('_')[1] + ' from report completed');
+      // this.toastr.primary('Completed','Remove file ' + fileUploadInformation.name.split('_')[1] + ' from report completed');
       this.fileUploadInformations.splice(tempIndex,1);
       this.dataSubject.next("new");
     }

@@ -9,7 +9,7 @@ import { PersonalNotificationService } from '../../../@core/shared/services/pers
 
 import * as uuid from 'uuid';
 import { DatePipe } from '@angular/common';
-import { roleName } from '../../../../environments/myconfigs';
+import { predefinedListOfIssueBy, roleName } from '../../../../environments/myconfigs';
 import { CcdTeamMedicalNotificationService } from '../../../@core/shared/services/ccdTeamMedicalNotification.service';
 
 @Component({
@@ -32,6 +32,8 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   onlineEvent: Observable<Event>;
   subscriptions: Subscription[] = [];
 
+  optionsData: string[] = [];
+
   constructor(private formBuilder: FormBuilder, 
     private CCDTEAM: CcdTeamMedicalNotificationService,
     private personalDocNotification: PersonalNotificationService,
@@ -52,6 +54,14 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   ngOnInit(): void {
+    this.optionsData = predefinedListOfIssueBy[this.name];
+
+    if(this.optionsData != undefined){
+      console.log(this.name + ": " +JSON.stringify(this.optionsData) + " length:" + this.optionsData.length);
+      console.log(this.optionsData[0]);
+    }
+    
+
     this.uploadForm = this.formBuilder.group({
       fileUpload: ['', Validators.required],
       fileCategory: [this.name, ],
@@ -82,9 +92,15 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     const attendedDateString = new Date(this.uploadForm.get('issueDate').value); 
     const datePipe = new DatePipe('en-US');    
     const last12Month = datePipe.transform(new Date(attendedDateString.getFullYear(),attendedDateString.getMonth() + 13,0), 'yyyy-MM-dd');
+    const next365Date = datePipe.transform(new Date(attendedDateString.getFullYear() + 1,attendedDateString.getMonth(),attendedDateString.getDate()-1), 'yyyy-MM-dd');
 
-    if(this.name.includes('Medical'))
-      this.uploadForm.get('expiryDate').setValue(last12Month);
+    if(this.name.includes('Medical')){
+      if(this.firestoreUserService.getFirestoreUser().role == roleName.pilot)
+      this.uploadForm.get('expiryDate').setValue(next365Date);
+      if(this.firestoreUserService.getFirestoreUser().role == roleName.cabinCrew)
+        this.uploadForm.get('expiryDate').setValue(last12Month);
+    }
+      
   }
 
   private handleAppConnectivityChanges(): void {

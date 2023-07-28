@@ -39,8 +39,11 @@
                 </div> -->
         
                 <div *ngIf="!isProfile" class="form-group">
-                    <label for="issueBy" class="label">Issue By*:</label>
-                    <input id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue by">
+                    <label for="issueBy" class="label">Issue By*: {{optionsList | json}}</label>
+                    <input list="optionsList" id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue by">
+                    <datalist id="optionsList">
+                        <option *ngFor="let option of optionsData; let i = index" value="{{option}}">{{option}}</option>
+                    </datalist>
                 </div>
         
                 <div *ngIf="!isProfile" class="form-group">

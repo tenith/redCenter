@@ -113,23 +113,36 @@ export class DocumentVerificationComponent implements OnInit {
     }
     
     let myRole = this.firestoreUserService.getFirestoreUser().role;
-    myRole = roleName.fltOPS;
     // console.log('role: ' + myRole);
     // console.log(JSON.stringify(fileUploadInfo));
     /**
      * CCD_TEAM: See only medical
      */
     if(myRole == roleName.ccd_team){
-      if(fileUploadInfo.fileCategory == 'Medical License' && fileUploadInfo.description.includes('[' + roleName.cabinCrew + ']'))
+      if(fileUploadInfo.description.includes('[' + roleName.cabinCrew + ']')){
         this.fileInforList.push(fileUploadInfo);
+        return;
+      }        
     }
 
     /**
-     * Flight Operation: See all document
+     * Flight Operation: See all pilot documents except English Proficiency
      */
     if(myRole == roleName.fltOPS){
-      if(!(fileUploadInfo.fileCategory == 'Medical License' && fileUploadInfo.description.includes('[' + roleName.cabinCrew + ']')))
+      if(fileUploadInfo.fileCategory != 'English Proficiency'){
         this.fileInforList.push(fileUploadInfo);
+        return;
+      }
+    }
+
+    /**
+     * Training: See all English Proficiency of Pilot
+     */
+    if(myRole == roleName.training){
+      if(fileUploadInfo.fileCategory == 'English Proficiency'){
+        this.fileInforList.push(fileUploadInfo);
+        return;
+      }
     }
 
   }
