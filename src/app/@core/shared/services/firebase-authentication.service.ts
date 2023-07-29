@@ -70,6 +70,27 @@ export class FirebaseAuthenticationService {
     return this.AuthLogin(new GoogleAuthProvider());
   }
 
+  public async AnynomousAuth(email: string) {
+    return this.afAuth.signInAnonymously().then((result) => {
+      const tempFirebaseUser: FirebaseUser = {
+        uid: result.user.uid,
+        email: email,
+        emailVerified: false,
+        displayName: '',
+        isAnonymous: true,
+        photoURL: '',
+        createdAt: '',
+        lastLoginAt: '',
+        apiKey: '',
+        appName: ''
+      };
+
+      console.log('login result: ' + JSON.stringify(tempFirebaseUser));
+      this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(tempFirebaseUser),2*365*24*60*60*1000);
+      this.firebaseUser = tempFirebaseUser;
+    });
+  }  
+
   /*
     01 Mar 2023 wutthichair
       Add AuthLogin()

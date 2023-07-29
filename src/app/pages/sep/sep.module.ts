@@ -20,6 +20,8 @@ import { NbSelectModule } from '@nebular/theme';
 import { NbInputModule } from '@nebular/theme';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 @NgModule({
   declarations: [
     SepComponent,
@@ -38,10 +40,14 @@ import { DeleteConfirmationComponent } from './delete-confirmation/delete-confir
     FormsModule,
     ReactiveFormsModule,
     NbButtonModule,
-    NbAccordionModule
+    NbAccordionModule,
+    QRCodeModule
   ],
   providers: [
     DatePipe
+  ],
+  exports: [
+    SepComponent,
   ]
 })
 export class SepModule { }

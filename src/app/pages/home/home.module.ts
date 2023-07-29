@@ -6,6 +6,7 @@ import { NbCardModule } from '@nebular/theme';
 import { NbIconModule } from '@nebular/theme';
 import { NbAccordionModule } from '@nebular/theme';
 
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NbAccordionModule } from '@nebular/theme';
     CommonModule,
     NbCardModule,
     NbIconModule,
-    NbAccordionModule
+    NbAccordionModule,
+    QRCodeModule
   ]
 })
 export class HomeModule { }

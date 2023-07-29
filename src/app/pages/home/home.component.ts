@@ -4,6 +4,8 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 
 import { aocOptions, roleOptions } from '../../../environments/myconfigs';
 import { Invoice } from '../../@core/shared/interfaces/invoice';
+import { baseURL } from '../../../environments/environment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-home',
@@ -15,12 +17,16 @@ export class HomeComponent implements OnInit {
   aocURL : string;
   roleURL : string;
   invoices: Invoice[] = [];
+  myURL: string;
   constructor(private firestoreUserService: FirestoreUserService) { }
 
   ngOnInit(): void {
     this.firestoreUser = this.firestoreUserService.getFirestoreUser();
     this.invoices = this.firestoreUser.invoice;
 
+    this.myURL = baseURL + 'onlinechecking?email=' + this.firestoreUserService.getFirestoreUser().email + '&token=' + btoa(this.firestoreUserService.getFirestoreUser().email);
+
+    console.log(this.myURL);
     // console.log('firestore');
     // console.log(JSON.stringify(this.firestoreUser));
 

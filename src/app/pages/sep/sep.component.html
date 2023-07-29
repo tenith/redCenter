@@ -21,10 +21,10 @@
     -->
     <div class="col-12" id="home">
         <nb-card status="primary">
-            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp; <nb-icon *ngIf="!offline" icon="cloud-download-outline" (click)="downloadSEP()"></nb-icon></nb-card-header>
+            <nb-card-header ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp; <nb-icon *ngIf="!offline && !fireBaseAuth.getFirebaseUser().isAnonymous" icon="cloud-download-outline" (click)="downloadSEP()"></nb-icon></nb-card-header>
             <nb-card-body>
                 <div class="col-3"><B>NAME</B></div>
-                <div class="col-9">{{fireBaseAuth.getFirebaseUser().displayName | uppercase}}</div>
+                <div class="col-9">{{firestoreUser.getFirestoreUser().displayName | uppercase}}</div>
 
                 <div class="col-3"><B>TAA ID</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().cId | uppercase}}</div>
@@ -32,9 +32,14 @@
                 <div class="col-3"><B>ROLE</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().role | uppercase}}</div>
 
-                <!-- <div class="col-3"><B>MY PICTURE</B></div>
-                <div class="col-9">
-                    <ngx-profile-picture></ngx-profile-picture>
+                <!-- <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-3"><B>MY QR</B></div>
+                <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-9">
+                    <p>
+                        Please use mobile phone to scan this QR Code. To check my data from Thai Air Asia Server.
+                    </p><br>
+                    <p>
+                        <qrcode [qrdata]="myURL" [width]="128" [errorCorrectionLevel]="'L'"></qrcode>
+                    </p>
                 </div> -->
                 
                 <div class="col-12" style="margin-top: 0.5rem;"><B>Summary</B></div>
@@ -100,7 +105,7 @@
     </div>
 
     <!-- Mandatory Card -->
-    <div class="row">
+    <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="row">
         <div *ngFor="let cardName of mandatoryCourseName" class="col-12 col-sm-12 col-md-6 col-lg-4">
             <ngx-mandatory-card-post [name]="cardName" (postCompleteEvent)="downloadSEP()"></ngx-mandatory-card-post>
         </div>
@@ -109,7 +114,7 @@
     <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
     <div class="row">
         <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" [canDelete]="true" (deleteEvent)="downloadSEP()"></ngx-one-sep-card>
+            <ngx-one-sep-card [info]="oneSepCard" [canDelete]="!fireBaseAuth.getFirebaseUser().isAnonymous" (deleteEvent)="downloadSEP()"></ngx-one-sep-card>
         </div>
     </div>
 

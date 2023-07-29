@@ -78,6 +78,10 @@ export class FirestoreUserService {
     return this.collectionRef.doc(this.firebaseAuthen.getFirebaseUser().email).ref.get();
   }
 
+  public getFirestoreUserFromServerByEmail(email: string): Promise<any> {
+    return this.collectionRef.doc(email).ref.get();
+  }
+
   public isAcknowledge(code: string): number{
     const acknowledgeList = this.firestoreUser.invoice as Invoice[];
     const tempIndex = acknowledgeList.findIndex(object => { return object.uuid === encodeURIComponent(code)});

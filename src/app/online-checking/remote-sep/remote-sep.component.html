@@ -1,0 +1,30 @@
+<nb-layout class="grid place-items-center">
+    <nb-layout-column>
+        <nb-card *ngIf="invalidToken" status="danger" size="giant" [nbSpinner]="!loading" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="">
+            <nb-card-header style="text-align:center;">-------------- INVALID TOKEN --------------</nb-card-header>
+            <nb-card-body style="text-align: center;">
+                <p>
+                    Please Check QR Code, Token is invalid.
+                </p>
+            </nb-card-body>
+        </nb-card>
+        <nb-card *ngIf="loading && !invalidToken" status="danger" size="giant" [nbSpinner]="!loading" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="">
+            <nb-card-header style="text-align:center;">-------------- Loading --------------</nb-card-header>
+            <nb-card-body style="text-align: center;">
+                <p>
+                    Please wait, We are loading the information from the server.
+                </p>
+            </nb-card-body>
+        </nb-card>
+        <ngx-sep *ngIf="!loading && foundUser && !invalidToken"></ngx-sep>
+        <nb-card *ngIf="!loading && !foundUser && !invalidToken" status="danger" size="giant" [nbSpinner]="!loading" nbSpinnerStatus="danger" nbSpinnerSize="large" nbSpinnerMessage="">
+            <nb-card-header style="text-align:center;">-------------- Found nothing --------------</nb-card-header>
+            <nb-card-body style="text-align: center;">
+                <p>
+                    Please Check QR Code, Can't find user.
+                </p>
+            </nb-card-body>
+        </nb-card>
+    </nb-layout-column>
+    <nb-layout-footer>Power by wutthichair@airasia.com</nb-layout-footer>
+</nb-layout>

@@ -12,8 +12,8 @@ import { FirestoreUserService } from '../../@core/shared/services/firestore-user
 import { FileUploadInformation } from '../../@core/shared/interfaces/file-upload-information';
 import { ManualCardService } from '../../@core/shared/services/manual-card.service';
 
-import { requiredVerify, sepCourseOptions, sepMandatory, strictVerify } from '../../../environments/myconfigs';
-import { verify } from 'crypto';
+import { sepCourseOptions, sepMandatory, strictVerify } from '../../../environments/myconfigs';
+import { baseURL } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-sep',
@@ -49,6 +49,8 @@ export class SepComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   offline:boolean = false;
+
+  myURL:string = '';
   
   constructor(
     private manualCardService: ManualCardService, private cdr: ChangeDetectorRef, private firestoreUser:FirestoreUserService , private fileUploadService: FileUploadInformationService, public fireBaseAuth: FirebaseAuthenticationService, public toastr: NbToastrService,public sepCardService: SepCardService,public autoLandCardService: AutolandCardService) { }
@@ -83,7 +85,9 @@ export class SepComponent implements OnInit, OnDestroy {
                            {name: 'AUTOLAND - SIMULATOR', airport: '', perform: '', validperiod: '', expiry: ''}];
 
     this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];   
-
+    
+    this.myURL = baseURL + 'onlinechecking?email=' + this.firestoreUser.getFirestoreUser().email + '&token=' + btoa(this.firestoreUser.getFirestoreUser().email);
+    console.log(this.myURL);
     /*
       Loading Information From Cache....
     */

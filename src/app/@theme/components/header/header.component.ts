@@ -205,7 +205,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
            * 20 Mar 2023 wutthichair 
            * Save token into firestore.
            */
-          this.firestoreUserService.addToken(currentToken);
+          if(!this.firebaseUser.getFirebaseUser().isAnonymous)
+            this.firestoreUserService.addToken(currentToken);
          } else {
           //  console.log('No registration token available. Request permission to generate one.');
          }

@@ -60,6 +60,8 @@ export const API = {
   redBookTMC_X: 'cbHBWdeRODn2f6H1xca52FYSIRc4WfC9',
 };
 
+export const baseURL = 'https://lightredcenter.web.app/';
+
 export const clickActionVR = 'https://lightredcenter.web.app/pages/eVR/workspace?id=';
 
 export const showMenu = ['Home', 'Authorization', 'Documents Amendment', 'Personal document(s)', 'Documents verification', 'E-VR', 'My performance', 'E-TS1', 'SEP Card', 'Log out'];
