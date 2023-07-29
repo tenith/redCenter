@@ -87,7 +87,7 @@ export class SepComponent implements OnInit, OnDestroy {
     this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];   
     
     this.myURL = baseURL + 'onlinechecking?email=' + this.firestoreUser.getFirestoreUser().email + '&token=' + btoa(this.firestoreUser.getFirestoreUser().email);
-    console.log(this.myURL);
+    
     /*
       Loading Information From Cache....
     */
@@ -108,16 +108,144 @@ export class SepComponent implements OnInit, OnDestroy {
 
     if(this.loading)
       this.downloadSEP();
-
-    // this.updateSummary();
+    else
+      if(!this.offline)
+        this.anyChange();
   }
 
   reviseMandatoryCourse(): void {
     this.mandatoryCourseName = sepMandatory[this.firestoreUser.getFirestoreUser().role];
-    // console.log(JSON.stringify(this.mandatoryCourseName));
     for(let i=0;i<this.manualCards.length;i++)
       if(this.mandatoryCourseName.includes(this.manualCards[i].Name))
         this.mandatoryCourseName = this.mandatoryCourseName.filter((obj) => obj !== this.manualCards[i].Name);
+  }
+
+  anyChange(): void {
+    /*
+      Loading Information From personal file upload....
+    */
+   console.log('cache loading try to update from server');
+    this.fileUploadService.getFileUploadInformationSnapshotByEmail(this.firestoreUser.getFirestoreUser().email).onSnapshot(docSnapshot=>{
+      // console.log('get some data from firebase');
+      let tempOneSepCard: OneSepCard[] = [];
+      if(docSnapshot.exists){
+        const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+        for(let i=0; i<temp.length;i++){
+          if(temp[i].showSEP == 'Yes'){
+            // console.log(JSON.stringify(temp[i]));
+            let tempSepCard: OneSepCard = {
+              Name: temp[i].fileCategory,
+              Attended: this.formatDate(temp[i].issueDate),
+              Type: 'Personal Upload',
+              Validperiod: '',
+              Expiry: this.formatDate(temp[i].expiryDate),
+              Instructor: temp[i].issueBy,
+              Remark: temp[i].description,
+              Link: temp[i].relativePath,
+              InitialDate: 'NO DATA',
+              verify: temp[i].verify,
+            };
+
+            tempOneSepCard.push(tempSepCard);
+          }
+        }
+      }
+
+      if(tempOneSepCard.length > 0){               
+        const tempS: OneSepCard[] = [];
+        for(let i=0;i<sepMandatory[this.firestoreUser.getFirestoreUser().role].length;i++){
+          for(let j=0;j<tempOneSepCard.length;j++){
+            if(sepMandatory[this.firestoreUser.getFirestoreUser().role][i] == tempOneSepCard[j].Name){
+              tempS.push(tempOneSepCard[j]);
+              break;
+            }
+          }
+        }
+        // console.log(JSON.stringify(tempS));
+        // console.log(JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())]));
+
+        if(JSON.stringify(tempS) == JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())])){
+          console.log('using cache');
+          console.log('do nothing');
+        }
+        else{
+          this.manualCards = tempS;
+          this.manualCardService.deleteAllCards();
+          this.manualCardService.saveAllCards(this.manualCards);
+        }        
+      }
+      else{
+        if(JSON.stringify([]) == JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())])){
+          console.log('using cache');
+          console.log('do nothing');
+        }
+        else{
+          this.manualCards = [];
+          this.manualCardService.deleteAllCards();
+          this.manualCardService.saveAllCards(this.manualCards);
+        }
+      }
+    });
+
+    /*
+      Loading Information From Online Server....
+    */
+      // this.sepCardService.getAllSepCards().subscribe(response => {
+      //   console.log('JSON REDBOOK API: ' + JSON.stringify(response));
+      //   const tempSubjects = response['Courses'];
+  
+      //   let temp: OneSepCard[] = [];
+      //   const role = this.firestoreUser.getFirestoreUser().role;
+      //   const mainCourse = sepCourseOptions[role] as string[];
+  
+      //   for(let i:number = 0; i<mainCourse.length;i++){
+      //     const courseName = mainCourse[i];
+      //     if(response[courseName] != undefined){
+      //       this.fullHistory[courseName] = response[courseName];
+      //       const last = response[courseName].length - 1;  
+      //       let myProcessOneSepCard: OneSepCard = response[courseName][last];
+      //       myProcessOneSepCard.InitialDate = 'NO DATA';
+      //       for(let i=0;i<response[courseName].length;i++)
+      //         if(response[courseName][i].Type.toString().toUpperCase() == 'INITIAL'){
+      //           myProcessOneSepCard.InitialDate = response[courseName][i].Attended;
+      //           break;
+      //         }
+  
+      //       temp.push(myProcessOneSepCard);
+      //     }
+      //     else{
+      //       //create null card to show....
+      //       const x: OneSepCard = {
+      //         Name: courseName,
+      //         InitialDate: 'NO DATA',
+      //         Attended: 'NO DATA',
+      //         Type: 'NO DATA',
+      //         Validperiod: 'NO DATA',
+      //         Expiry: 'NO DATA',
+      //         Instructor: 'NO DATA',
+      //         Remark: 'NO DATA',
+      //         Link: '',
+      //       };
+  
+      //       temp.push(x);
+      //     }
+      //   }
+  
+      //   // this.toastr.primary('Completed','Updated SEP from TMC server completed', {duration:10000});
+      //   // this.oneSepCards = [...temp,...this.oneSepCards];
+      //   if(JSON.stringify(temp) == JSON.stringify([...(this.sepCardService.getAllSepCardsFromCache())])){
+      //     console.log('using cache');
+      //     console.log('do nothing');
+      //   }
+      //   else{
+      //     this.oneSepCards = temp;
+      //     this.sepCardService.deleteAllSepCards();
+      //     this.sepCardService.saveAllSepCards(this.oneSepCards);
+    
+      //     this.updateSummary();
+      //     this.loadAutolandCards();
+      //   }
+      // });
   }
 
   downloadSEP(): void {
@@ -125,8 +253,6 @@ export class SepComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
     
     this.sepCardService.clearCertificateCache();
-    this.manualCards = [];
-
     /*
       Loading Information From personal file upload....
     */
@@ -167,7 +293,7 @@ export class SepComponent implements OnInit, OnDestroy {
           }
         }
         // console.log(JSON.stringify(tempS));
-
+        // console.log(JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())]));
         this.manualCards = tempS;
         this.manualCardService.deleteAllCards();
         this.manualCardService.saveAllCards(this.manualCards);

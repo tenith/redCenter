@@ -8,7 +8,7 @@ export let allowMenuByRole = {
   Flight_Operations: ['home', 'documents_amendment', 'document_verification', 'personal_documents',  'eVR', 'logout'],
   Training: ['home', 'documents_amendment', 'personal_documents', 'ets1', 'logout'],
   Engineer:  ['home', 'documents_amendment', 'personal_documents', 'logout'],
-  CCD_TEAM: ['home', 'personal_documents', 'document_verification', 'logout'],
+  CCD_TEAM: ['home', 'document_verification', 'personal_documents',  'logout'],
 }
 
 export let menuListDetail = {

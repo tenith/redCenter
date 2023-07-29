@@ -8,6 +8,7 @@ import { NbToastrService } from '@nebular/theme';
 import { Observable, Subscription, fromEvent } from 'rxjs';
 
 import { statusConfig } from '../../../../environments/myconfigs';
+import { FirebaseAuthenticationService } from '../../../@core/shared/services/firebase-authentication.service';
 
 @Component({
   selector: 'ngx-autoland-card',
@@ -42,7 +43,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
 
   @ViewChild('autoLandingForm', {static: false}) autoLandingForm!: NgForm;
 
-  constructor(public autoLandService: AutolandCardService, public datePipe: DatePipe, public toastr: NbToastrService, private cdr: ChangeDetectorRef) { }
+  constructor(public firebaseUserService: FirebaseAuthenticationService ,public autoLandService: AutolandCardService, public datePipe: DatePipe, public toastr: NbToastrService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {     
     // console.log(JSON.stringify(this.info));

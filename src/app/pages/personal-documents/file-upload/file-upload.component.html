@@ -1,5 +1,5 @@
 <nb-card *ngIf="!uploading" status="primary">
-    <nb-card-header>Upload your file</nb-card-header>
+    <nb-card-header>Upload your file {{email == undefined ? '' : ' for [' + email + ']'}}</nb-card-header>
     <nb-card-body>
         <form [formGroup]="uploadForm" (ngSubmit)="upload()">
             <div class="form-inline">
@@ -13,6 +13,7 @@
                     <nb-option value="MEDICAL">Medical</nb-option>
                     <nb-option value="PASSPORT">Passport</nb-option>
                     <nb-option value="ENGLISH PROFICIENCY">English Proficiency</nb-option> -->
+                    <nb-option *ngFor="let option of availableDocList;" value="{{option}}">{{option}}</nb-option>
                     <nb-option value="OTHER">Other</nb-option>
                 </nb-select>
             </div>
@@ -25,7 +26,7 @@
             <div class="form-group">
                 <label for="showSEP" class="label">Do you want to show this file on SEP Module*:</label>
                 <nb-select id="showSEP" fullWidth formControlName="showSEP">
-                    <!-- <nb-option value="Yes">Yes</nb-option> -->
+                    <nb-option *ngIf="email != undefined" value="Yes">Yes</nb-option>
                     <nb-option value="No">No</nb-option>
                 </nb-select>
                 <!-- <input id="showSEP" name="showSEP" formControlName="showSEP" nbInput type="checkbox" fullWidth placeholder="Do you want to show this file on SEP Module"> -->

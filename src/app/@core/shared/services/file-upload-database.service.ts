@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 })
 export class FileUploadDatabaseService {
 
-  path: string = firebaseDB.dbPathName
+  path: string = firebaseDB.dbPathName;
   absPath: string = firebaseDB.dbABSPathName;
 
   isModerator: boolean = false;
@@ -25,6 +25,46 @@ export class FileUploadDatabaseService {
     this.path = this.path + '/' + this.email;
 
     this.isModerator = this.firestoreUser.isModerator;
+  }
+
+  public async uploadFileByAdmin(file: File, form: any, email: string): Promise<boolean> {
+    let completed = false;
+    const newFileName = new Date().valueOf() + '_' + file.name;
+    const fileRef = this.storage.ref(firebaseDB.dbPathName + '/' + email + '/' + newFileName);
+    const fileAbsPath = this.absPath + firebaseDB.dbPathName + '/' + newFileName;
+
+    const datePipe = new DatePipe('en-US');        
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+
+    await fileRef.put(file).then(async () => {
+      let temp: FileUploadInformation = {
+        owner: email,
+        name: newFileName,
+        displayName: '',
+        relativePath: firebaseDB.dbPathName + '/' + email + '/' + newFileName,
+        path: fileAbsPath,
+        description: form.fileDescription,
+        uploadTime: formattedDate,
+        fileType: file.type,
+        fileCategory: form.fileCategory,
+        showSEP: form.showSEP,
+        issueDate: form.issueDate,
+        hasExpiry: form.hasExpiry,
+        expiryDate: form.expiryDate,
+        issueBy: form.issueBy,
+        verify: true,
+      }           
+
+      await this.fileUploadInformationService.addFileUploadInformation(temp, email)
+      .then(()=>{
+        completed = true;
+      })
+      .catch(error => {
+        fileRef.delete();
+      })
+    });
+
+    return completed;
   }
 
   public async uploadFile(file: File, form: any): Promise<boolean> {

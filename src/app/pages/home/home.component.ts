@@ -26,13 +26,6 @@ export class HomeComponent implements OnInit {
 
     this.myURL = baseURL + 'onlinechecking?email=' + this.firestoreUserService.getFirestoreUser().email + '&token=' + btoa(this.firestoreUserService.getFirestoreUser().email);
 
-    console.log(this.myURL);
-    // console.log('firestore');
-    // console.log(JSON.stringify(this.firestoreUser));
-
-    // console.log('invoices');
-    // console.log(JSON.stringify(this.invoices));
-
     this.aocURL = aocOptions[aocOptions.findIndex(obj => obj.value === this.firestoreUser.aoc)].icon;
     this.roleURL = roleOptions[roleOptions.findIndex(obj => obj.value === this.firestoreUser.role)].icon;
   }

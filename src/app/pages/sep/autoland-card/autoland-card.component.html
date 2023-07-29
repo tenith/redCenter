@@ -34,7 +34,7 @@
                             {{info.expiry}}
                         </div>
                     </div>
-                    <div *ngIf="!offline">
+                    <div *ngIf="!offline && !firebaseUserService.getFirebaseUser().isAnonymous">
                         <form #autoLandingForm="ngForm">
                           <div class="row" style="margin-top: 0.5rem;">
                             <div class="col-12"><b>Perform Date</b></div>

@@ -18,6 +18,7 @@
 </div>
 
 <div *ngFor="let email of emails">
+    <ngx-file-upload [email]="email"></ngx-file-upload>
     <ngx-personal-information [email]="email"></ngx-personal-information> 
 </div>
 
