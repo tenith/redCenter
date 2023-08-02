@@ -54,5 +54,5 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.uuidList.filter(item => item!= uuid);
     this.tabService.removeViewTab(uuid);
   }
-  //add comment test again
+  //add comment test again for not
 }
