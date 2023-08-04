@@ -85,6 +85,7 @@ export class UploadComponent implements OnInit {
           tempVR.crewsId = [];
           tempVR.crews = [];
           tempVR.flights = [];
+          tempVR.comments = [];
           tempVR.uuid = uuid.v4();
 
           continue;

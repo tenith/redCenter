@@ -7,6 +7,8 @@ import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upl
 import { EventEmitter } from '@angular/core';
 import { FileReportService } from '../../../@core/shared/services/file-report.service';
 import { ViewDocumentComponent } from '../view-document/view-document.component';
+import { EditPersonalDocumentComponent } from '../edit-personal-document/edit-personal-document.component';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ngx-custom-action',
@@ -18,6 +20,7 @@ export class CustomActionComponent implements OnInit {
   @Input() rowData: any;
   canDelete: boolean = false;
   canAdd: boolean = true;
+  canEdit: boolean = false;
   
   @Output() addEvent = new EventEmitter<string>();
   
@@ -25,15 +28,29 @@ export class CustomActionComponent implements OnInit {
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
   viewDialogRef: NbDialogRef<ViewDocumentComponent>;
 
-  constructor(private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
+  constructor(private formBuilder:FormBuilder, private reportService: FileReportService, private dialogService: NbDialogService, private toastr: NbToastrService, private firestoreUserService: FirestoreUserService, private fileUploadDatabaseService: FileUploadDatabaseService) { }
 
   ngOnInit(): void {
     if(this.rowData.owner == this.firestoreUserService.getFirestoreUser().email)
       this.canDelete = true;
+      
+    if(this.firestoreUserService.isModerator || this.firestoreUserService.isAdmin)
+      if(this.rowData.hasExpiry == 'Yes')
+        this.canEdit = true;
+  }
 
-    
-    // if(this.firestoreUserService.getFirestoreUser().level != 'Subscriber')
-    //   this.canAdd = true;
+  editDocument(): void {
+    console.log('send data: ' + JSON.stringify(this.rowData));
+    this.dialogService.open(EditPersonalDocumentComponent,{
+      context: {
+        data: {...this.rowData},
+        formBuilder: this.formBuilder.group({
+          issueDate: [this.rowData.issueDate, Validators.required],
+          hasExpiry: [this.rowData.hasExpiry], 
+          expiryDate: [this.rowData.expiryDate, Validators.required]
+        }),
+      }
+    });
   }
   
   viewDocument(): void {
@@ -64,7 +81,7 @@ export class CustomActionComponent implements OnInit {
           this.toastr.primary('Completed','Delete ' + this.rowData.name.split('_')[1] + ' announement completed');
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
           this.toastr.danger('error','Delete ' + this.rowData.name.split('_')[1] + ' announement failed, try again later');
         });
       }

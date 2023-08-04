@@ -1,4 +1,4 @@
-@import '../../@theme/styles/themes';
+@import "../../@theme/styles/themes";
 
 @include nb-install-component() {
   .show-grid {
@@ -6,7 +6,7 @@
       margin: -0.5rem;
     }
 
-    div[class^=col-] {
+    div[class^="col-"] {
       padding: 0.5rem;
       box-sizing: border-box;
 
@@ -20,14 +20,22 @@
   }
 
   .grid-h {
-    margin-top: 1.5rem;
+    margin-top: 50rem;
 
     &:first-child {
-      margin-top: 0;
+      margin-top: 50rem;
     }
   }
 
   .table-responsive {
     margin-top: 1rem;
   }
+}
+
+fieldset {
+  border: 3px solid #000;
+  margin: 5px;
+  padding: 10px; /* Keep the padding for visual spacing inside the fieldset */
+  width: 100%; /* Add this property to make the line fill the entire width */
+  border-top-style: solid;
 }

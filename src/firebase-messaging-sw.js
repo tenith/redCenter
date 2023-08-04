@@ -2,13 +2,21 @@ importScripts("https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js")
 importScripts("https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging-compat.js");
 
 firebase.initializeApp({
-    apiKey: "AIzaSyClzKnPCsqH0wIpdRgA1-VNB-WSCQn73rk",
-    authDomain: "red-center.firebaseapp.com",
-    projectId: "red-center",
-    storageBucket: "red-center.appspot.com",
-    messagingSenderId: "880704583837",
-    appId: "1:880704583837:web:312aec2438ff06a7017c74",
-    measurementId: "G-NC095M4JX4"
+    // apiKey: "AIzaSyClzKnPCsqH0wIpdRgA1-VNB-WSCQn73rk",
+    // authDomain: "red-center.firebaseapp.com",
+    // projectId: "red-center",
+    // storageBucket: "red-center.appspot.com",
+    // messagingSenderId: "880704583837",
+    // appId: "1:880704583837:web:312aec2438ff06a7017c74",
+    // measurementId: "G-NC095M4JX4"
+
+    apiKey: "AIzaSyAZXCFg_Kf4Gf9KsH7FhoFLIbXdCktjqSk",
+    authDomain: "lightredcenter.firebaseapp.com",
+    projectId: "lightredcenter",
+    storageBucket: "lightredcenter.appspot.com",
+    messagingSenderId: "440217947980",
+    appId: "1:440217947980:web:ef214bf8ba4f75e41bc9e9",
+    measurementId: "G-VG0B1NQLFY",
 });
 const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function(payload) {
@@ -23,7 +31,7 @@ messaging.onBackgroundMessage(function(payload) {
 
 function saveDataToIndexedDB(data) {
     // Open a connection to the database
-    let request = self.indexedDB.open('my-notification-database', 1);
+    let request = self.indexedDB.open('my-notification-database', 2);
   
     // Handle errors
     request.onerror = function(event) {
@@ -33,7 +41,7 @@ function saveDataToIndexedDB(data) {
     // Create the object store and save the data
     request.onupgradeneeded = function(event) {
       let db = event.target.result;
-      let objectStore = db.createObjectStore('my-notification-object-store', { keyPath: 'code' });
+      let objectStore = db.createObjectStore('my-notification-object-store', { keyPath: 'code' , autoIncrement: false });
       objectStore.transaction.oncomplete = function(event) {
         let objectStore = db.transaction('my-notification-object-store', 'readwrite').objectStore('my-notification-object-store');
         objectStore.add(data);

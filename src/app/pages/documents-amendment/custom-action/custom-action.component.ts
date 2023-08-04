@@ -52,7 +52,7 @@ export class CustomActionComponent implements OnInit {
           this.toastr.primary('Completed','Announce ' + this.rowData.code + ' completed');
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
           if(error.status != 200)
             this.toastr.danger('error','Announce ' + this.rowData.code + ' failed, try again later');
           else
@@ -63,7 +63,7 @@ export class CustomActionComponent implements OnInit {
   }
 
   deleteAnnouncement(): void {
-    console.log('delte' + this.rowData.code);
+    // console.log('delte' + this.rowData.code);
     this.dialogRef = this.dialogService.open(DeleteConfirmationComponent,{
       context: {
         data: {
@@ -79,7 +79,7 @@ export class CustomActionComponent implements OnInit {
           this.toastr.primary('Completed','Delete ' + this.rowData.code + ' announement completed');
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
           this.toastr.danger('error','Delete ' + this.rowData.code + ' announement failed, try again later');
         });
       }

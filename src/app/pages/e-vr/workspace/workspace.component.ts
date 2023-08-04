@@ -9,11 +9,11 @@ import { Subscription } from 'rxjs';
 
 import * as uuid from 'uuid';
 
-import { NbDialogRef, NbDialogService } from '@nebular/theme';
+import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { SignatureDialogComponent } from '../signature-dialog/signature-dialog.component';
 import { VrService } from '../../../@core/shared/services/vr.service';
-import { VrDetail } from '../../../@core/shared/interfaces/vr-detail';
+import { VrDetail, defaultVR } from '../../../@core/shared/interfaces/vr-detail';
 import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
 import { ActivatedRoute } from '@angular/router';
 import { VrListconfirmationComponent } from '../vr-listconfirmation/vr-listconfirmation.component';
@@ -25,6 +25,10 @@ import { debounceTime } from 'rxjs/operators';
 import { localStorageCollection } from '../../../../environments/myconfigs';
 import { TinyMCEComponent } from '../../../@theme/components';
 import { QrCodeComponent } from '../qr-code/qr-code.component';
+import { CommentDetail } from '../../../@core/shared/interfaces/comment';
+import { VRCommentGoogleSheetsSerivce } from '../../../@core/shared/services/vrCommentGoogleSheets.service';
+import { VrNotificationService } from '../../../@core/shared/services/vrNotification.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-workspace',
@@ -34,10 +38,13 @@ import { QrCodeComponent } from '../qr-code/qr-code.component';
 export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   form: FormGroup;
 
+  totalComments: number = 5;
+
   registrations = registration;
   vrPostOptions = vrPosOptions;
   crewList: CrewDetail[] = [];
   flightList: FlightDetail[] = [];
+  commentList: CommentDetail[] = [];
 
   saveFormSub: Subscription;
 
@@ -65,7 +72,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(TinyMCEComponent) tinymceComponent: TinyMCEComponent;
 
-  constructor(private route: ActivatedRoute, private changeDetectorRefs: ChangeDetectorRef,private firestoreUser:FirestoreUserService, private vrService:VrService, private formBuilder: FormBuilder, private dialogService: NbDialogService) { }
+  constructor(private vrNotificationService: VrNotificationService, private toastr: NbToastrService, private vrCommentService: VRCommentGoogleSheetsSerivce, private route: ActivatedRoute, private changeDetectorRefs: ChangeDetectorRef,private firestoreUser:FirestoreUserService, private vrService:VrService, private formBuilder: FormBuilder, private dialogService: NbDialogService) { }
 
   ngOnDestroy(): void {
     this.saveFormSub.unsubscribe();
@@ -84,26 +91,29 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       });      
     }
     else{
-      //load from localstorage....
-      console.log('load from localstorage');
       const savedVR = localStorage.getItem(localStorageCollection.vrLocalDBNameCollectionName);
-      console.log('savedVR: ' + savedVR);
       if(savedVR != null){
         this.vr = {...JSON.parse(savedVR) as VrDetail};
+        this.loadVR();
+
+        console.log(this.vr.submitTime);
+      }
+      else{
+        this.vr = {...defaultVR};
         this.loadVR();
       }
     }
   }
 
   ngAfterViewInit(): void {
-
   }
 
   loadVR(): void {
     this.softReset();
     this.crewList = [...this.vr.crews];
     this.flightList = [...this.vr.flights];
-    
+    this.commentList = [...this.vr.comments];
+
     this.form.get('uuid').setValue(this.vr.uuid);
     this.form.get('date').setValue(this.vr.date);
 
@@ -119,6 +129,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loadCrews();
     this.loadFlights();
+    this.loadComments();
     
     this.myDutyTime = this.calMyDuty();
     this.maxDutyTime = this.maxDuty();
@@ -162,13 +173,17 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   saveForm(): void {
-    console.log('saveform: ' + JSON.stringify(this.form.value));
+    // console.log('saveform: ' + JSON.stringify(this.form.value));
     localStorage.setItem(localStorageCollection.vrLocalDBNameCollectionName, JSON.stringify(this.form.value));
+  }
+
+  saveVR(): void {
+    localStorage.setItem(localStorageCollection.vrLocalDBNameCollectionName, JSON.stringify(this.vr));
   }
 
   qr(): void {
     let vr: VrDetail = this.prepareData();
-    console.log('qr data: ' + JSON.stringify(vr));    
+    // console.log('qr data: ' + JSON.stringify(vr));    
     this.qrRef = this.dialogService.open(QrCodeComponent,{
       context: {
         data: JSON.stringify(vr)
@@ -228,6 +243,94 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getFormArrayByName(name: string): FormArray {
     return this.form.get(name) as FormArray;
+  }
+
+  
+  loadComments(): void {
+    let commentGroup = this.getFormArrayByName('comments') as FormArray;
+    commentGroup.clear();
+
+    this.addComments(this.commentList);
+  }
+
+  addComments(commentList: CommentDetail[]): void {   
+
+    let commentGroup = this.getFormArrayByName('comments') as FormArray;
+    for(let i=0;i<this.totalComments;i++){
+      let commentFormGroup: FormGroup;
+      if(commentList.length >= i + 1){
+        commentFormGroup = this.formBuilder.group({
+          flightNumber: [commentList[i].flightNumber],
+          area: [commentList[i].area],
+          phaseOfFlight: [commentList[i].phaseOfFlight],
+          areaOfComment: [commentList[i].areaOfComment],
+          detail: [commentList[i].detail]
+        });
+      }
+      else {
+        commentFormGroup = this.formBuilder.group({
+          flightNumber: [''],
+          area: ['-' ],
+          phaseOfFlight: [''],
+          areaOfComment: [''],
+          detail: ['-']
+        });
+      }
+    
+      // console.log('index: ' + i + " , " + (commentFormGroup === blankCommentForm));
+      commentFormGroup.valueChanges.subscribe(value=>{this.reviseComments();});
+      commentGroup.push(commentFormGroup);
+    }
+  }
+
+  reviseComments(): void {
+    let commentGroup = this.getFormArrayByName('comments') as FormArray;
+    
+    for(let i=0;i<commentGroup.length;i++){      
+      const detail = commentGroup.at(i).get('detail').value;    
+      // console.log('index: ' + i + " , " + (detail == '-'));  
+      if(detail == '-'){
+        commentGroup.at(i).get('flightNumber').clearValidators();
+        commentGroup.at(i).get('area').clearValidators();
+        commentGroup.at(i).get('phaseOfFlight').clearValidators();
+        commentGroup.at(i).get('areaOfComment').clearValidators();     
+
+        commentGroup.at(i).get('flightNumber').setValue('', { emitEvent: false });
+        commentGroup.at(i).get('area').setValue('-', { emitEvent: false });
+        commentGroup.at(i).get('phaseOfFlight').setValue('', { emitEvent: false });
+        commentGroup.at(i).get('areaOfComment').setValue('', { emitEvent: false });
+
+        // commentGroup.at(i).get('detail').setValue('-', { emitEvent: false });
+
+        commentGroup.at(i).get('flightNumber').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('area').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('phaseOfFlight').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('areaOfComment').updateValueAndValidity({ emitEvent: false });   
+      }
+      else{
+        // console.log('set validator: ' + i);
+        commentGroup.at(i).get('flightNumber').setValidators([Validators.required]);
+        commentGroup.at(i).get('area').setValidators([Validators.required]);
+        commentGroup.at(i).get('phaseOfFlight').setValidators([Validators.required]);
+        commentGroup.at(i).get('areaOfComment').setValidators([Validators.required]);
+
+        commentGroup.at(i).get('flightNumber').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('area').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('phaseOfFlight').updateValueAndValidity({ emitEvent: false });
+        commentGroup.at(i).get('areaOfComment').updateValueAndValidity({ emitEvent: false });
+      }
+    }
+
+    this.changeDetectorRefs.detectChanges();
+  }
+
+  limitLines(event: any) {
+    const textarea = event.target;
+    const lines = textarea.value.split('\n');
+
+    if (lines.length > 3) {
+      textarea.value = lines.slice(0, 4).join('\n'); // Only keep the first 3 lines
+    }
   }
 
   loadCrews(): void {
@@ -311,9 +414,10 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Set the maximum width of the PDF page
       const maxWidth = pdf.internal.pageSize.getWidth() - offset*2;
+      const maxHeight = pdf.internal.pageSize.getHeight() - offset*2;
 
       // Calculate the scale ratio based on the table width and maximum PDF page width
-      const scaleRatio = maxWidth / tableWidth;
+      const scaleRatio = maxHeight / tableHeight;
 
       // Calculate the scaled table width and height
       const scaledWidth = tableWidth * scaleRatio;
@@ -671,6 +775,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
       crewsId: this.formBuilder.array([]),
       crews: this.formBuilder.array([]),
       flights: this.formBuilder.array([]),
+      comments: this.formBuilder.array([]),
       extendedTime: [''],
       comment: [''],
       extendedSignature: ['', ],
@@ -694,7 +799,6 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     myDialogRef.onClose.subscribe(confirm => {
       if(confirm != ''){
         this.vr = JSON.parse(confirm) as VrDetail;
-        console.log('get vr ' + JSON.stringify(this.vr));
         this.loadVR();        
       }
     });
@@ -714,6 +818,7 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.onClose.subscribe(confirm => {
       if(confirm == 'affirm'){
         this.softReset();
+        this.saveForm();
       }
     });
   }
@@ -732,7 +837,34 @@ export class WorkspaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submit(): void {
     let vr: VrDetail = this.prepareData();
-    this.vrService.saveVRwithSubmitTime(vr).then(()=> this.submitStatus = true).catch(e=>console.log(e));
+    
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyy HH:mm:ss');
+
+    this.vrService.saveVRwithSubmitTime(vr, formattedDate).then(()=> {
+      this.submitStatus = true;
+      this.toastr.primary('Completed','VR has been submitted', {duration:10000});
+      //NOTIFICAtion to training....
+      this.sendToGoogleSheet(vr.date,vr.comments);
+      this.sendNotificationToOPS(uuid, this.firestoreUser.getFirestoreUser().email);
+      
+      this.vr.submitTime = formattedDate;
+      this.saveVR();
+    }).catch(e=>console.log(e));
+  }
+
+  sendNotificationToOPS(uuid: string, ownerEmail: string): void {
+    //NOTIFICATION TO OPS
+    this.vrNotificationService.VRNotification(uuid,ownerEmail);
+  }
+
+  sendToGoogleSheet(date: string, comments: CommentDetail[]): void {
+    this.vrCommentService.post(date,comments)
+    .subscribe(response => {
+      if(response.toString().includes('VR Comments data have been uploaded to OPS DATA studio.')){
+        this.toastr.primary('Completed','Upload additional comments to Server completed', {duration:10000});
+      }
+    });;
   }
 
 }

@@ -1412,13 +1412,13 @@ export class AllStarService {
     return this.getNameByStaffID(id);
   }  
 
-  getRole(email : string) : string {
-    for(let i=0;i<this.adminList.length;i++)
-      if(email == this.adminList[i]){
-        // console.log('admin');
-        return 'ADMIN';
-      }
+  // getRole(email : string) : string {
+  //   for(let i=0;i<this.adminList.length;i++)
+  //     if(email == this.adminList[i]){
+  //       // console.log('admin');
+  //       return 'ADMIN';
+  //     }
     
-    return 'USER';
-  }
+  //   return 'USER';
+  // }
 }

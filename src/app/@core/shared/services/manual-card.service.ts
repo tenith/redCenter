@@ -26,7 +26,7 @@ export class ManualCardService {
     await this.getImageFromFireDB(path).then(async downloadURL => {
       await this.getBase64ImageFromUrl(downloadURL)
         .then(result => {
-          console.log('get data: ' + result);
+          // console.log('get data: ' + result);
           try{
            this.dbService.deleteByKey("certificates",profileDBLink);
           }

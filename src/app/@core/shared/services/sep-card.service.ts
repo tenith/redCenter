@@ -83,7 +83,7 @@ export class SepCardService {
   }
 
   clearCertificateCache(): void {
-    console.log('clear cert cache');
+    // console.log('clear cert cache');
     this.dbService.clear("certificates");
   }
 

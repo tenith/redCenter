@@ -5,6 +5,12 @@ import { NbToastrService } from '@nebular/theme';
 import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
 import { FileUploadDatabaseService } from '../../../@core/shared/services/file-upload-database.service';
 import { Observable, Subscription, fromEvent } from 'rxjs';
+import { PersonalNotificationService } from '../../../@core/shared/services/personalDocumentNotification.service';
+
+import * as uuid from 'uuid';
+import { DatePipe } from '@angular/common';
+import { roleName } from '../../../../environments/myconfigs';
+import { CcdTeamMedicalNotificationService } from '../../../@core/shared/services/ccdTeamMedicalNotification.service';
 
 @Component({
   selector: 'ngx-mandatory-card-post',
@@ -27,6 +33,8 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   subscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder, 
+    private CCDTEAM: CcdTeamMedicalNotificationService,
+    private personalDocNotification: PersonalNotificationService,
     private toastr: NbToastrService, 
     private firestoreUserService: FirestoreUserService, 
     private fileUploadInformationService: FileUploadInformationService, 
@@ -55,6 +63,11 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
       issueBy: ['', Validators.required],
     });    
 
+    if(this.name.includes('Medical'))
+      this.uploadForm.controls['issueDate'].valueChanges.subscribe(value => {
+        this.reviseExpireDate();
+      })
+
     if(this.name == 'My Picture'){
       this.isProfile = true;
       this.uploadForm.get('issueDate').clearValidators();
@@ -63,6 +76,15 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     this.handleAppConnectivityChanges();
+  }
+
+  private reviseExpireDate(): void {
+    const attendedDateString = new Date(this.uploadForm.get('issueDate').value); 
+    const datePipe = new DatePipe('en-US');    
+    const last12Month = datePipe.transform(new Date(attendedDateString.getFullYear(),attendedDateString.getMonth() + 13,0), 'yyyy-MM-dd');
+
+    if(this.name.includes('Medical'))
+      this.uploadForm.get('expiryDate').setValue(last12Month);
   }
 
   private handleAppConnectivityChanges(): void {
@@ -103,6 +125,14 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     .then(response => {
       if(response){
         this.toastr.primary('Completed','Upload file completed', {duration:5000});
+        this.personalDocNotification.PersonalDocumentNotification(this.uploadForm.get('fileCategory').value, this.firestoreUserService.getFirestoreUser().email, uuid.v4());
+
+        if(this.name.includes('Medical') && this.firestoreUserService.getFirestoreUser().role == roleName.cabinCrew){
+          //notification to CCD TEAM
+          console.log('JSON: ' + JSON.stringify(this.uploadForm.getRawValue()));
+          this.CCDTEAM.PersonalDocumentNotification(this.uploadForm.get('fileCategory').value, this.firestoreUserService.getFirestoreUser().email, uuid.v4());
+        }
+        
         this.reset();
         this.postCompleteEvent.emit('');
       }

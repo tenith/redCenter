@@ -45,7 +45,7 @@ export class ReportSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.downloadUrl$ = this.fileReportService.getObservable();
     this.downloadUrl$.subscribe(()=>{
-      console.log('subscribe alert');
+      // console.log('subscribe alert');
       this.refresh();
     });
   }

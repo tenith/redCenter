@@ -1,75 +1,183 @@
 <nb-accordion>
-    <nb-accordion-item expanded="{{myStatus != 'success'}}">
-        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.Name}}</b>
-            &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
-            &nbsp;<nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
-            &nbsp;<nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
-        </nb-accordion-item-header>
-        <nb-accordion-item-body>
-            <nb-card accent="{{myStatus}}">
-                <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
-                <nb-card-body *ngIf="info.Name != 'My Picture'">
-                    <div class="row">
-                        <div class="col-4">
-                            <b>Type</b>
-                        </div>
-                        <div class="col-8">
-                            {{info.Type}}
-                        </div>
-            
-                        <div *ngIf="!isPersonalDocument" class="col-4">
-                            <b>Attended</b>
-                        </div>
-                        <div *ngIf="isPersonalDocument" class="col-4">
-                            <b>Issue Date</b>
-                        </div>
-                        <div class="col-8">
-                            {{info.Attended}}
-                        </div>
-            
-                        <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-4">
-                            <b>Validity</b>
-                        </div>
-                        <div *ngIf="info.Validperiod!=undefined && !isPersonalDocument" class="col-8">
-                            {{info.Validperiod}}
-                        </div>
-            
-                        <div *ngIf="info.Expiry!=''" class="col-4">
-                            <b>Expiry</b>
-                        </div>
-                        <div class="col-8">
-                            {{info.Expiry}}
-                        </div>
-                        <!-- <div *ngIf="info.remark!=''" class="col-12">
+  <nb-accordion-item expanded="{{ myStatus !== 'false }}">
+    <nb-accordion-item-header>
+      <nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon
+      ><b>&nbsp;&nbsp;{{ info.Name | uppercase }}</b> &nbsp;
+      <div class="ml-auto mr-3">
+        <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
+      </div>
+      &nbsp;<nb-icon
+        *ngIf="info.Link != '' && !dataReady"
+        icon="loader-outline"
+      ></nb-icon
+      >&nbsp;
+      <nb-icon
+        *ngIf="canDelete && !offline"
+        (click)="deleteDocument()"
+        icon="trash-outline"
+        status="danger"
+      ></nb-icon>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <nb-card accent="{{ myStatus }}">
+        <!-- <nb-card-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;{{info.name}}</b></nb-card-header> -->
+        <nb-card-body *ngIf="info.Name != 'My Picture'">
+          <!-- <div *ngIf="info.InitialDate != 'NO DATA'" class="row"> -->
+          <div
+            *ngIf="
+              showInitial &&
+              info.InitialDate != 'NO DATA' &&
+              !(
+                info.InitialDate == undefined ||
+                info.InitialDate == '' ||
+                info.InitialDate == null
+              )
+            "
+            class="row"
+          >
+            <div class="col-4">
+              <b>Type</b>
+            </div>
+            <div class="col-8">INITIAL</div>
+
+            <div *ngIf="!isPersonalDocument" class="col-4">
+              <b>Attended</b>
+            </div>
+            <div *ngIf="isPersonalDocument" class="col-4">
+              <b>Issue Date</b>
+            </div>
+            <div class="col-8">
+              {{
+                info.InitialDate == undefined ||
+                info.InitialDate == "" ||
+                info.InitialDate == null
+                  ? "NO DATA"
+                  : info.InitialDate
+              }}
+            </div>
+            <div class="col-12">
+              <hr />
+            </div>
+          </div>
+          <div *ngFor="let x of allHistory; first as isFirst; last as isLast">
+            <div
+              *ngIf="
+                showHistory &&
+                x.Type.toString().toUpperCase() != 'INITIAL' &&
+                !isLast
+              "
+              class="row"
+            >
+              <div class="col-4">
+                <b>Type</b>
+              </div>
+              <div class="col-8">
+                {{ x.Type | uppercase }}
+              </div>
+
+              <div *ngIf="!isPersonalDocument" class="col-4">
+                <b>Attended</b>
+              </div>
+              <div *ngIf="isPersonalDocument" class="col-4">
+                <b>Issue Date</b>
+              </div>
+              <div class="col-8">
+                {{ x.Attended | uppercase }}
+              </div>
+              <div class="col-12">
+                <hr />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <b>Type</b>
+            </div>
+            <div class="col-8">
+              {{ info.Type | uppercase }}
+            </div>
+
+            <div *ngIf="!isPersonalDocument" class="col-4">
+              <b>Attended</b>
+            </div>
+            <div *ngIf="isPersonalDocument" class="col-4">
+              <b>Issue Date</b>
+            </div>
+            <div class="col-8">
+              {{ info.Attended | uppercase }}
+            </div>
+
+            <div
+              *ngIf="info.Validperiod != undefined && !isPersonalDocument"
+              class="col-4"
+            >
+              <b>Validity</b>
+            </div>
+            <div
+              *ngIf="info.Validperiod != undefined && !isPersonalDocument"
+              class="col-8"
+            >
+              {{ info.Validperiod | uppercase }}
+            </div>
+
+            <div *ngIf="info.Expiry != ''" class="col-4">
+              <b>Expiry</b>
+            </div>
+            <div class="col-8">
+              {{ info.Expiry | uppercase }}
+            </div>
+            <!-- <div *ngIf="info.remark!=''" class="col-12">
                             <b>Remark</b>
                         </div>
                         <div class="col-12">
                             {{info.remark}}
                         </div> -->
-                        <div *ngIf="dataReady && info.Link != ''" class="col-12">
-                            <b>Certificate &nbsp; <nb-icon icon="download-outline" (click)="downloadPdf()"></nb-icon></b>
-                            
-                        </div>
-                        <!-- <div *ngIf="dataReady" class="col-8">
+            <div *ngIf="dataReady && info.Link != ''" class="col-12">
+              <b
+                >Certificate &nbsp;
+                <nb-icon
+                  icon="download-outline"
+                  (click)="downloadPdf()"
+                ></nb-icon
+              ></b>
+            </div>
+            <!-- <div *ngIf="dataReady" class="col-8">
                             <a href="javascript:void(0)" (click)="openURIWithData()">Click to open</a>
                         </div> -->
-                        <div *ngIf="isPersonalDocument && uri != ''" class="col-12">
-                            <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">
-                        </div>
-                        <div *ngIf="!isPersonalDocument && safeURL != undefined && pdfSupport" class="col-12">
-                            <iframe *ngIf="safeURL" [src]="safeURL" width="100%" frameborder="0" type='application/pdf'></iframe>
-                            <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
-                        </div>
-                    </div>
-                </nb-card-body>
-                <nb-card-body *ngIf="info.Name == 'My Picture'">
-                    <div *ngIf="dataReady && info.Link != ''" class="col-12">
-                        <img style="min-width: 60%;max-width: 95%; max-height: 700px;" *ngIf="this.uri" [src]="this.uri">                        
-                    </div>
-                </nb-card-body>
-            </nb-card>
-        </nb-accordion-item-body>
-       </nb-accordion-item>
+            <div *ngIf="isPersonalDocument && uri != ''" class="col-12">
+              <img
+                style="min-width: 60%; max-width: 95%; max-height: 700px"
+                *ngIf="this.uri"
+                [src]="this.uri"
+              />
+            </div>
+            <div
+              *ngIf="!isPersonalDocument && safeURL != undefined && pdfSupport"
+              class="col-12"
+            >
+              <iframe
+                *ngIf="safeURL"
+                [src]="safeURL"
+                width="100%"
+                frameborder="0"
+                type="application/pdf"
+              ></iframe>
+              <!-- <img style="display: block;margin-left: auto;margin-right: auto;margin-top: 0.5rem;max-width:80%;" src={{cacheLink}}> -->
+            </div>
+          </div>
+        </nb-card-body>
+        <nb-card-body *ngIf="info.Name == 'My Picture'">
+          <div *ngIf="dataReady && info.Link != ''" class="col-12">
+            <img
+              style="min-width: 60%; max-width: 95%; max-height: 700px"
+              *ngIf="this.uri"
+              [src]="this.uri"
+            />
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
 </nb-accordion>
 
 <!-- <div *ngIf="info.name.includes('LVO')" >

@@ -1,13 +1,28 @@
 <nb-card status="primary">
-    <nb-card-header>eTS1 Summary (Only data from server will be shown in this table)</nb-card-header>
-    <nb-card-body>
-        <div *ngIf="isInstructor" class="col-12 col-md-12">
-            <nb-icon status="primary" icon="edit-2-outline" (click)="addNewTab()"></nb-icon>&nbsp;&nbsp;
-            <button nbButton status="primary" (click)="addNewTab()">Init new eTS1</button>    
-            <br><hr>
-        </div>
-        <div class="col-12 col-md-12">
-            <ng2-smart-table (newTab)="addExistTab($event)" [settings]="settings" [source]="source"></ng2-smart-table>
-        </div>
-    </nb-card-body>
+  <nb-card-header
+    >eTS1 Summary (Only data from server will be shown in this
+    table)</nb-card-header
+  >
+  <nb-card-body>
+    <div *ngIf="isInstructor" class="col-12 col-md-12">
+      <nb-icon
+        status="primary"
+        icon="edit-2-outline"
+        (click)="addNewTab()"
+      ></nb-icon
+      >&nbsp;&nbsp;
+      <button nbButton status="primary" (click)="addNewTab()">
+        Init new eTS1
+      </button>
+      <br />
+      <hr />
+    </div>
+    <div class="col-12 col-md-12">
+      <ng2-smart-table
+        (newTab)="addExistTab($event)"
+        [settings]="settings"
+        [source]="source"
+      ></ng2-smart-table>
+    </div>
+  </nb-card-body>
 </nb-card>

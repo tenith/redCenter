@@ -55,7 +55,7 @@ export class FileUploadDatabaseService {
         completed = true;
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         fileRef.delete();
       })
     });
@@ -84,20 +84,18 @@ export class FileUploadDatabaseService {
 
   public async deleteFileByName(path: string, email: string): Promise<boolean> {
     let completed = false;
-    // if(!this.isModerator)
-    //   return;
-
-    console.log('Path: ' + path);
-    console.log('File Info:' + JSON.stringify(path.split('/')[3]));
 
     await this.fileUploadInformationService.removeFileUploadByName(path.split('/')[3], email)
     .then(async () => {
       const fileRef = this.storage.ref(path);
-      await fileRef.delete().toPromise().then(() => { console.log('delete completed');});
+      await fileRef.delete().toPromise().then(() => { 
+        // console.log('delete completed');
+      });
       completed = true;
     })
-    .catch(error => console.log(error));
-    
+    .catch(error => 
+      console.log(error)
+    );    
     
     return completed;
 

@@ -127,6 +127,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       this.menuService.onItemClick().subscribe(( event ) => {
         this.onItemSelection(event.item.title);
+        if(event.item.title != 'E-VR'){
+          this.toggleSidebar();
+        }
       });
 
     /*
@@ -138,7 +141,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.listenOnBackground();
     this.notificationService.loadNotificationFromStorage().then(result => {
-      const temp = [...(result as unknown as Notification[])];
+      let temp = [...(result as unknown as Notification[])];
+      // console.log('GET NOti from db: ' + JSON.stringify(temp));
+      
+      temp = temp.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+        t.uuid === value.uuid && t.subject === value.subject)))
+
       this.notificationService.setNotification(temp);
     }).catch(error=>console.log(error));
 
@@ -175,9 +184,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       // let temp = [...JSON.parse(localStorage.getItem('backgroundMessage'))] as unknown as Notification[];
       // temp.push({ ...JSON.parse(ev.data) } as unknown as Notification);
       // localStorage.setItem('backgroundMessage',JSON.stringify(temp));
-
-
-
       this.notificationService.addNotification({ ...JSON.parse(ev.data) } as unknown as Notification);
       this.changeDetectorRefs.detectChanges();
     };

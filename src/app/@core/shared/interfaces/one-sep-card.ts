@@ -7,4 +7,6 @@ export interface OneSepCard {
     Instructor: string;
     Remark: string;
     Link: string;
+
+    InitialDate?: string;
 }

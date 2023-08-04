@@ -8,7 +8,9 @@ export let allowMenuByRole = {
   Flight_Operations: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'logout'],
   Training: ['home', 'documents_amendment', 'personal_documents', 'ets1', 'logout'],
   Engineer:  ['home', 'documents_amendment', 'personal_documents', 'logout'],
+  CCD_TEAM: ['home', 'personal_documents', 'logout'],
 }
+
 export let menuListDetail = {
   home: { title: 'Home', icon: 'home-outline', link: '/pages/home', home: true,},
   authorization: { title: 'Authorization', icon: 'shield-outline', link: '/pages/authorization', },

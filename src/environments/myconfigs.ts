@@ -19,6 +19,7 @@ export const roleName = {
     fltOPS: 'Flight_Operations',
     training: 'Training',
     engineer: 'Engineer',
+    ccd_team: 'CCD_TEAM'
 }
 
 export const settings = {
@@ -49,6 +50,7 @@ export const localStorageCollection = {
     firestoreUserDBNameCollectionName: 'firestoreUserDBName',
     newsLocalDBNameCollectionName: 'NewsLocalDBName',
     sepLocalDBNameCollectionName: 'SEPCardLocalDBName',
+    sepHistoricalCollectionName: 'SEPHistoricalDBName',
     manualLocalDBNameCollectionName: 'ManualCardLocalDBName',
     vrLocalDBNameCollectionName: 'VRLocalDBName'
 };
@@ -134,6 +136,7 @@ export const roleOptions = [
     { value: 'Flight_Operations', label: 'Flight Operations', icon: 'assets/images/operation.png' },
     { value: 'Training', label: 'Training', icon: 'assets/images/training.png'},
     { value: 'Engineer', label: 'Engineer', icon: 'assets/images/engineer.png' },
+    { value: 'CCD_TEAM', label: 'CCD Team', icon: 'assets/images/operation.png' },
 ];
 
 export const levelOptions = [
@@ -154,8 +157,38 @@ export const sepMandatory = {
 }
 
 export const sepCourseOptions = {
-    Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "ETOPS A320", "RHS", "UPRT", "VVDN COMPETENCY", "VVCR COMPETENCY", "LVO CAT II", "LVO CAT IIIA", "A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
-    Cabin_Crew: ["A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
+    Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "ETOPS A320", "RHS", "UPRT", "VVDN COMPETENCY", "VVCR COMPETENCY", "VNKT COMPETENCY", "LVO CAT II", "LVO CAT IIIA", "A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
+    Cabin_Crew: ["A321", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
+}
+
+export const sepCourseDisplayOptions = {
+    "TCAS": { Initial: false, ShowHistory: false},
+    "RNP/BRNAV": { Initial: false, ShowHistory: false},
+    "RVSM": { Initial: false, ShowHistory: false},
+    "ETOPS A320": { Initial: false, ShowHistory: false},
+    "RHS": { Initial: true, ShowHistory: false},
+
+    "UPRT": { Initial: false, ShowHistory: false},
+    "VVDN COMPETENCY": { Initial: false, ShowHistory: false},
+    "VVCR COMPETENCY": { Initial: false, ShowHistory: false},
+    "VNKT COMPETENCY": { Initial: false, ShowHistory: false},
+    "LVO CAT II": { Initial: false, ShowHistory: false},
+
+    "LVO CAT IIIA": { Initial: false, ShowHistory: false},
+    "A321": { Initial: false, ShowHistory: false},
+    "LINE CHECK": { Initial: true, ShowHistory: false},
+    "SEP DOOR DRILL": { Initial: true, ShowHistory: false},
+    "SEP WET DRILL": { Initial: true, ShowHistory: false},
+
+    "SEP FIRE DRILL": { Initial: true, ShowHistory: false},
+    "SEP SLIDE DRILL": { Initial: true, ShowHistory: false},
+    "SEP FIRST AID": { Initial: true, ShowHistory: false},
+    "DANGEROUS GOOD AWARENESS": { Initial: true, ShowHistory: true},
+    "CREW RESOURCE MANAGEMENT": { Initial: true, ShowHistory: false},
+
+    "SMS CLASS": { Initial: true, ShowHistory: false},
+    "AVSEC": { Initial: true, ShowHistory: true},
+    "Ground Check": { Initial: false, ShowHistory: false},
 }
 
 export const profileDBLink = 'myProfilePicture';

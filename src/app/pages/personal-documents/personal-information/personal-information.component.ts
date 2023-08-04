@@ -56,6 +56,16 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
           return formattedDate.toUpperCase();
         },
       },
+      expiryDate: { title: 'Expiry Date', filter: false, width:'15%', type: 'date',
+        valuePrepareFunction: (date) => {
+          if(date == '' || date == '-')
+            return '-';
+
+          const datePipe = new DatePipe('en-US');
+          const formattedDate = datePipe.transform(date, 'dd MMM yyy');
+          return formattedDate.toUpperCase();
+        },
+      }
       // name: { title: 'Name', valuePrepareFunction: (name) => {
       //   let temp = name.split('_')[1];
       //   return temp;

@@ -334,15 +334,78 @@
     </tr>
     <tr style="height:15px">
     <td colspan="68" class="s42">ADDITIONAL COMMENTS:</td>
-    </tr>
+    </tr>    
     <tr style="height:800px">
+        <td colspan="68" class="s25">
+            <table style="margin-left: auto; margin-right: auto; width: 90%;" formArrayName="comments">
+                <tbody *ngFor="let commentFormGroup of getFormArrayByName('comments').controls; let i=index;" [formGroupName]="i">
+                <tr>
+                  <td>
+                    <label for="flightNumber+{{i}}">Flight Number</label>
+                    <input *ngIf="!readOnly" class="uppercase" type="text" id="flightNumber+{{i}}" formControlName="flightNumber">
+                    <div *ngIf="readOnly">{{commentFormGroup.get('flightNumber').value == '' ? '-' : commentFormGroup.get('flightNumber').value | uppercase}}</div>
+                  </td>
+                  <td>
+                    <label for="area+{{i}}">Is China Operation Area?</label>
+                    <div *ngIf="readOnly">{{commentFormGroup.get('area').value == '' ? '-' : commentFormGroup.get('area').value | uppercase}}</div>
+                    <select *ngIf="!readOnly" id="area+{{i}}" formControlName="area">
+                        <option value="CHINA_OPERATIONS">CHINA_OPERATIONS</option>
+                        <option value="-">-</option>
+                    </select>
+                    <!-- <input type="text" id="area+{{i}}" formControlName="area" list="areaList" />
+                    <datalist id="areaList">
+                        <option value="CHINA_OPERATIONS">CHINA_OPERATIONS</option>
+                        <option value="NON_CHINA_OPERATION">NON_CHINA_OPERATION</option>
+                    </datalist> -->
+                  </td>
+                  <td>
+                    <label for="phaseOfFlight+{{i}}">Phase of Flight</label>
+                    <div *ngIf="readOnly">{{commentFormGroup.get('phaseOfFlight').value == '' ? '-' : commentFormGroup.get('phaseOfFlight').value | uppercase}}</div>
+                    <input *ngIf="!readOnly" class="uppercase" type="text" id="phaseOfFlight+{{i}}" formControlName="phaseOfFlight" list="phaseOfFlightList" />
+                    <datalist id="phaseOfFlightList">
+                        <option value="ON_GROUND">ON_GROUND</option>
+                        <option value="CLIMB">CLIMB</option>
+                        <option value="CRUISE">CRUISE</option>
+                        <option value="DESCEND">DESCEND</option>
+                        <option value="APPROACH">APPROACH</option>
+                    </datalist>
+                  </td>
+                  <td>
+                    <label for="areaOfComment+{{i}}">Area of Comments</label>
+                    <div *ngIf="readOnly">{{commentFormGroup.get('areaOfComment').value == '' ? '-' : commentFormGroup.get('areaOfComment').value | uppercase}}</div>
+                    <input *ngIf="!readOnly" class="uppercase" type="text" id="areaOfComment+{{i}}" formControlName="areaOfComment" list="areaOfCommentList" />
+                    <datalist id="areaOfCommentList">
+                        <option value="ATC">ATC</option>
+                        <option value="FLIGHT_OPERATION_PLANNING">FLIGHT_OPERATION_PLANNING</option>
+                        <option value="CARGO_PLANNING">CARGO_PLANNING</option>
+                        <option value="RAMP_HANDLING">RAMP_HANDLING</option>
+                        <option value="GROUND_SERVICES">GROUND_SERVICES</option>
+                        <option value="IMMIGRATION">IMMIGRATION</option>
+                        <option value="GROUND_STAFF">GROUND_STAFF</option>
+                        <option value="FUELLING">FUELLING</option>
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <label for="detail+{{i}}">Comment: {{i+1}}</label>
+                    <textarea [readOnly]="readOnly" style="font-size: 13px; resize: none; overflow:hidden;" (input)="limitLines($event)" class="uppercase" id="detail+{{i}}" formControlName="detail" class="form-control" rows="4"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                    <td colspan="4"><hr></td>
+                  </tr>
+                </tbody>
+              </table>
+        </td>
+    </tr>
+    <!-- <tr style="height:800px">
     <td colspan="68" class="s25">
         <textarea hidden id="comment" formControlName="comment" placeholder="Please enter body. You can enter HTML code."></textarea>
-        <!-- <editor [init]="{plugins: 'link'}"></editor> -->
         <ngx-tiny-mce *ngIf="!readOnly" (editorKeyup)="edit($event)" [content]="form.get('comment').value" [height]="750"></ngx-tiny-mce>
         <div style="height: 750px; align-items: center; width: 95%; margin-left: auto; margin-right: auto; display: block;" *ngIf="readOnly" [innerHTML]="form.get('comment').value"></div>
     </td>
-    </tr>
+    </tr> -->
     <tr style="height:58px">
         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
         <td colspan="17" rowspan="4" [style.background-color]="isRequired('vrSignature') && form.get('vrSignature').value == '' ? '#ff8e8e' : ''">

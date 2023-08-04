@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 export class TabService {
   private dataSubject = new Subject<any>();
   private viewUUIDTabs : string[] = [];
-
+  
   constructor() { 
     this.loadUUIDTabsFromStorage();
   }

@@ -1,0 +1,45 @@
+.container {
+    position: relative;
+    width: 600px;
+    height: 300px;
+  }
+  
+  .layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .layer1 {
+    z-index: 200;
+  }
+  
+  .layer2 {
+    z-index: 1;
+  }
+
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+  
+  nb-card.inline-form-card nb-card-body {
+    padding-bottom: 0;
+  }
+
+label{
+  color: black;
+}
+
+label.nb-error {
+  color: #FF5252;
+}

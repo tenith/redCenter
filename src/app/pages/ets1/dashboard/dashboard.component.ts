@@ -1,25 +1,33 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
-import { CustomActionComponent } from '../custom-action/custom-action.component';
-import { ETS1Data } from '../../../@core/shared/interfaces/e-ts1-data';
-import { ETS1Service } from '../../../@core/shared/services/e-ts1.service';
+import { DatePipe } from "@angular/common";
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from "@angular/core";
+import { LocalDataSource } from "ng2-smart-table";
+import { CustomActionComponent } from "../custom-action/custom-action.component";
+import { ETS1Data } from "../../../@core/shared/interfaces/e-ts1-data";
+import { ETS1Service } from "../../../@core/shared/services/e-ts1.service";
 
-import * as uuid from 'uuid';
-import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
-import { instructorList } from '../../../../environments/myconfigs';
+import * as uuid from "uuid";
+import { FirestoreUserService } from "../../../@core/shared/services/firestore-user.service";
+import { instructorList } from "../../../../environments/myconfigs";
 
 @Component({
-  selector: 'ngx-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "ngx-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-
   loading = true;
   @Output() addTab = new EventEmitter<string>();
   @Output() deleteData = new EventEmitter<string>();
-
+  @Output() tabNameChange = new EventEmitter<{
+    newName: string;
+    tabId: string;
+  }>();
   source: LocalDataSource;
   eTS1List: ETS1Data[] = [];
 
@@ -33,17 +41,28 @@ export class DashboardComponent implements OnInit {
     },
     pager: {
       display: true,
-      perPage: 20
+      perPage: 20,
     },
     columns: {
-      myCommand: { title:'Action & Status', width:'10%', type:'custom', filter: false, sort:false, renderComponent: CustomActionComponent},
-      date: { title: 'Session Date', sortDirection: 'desc', filter: false, width:'10%', type: 'date',
+      myCommand: {
+        title: "Action & Status",
+        width: "10%",
+        type: "custom",
+        filter: false,
+        sort: false,
+        renderComponent: CustomActionComponent,
+      },
+      date: {
+        title: "Session Date",
+        sortDirection: "desc",
+        filter: false,
+        width: "10%",
+        type: "date",
         valuePrepareFunction: (date) => {
-          if(date == '' || date == '-')
-            return '-';
+          if (date == "" || date == "-") return "-";
 
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy');
+          const datePipe = new DatePipe("en-US");
+          const formattedDate = datePipe.transform(date, "dd MMM yyy");
           return formattedDate.toUpperCase();
         },
       },
@@ -51,46 +70,55 @@ export class DashboardComponent implements OnInit {
       //   valuePrepareFunction: (date) => {
       //     if(date == '' || date == '-')
       //       return '-';
-            
+
       //     const datePipe = new DatePipe('en-US');
       //     const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
       //     return formattedDate.toUpperCase();
       //   },
       // },
-      submitDateTime: { title: 'Submit Date Time', filter: false, width:'12%', type: 'date',
+      submitDateTime: {
+        title: "Submit Date Time",
+        filter: false,
+        width: "12%",
+        type: "date",
         valuePrepareFunction: (date) => {
-          if(date == '' || date == '-')
-            return '-';
-            
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
+          if (date == "" || date == "-") return "-";
+
+          const datePipe = new DatePipe("en-US");
+          const formattedDate = datePipe.transform(date, "dd MMM yyy HH:mm:ss");
           return formattedDate.toUpperCase();
-        }},
+        },
+      },
       // },
       // completedDateTime: { title: 'Completed Date Time', filter: false, width:'12%', type: 'date',
       //   valuePrepareFunction: (date) => {
       //     if(date == '' || date == '-')
       //       return '-';
-            
+
       //     const datePipe = new DatePipe('en-US');
       //     const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
       //     return formattedDate.toUpperCase();
       //   },
       // },
-      rank1: { title: 'Rank', width:'10%',},
-      name1: { title: 'Name', },
+      rank1: { title: "Rank", width: "10%" },
+      name1: { title: "Name" },
       // license1No: { title: 'Trainee License', width:'10%',},
-      classRoom: { title: 'Classroom', width:'20%',},
-      // name3: { title: 'Instructor Name',},   
+      classRoom: { title: "Classroom", width: "20%" },
+      // name3: { title: 'Instructor Name',},
     },
   };
 
-  constructor(private cdr: ChangeDetectorRef, private eTS1Service: ETS1Service, private firestoreUserService: FirestoreUserService) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private eTS1Service: ETS1Service,
+    private firestoreUserService: FirestoreUserService
+  ) {}
 
   ngOnInit(): void {
-    this.isInstructor = instructorList.includes(this.firestoreUserService.getFirestoreUser().email);
+    this.isInstructor = true;
+    // this.isInstructor = instructorList.includes(this.firestoreUserService.getFirestoreUser().email);
 
-    this.eTS1Service.getAlleTS1().subscribe(data => {
+    this.eTS1Service.getAlleTS1().subscribe((data) => {
       this.eTS1List = data;
       this.eTS1Service.seteTS1InCache(this.eTS1List);
       this.refresh();
@@ -105,6 +133,12 @@ export class DashboardComponent implements OnInit {
     const tempUUID = uuid.v4();
     this.addTab.emit(tempUUID);
   }
+
+  // addNewTab(): void {
+  //   const tempUUID = "input pilot name";
+  //   const nameNewTab = `${(loft, coft)},${CP name}`;
+  //   this.addTab.emit(tempUUID);
+  // }
 
   refresh(): void {
     this.loading = false;

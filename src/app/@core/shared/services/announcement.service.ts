@@ -37,7 +37,7 @@ export class AnnouncementService {
 
   makeAnnouncement(id: string): Promise<any>{
     let params = new HttpParams().set('announcementsID', id).set('timeStamp', new Date().valueOf());
-    return this.httpClient.get<any>(this.cloudFunctionAnnouncement, {params:params}).toPromise();
+    return this.httpClient.get(this.cloudFunctionAnnouncement, {params:params, responseType:'text'}).toPromise();
   }
   
   addAnnouncement(announcement: Announcement): Promise<any>{
