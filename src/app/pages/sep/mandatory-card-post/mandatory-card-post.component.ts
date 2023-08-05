@@ -33,6 +33,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
   subscriptions: Subscription[] = [];
 
   optionsData: string[] = [];
+  optionsListID = 'optionsList';
 
   constructor(private formBuilder: FormBuilder, 
     private CCDTEAM: CcdTeamMedicalNotificationService,
@@ -53,7 +54,12 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  getOptionListID(): string {
+    return this.optionsListID;
+  }
+
   ngOnInit(): void {
+    this.optionsListID += this.name;
     this.optionsData = predefinedListOfIssueBy[this.name];
 
     if(this.optionsData != undefined){
