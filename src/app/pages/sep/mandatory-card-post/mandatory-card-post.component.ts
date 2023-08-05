@@ -62,12 +62,11 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
     this.optionsListID += this.name;
     this.optionsData = predefinedListOfIssueBy[this.name];
 
-    if(this.optionsData != undefined){
-      console.log(this.name + ": " +JSON.stringify(this.optionsData) + " length:" + this.optionsData.length);
-      console.log(this.optionsData[0]);
-    }
+    // if(this.optionsData != undefined){
+    //   console.log(this.name + ": " +JSON.stringify(this.optionsData) + " length:" + this.optionsData.length);
+    //   console.log(this.optionsData[0]);
+    // }
     
-
     this.uploadForm = this.formBuilder.group({
       fileUpload: ['', Validators.required],
       fileCategory: [this.name, ],
@@ -151,7 +150,7 @@ export class MandatoryCardPostComponent implements OnInit, OnDestroy, AfterViewI
 
         if(this.name.includes('Medical') && this.firestoreUserService.getFirestoreUser().role == roleName.cabinCrew){
           //notification to CCD TEAM
-          console.log('JSON: ' + JSON.stringify(this.uploadForm.getRawValue()));
+          // console.log('JSON: ' + JSON.stringify(this.uploadForm.getRawValue()));
           this.CCDTEAM.PersonalDocumentNotification(this.uploadForm.get('fileCategory').value, this.firestoreUserService.getFirestoreUser().email, uuid.v4());
         }
         

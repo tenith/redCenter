@@ -40,7 +40,7 @@
         
                 <div *ngIf="!isProfile" class="form-group">
                     <label for="issueBy" class="label">Issue By*:</label>
-                    <input [attr.list]="getOptionListID()" id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue by">
+                    <input style="font-size: clamp(0.6rem, 2vw, 1rem);" [attr.list]="getOptionListID()" id="issueBy" name="issueBy" formControlName="issueBy" nbInput type="text" fullWidth placeholder="Issue by">
                     <datalist [id]="getOptionListID()">
                         <option *ngFor="let option of optionsData; let i = index" value="{{option}}">{{option}}</option>
                     </datalist>

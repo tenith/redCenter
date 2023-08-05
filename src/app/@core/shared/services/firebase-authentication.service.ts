@@ -85,7 +85,7 @@ export class FirebaseAuthenticationService {
         appName: ''
       };
 
-      console.log('login result: ' + JSON.stringify(tempFirebaseUser));
+      // console.log('login result: ' + JSON.stringify(tempFirebaseUser));
       this.saveDataWithExpiry(this.firebaseUserStoreKey,JSON.stringify(tempFirebaseUser),2*365*24*60*60*1000);
       this.firebaseUser = tempFirebaseUser;
     });
