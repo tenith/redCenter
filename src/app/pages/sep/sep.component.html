@@ -172,11 +172,6 @@
         ></ngx-one-sep-card>
       </div>
     </div>
-  </fieldset>
-
-  <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
-  <fieldset>
-    <legend>Mandatory</legend>
     <div *ngIf="showAutoLand" class="row">
       <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - ONLINE">
         <ngx-autoland-card
@@ -197,12 +192,17 @@
     </div>
   </fieldset>
 
-  <!-- SHOW SEP CARDS-->
+  <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
   <fieldset>
-    <legend>Optional</legend>
+    <legend>Mandatory</legend>
+
     <div class="row">
       <div
-        *ngFor="let oneSepCard of oneSepCards"
+        *ngFor="
+          let oneSepCard of oneSepCards
+            .slice(0, 2)
+            .concat(oneSepCards.slice(12))
+        "
         class="col-12 col-sm-12 col-md-6 col-lg-4"
         id="{{ oneSepCard.name }}"
       >
@@ -217,6 +217,26 @@
     </div>
   </fieldset>
 
+  <!-- SHOW SEP CARDS-->
+  <fieldset>
+    <legend>Optional</legend>
+    <div class="row">
+      <div
+        *ngFor="let oneSepCard of oneSepCards.slice(2, 12)"
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="{{ oneSepCard.name }}"
+      >
+        <ngx-one-sep-card
+          [info]="oneSepCard"
+          [allHistory]="fullHistory[oneSepCard.Name]"
+          [canDelete]="false"
+          (postCompleteEvent)="newDataFromGoogleAPI($event)"
+          (refreshEvent)="detectChanges()"
+        ></ngx-one-sep-card>
+      </div>
+    </div>
+  </fieldset>
+  <!--
   <fieldset>
     <legend>TEST</legend>
     <div class="row">
@@ -234,5 +254,5 @@
         ></ngx-one-sep-card>
       </div>
     </div>
-  </fieldset>
+  </fieldset>-->
 </div>

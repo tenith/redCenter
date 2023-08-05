@@ -170,7 +170,7 @@ export class SepComponent implements OnInit, OnDestroy {
           const temp = [...docSnapshot.data().files] as FileUploadInformation[];
           for (let i = 0; i < temp.length; i++) {
             if (temp[i].showSEP == "Yes") {
-              // console.log(JSON.stringify(temp[i]));
+              //console.log(JSON.stringify(temp[i]));
               let tempSepCard: OneSepCard = {
                 Name: temp[i].fileCategory,
                 Attended: this.formatDate(temp[i].issueDate),
@@ -292,6 +292,7 @@ export class SepComponent implements OnInit, OnDestroy {
       this.updateSummary();
       this.loadAutolandCards();
     });
+    console.log(this.oneSepCards);
   }
 
   detectChanges(): void {}

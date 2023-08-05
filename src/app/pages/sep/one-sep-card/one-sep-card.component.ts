@@ -149,7 +149,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         this.sepService
           .getAllSepCardsFromGoogleAPI(this.info.Name)
           .subscribe((response) => {
-            console.log("JSON Google API: " + JSON.stringify(response));
+            //console.log("JSON Google API: " + JSON.stringify(response));
             if (response != null && Object.keys(response).length != 0) {
               let temp = {
                 ...JSON.parse(JSON.stringify(response)),
