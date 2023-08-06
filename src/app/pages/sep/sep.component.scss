@@ -35,7 +35,51 @@
 fieldset {
   border: 3px solid #000;
   margin: 5px;
+  margin-top: 10px;
   padding: 10px; /* Keep the padding for visual spacing inside the fieldset */
   width: 100%; /* Add this property to make the line fill the entire width */
   border-top-style: solid;
 }
+
+// legend {
+//   padding: 0 5px; /* Adjust the padding to make the legend smaller */
+//   font-weight: bold; /* Optional: Enhance the legend text's visibility */
+//   // border: 1px solid #333;
+//   border-radius: 5px 5px 0 0;
+//   background-color: #f0f0f0; /* Optional: Add a background color to the legend */
+//   width: 250px;
+// }
+//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง///////////////////////////
+.PersonalDoc-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: 250px;
+}
+.PersonalRec-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: 210px;
+}
+.Mandatory-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: 150px;
+}
+.Optional-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: 130px;
+}
+//////////////////////////////////////////////////////////////////////////

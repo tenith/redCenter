@@ -141,7 +141,7 @@
     </nb-card>
   </div>
   <fieldset>
-    <legend>Personal Document</legend>
+    <legend class="PersonalDoc-legend">Personal Document</legend>
 
     <!-- Mandatory Card -->
     <div class="row">
@@ -158,7 +158,7 @@
   </fieldset>
   <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
   <fieldset>
-    <legend>Personal Record</legend>
+    <legend class="PersonalRec-legend">Personal Record</legend>
     <div class="row">
       <div
         *ngFor="let oneSepCard of manualCards"
@@ -194,7 +194,7 @@
 
   <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
   <fieldset>
-    <legend>Mandatory</legend>
+    <legend class="Mandatory-legend">Mandatory</legend>
 
     <div class="row">
       <div
@@ -219,7 +219,7 @@
 
   <!-- SHOW SEP CARDS-->
   <fieldset>
-    <legend>Optional</legend>
+    <legend class="Optional-legend">Optional</legend>
     <div class="row">
       <div
         *ngFor="let oneSepCard of oneSepCards.slice(2, 12)"
