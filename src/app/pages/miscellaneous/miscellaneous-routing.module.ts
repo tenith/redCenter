@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { MiscellaneousComponent } from './miscellaneous.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { MiscellaneousComponent } from "./miscellaneous.component";
+import { NotFoundComponent } from "./not-found/not-found.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: MiscellaneousComponent,
     children: [
       {
-        path: '404',
+        path: "404",
         component: NotFoundComponent,
       },
     ],
@@ -21,5 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MiscellaneousRoutingModule {
-}
+export class MiscellaneousRoutingModule {}

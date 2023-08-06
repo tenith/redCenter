@@ -1,23 +1,23 @@
-import { NgModule } from '@angular/core';
-import { NbMenuModule } from '@nebular/theme';
+import { NgModule } from "@angular/core";
+import { NbMenuModule } from "@nebular/theme";
 
-import { ThemeModule } from '../@theme/theme.module';
-import { PagesComponent } from './pages.component';
-import { PagesRoutingModule } from './pages-routing.module';
-import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { ThemeModule } from "../@theme/theme.module";
+import { PagesComponent } from "./pages.component";
+import { PagesRoutingModule } from "./pages-routing.module";
+import { MiscellaneousModule } from "./miscellaneous/miscellaneous.module";
 
 /*
   09 MAR 2023 wutthichair
 */
-import { HomeModule } from './home/home.module';
-import { PerformanceModule } from './performance/performance.module';
-import { SepModule } from './sep/sep.module';
-import { Ets1Module } from './ets1/ets1.module';
-import { DocumentsAmendmentModule } from './documents-amendment/documents-amendment.module';
-import { AuthorizationModule } from './authorization/authorization.module';
-import { PersonalDocumentsModule } from './personal-documents/personal-documents.module';
-import { EVRModule } from './e-vr/e-vr.module';
-import { DocumentVerificationModule } from './document-verification/document-verification.module';
+import { HomeModule } from "./home/home.module";
+import { PerformanceModule } from "./performance/performance.module";
+import { SepModule } from "./sep/sep.module";
+import { Ets1Module } from "./ets1/ets1.module";
+import { DocumentsAmendmentModule } from "./documents-amendment/documents-amendment.module";
+import { AuthorizationModule } from "./authorization/authorization.module";
+import { PersonalDocumentsModule } from "./personal-documents/personal-documents.module";
+import { EVRModule } from "./e-vr/e-vr.module";
+import { DocumentVerificationModule } from "./document-verification/document-verification.module";
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { DocumentVerificationModule } from './document-verification/document-ver
     PersonalDocumentsModule,
     DocumentsAmendmentModule,
     DocumentVerificationModule,
-    
+
     /*
       09 MAR 2023 wutthichair
     */
@@ -38,12 +38,9 @@ import { DocumentVerificationModule } from './document-verification/document-ver
     Ets1Module,
 
     EVRModule,
-    
+
     MiscellaneousModule,
   ],
-  declarations: [
-    PagesComponent
-  ],
+  declarations: [PagesComponent],
 })
-export class PagesModule {
-}
+export class PagesModule {}

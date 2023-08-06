@@ -1,33 +1,32 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Notification } from '../interfaces/notification';
-import { OffLineNotificationService } from './off-line-notification.service';
+import { Injectable } from "@angular/core";
+import { Observable, Subject } from "rxjs";
+import { Notification } from "../interfaces/notification";
+import { OffLineNotificationService } from "./off-line-notification.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class NotificationService {
   notifications: Notification[] = [];
 
   updateSubject: Subject<void> = new Subject<void>();
 
-  constructor(private offlineNotificationService: OffLineNotificationService) {
-  }
+  constructor(private offlineNotificationService: OffLineNotificationService) {}
 
-  setNotification(notifications: Notification[]): void{
+  setNotification(notifications: Notification[]): void {
     this.notifications = notifications;
-    this.updateSubject.next(); 
+    this.updateSubject.next();
   }
 
   loadNotificationFromStorage(): Promise<void> {
     return this.offlineNotificationService.getAll();
   }
 
-  hasNotifications(): boolean{
+  hasNotifications(): boolean {
     return this.notifications.length > 0;
   }
 
-  getNotifications(): Notification[]{
+  getNotifications(): Notification[] {
     return this.notifications;
   }
 
@@ -40,73 +39,73 @@ export class NotificationService {
   //   this.notifications[tempIndex] = notification;
   // }
 
-  getNotificationObservable() : Observable<any>{
+  getNotificationObservable(): Observable<any> {
     return this.updateSubject.asObservable();
   }
 
-  removeDuplicationFromStorage(notification : Notification): void{
-    try{
+  removeDuplicationFromStorage(notification: Notification): void {
+    try {
       this.offlineNotificationService.delete(notification.code);
-    }
-    catch(e){}
+    } catch (e) {}
   }
 
   addNotification(notification: Notification): void {
     // console.log('add notification' + JSON.stringify(notification));
     let tempIndex = this.notifications.indexOf(notification);
-    if(tempIndex >=0 ) {
+    if (tempIndex >= 0) {
       return;
     }
 
-    // this.removeDuplicationFromStorage(notification);    
+    // this.removeDuplicationFromStorage(notification);
     // this.offlineNotificationService.save(notification);
-    this.offlineNotificationService.save(notification.code,notification);
+    this.offlineNotificationService.save(notification.code, notification);
 
     this.notifications.push(notification);
-    this.updateSubject.next();    
+    this.updateSubject.next();
   }
 
   deleteNotification(notification: Notification): void {
-    
     let tempIndex = this.notifications.indexOf(notification);
-    if(tempIndex >=0 ){
-      this.notifications.splice(tempIndex,1);
+    if (tempIndex >= 0) {
+      this.notifications.splice(tempIndex, 1);
       this.updateSubject.next();
     }
 
-    try{
+    try {
       this.offlineNotificationService.delete(notification.code);
-    }
-    catch(e){
+    } catch (e) {
       // console.log(e);
     }
   }
 
-  deleteNotificationReadOnlyDocuemntByCode(code: string): void{
-    const tempIndex = this.notifications.findIndex(object=>{return object.code === code;});
+  deleteNotificationReadOnlyDocuemntByCode(code: string): void {
+    const tempIndex = this.notifications.findIndex((object) => {
+      return object.code === code;
+    });
     // console.log('temp index ' + tempIndex);
 
-    if(tempIndex >= 0){
+    if (tempIndex >= 0) {
       // console.log(this.notifications[tempIndex].acknowledgeRequired);
-      if(this.notifications[tempIndex].acknowledgeRequired == 'No'){
-        this.notifications.splice(tempIndex,1);
+      if (this.notifications[tempIndex].acknowledgeRequired == "No") {
+        this.notifications.splice(tempIndex, 1);
         this.updateSubject.next();
       }
     }
   }
 
-  deleteNotificationDocuemntByCode(code: string): void{
-    const tempIndex = this.notifications.findIndex(object=>{return object.code === code;});
-    if(tempIndex >= 0){
+  deleteNotificationDocuemntByCode(code: string): void {
+    const tempIndex = this.notifications.findIndex((object) => {
+      return object.code === code;
+    });
+    if (tempIndex >= 0) {
       this.updateSubject.next();
-      this.notifications.splice(tempIndex,1);
+      this.notifications.splice(tempIndex, 1);
       // this.changeDetectorRefs.detectChanges();
     }
   }
 
-  deleteAllNotification(): void{
+  deleteAllNotification(): void {
     this.notifications = [];
     this.updateSubject.next();
   }
-  
 }

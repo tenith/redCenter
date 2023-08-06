@@ -1,76 +1,202 @@
 <div class="row">
-    <div class="col-12 col-md-12">
-        <nb-card status="primary">
-            <nb-card-header>Annoucement Form</nb-card-header>
-            <nb-card-body>
-                <form [formGroup]="postingForm" (ngSubmit)="onSubmit()">
-                    <div class="form-group">
-                        <label for="author" class="label">Author*:</label><label *ngIf="postingForm.get('author').invalid && postingForm.get('author').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please enter author.)</label>
-                        <input type="text" nbInput fullWidth id="author" formControlName="author" placeholder="Please enter author name or author department."/>
-                    </div>
-                  
-                    <div class="form-group">
-                        <label for="newsCode" class="label">Code*:</label><label *ngIf="postingForm.get('code').invalid && postingForm.get('code').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please donot leave it blank.)</label>
-                        <input type="text" nbInput fullWidth id="newsCode" formControlName="code" placeholder="Please enter code, ex. TAA/MEMO/001/2023."/>
-                    </div>
-                  
-                    <div class="form-group">
-                        <label for="title" class="label">Title*:</label><label *ngIf="postingForm.get('title').invalid && postingForm.get('title').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please donot leave it blank.)</label>
-                        <input type="text" nbInput fullWidth id="title" formControlName="title" placeholder="Please enter title, ex. Revise LIR Procedure."/>
-                    </div>
-                  
-                    <div class="form-group">
-                        <label for="body" class="label">Body*:</label><label *ngIf="postingForm.get('body').invalid && postingForm.get('body').touched" class="label nb-error">&nbsp;&nbsp;(This field is required, please donot leave it blank.)</label>
-                        <textarea hidden nbInput fullWidth id="body" formControlName="body" placeholder="Please enter body. You can enter HTML code."></textarea>
-                        <!-- <editor [init]="{plugins: 'link'}"></editor> -->
-                        <ngx-tiny-mce (editorKeyup)="edit($event)"></ngx-tiny-mce>
-                    </div>
-                  
-                    <div class="form-group">
-                        <label for="publishedDate" class="label">Published Date*:</label>
-                        <input nbInput fullWidth id="publishedDate" type="date" formControlName="publishedDate" />
-                    </div>
-                  
-                    <div *ngIf="postingForm.get('publishedDate').value" class="form-group">
-                        <label for="effectiveDate" class="label">Effective Date*:</label>
-                        <input nbInput fullWidth min="{{postingForm.get('publishedDate').value ? postingForm.get('publishedDate').value : '' }}" id="effectiveDate" type="date" formControlName="effectiveDate" />
-                    </div>
+  <div class="col-12 col-md-12">
+    <nb-card status="primary">
+      <nb-card-header>Annoucement Form</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="postingForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="author" class="label">Author*:</label
+            ><label
+              *ngIf="
+                postingForm.get('author').invalid &&
+                postingForm.get('author').touched
+              "
+              class="label nb-error"
+              >&nbsp;&nbsp;(This field is required, please enter author.)</label
+            >
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="author"
+              formControlName="author"
+              placeholder="Please enter author name or author department."
+            />
+          </div>
 
-                    <div *ngIf="postingForm.get('effectiveDate').value" class="form-group">
-                        <label for="endDate" class="label">End Date*:</label>&nbsp;&nbsp;<label *ngIf="diffDate > 0" class="label">[Duration {{diffDate}} Day(s)]</label>
-                        <input nbInput fullWidth min="{{postingForm.get('effectiveDate').value ? postingForm.get('effectiveDate').value : '' }}" id="endDate" type="date" formControlName="endDate" />
-                    </div>
+          <div class="form-group">
+            <label for="newsCode" class="label">Code*:</label
+            ><label
+              *ngIf="
+                postingForm.get('code').invalid &&
+                postingForm.get('code').touched
+              "
+              class="label nb-error"
+              >&nbsp;&nbsp;(This field is required, please donot leave it
+              blank.)</label
+            >
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="newsCode"
+              formControlName="code"
+              placeholder="Please enter code, ex. TAA/MEMO/001/2023."
+            />
+          </div>
 
-                    <!-- <div *ngIf="postingForm.value.effectiveDate != '' &&  postingForm.value.endDate != ''" class="form-group">
+          <div class="form-group">
+            <label for="title" class="label">Title*:</label
+            ><label
+              *ngIf="
+                postingForm.get('title').invalid &&
+                postingForm.get('title').touched
+              "
+              class="label nb-error"
+              >&nbsp;&nbsp;(This field is required, please donot leave it
+              blank.)</label
+            >
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="title"
+              formControlName="title"
+              placeholder="Please enter title, ex. Revise LIR Procedure."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="body" class="label">Body*:</label
+            ><label
+              *ngIf="
+                postingForm.get('body').invalid &&
+                postingForm.get('body').touched
+              "
+              class="label nb-error"
+              >&nbsp;&nbsp;(This field is required, please donot leave it
+              blank.)</label
+            >
+            <textarea
+              hidden
+              nbInput
+              fullWidth
+              id="body"
+              formControlName="body"
+              placeholder="Please enter body. You can enter HTML code."
+            ></textarea>
+            <!-- <editor [init]="{plugins: 'link'}"></editor> -->
+            <ngx-tiny-mce (editorKeyup)="edit($event)"></ngx-tiny-mce>
+          </div>
+
+          <div class="form-group">
+            <label for="publishedDate" class="label">Published Date*:</label>
+            <input
+              nbInput
+              fullWidth
+              id="publishedDate"
+              type="date"
+              formControlName="publishedDate"
+            />
+          </div>
+
+          <div
+            *ngIf="postingForm.get('publishedDate').value"
+            class="form-group"
+          >
+            <label for="effectiveDate" class="label">Effective Date*:</label>
+            <input
+              nbInput
+              fullWidth
+              min="{{
+                postingForm.get('publishedDate').value
+                  ? postingForm.get('publishedDate').value
+                  : ''
+              }}"
+              id="effectiveDate"
+              type="date"
+              formControlName="effectiveDate"
+            />
+          </div>
+
+          <div
+            *ngIf="postingForm.get('effectiveDate').value"
+            class="form-group"
+          >
+            <label for="endDate" class="label">End Date*:</label
+            >&nbsp;&nbsp;<label *ngIf="diffDate > 0" class="label"
+              >[Duration {{ diffDate }} Day(s)]</label
+            >
+            <input
+              nbInput
+              fullWidth
+              min="{{
+                postingForm.get('effectiveDate').value
+                  ? postingForm.get('effectiveDate').value
+                  : ''
+              }}"
+              id="endDate"
+              type="date"
+              formControlName="endDate"
+            />
+          </div>
+
+          <!-- <div *ngIf="postingForm.value.effectiveDate != '' &&  postingForm.value.endDate != ''" class="form-group">
                         <label for="endDate" class="label">Duration:&nbsp;&nbsp;{{getDiffDate(postingForm.value.endDate, postingForm.value.effectiveDate)}}</label>
                     </div> -->
 
-                    <div class="form-group">
-                        <label for="acknowledge" class="label">Acknowledge required?*:</label>
-                        <nb-radio-group id="acknowledge" formControlName="acknowledge">
-                            <nb-radio value="Yes">Yes</nb-radio>
-                            <nb-radio value="No">No</nb-radio>
-                        </nb-radio-group>
-                    </div>
+          <div class="form-group">
+            <label for="acknowledge" class="label"
+              >Acknowledge required?*:</label
+            >
+            <nb-radio-group id="acknowledge" formControlName="acknowledge">
+              <nb-radio value="Yes">Yes</nb-radio>
+              <nb-radio value="No">No</nb-radio>
+            </nb-radio-group>
+          </div>
 
-                    <div class="form-group">
-                        <label for="audience" class="label">Audience Group*:</label>
-                        <nb-select multiple fullWidth id="audience" formControlName="audience">
-                            <nb-option *ngFor="let group of audienceGroups" [value]="group.value">
-                                <img style="max-width: 25px;" src="../../../{{group.icon}}">&nbsp;&nbsp;
-                                {{ group.label }}
-                            </nb-option>
-                        </nb-select>
-                    </div>
+          <div class="form-group">
+            <label for="audience" class="label">Audience Group*:</label>
+            <nb-select
+              multiple
+              fullWidth
+              id="audience"
+              formControlName="audience"
+            >
+              <nb-option
+                *ngFor="let group of audienceGroups"
+                [value]="group.value"
+              >
+                <img
+                  style="max-width: 25px"
+                  src="../../../{{ group.icon }}"
+                />&nbsp;&nbsp;
+                {{ group.label }}
+              </nb-option>
+            </nb-select>
+          </div>
 
-                    <div class="form-group" >
-                        <button nbButton [disabled]="postingForm.invalid" status="primary" type="submit">Submit</button>
-                        &nbsp;&nbsp;&nbsp;
-                        <button nbButton [disabled]="!postingForm.touched" status="danger" type="reset">Reset</button>
-                    </div>
-                    
-                  </form>
-            </nb-card-body>
-        </nb-card>
-    </div>
+          <div class="form-group">
+            <button
+              nbButton
+              [disabled]="postingForm.invalid"
+              status="primary"
+              type="submit"
+            >
+              Submit
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <button
+              nbButton
+              [disabled]="!postingForm.touched"
+              status="danger"
+              type="reset"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>

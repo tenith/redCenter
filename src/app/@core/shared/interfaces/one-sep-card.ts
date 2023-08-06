@@ -1,13 +1,13 @@
 export interface OneSepCard {
-    Name: string;
-    Attended: string;
-    Type: string;
-    Validperiod: string;
-    Expiry: string;
-    Instructor: string;
-    Remark: string;
-    Link: string;
+  Name: string;
+  Attended: string;
+  Type: string;
+  Validperiod: string;
+  Expiry: string;
+  Instructor: string;
+  Remark: string;
+  Link: string;
 
-    InitialDate?: string;
-    verify?: boolean;
+  InitialDate?: string;
+  verify?: boolean;
 }

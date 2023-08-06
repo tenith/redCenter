@@ -1,35 +1,106 @@
-<div style="background-color: white;overflow-y: auto;max-width: 100%; max-height: 95vh; margin-left: auto; margin-right: auto; margin-top: auto;">
-    <div id="printSummary" #printSummary>
-        <div *ngFor="let x$ of downloadUrl$;let indexOfelement=index;" id="my-div">
-            <table id="my-table">
-              <tr>
-                <td colspan="2">&nbsp;<img style="max-height: 10px;" src="../../../../assets/images/airasia.svg">&nbsp; Owner: {{fileUploadInformation[indexOfelement].displayName | uppercase}} uploaded at [{{fileUploadInformation[indexOfelement].uploadTime | date : ' dd MMM yyy HH:mm:ss'}}]</td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                    <div class="container" style="text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;">
-                        <div class="layer layer1" style="background-color: rgba(255, 255, 255, 0.1);" [ngxWatermark]="ngxWaterMarkOptions"></div>
-                        <div class="layer layer2" style="align-items: center; text-align: center; margin-left: auto; margin-right: auto; margin-top: auto;">
-                            <img style="max-width: 90%; max-height: 90%;" *ngIf="(x$ | async)" [src]="(x$ | async)">
-                            <p *ngIf="!(x$ | async)">Loading image...</p>
-                        </div>
-                    </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">&nbsp;Generated this report by: {{generatedBy}} at [{{generatedAt}}]</td>
-              </tr>
-            </table>
-        </div>
-        <div style="page-break-before: always;"> </div>
+<div
+  style="
+    background-color: white;
+    overflow-y: auto;
+    max-width: 100%;
+    max-height: 95vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+  "
+>
+  <div id="printSummary" #printSummary>
+    <div
+      *ngFor="let x$ of downloadUrl$; let indexOfelement = index"
+      id="my-div"
+    >
+      <table id="my-table">
+        <tr>
+          <td colspan="2">
+            &nbsp;<img
+              style="max-height: 10px"
+              src="../../../../assets/images/airasia.svg"
+            />&nbsp; Owner:
+            {{
+              fileUploadInformation[indexOfelement].displayName | uppercase
+            }}
+            uploaded at [{{
+              fileUploadInformation[indexOfelement].uploadTime
+                | date: " dd MMM yyy HH:mm:ss"
+            }}]
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div
+              class="container"
+              style="
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: auto;
+              "
+            >
+              <div
+                class="layer layer1"
+                style="background-color: rgba(255, 255, 255, 0.1)"
+                [ngxWatermark]="ngxWaterMarkOptions"
+              ></div>
+              <div
+                class="layer layer2"
+                style="
+                  align-items: center;
+                  text-align: center;
+                  margin-left: auto;
+                  margin-right: auto;
+                  margin-top: auto;
+                "
+              >
+                <img
+                  style="max-width: 90%; max-height: 90%"
+                  *ngIf="x$ | async"
+                  [src]="x$ | async"
+                />
+                <p *ngIf="!(x$ | async)">Loading image...</p>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            &nbsp;Generated this report by: {{ generatedBy }} at [{{
+              generatedAt
+            }}]
+          </td>
+        </tr>
+      </table>
     </div>
-    <div class="row" style="background-color: white;">
-        <div class="col-12" style="text-align: center;min-width: 80%; max-width: 80%; margin-left: auto; margin-right: auto; margin-top: auto;">
-            <!-- <nb-icon (click)="saveToLocal()" style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon>&nbsp;&nbsp;&nbsp; -->
-            <button printSectionId="printSummary" [useExistingCss]="true" ngxPrint nbButton>Print</button>&nbsp;&nbsp;&nbsp;
-            <button (click)="cancel()" nbButton>Exit</button>
-            <!-- <nb-icon  style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon> -->
-            <!-- <nb-icon (click)="cancel()" style="font-size: 2.5rem;" size="large" status="danger" icon="close-square-outline"></nb-icon> -->
-        </div>
+    <div style="page-break-before: always"></div>
+  </div>
+  <div class="row" style="background-color: white">
+    <div
+      class="col-12"
+      style="
+        text-align: center;
+        min-width: 80%;
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+      "
+    >
+      <!-- <nb-icon (click)="saveToLocal()" style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon>&nbsp;&nbsp;&nbsp; -->
+      <button
+        printSectionId="printSummary"
+        [useExistingCss]="true"
+        ngxPrint
+        nbButton
+      >
+        Print</button
+      >&nbsp;&nbsp;&nbsp;
+      <button (click)="cancel()" nbButton>Exit</button>
+      <!-- <nb-icon  style="font-size: 2.5rem;" size="large" status="primary" icon="save-outline"></nb-icon> -->
+      <!-- <nb-icon (click)="cancel()" style="font-size: 2.5rem;" size="large" status="danger" icon="close-square-outline"></nb-icon> -->
     </div>
+  </div>
 </div>

@@ -1,26 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { NbToastrService } from '@nebular/theme';
-import { FirebaseAuthenticationService } from '../../@core/shared/services/firebase-authentication.service';
+import { Component, OnInit } from "@angular/core";
+import { NbToastrService } from "@nebular/theme";
+import { FirebaseAuthenticationService } from "../../@core/shared/services/firebase-authentication.service";
 
 @Component({
-  selector: 'ngx-signin',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+  selector: "ngx-signin",
+  templateUrl: "./signin.component.html",
+  styleUrls: ["./signin.component.scss"],
 })
 export class SigninComponent implements OnInit {
+  constructor(
+    public firebaseAuthen: FirebaseAuthenticationService,
+    public toastr: NbToastrService,
+  ) {}
 
-  constructor(public firebaseAuthen : FirebaseAuthenticationService, public toastr: NbToastrService) { 
-  }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   async login() {
-    try{
+    try {
       await this.firebaseAuthen.GoogleAuth();
-    }
-    catch(error){
-      this.toastr.danger('error', error);
+    } catch (error) {
+      this.toastr.danger("error", error);
     }
   }
 }

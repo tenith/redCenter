@@ -31,14 +31,14 @@
         }
 */
 export interface FirebaseUser {
-    uid: string;
-    email: string;
-    emailVerified: boolean;
-    displayName: string;
-    isAnonymous: boolean;
-    photoURL: string;
-    createdAt: string;
-    lastLoginAt: string;
-    apiKey: string;
-    appName: string;
+  uid: string;
+  email: string;
+  emailVerified: boolean;
+  displayName: string;
+  isAnonymous: boolean;
+  photoURL: string;
+  createdAt: string;
+  lastLoginAt: string;
+  apiKey: string;
+  appName: string;
 }

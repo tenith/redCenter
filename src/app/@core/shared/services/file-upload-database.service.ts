@@ -1,47 +1,65 @@
-import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FirestoreUserService } from './firestore-user.service';
-import { FileUploadInformation } from '../interfaces/file-upload-information';
-import { FileUploadInformationService } from './file-upload-information.service';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { FirestoreUserService } from "./firestore-user.service";
+import { FileUploadInformation } from "../interfaces/file-upload-information";
+import { FileUploadInformationService } from "./file-upload-information.service";
+import { Observable } from "rxjs";
 
-import { firebaseDB, requiredVerify, roleName, sepMandatory } from '../../../../environments/myconfigs';
-import { DatePipe } from '@angular/common';
+import {
+  firebaseDB,
+  requiredVerify,
+  roleName,
+  sepMandatory,
+} from "../../../../environments/myconfigs";
+import { DatePipe } from "@angular/common";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class FileUploadDatabaseService {
-
   path: string = firebaseDB.dbPathName;
   absPath: string = firebaseDB.dbABSPathName;
 
   isModerator: boolean = false;
-  email: string = '';
+  email: string = "";
 
-  constructor(private storage: AngularFireStorage, private firestoreUser: FirestoreUserService, private fileUploadInformationService: FileUploadInformationService) { 
+  constructor(
+    private storage: AngularFireStorage,
+    private firestoreUser: FirestoreUserService,
+    private fileUploadInformationService: FileUploadInformationService,
+  ) {
     const temp = this.firestoreUser.getFirestoreUser();
     this.email = temp.email;
-    this.path = this.path + '/' + this.email;
+    this.path = this.path + "/" + this.email;
 
     this.isModerator = this.firestoreUser.isModerator;
   }
 
-  public async uploadFileByAdmin(file: File, form: any, email: string): Promise<boolean> {
+  public async uploadFileByAdmin(
+    file: File,
+    form: any,
+    email: string,
+  ): Promise<boolean> {
     let completed = false;
-    const newFileName = new Date().valueOf() + '_' + file.name;
-    const fileRef = this.storage.ref(firebaseDB.dbPathName + '/' + email + '/' + newFileName);
-    const fileAbsPath = this.absPath + firebaseDB.dbPathName + '/' + newFileName;
+    const newFileName = new Date().valueOf() + "_" + file.name;
+    const fileRef = this.storage.ref(
+      firebaseDB.dbPathName + "/" + email + "/" + newFileName,
+    );
+    const fileAbsPath =
+      this.absPath + firebaseDB.dbPathName + "/" + newFileName;
 
-    const datePipe = new DatePipe('en-US');        
-    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+    const datePipe = new DatePipe("en-US");
+    const formattedDate = datePipe.transform(
+      new Date(),
+      "dd MMM yyyy HH:mm:ss",
+    );
 
     await fileRef.put(file).then(async () => {
       let temp: FileUploadInformation = {
         owner: email,
         name: newFileName,
-        displayName: '',
-        relativePath: firebaseDB.dbPathName + '/' + email + '/' + newFileName,
+        displayName: "",
+        relativePath: firebaseDB.dbPathName + "/" + email + "/" + newFileName,
         path: fileAbsPath,
         description: form.fileDescription,
         uploadTime: formattedDate,
@@ -53,15 +71,16 @@ export class FileUploadDatabaseService {
         expiryDate: form.expiryDate,
         issueBy: form.issueBy,
         verify: true,
-      }           
+      };
 
-      await this.fileUploadInformationService.addFileUploadInformation(temp, email)
-      .then(()=>{
-        completed = true;
-      })
-      .catch(error => {
-        fileRef.delete();
-      })
+      await this.fileUploadInformationService
+        .addFileUploadInformation(temp, email)
+        .then(() => {
+          completed = true;
+        })
+        .catch((error) => {
+          fileRef.delete();
+        });
     });
 
     return completed;
@@ -69,25 +88,30 @@ export class FileUploadDatabaseService {
 
   public async uploadFile(file: File, form: any): Promise<boolean> {
     let completed = false;
-    const newFileName = new Date().valueOf() + '_' + file.name;
-    const fileRef = this.storage.ref(this.path + '/' + newFileName);
-    const fileAbsPath = this.absPath + this.path + '/' + newFileName;  
+    const newFileName = new Date().valueOf() + "_" + file.name;
+    const fileRef = this.storage.ref(this.path + "/" + newFileName);
+    const fileAbsPath = this.absPath + this.path + "/" + newFileName;
 
-    let needVerify = !requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(form.fileCategory);
+    let needVerify = !requiredVerify[
+      this.firestoreUser.getFirestoreUser().role
+    ].includes(form.fileCategory);
 
     /**
-     * 24 Jul 2023 
+     * 24 Jul 2023
      * Fix bug change from toLocalDateString() to be format dd MMM yyy HH:mm:ss
      */
-    const datePipe = new DatePipe('en-US');        
-    const formattedDate = datePipe.transform(new Date(), 'dd MMM yyyy HH:mm:ss');
+    const datePipe = new DatePipe("en-US");
+    const formattedDate = datePipe.transform(
+      new Date(),
+      "dd MMM yyyy HH:mm:ss",
+    );
 
     await fileRef.put(file).then(async () => {
       let temp: FileUploadInformation = {
         owner: this.email,
         name: newFileName,
         displayName: this.firestoreUser.getFirestoreUser().displayName,
-        relativePath: this.path + '/' + newFileName,
+        relativePath: this.path + "/" + newFileName,
         path: fileAbsPath,
         description: form.fileDescription,
         uploadTime: formattedDate,
@@ -99,25 +123,26 @@ export class FileUploadDatabaseService {
         expiryDate: form.expiryDate,
         issueBy: form.issueBy,
         verify: needVerify,
-      }     
-      
-      if(needVerify == true)
+      };
+
+      if (needVerify == true)
         this.fileUploadInformationService.setNeedVerify(this.email, true);
 
-      await this.fileUploadInformationService.addFileUploadInformation(temp, this.email)
-      .then(()=>{
-        completed = true;
-      })
-      .catch(error => {
-        // console.log(error);
-        fileRef.delete();
-      })
+      await this.fileUploadInformationService
+        .addFileUploadInformation(temp, this.email)
+        .then(() => {
+          completed = true;
+        })
+        .catch((error) => {
+          // console.log(error);
+          fileRef.delete();
+        });
     });
 
     return completed;
-  }  
+  }
 
-  public getFile(fullPath: string):  Observable<any>{
+  public getFile(fullPath: string): Observable<any> {
     return this.storage.ref(fullPath).getDownloadURL();
   }
 
@@ -131,44 +156,54 @@ export class FileUploadDatabaseService {
   //     completed = true;
   //   })
   //   .catch(error => console.log(error));
-    
-    
+
   //   return completed;
   // }
 
   public async deleteFileByName(path: string, email: string): Promise<boolean> {
     let completed = false;
-    await this.fileUploadInformationService.removeFileUploadByName(path.split('/')[3], email)
-    .then(async () => {
-      const fileRef = this.storage.ref(path);
-      await fileRef.delete().toPromise().then(() => { 
-        // console.log('delete completed');
-      });
-      completed = true;
-    })
-    .catch(error => 
-      console.log(error)
-    );    
-    
-    return completed;
+    await this.fileUploadInformationService
+      .removeFileUploadByName(path.split("/")[3], email)
+      .then(async () => {
+        const fileRef = this.storage.ref(path);
+        await fileRef
+          .delete()
+          .toPromise()
+          .then(() => {
+            // console.log('delete completed');
+          });
+        completed = true;
+      })
+      .catch((error) => console.log(error));
 
+    return completed;
   }
 
-  public async deleteFile(path: string, fileUploadInformation: FileUploadInformation): Promise<boolean> {
+  public async deleteFile(
+    path: string,
+    fileUploadInformation: FileUploadInformation,
+  ): Promise<boolean> {
     let completed = false;
     // if(!this.isModerator)
     //   return;
 
-    await this.fileUploadInformationService.removeFileUploadInformation(fileUploadInformation, fileUploadInformation.owner)
-    .then(async () => {
-      const fileRef = this.storage.ref(path);
-      await fileRef.delete().toPromise().then(() => { console.log('delete completed');});
-      completed = true;
-    })
-    .catch(error => console.log(error));
-    
-    
-    return completed;
+    await this.fileUploadInformationService
+      .removeFileUploadInformation(
+        fileUploadInformation,
+        fileUploadInformation.owner,
+      )
+      .then(async () => {
+        const fileRef = this.storage.ref(path);
+        await fileRef
+          .delete()
+          .toPromise()
+          .then(() => {
+            console.log("delete completed");
+          });
+        completed = true;
+      })
+      .catch((error) => console.log(error));
 
+    return completed;
   }
 }

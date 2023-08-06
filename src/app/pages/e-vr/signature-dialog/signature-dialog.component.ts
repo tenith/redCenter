@@ -1,12 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { NbDialogRef } from "@nebular/theme";
 
-import { SignaturePad } from 'angular2-signaturepad';
+import { SignaturePad } from "angular2-signaturepad";
 
 @Component({
-  selector: 'ngx-signature-dialog',
-  templateUrl: './signature-dialog.component.html',
-  styleUrls: ['./signature-dialog.component.scss']
+  selector: "ngx-signature-dialog",
+  templateUrl: "./signature-dialog.component.html",
+  styleUrls: ["./signature-dialog.component.scss"],
 })
 export class SignatureDialogComponent implements OnInit {
   @Input() data: any;
@@ -15,29 +15,32 @@ export class SignatureDialogComponent implements OnInit {
   @Input() width?: number;
   @Input() height?: number;
 
-  signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
-    'minWidth': 2,
-    'canvasWidth': 400,
-    'canvasHeight': 300
+  signaturePadOptions: Object = {
+    // passed through to szimek/signature_pad constructor
+    minWidth: 2,
+    canvasWidth: 400,
+    canvasHeight: 300,
   };
 
-  constructor(private dialogRef: NbDialogRef<SignatureDialogComponent>) { }
+  constructor(private dialogRef: NbDialogRef<SignatureDialogComponent>) {}
 
   ngOnInit(): void {
     this.signaturePadOptions = {
-      'minWidth': 2,
-      'canvasWidth': this.width? this.width: 400,
-      'canvasHeight': this.height? this.height: 300
-    }
+      minWidth: 2,
+      canvasWidth: this.width ? this.width : 400,
+      canvasHeight: this.height ? this.height : 300,
+    };
   }
 
   ngAfterViewInit() {
-    this.signaturePad.fromDataURL('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
+    this.signaturePad.fromDataURL(
+      "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
+    );
   }
 
-  clearSignature(){
+  clearSignature() {
     this.signaturePad.clear();
-    this.data = '';
+    this.data = "";
   }
 
   confirm(): void {
@@ -46,7 +49,6 @@ export class SignatureDialogComponent implements OnInit {
 
   cancel(): void {
     this.clearSignature();
-    this.dialogRef.close('');
+    this.dialogRef.close("");
   }
-
 }

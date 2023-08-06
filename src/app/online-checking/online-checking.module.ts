@@ -1,15 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { OnlineCheckingRoutingModule } from './online-checking-routing.module';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { OnlineCheckingRoutingModule } from "./online-checking-routing.module";
 
-import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbCardModule, NbSpinnerModule } from '@nebular/theme';
-import { RemoteSEPComponent } from './remote-sep/remote-sep.component';
-import { SepModule } from '../pages/sep/sep.module';
+import {
+  NbThemeModule,
+  NbLayoutModule,
+  NbIconModule,
+  NbButtonModule,
+  NbCardModule,
+  NbSpinnerModule,
+} from "@nebular/theme";
+import { RemoteSEPComponent } from "./remote-sep/remote-sep.component";
+import { SepModule } from "../pages/sep/sep.module";
 
 @NgModule({
-  declarations: [
-    RemoteSEPComponent
-  ],
+  declarations: [RemoteSEPComponent],
   imports: [
     CommonModule,
     NbThemeModule,
@@ -20,6 +25,6 @@ import { SepModule } from '../pages/sep/sep.module';
     SepModule,
     NbCardModule,
     NbSpinnerModule,
-  ]
+  ],
 })
-export class OnlineCheckingModule { }
+export class OnlineCheckingModule {}

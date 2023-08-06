@@ -1,22 +1,29 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FirestoreUserService } from '../../../@core/shared/services/firestore-user.service';
-import { EventEmitter } from '@angular/core';
-import { FileUploadInformation } from '../../../@core/shared/interfaces/file-upload-information';
-import { FileUploadInformationService } from '../../../@core/shared/services/file-upload-information.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
-import { LocalDataSource } from 'ng2-smart-table';
-import { CustomActionComponent } from '../custom-action/custom-action.component';
-import { FileReportService } from '../../../@core/shared/services/file-report.service';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
+import { FirestoreUserService } from "../../../@core/shared/services/firestore-user.service";
+import { EventEmitter } from "@angular/core";
+import { FileUploadInformation } from "../../../@core/shared/interfaces/file-upload-information";
+import { FileUploadInformationService } from "../../../@core/shared/services/file-upload-information.service";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { DatePipe } from "@angular/common";
+import { LocalDataSource } from "ng2-smart-table";
+import { CustomActionComponent } from "../custom-action/custom-action.component";
+import { FileReportService } from "../../../@core/shared/services/file-report.service";
 
 @Component({
-  selector: 'ngx-personal-information',
-  templateUrl: './personal-information.component.html',
-  styleUrls: ['./personal-information.component.scss']
+  selector: "ngx-personal-information",
+  templateUrl: "./personal-information.component.html",
+  styleUrls: ["./personal-information.component.scss"],
 })
 export class PersonalInformationComponent implements OnInit, OnDestroy {
-  @Input() email?: string = '';
+  @Input() email?: string = "";
   @Output() addEvent = new EventEmitter<string>();
   @Output() removeEvent = new EventEmitter<string>();
 
@@ -30,42 +37,59 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
     },
     pager: {
       display: true,
-      perPage: 10
+      perPage: 10,
     },
     columns: {
-      myCommand: { title:'Action & Status', width:'12%', type:'custom', filter: false, sort:false,renderComponent: CustomActionComponent},
-      uploadTime: { title: 'Published Date', sortDirection: 'desc', filter: false, width:'15%', type: 'date',
+      myCommand: {
+        title: "Action & Status",
+        width: "12%",
+        type: "custom",
+        filter: false,
+        sort: false,
+        renderComponent: CustomActionComponent,
+      },
+      uploadTime: {
+        title: "Published Date",
+        sortDirection: "desc",
+        filter: false,
+        width: "15%",
+        type: "date",
         valuePrepareFunction: (date) => {
-          if(date == '' || date == '-')
-            return '-';
-            
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy HH:mm:ss');
+          if (date == "" || date == "-") return "-";
+
+          const datePipe = new DatePipe("en-US");
+          const formattedDate = datePipe.transform(date, "dd MMM yyy HH:mm:ss");
           return formattedDate.toUpperCase();
         },
       },
-      fileCategory: { title: 'Category', width:'12%',},
-      description: { title: 'Description', },
-      issueDate: { title: 'Issue Date', filter: false, width:'15%', type: 'date',
+      fileCategory: { title: "Category", width: "12%" },
+      description: { title: "Description" },
+      issueDate: {
+        title: "Issue Date",
+        filter: false,
+        width: "15%",
+        type: "date",
         valuePrepareFunction: (date) => {
-          if(date == '' || date == '-')
-            return '-';
+          if (date == "" || date == "-") return "-";
 
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy');
+          const datePipe = new DatePipe("en-US");
+          const formattedDate = datePipe.transform(date, "dd MMM yyy");
           return formattedDate.toUpperCase();
         },
       },
-      expiryDate: { title: 'Expiry Date', filter: false, width:'15%', type: 'date',
+      expiryDate: {
+        title: "Expiry Date",
+        filter: false,
+        width: "15%",
+        type: "date",
         valuePrepareFunction: (date) => {
-          if(date == '' || date == '-')
-            return '-';
+          if (date == "" || date == "-") return "-";
 
-          const datePipe = new DatePipe('en-US');
-          const formattedDate = datePipe.transform(date, 'dd MMM yyy');
+          const datePipe = new DatePipe("en-US");
+          const formattedDate = datePipe.transform(date, "dd MMM yyy");
           return formattedDate.toUpperCase();
         },
-      }
+      },
       // name: { title: 'Name', valuePrepareFunction: (name) => {
       //   let temp = name.split('_')[1];
       //   return temp;
@@ -74,19 +98,23 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   };
 
   fileUploadInformations: FileUploadInformation[];
-  
 
-  constructor(private fileReportService:FileReportService, private fileUploadInformationService: FileUploadInformationService, private firestoreUserService: FirestoreUserService, private cdr: ChangeDetectorRef) { 
+  constructor(
+    private fileReportService: FileReportService,
+    private fileUploadInformationService: FileUploadInformationService,
+    private firestoreUserService: FirestoreUserService,
+    private cdr: ChangeDetectorRef,
+  ) {
     // if(this.email == ''){
     //   this.email = this.firestoreUserService.getFirestoreUser().email;
     // }
   }
-  
+
   ngOnDestroy(): void {
     this.fileReportService.resetReport();
   }
 
-  refresh(): void{
+  refresh(): void {
     this.source = new LocalDataSource([...this.fileUploadInformations]);
     this.cdr.detectChanges();
   }
@@ -100,26 +128,27 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  addPathToParents(path: string): void{
+  addPathToParents(path: string): void {
     this.addEvent.emit(path);
   }
 
-  removePathToParents(path: string): void{
+  removePathToParents(path: string): void {
     this.removeEvent.emit(path);
   }
 
   ngOnInit(): void {
-    if(this.email == ''){
+    if (this.email == "") {
       this.email = this.firestoreUserService.getFirestoreUser().email;
     }
-    this.fileUploadInformationService.getFileUploadInformationSnapshotByEmail(this.email).onSnapshot(docSnapshot=>{
-      if(docSnapshot.exists){
-        const temp = [...docSnapshot.data().files] as FileUploadInformation[];
-        this.fileUploadInformations = temp;
+    this.fileUploadInformationService
+      .getFileUploadInformationSnapshotByEmail(this.email)
+      .onSnapshot((docSnapshot) => {
+        if (docSnapshot.exists) {
+          const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+          this.fileUploadInformations = temp;
 
-        this.refresh();
-      }
-    });
+          this.refresh();
+        }
+      });
   }
-
 }

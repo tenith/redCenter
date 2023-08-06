@@ -1,4 +1,4 @@
-@import '../../@theme/styles/themes';
+@import "../../@theme/styles/themes";
 
 @include nb-install-component() {
   .show-grid {
@@ -6,7 +6,7 @@
       margin: -0.5rem;
     }
 
-    div[class^=col-] {
+    div[class^="col-"] {
       padding: 0.5rem;
       box-sizing: border-box;
 
@@ -41,7 +41,7 @@ fieldset {
   border-top-style: solid;
 }
 
-//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง//////////////////////////// 
+//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง////////////////////////////
 .PersonalDoc-Required-legend {
   padding: 0 5px;
   font-weight: bold;

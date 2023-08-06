@@ -1,43 +1,44 @@
 @page {
-    size: A4;
-    margin: 20px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-  }
+  size: A4;
+  margin: 20px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 
-  .container {
-    position: relative;
-    width: 600px;
-    height: 800px;
-  }
-  
-  .layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .layer1 {
-    z-index: 200;
-  }
-  
-  .layer2 {
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.container {
+  position: relative;
+  width: 600px;
+  height: 800px;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.layer1 {
+  z-index: 200;
+}
+
+.layer2 {
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Style the div that contains the table */
 #my-div {
   width: 100%;
-  height: calc(100% - 42px); /* Take up the full height of the page, minus the top and bottom margins */
+  height: calc(
+    100% - 42px
+  ); /* Take up the full height of the page, minus the top and bottom margins */
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
 
 /* Style the table inside the div */
 #my-table {

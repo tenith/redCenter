@@ -1,5 +1,5 @@
 export interface Invoice {
-    uuid: string;
-    title: string;
-    dateTime: string;
+  uuid: string;
+  title: string;
+  dateTime: string;
 }

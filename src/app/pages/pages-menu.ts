@@ -1,39 +1,105 @@
-import { NbMenuItem } from '@nebular/theme';
+import { NbMenuItem } from "@nebular/theme";
 
 // home, authorization, documents_amendment, personal_documents, performance, ets1, sep, logout;
 export let allowMenuByRole = {
-  Admin: ['home', 'authorization', 'documents_amendment', 'document_verification', 'personal_documents',  'eVR', 'performance', 'ets1', 'sep', 'logout'],
-  Pilot: ['home', 'documents_amendment', 'personal_documents', 'eVR', 'performance', 'ets1', 'sep', 'logout'],
-  Cabin_Crew: ['home', 'documents_amendment', 'personal_documents', 'sep', 'logout'],
-  Flight_Operations: ['home', 'documents_amendment', 'document_verification', 'personal_documents',  'eVR', 'logout'],
-  Training: ['home', 'documents_amendment', 'personal_documents', 'ets1', 'logout'],
-  Engineer:  ['home', 'documents_amendment', 'personal_documents', 'logout'],
-  CCD_TEAM: ['home', 'document_verification', 'personal_documents',  'logout'],
-}
+  Admin: [
+    "home",
+    "authorization",
+    "documents_amendment",
+    "document_verification",
+    "personal_documents",
+    "eVR",
+    "performance",
+    "ets1",
+    "sep",
+    "logout",
+  ],
+  Pilot: [
+    "home",
+    "documents_amendment",
+    "personal_documents",
+    "eVR",
+    "performance",
+    "ets1",
+    "sep",
+    "logout",
+  ],
+  Cabin_Crew: [
+    "home",
+    "documents_amendment",
+    "personal_documents",
+    "sep",
+    "logout",
+  ],
+  Flight_Operations: [
+    "home",
+    "documents_amendment",
+    "document_verification",
+    "personal_documents",
+    "eVR",
+    "logout",
+  ],
+  Training: [
+    "home",
+    "documents_amendment",
+    "personal_documents",
+    "ets1",
+    "logout",
+  ],
+  Engineer: ["home", "documents_amendment", "personal_documents", "logout"],
+  CCD_TEAM: ["home", "document_verification", "personal_documents", "logout"],
+};
 
 export let menuListDetail = {
-  home: { title: 'Home', icon: 'home-outline', link: '/pages/home', home: true,},
-  authorization: { title: 'Authorization', icon: 'shield-outline', link: '/pages/authorization', },
-  documents_amendment: { title: 'Documents Amendment', icon: 'flag-outline', link: '/pages/documents_amendment' },
-  document_verification: { title: 'Documents verification', icon: 'pricetags-outline', link: '/pages/document_verification', },
-  personal_documents: { title: 'Personal document(s)', icon: 'folder-outline', link: '/pages/personal_documents', },
-  eVR: { title: 'E-VR', icon: 'inbox-outline',  
+  home: {
+    title: "Home",
+    icon: "home-outline",
+    link: "/pages/home",
+    home: true,
+  },
+  authorization: {
+    title: "Authorization",
+    icon: "shield-outline",
+    link: "/pages/authorization",
+  },
+  documents_amendment: {
+    title: "Documents Amendment",
+    icon: "flag-outline",
+    link: "/pages/documents_amendment",
+  },
+  document_verification: {
+    title: "Documents verification",
+    icon: "pricetags-outline",
+    link: "/pages/document_verification",
+  },
+  personal_documents: {
+    title: "Personal document(s)",
+    icon: "folder-outline",
+    link: "/pages/personal_documents",
+  },
+  eVR: {
+    title: "E-VR",
+    icon: "inbox-outline",
     children: [
       {
-        title: 'Dashboard',
-        link: '/pages/eVR/dashboard',
+        title: "Dashboard",
+        link: "/pages/eVR/dashboard",
       },
       {
-        title: 'E-VR Form',
-        link: '/pages/eVR/workspace',
+        title: "E-VR Form",
+        link: "/pages/eVR/workspace",
       },
-    ]
+    ],
   },
-  performance: { title: 'My performance', icon: 'trending-up', link: '/pages/performance', },
-  ets1: { title: 'E-TS1', icon: 'file-outline', link: '/pages/ets1/workspace'},
-  sep: { title: 'SEP Card', icon: 'book-outline', link: '/pages/sep', },
-  logout: { title: 'Log out', icon: 'log-out', link: '/authentication/logout', },
-}
+  performance: {
+    title: "My performance",
+    icon: "trending-up",
+    link: "/pages/performance",
+  },
+  ets1: { title: "E-TS1", icon: "file-outline", link: "/pages/ets1/workspace" },
+  sep: { title: "SEP Card", icon: "book-outline", link: "/pages/sep" },
+  logout: { title: "Log out", icon: "log-out", link: "/authentication/logout" },
+};
 
 // export let menuList = {
 //   Pilot : [
@@ -85,7 +151,7 @@ export let menuListDetail = {
 //       title: 'SEP Card',
 //       icon: 'book-outline',
 //       link: '/pages/sep',
-//     },  
+//     },
 //     {
 //       title: 'Log out',
 //       icon: 'log-out',
@@ -124,7 +190,7 @@ export let menuListDetail = {
 //       title: 'SEP Card',
 //       icon: 'book-outline',
 //       link: '/pages/sep',
-//     },  
+//     },
 //     {
 //       title: 'Log out',
 //       icon: 'log-out',
@@ -244,7 +310,7 @@ export let menuListDetail = {
 //           link: '/pages/my_documents/dashboard',
 //         }
 //       ],
-//     },  
+//     },
 //     {
 //       title: 'Log out',
 //       icon: 'log-out',
@@ -269,9 +335,9 @@ export let menuListDetail = {
 //     title: 'SEP Card',
 //     icon: 'book-outline',
 //     link: '/pages/sep',
-//   },  
+//   },
 //   /*
-//     16 Mar 2023 wutthichair 
+//     16 Mar 2023 wutthichair
 //       Inhibit this menu for production purpose.
 //   */
 //   // {

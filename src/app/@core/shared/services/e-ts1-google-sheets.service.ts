@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { httpOptions } from '../../../../environments/myconfigs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ETS1Data } from '../interfaces/e-ts1-data';
-import { Observable } from 'rxjs';
-import { API } from '../../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { httpOptions } from "../../../../environments/myconfigs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { ETS1Data } from "../interfaces/e-ts1-data";
+import { Observable } from "rxjs";
+import { API } from "../../../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ETS1GoogleSheetsService {
   private apiURL = API.eTS1GoogleService;
-  httpOptions = {headers: new HttpHeaders(httpOptions)};
+  httpOptions = { headers: new HttpHeaders(httpOptions) };
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
-  post(eTS1: ETS1Data): Observable<any>{
-    var formData : any = new FormData();    
-    formData.append("eTS1", JSON.stringify(eTS1));  
-    return this.httpClient.post(this.apiURL,formData);
+  post(eTS1: ETS1Data): Observable<any> {
+    var formData: any = new FormData();
+    formData.append("eTS1", JSON.stringify(eTS1));
+    return this.httpClient.post(this.apiURL, formData);
   }
 }

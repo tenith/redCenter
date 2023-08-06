@@ -1,4 +1,4 @@
-@import '../@theme/styles/themes';
+@import "../@theme/styles/themes";
 
 @include nb-install-component() {
   ::ng-deep router-outlet + * {
@@ -13,6 +13,6 @@
       to {
         opacity: 1;
       }
-    } 
+    }
   }
 }

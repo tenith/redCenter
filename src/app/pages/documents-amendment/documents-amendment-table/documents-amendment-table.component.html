@@ -1,20 +1,35 @@
 <div class="row">
-    <div class="col-12 col-md-12">
-        <nb-card status="primary">
-            <nb-card-header>Document Dashboard</nb-card-header>
-            <nb-card-body>
-                <div *ngIf="canCreate" class="col-12 col-md-12">
-                    &nbsp;&nbsp;&nbsp;&nbsp;<nb-icon status="primary" [routerLink]="['/pages/documents_amendment/announce']" icon="edit-2-outline"></nb-icon>&nbsp;&nbsp;
-                    <button nbButton status="primary" [routerLink]="['/pages/documents_amendment/announce']">Make an announcement</button>    
-                    <br><hr>
-                </div>
+  <div class="col-12 col-md-12">
+    <nb-card status="primary">
+      <nb-card-header>Document Dashboard</nb-card-header>
+      <nb-card-body>
+        <div *ngIf="canCreate" class="col-12 col-md-12">
+          &nbsp;&nbsp;&nbsp;&nbsp;<nb-icon
+            status="primary"
+            [routerLink]="['/pages/documents_amendment/announce']"
+            icon="edit-2-outline"
+          ></nb-icon
+          >&nbsp;&nbsp;
+          <button
+            nbButton
+            status="primary"
+            [routerLink]="['/pages/documents_amendment/announce']"
+          >
+            Make an announcement
+          </button>
+          <br />
+          <hr />
+        </div>
 
-                <div class="col-12 col-md-12">
-                    <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
-                </div>
-            </nb-card-body>
-        </nb-card>
-    </div>
+        <div class="col-12 col-md-12">
+          <ng2-smart-table
+            [settings]="settings"
+            [source]="source"
+          ></ng2-smart-table>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>
 <!-- 
 <div class="row">

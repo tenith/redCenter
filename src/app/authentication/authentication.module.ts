@@ -1,27 +1,27 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { AuthenticationRoutingModule } from './authentication-routing.module';
-import { AuthenticationComponent } from './authentication.component';
-import { SigninComponent } from './signin/signin.component';
+import { AuthenticationRoutingModule } from "./authentication-routing.module";
+import { AuthenticationComponent } from "./authentication.component";
+import { SigninComponent } from "./signin/signin.component";
 
-import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule } from '@nebular/theme';
-import { SignoutComponent } from './signout/signout.component';
-
+import {
+  NbThemeModule,
+  NbLayoutModule,
+  NbIconModule,
+  NbButtonModule,
+} from "@nebular/theme";
+import { SignoutComponent } from "./signout/signout.component";
 
 @NgModule({
-  declarations: [
-    AuthenticationComponent,
-    SigninComponent,
-    SignoutComponent
-  ],
+  declarations: [AuthenticationComponent, SigninComponent, SignoutComponent],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,
     NbThemeModule,
     NbLayoutModule,
     NbIconModule,
-    NbButtonModule
-  ]
+    NbButtonModule,
+  ],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}

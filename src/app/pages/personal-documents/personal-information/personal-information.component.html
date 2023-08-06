@@ -1,7 +1,7 @@
 <nb-card status="primary">
-    <nb-card-header>{{email}} - Personal Documents</nb-card-header>
-    <nb-card-body>
-        <!-- <div class="row">
+  <nb-card-header>{{ email }} - Personal Documents</nb-card-header>
+  <nb-card-body>
+    <!-- <div class="row">
             <div class="col-3">Actions</div>
             <div class="col-3">NAME</div>
             <div class="col-3">DESCRITION</div>
@@ -17,8 +17,11 @@
         <br>
         <hr> -->
 
-        <div class="col-12 col-md-12">
-            <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
-        </div>
-    </nb-card-body>
+    <div class="col-12 col-md-12">
+      <ng2-smart-table
+        [settings]="settings"
+        [source]="source"
+      ></ng2-smart-table>
+    </div>
+  </nb-card-body>
 </nb-card>

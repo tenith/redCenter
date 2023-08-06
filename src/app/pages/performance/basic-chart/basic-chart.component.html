@@ -1,2 +1,4 @@
-<div *ngIf="isLoading" style="text-align: center;">-- Loading Data from server --</div>
+<div *ngIf="isLoading" style="text-align: center">
+  -- Loading Data from server --
+</div>
 <div *ngIf="!isLoading" echarts [options]="options" class="demo-chart"></div>

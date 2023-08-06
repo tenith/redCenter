@@ -2,7 +2,15 @@
   <nb-tab tabTitle="Dashboard">
     <ngx-dashboard (addTab)="addTab($event)"></ngx-dashboard>
   </nb-tab>
-  <nb-tab name="{{uuid}}" id="{{uuid}}" *ngFor="let uuid of uuidList" [tabTitle]="uuid">
-    <ngx-e-ts1-form [uuid]="uuid" (saveEvent)="reviseTab($event)"></ngx-e-ts1-form>
+  <nb-tab
+    name="{{ uuid }}"
+    id="{{ uuid }}"
+    *ngFor="let uuid of uuidList"
+    [tabTitle]="uuid"
+  >
+    <ngx-e-ts1-form
+      [uuid]="uuid"
+      (saveEvent)="reviseTab($event)"
+    ></ngx-e-ts1-form>
   </nb-tab>
 </nb-tabset>
