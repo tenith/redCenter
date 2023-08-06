@@ -20,14 +20,70 @@
   }
 
   .grid-h {
-    margin-top: 1.5rem;
+    margin-top: 50rem;
 
     &:first-child {
-      margin-top: 0;
+      margin-top: 50rem;
     }
   }
 
   .table-responsive {
     margin-top: 1rem;
   }
+}
+
+fieldset {
+  border: 1px solid #000;
+  margin: 5px;
+  margin-top: 10px;
+  padding: 10px; /* Keep the padding for visual spacing inside the fieldset */
+  width: 100%; /* Add this property to make the line fill the entire width */
+  border-top-style: solid;
+}
+
+//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง//////////////////////////// 
+.PersonalDoc-Required-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
+}
+.PersonalDoc-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
+}
+.PersonalRec-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
+}
+.Mandatory-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
+}
+.Optional-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
 }

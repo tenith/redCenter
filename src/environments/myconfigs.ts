@@ -172,6 +172,11 @@ export const sepCourseOptions = {
     Cabin_Crew: ["A321", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
 }
 
+export const sepCourseBasicRequiredToOperate = {
+    Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "UPRT", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
+    Cabin_Crew: ["SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
+}
+
 export const sepCourseDisplayOptions = {
     "TCAS": { Initial: false, ShowHistory: false},
     "RNP/BRNAV": { Initial: false, ShowHistory: false},

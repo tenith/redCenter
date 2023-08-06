@@ -1,10 +1,20 @@
 <nb-accordion>
     <nb-accordion-item expanded="{{myStatus != 'success'}}">
-        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>&nbsp;&nbsp;
-            <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
+        <nb-accordion-item-header><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon><b>
             &nbsp;{{info.Name | uppercase}}</b>
-            &nbsp;<nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
-            &nbsp;<nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
+            <span *ngIf="info.Link != '' && !dataReady">&nbsp;</span><nb-icon *ngIf="info.Link != '' && !dataReady" icon="loader-outline"></nb-icon>
+            <span *ngIf="canDelete && !offline">&nbsp;</span><nb-icon *ngIf="canDelete && !offline" (click)="deleteDocument()" icon="trash-outline" status="danger"></nb-icon>
+            <!-- &nbsp;&nbsp;
+            <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon> -->
+            <!--
+                06 Aug 2023 by panetl@airasia.com
+                fix bookmark position display error.
+                using class ml-auto mr-3 to fix bookmark icon to the right.
+                merge into develop by wutthichair@airasia.com 06 Aug 2023
+            -->
+            <div class="ml-auto mr-3">
+                <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon>
+            </div>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-card accent="{{myStatus}}">

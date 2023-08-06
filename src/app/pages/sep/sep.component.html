@@ -26,10 +26,10 @@
                 <div class="col-3"><B>NAME</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().displayName | uppercase}}</div>
 
-                <div class="col-3"><B>TAA ID</B></div>
+                <div class="col-3" style="margin-top: 0.2rem;"><B>TAA ID</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().cId | uppercase}}</div>
 
-                <div class="col-3"><B>ROLE</B></div>
+                <div class="col-3" style="margin-top: 0.2rem;"><B>ROLE</B></div>
                 <div class="col-9">{{firestoreUser.getFirestoreUser().role | uppercase}}</div>
 
                 <!-- <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-3"><B>MY QR</B></div>
@@ -104,34 +104,91 @@
         </nb-card>
     </div>
 
-    <!-- Mandatory Card -->
-    <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="row">
-        <div *ngFor="let cardName of mandatoryCourseName" class="col-12 col-sm-12 col-md-6 col-lg-4">
-            <ngx-mandatory-card-post [name]="cardName" (postCompleteEvent)="downloadSEP()"></ngx-mandatory-card-post>
-        </div>
-    </div>
+    <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        1. Fieldset - Personal Document(s) [Required Action] 
 
-    <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
-    <div class="row">
-        <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" [canDelete]="!fireBaseAuth.getFirebaseUser().isAnonymous" (deleteEvent)="downloadSEP()"></ngx-one-sep-card>
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+    <fieldset *ngIf="mandatoryCourseName.length > 0">
+        <legend class="PersonalDoc-Required-legend">Personal Document(s) [Required Action]</legend>
+        <!-- Mandatory Card -->
+        <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="row">
+            <div *ngFor="let cardName of mandatoryCourseName" class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <ngx-mandatory-card-post style="margin-top: 5px;" [name]="cardName" (postCompleteEvent)="downloadSEP()"></ngx-mandatory-card-post>
+            </div>
         </div>
-    </div>
+    </fieldset>
 
-    <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
-    <div *ngIf="showAutoLand" class="row">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - ONLINE">
-            <ngx-autoland-card *ngIf="autoLandCards[0]!=null" [info]="autoLandCards[0]" [events]="changeEvent.asObservable()" (postCompleteEvent)="loadAutolandCards()"></ngx-autoland-card>
-        </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - SIMULATOR">
-            <ngx-autoland-card *ngIf="autoLandCards[1]!=null" [info]="autoLandCards[1]" [events]="changeEvent.asObservable()" (postCompleteEvent)="loadAutolandCards()"></ngx-autoland-card>
-        </div>
-    </div>    
+    <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        2. Fieldset - Personal Document(s)
 
-    <!-- SHOW SEP CARDS-->
-    <div class="row">
-        <div *ngFor="let oneSepCard of oneSepCards" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
-            <ngx-one-sep-card [info]="oneSepCard" [allHistory]="fullHistory[oneSepCard.Name]" [canDelete]="false" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+    <fieldset *ngIf="manualCards.length > 0">
+        <legend class="PersonalDoc-legend">Personal Document(s)</legend>
+        <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
+        <div class="row">
+            <div *ngFor="let oneSepCard of manualCards" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
+                <ngx-one-sep-card [info]="oneSepCard" style="margin-top: 5px;" [canDelete]="!fireBaseAuth.getFirebaseUser().isAnonymous" (deleteEvent)="downloadSEP()"></ngx-one-sep-card>
+            </div>
         </div>
-    </div>
+    </fieldset>
+
+    <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        3. Fieldset - Personal Autolanding Records
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+    <fieldset *ngIf="autoLandCards.length > 0">
+        <legend class="PersonalDoc-legend">Personal Autolanding Records</legend>
+        <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
+        <div *ngIf="showAutoLand" class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - ONLINE">
+                <ngx-autoland-card style="margin-top: 5px;" *ngIf="autoLandCards[0]!=null" [info]="autoLandCards[0]" [events]="changeEvent.asObservable()" (postCompleteEvent)="loadAutolandCards()"></ngx-autoland-card>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - SIMULATOR">
+                <ngx-autoland-card style="margin-top: 5px;" *ngIf="autoLandCards[1]!=null" [info]="autoLandCards[1]" [events]="changeEvent.asObservable()" (postCompleteEvent)="loadAutolandCards()"></ngx-autoland-card>
+            </div>
+        </div>    
+    </fieldset>
+
+    <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        4. Fieldset - Mandatory courses
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+    <fieldset *ngIf="requiredCourse.length > 0">
+        <legend class="Mandatory-legend">Required Courses</legend>
+        <!-- SHOW SEP CARDS-->
+        <div class="row">
+            <div *ngFor="let oneSepCard of requiredCourse" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
+                <ngx-one-sep-card style="margin-top: 5px;" [info]="oneSepCard" [allHistory]="fullHistory[oneSepCard.Name]" [canDelete]="false" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
+            </div>
+        </div>
+    </fieldset> 
+
+    <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        5. Fieldset - Optional courses
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+    <fieldset *ngIf="optionalCourse.length > 0">
+        <legend class="Mandatory-legend">Optional Courses</legend>
+        <!-- SHOW SEP CARDS-->
+        <div class="row">
+            <div *ngFor="let oneSepCard of optionalCourse" class="col-12 col-sm-12 col-md-6 col-lg-4" id="{{oneSepCard.name}}">
+                <ngx-one-sep-card style="margin-top: 5px;" [info]="oneSepCard" [allHistory]="fullHistory[oneSepCard.Name]" [canDelete]="false" (postCompleteEvent)="newDataFromGoogleAPI($event)" (refreshEvent)="detectChanges()"></ngx-one-sep-card>
+            </div>
+        </div>
+    </fieldset>
 </div>
