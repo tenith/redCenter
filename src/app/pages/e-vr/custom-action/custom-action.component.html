@@ -1,2 +1,16 @@
-<nb-icon icon="maximize-outline" nbTooltip="Click to view more details of this vr" nbTooltipStatus="primary" [routerLink]="['/pages/eVR/workspace']" [queryParams]="{ id: rowData.uuid }"></nb-icon>&nbsp;
-<nb-icon nbTooltip="Click to delete this announcement" nbTooltipStatus="danger" status="danger" (click)="deleteVR()" icon="trash-2-outline"></nb-icon>&nbsp;
+<nb-icon
+  icon="maximize-outline"
+  nbTooltip="Click to view more details of this vr"
+  nbTooltipStatus="primary"
+  [routerLink]="['/pages/eVR/workspace']"
+  [queryParams]="{ id: rowData.uuid }"
+></nb-icon
+>&nbsp;
+<nb-icon
+  nbTooltip="Click to delete this announcement"
+  nbTooltipStatus="danger"
+  status="danger"
+  (click)="deleteVR()"
+  icon="trash-2-outline"
+></nb-icon
+>&nbsp;

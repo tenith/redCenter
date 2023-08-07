@@ -1,9 +1,51 @@
 <!-- <nb-icon icon="maximize-outline" [routerLink]="['/pages/documents_amendment/document', encodeTitle(rowData.code)]"></nb-icon>&nbsp; -->
-<nb-icon icon="maximize-outline" nbTooltip="Click to view more details of this announcement" nbTooltipStatus="primary" [routerLink]="['/pages/documents_amendment/document']" [queryParams]="{ code: encodeTitle(rowData.code) }"></nb-icon>&nbsp;
+<nb-icon
+  icon="maximize-outline"
+  nbTooltip="Click to view more details of this announcement"
+  nbTooltipStatus="primary"
+  [routerLink]="['/pages/documents_amendment/document']"
+  [queryParams]="{ code: encodeTitle(rowData.code) }"
+></nb-icon
+>&nbsp;
 
-<nb-icon *ngIf="isReadOnly" nbTooltip="Acknowledge is not required for this announcement" nbTooltipStatus="primary" status="primary" icon="file-text-outline"></nb-icon>
-<nb-icon *ngIf="isAcknowledge && !isReadOnly" nbTooltip="Acknowledge is already done" nbTooltipStatus="primary" status="primary" icon="checkmark-square-outline"></nb-icon>
-<nb-icon *ngIf="!isAcknowledge && !isReadOnly" nbTooltip="Acknowledge is required" nbTooltipStatus="danger" status="danger" icon="question-mark-circle-outline"></nb-icon>&nbsp;
+<nb-icon
+  *ngIf="isReadOnly"
+  nbTooltip="Acknowledge is not required for this announcement"
+  nbTooltipStatus="primary"
+  status="primary"
+  icon="file-text-outline"
+></nb-icon>
+<nb-icon
+  *ngIf="isAcknowledge && !isReadOnly"
+  nbTooltip="Acknowledge is already done"
+  nbTooltipStatus="primary"
+  status="primary"
+  icon="checkmark-square-outline"
+></nb-icon>
+<nb-icon
+  *ngIf="!isAcknowledge && !isReadOnly"
+  nbTooltip="Acknowledge is required"
+  nbTooltipStatus="danger"
+  status="danger"
+  icon="question-mark-circle-outline"
+></nb-icon
+>&nbsp;
 
-<nb-icon *ngIf="canDelete" nbTooltip="Click to annouce this announcement" nbTooltipStatus="primary" status="primary" (click)="makeAnnouncement()" icon="share-outline"></nb-icon>&nbsp;
-<nb-icon *ngIf="canDelete" nbTooltip="Click to delete this announcement" nbTooltipStatus="danger" status="danger" (click)="deleteAnnouncement()" icon="trash-2-outline"></nb-icon>&nbsp;
+<nb-icon
+  *ngIf="canDelete"
+  nbTooltip="Click to annouce this announcement"
+  nbTooltipStatus="primary"
+  status="primary"
+  (click)="makeAnnouncement()"
+  icon="share-outline"
+></nb-icon
+>&nbsp;
+<nb-icon
+  *ngIf="canDelete"
+  nbTooltip="Click to delete this announcement"
+  nbTooltipStatus="danger"
+  status="danger"
+  (click)="deleteAnnouncement()"
+  icon="trash-2-outline"
+></nb-icon
+>&nbsp;

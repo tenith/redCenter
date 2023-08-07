@@ -1,40 +1,67 @@
 <div class="col-12" id="home">
-    <nb-card status="primary">
-        <nb-card-header><nb-icon icon="award-outline"></nb-icon> My information</nb-card-header>
-        <nb-card-body>
-            <div class="row">
-                <div class="col-3 col-sm-1 col-md-1"><B>Name</B></div>
-                <div class="col-9 col-sm-11 col-md-11">{{firestoreUser.displayName | uppercase}}</div>
-            </div>
+  <nb-card status="primary">
+    <nb-card-header
+      ><nb-icon icon="award-outline"></nb-icon> My information</nb-card-header
+    >
+    <nb-card-body>
+      <div class="row">
+        <div class="col-3 col-sm-1 col-md-1"><B>Name</B></div>
+        <div class="col-9 col-sm-11 col-md-11">
+          {{ firestoreUser.displayName | uppercase }}
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-3 col-sm-1 col-md-1"><B>TAA ID</B></div>
-                <div class="col-9 col-sm-11 col-md-11">{{firestoreUser.cId | uppercase}}</div>
-            </div>
+      <div class="row">
+        <div class="col-3 col-sm-1 col-md-1"><B>TAA ID</B></div>
+        <div class="col-9 col-sm-11 col-md-11">
+          {{ firestoreUser.cId | uppercase }}
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-3 col-sm-1 col-md-1"><B>Role</B></div>
-                <div class="col-9 col-sm-11 col-md-11"><img style="max-width: 25px;" src="../../../{{roleURL}}" >&nbsp;&nbsp;{{firestoreUser.role}}</div>
-            </div>
+      <div class="row">
+        <div class="col-3 col-sm-1 col-md-1"><B>Role</B></div>
+        <div class="col-9 col-sm-11 col-md-11">
+          <img
+            style="max-width: 25px"
+            src="../../../{{ roleURL }}"
+          />&nbsp;&nbsp;{{ firestoreUser.role }}
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-3 col-sm-1 col-md-1"><B>AOC</B></div>
-                <div class="col-9 col-sm-11 col-md-11"><img style="max-width: 25px;" src="../../../{{aocURL}}" >&nbsp;&nbsp;{{firestoreUser.aoc}}</div>
-            </div>
+      <div class="row">
+        <div class="col-3 col-sm-1 col-md-1"><B>AOC</B></div>
+        <div class="col-9 col-sm-11 col-md-11">
+          <img
+            style="max-width: 25px"
+            src="../../../{{ aocURL }}"
+          />&nbsp;&nbsp;{{ firestoreUser.aoc }}
+        </div>
+      </div>
 
-            <!-- <div class="row">
+      <div class="row" *ngIf="firestoreUser.level != 'Subscriber'">
+        <div class="col-3 col-sm-1 col-md-1"><B>Level</B></div>
+        <div class="col-9 col-sm-10 col-md-10">{{ firestoreUser.level }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-3 col-sm-1 col-md-1"><B>QR</B></div>
+        <div class="col-9 col-sm-11 col-md-11">
+          <qrcode
+            [qrdata]="myURL"
+            [width]="128"
+            [errorCorrectionLevel]="'L'"
+          ></qrcode>
+        </div>
+      </div>
+
+      <!-- <div class="row">
                 <div class="col-12">
                     <img src="../../../assets/images/captain.png" style="width: 80%; max-width: 300px; margin-left: auto; margin-right: auto;">
                 </div>
             </div> -->
-
-            <div class="row" *ngIf="firestoreUser.level != 'Subscriber'">
-                <div class="col-3 col-sm-1 col-md-1"><B>Level</B></div>
-                <div class="col-9 col-sm-10 col-md-10">{{firestoreUser.level}}</div>
-            </div>
-        </nb-card-body>
-    </nb-card>
-    <!-- <nb-card status="primary" *ngIf="invoices.length > 0">
+    </nb-card-body>
+  </nb-card>
+  <!-- <nb-card status="primary" *ngIf="invoices.length > 0">
         <nb-card-header><nb-icon icon="award-outline"></nb-icon> My acknowledgements</nb-card-header>
         <nb-card-body>
             <div class="row">

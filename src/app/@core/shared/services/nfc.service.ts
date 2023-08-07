@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class NfcService {
-
   private nfc: any;
   private reader: any;
 
@@ -79,5 +78,4 @@ export class NfcService {
   //     return 'NFC reading stop failed.';
   //   }
   // }
-  
 }

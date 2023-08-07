@@ -1,24 +1,46 @@
 <div *ngIf="isModerator" class="row">
-    <div class="col-12 col-md-12">
-        <nb-card class="inline-form-card" status="warning">
-        <nb-card-header>Search user</nb-card-header>
-        <nb-card-body>
-            <form #searchForm>
-                <div class="form-inline">
-                    <input id="searchEmailID" name="searchEmailID" #searchEmailID="ngModel" [(ngModel)]="searchEmail" required type="email" nbTooltip="(ex, names@airasia.com)" [(ngModel)]="searchEmail" nbTooltipStatus="primary" nbInput fullWidth placeholder="User Email">
-                </div>
-                <br>
-                <div class="form-inline">
-                    <button type="submit" [disabled]="!searchEmailID.dirty || !searchEmailID.valid" (click)="search()" nbButton status="primary">Search</button>
-                </div>
-            </form>
-        </nb-card-body>
-        </nb-card>
-    </div>
+  <div class="col-12 col-md-12">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header>Search user</nb-card-header>
+      <nb-card-body>
+        <form #searchForm>
+          <div class="form-inline">
+            <input
+              id="searchEmailID"
+              name="searchEmailID"
+              #searchEmailID="ngModel"
+              [(ngModel)]="searchEmail"
+              required
+              type="email"
+              nbTooltip="(ex, names@airasia.com)"
+              [(ngModel)]="searchEmail"
+              nbTooltipStatus="primary"
+              nbInput
+              fullWidth
+              placeholder="User Email"
+            />
+          </div>
+          <br />
+          <div class="form-inline">
+            <button
+              type="submit"
+              [disabled]="!searchEmailID.dirty || !searchEmailID.valid"
+              (click)="search()"
+              nbButton
+              status="primary"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>
 
 <div *ngFor="let email of emails">
-    <ngx-personal-information [email]="email"></ngx-personal-information> 
+  <ngx-file-upload [email]="email"></ngx-file-upload>
+  <ngx-personal-information [email]="email"></ngx-personal-information>
 </div>
 
 <!-- <div ><button (click)="generateReport()" nbButton status="primary">Generate Report</button></div> -->

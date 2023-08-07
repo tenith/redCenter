@@ -82,6 +82,7 @@ export const statusConfig = {
     success: { status: 'success', icon: 'checkmark-circle-2'},
     warning: { status: 'warning', icon: 'alert-triangle'},
     danger: { status: 'danger', icon: 'close-square'},
+    pending: { status: 'warning', icon: 'question-mark-circle'},
 };
 
 // export const API = {
@@ -156,9 +157,24 @@ export const sepMandatory = {
     Cabin_Crew: ["My Picture", "Medical License", "Passport"],
 }
 
+export const requiredVerify = {
+    Pilot: ["Pilot License", "Medical License", "Passport", "English Proficiency"],
+    Cabin_Crew: ["Medical License", "Passport"],
+}
+
+export const strictVerify = {
+    Pilot: [],
+    Cabin_Crew: ["Medical License",],
+}
+
 export const sepCourseOptions = {
     Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "ETOPS A320", "RHS", "UPRT", "VVDN COMPETENCY", "VVCR COMPETENCY", "VNKT COMPETENCY", "LVO CAT II", "LVO CAT IIIA", "A321", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
     Cabin_Crew: ["A321", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
+}
+
+export const sepCourseBasicRequiredToOperate = {
+    Pilot: ["TCAS", "RNP/BRNAV", "RVSM", "UPRT", "LINE CHECK", "SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC"],
+    Cabin_Crew: ["SEP DOOR DRILL", "SEP WET DRILL", "SEP FIRE DRILL", "SEP SLIDE DRILL", "SEP FIRST AID", "DANGEROUS GOOD AWARENESS", "CREW RESOURCE MANAGEMENT", "SMS CLASS", "AVSEC", "Ground Check"],
 }
 
 export const sepCourseDisplayOptions = {
@@ -188,8 +204,22 @@ export const sepCourseDisplayOptions = {
 
     "SMS CLASS": { Initial: true, ShowHistory: false},
     "AVSEC": { Initial: true, ShowHistory: true},
-    "Ground Check": { Initial: false, ShowHistory: false},
+    "Ground Check": { Initial: false, ShowHistory: false}, 
 }
 
 export const profileDBLink = 'myProfilePicture';
+
+export const predefinedListOfIssueBy = {
+    "Pilot License": ["THE CIVIL AVIATION AUTHORITY OF THAILAND"],
+    "Medical License": [
+        "BANGKOK HOSPITAL",
+        "B. CARE MEDICAL CENTER HOSPITAL",
+        "INSTITUE OF AVIATION MEDICINE, RTAF",
+        "PAOLO CHOCKCHAI 4 HOSPITAL",
+        "PAOLO KASET HOSPITAL",
+        "SAMITIVEJ HOSPITAL",
+        ],
+    "Passport": ["MINISTRY OF FOREIGN AFFAIRS OF THAILAND"],
+    "English Proficiency": ["THE CIVIL AVIATION AUTHORITY OF THAILAND"]
+}
   

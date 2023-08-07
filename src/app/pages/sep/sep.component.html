@@ -28,35 +28,44 @@
       <nb-card-header
         ><nb-icon icon="award-outline"></nb-icon> My information &nbsp;&nbsp;
         <nb-icon
-          *ngIf="!offline"
-          icon="refresh"
+          *ngIf="!offline && !fireBaseAuth.getFirebaseUser().isAnonymous"
+          icon="cloud-download-outline"
           (click)="downloadSEP()"
         ></nb-icon
       ></nb-card-header>
       <nb-card-body>
         <div class="col-3"><B>NAME</B></div>
         <div class="col-9">
-          {{ fireBaseAuth.getFirebaseUser().displayName | uppercase }}
+          {{ firestoreUser.getFirestoreUser().displayName | uppercase }}
         </div>
 
-        <div class="col-3"><B>TAA ID</B></div>
+        <div class="col-3" style="margin-top: 0.2rem"><B>TAA ID</B></div>
         <div class="col-9">
           {{ firestoreUser.getFirestoreUser().cId | uppercase }}
         </div>
 
-        <div class="col-3"><B>ROLE</B></div>
+        <div class="col-3" style="margin-top: 0.2rem"><B>ROLE</B></div>
         <div class="col-9">
           {{ firestoreUser.getFirestoreUser().role | uppercase }}
         </div>
 
-        <!-- <div class="col-3"><B>MY PICTURE</B></div>
-                <div class="col-9">
-                    <ngx-profile-picture></ngx-profile-picture>
+        <!-- <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-3"><B>MY QR</B></div>
+                <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-9">
+                    <p>
+                        Please use mobile phone to scan this QR Code. To check my data from Thai Air Asia Server.
+                    </p><br>
+                    <p>
+                        <qrcode [qrdata]="myURL" [width]="128" [errorCorrectionLevel]="'L'"></qrcode>
+                    </p>
                 </div> -->
 
         <div class="col-12" style="margin-top: 0.5rem"><B>Summary</B></div>
         <!-- success -->
-        <div class="col-12" style="margin-top: 0.25rem">
+        <div
+          *ngIf="validList.length > 0"
+          class="col-12"
+          style="margin-top: 0.25rem"
+        >
           <nb-accordion accent="success">
             <nb-accordion-item>
               <nb-accordion-item-header
@@ -83,7 +92,7 @@
           </nb-accordion>
         </div>
         <!-- warning -->
-        <div class="col-12">
+        <div *ngIf="aboutList.length > 0" class="col-12">
           <nb-accordion accent="warning">
             <nb-accordion-item>
               <nb-accordion-item-header
@@ -109,8 +118,35 @@
             </nb-accordion-item>
           </nb-accordion>
         </div>
+        <!-- warning -->
+        <div *ngIf="pendingList.length > 0" class="col-12">
+          <nb-accordion accent="warning">
+            <nb-accordion-item>
+              <nb-accordion-item-header
+                ><nb-icon icon="question-mark-circle" status="warning"></nb-icon
+                >&nbsp;&nbsp;Pending Verification [{{
+                  pendingList.length
+                }}]</nb-accordion-item-header
+              >
+              <nb-accordion-item-body>
+                <div
+                  *ngFor="
+                    let about of pendingList;
+                    let i = index;
+                    let odd = odd;
+                    trackBy: trackById
+                  "
+                  [class.odd]="odd"
+                >
+                  <!-- {{i+1}}. {{about}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(about)"></nb-icon> -->
+                  {{ i + 1 }}. {{ about }}
+                </div>
+              </nb-accordion-item-body>
+            </nb-accordion-item>
+          </nb-accordion>
+        </div>
         <!-- danger -->
-        <div class="col-12">
+        <div *ngIf="expiredList.length > 0" class="col-12">
           <nb-accordion accent="danger">
             <nb-accordion-item>
               <nb-accordion-item-header
@@ -140,14 +176,28 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <fieldset>
-    <legend class="PersonalDoc-legend">Personal Document</legend>
 
+  <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        1. Fieldset - Personal Document(s) [Required Action] 
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+  <fieldset *ngIf="mandatoryCourseName.length > 0">
+    <legend class="PersonalDoc-Required-legend">
+      Personal Document(s) [Required Action]
+    </legend>
     <!-- Mandatory Card -->
-    <div class="row">
+    <div
+      *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous"
+      class="row"
+      style="margin-bottom: 7px"
+    >
       <div
         *ngFor="let cardName of mandatoryCourseName"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
+        style="margin-top: 7px"
       >
         <ngx-mandatory-card-post
           [name]="cardName"
@@ -156,24 +206,49 @@
       </div>
     </div>
   </fieldset>
-  <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
-  <fieldset>
-    <legend class="PersonalRec-legend">Personal Record</legend>
-    <div class="row">
+
+  <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        2. Fieldset - Personal Document(s)
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+  <fieldset *ngIf="manualCards.length > 0">
+    <legend class="PersonalDoc-legend">Personal Document(s)</legend>
+    <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
+    <div class="row" style="margin-bottom: 7px">
       <div
         *ngFor="let oneSepCard of manualCards"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
+        style="margin-top: 7px"
         id="{{ oneSepCard.name }}"
       >
         <ngx-one-sep-card
           [info]="oneSepCard"
-          [canDelete]="true"
+          [canDelete]="!fireBaseAuth.getFirebaseUser().isAnonymous"
           (deleteEvent)="downloadSEP()"
         ></ngx-one-sep-card>
       </div>
     </div>
-    <div *ngIf="showAutoLand" class="row">
-      <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - ONLINE">
+  </fieldset>
+
+  <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        3. Fieldset - Personal Autolanding Records
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+  <fieldset *ngIf="autoLandCards.length > 0">
+    <legend class="PersonalDoc-legend">Personal Autolanding Records</legend>
+    <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
+    <div *ngIf="showAutoLand" class="row" style="margin-bottom: 7px">
+      <div
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="AUTOLAND - ONLINE"
+        style="margin-top: 7px"
+      >
         <ngx-autoland-card
           *ngIf="autoLandCards[0] != null"
           [info]="autoLandCards[0]"
@@ -181,8 +256,13 @@
           (postCompleteEvent)="loadAutolandCards()"
         ></ngx-autoland-card>
       </div>
-      <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - SIMULATOR">
+      <div
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="AUTOLAND - SIMULATOR"
+        style="margin-top: 7px"
+      >
         <ngx-autoland-card
+          style="margin-top: 5px"
           *ngIf="autoLandCards[1] != null"
           [info]="autoLandCards[1]"
           [events]="changeEvent.asObservable()"
@@ -192,58 +272,22 @@
     </div>
   </fieldset>
 
-  <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
-  <fieldset>
-    <legend class="Mandatory-legend">Mandatory</legend>
-
-    <div class="row">
-      <div
-        *ngFor="
-          let oneSepCard of oneSepCards
-            .slice(0, 2)
-            .concat(oneSepCards.slice(12))
-        "
-        class="col-12 col-sm-12 col-md-6 col-lg-4"
-        id="{{ oneSepCard.name }}"
-      >
-        <ngx-one-sep-card
-          [info]="oneSepCard"
-          [allHistory]="fullHistory[oneSepCard.Name]"
-          [canDelete]="false"
-          (postCompleteEvent)="newDataFromGoogleAPI($event)"
-          (refreshEvent)="detectChanges()"
-        ></ngx-one-sep-card>
-      </div>
-    </div>
-  </fieldset>
-
-  <!-- SHOW SEP CARDS-->
-  <fieldset>
-    <legend class="Optional-legend">Optional</legend>
-    <div class="row">
-      <div
-        *ngFor="let oneSepCard of oneSepCards.slice(2, 12)"
-        class="col-12 col-sm-12 col-md-6 col-lg-4"
-        id="{{ oneSepCard.name }}"
-      >
-        <ngx-one-sep-card
-          [info]="oneSepCard"
-          [allHistory]="fullHistory[oneSepCard.Name]"
-          [canDelete]="false"
-          (postCompleteEvent)="newDataFromGoogleAPI($event)"
-          (refreshEvent)="detectChanges()"
-        ></ngx-one-sep-card>
-      </div>
-    </div>
-  </fieldset>
   <!--
-  <fieldset>
-    <legend>TEST</legend>
-    <div class="row">
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        4. Fieldset - Mandatory courses
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+  <fieldset *ngIf="requiredCourse.length > 0">
+    <legend class="Mandatory-legend">Required Courses</legend>
+    <!-- SHOW SEP CARDS-->
+    <div class="row" style="margin-bottom: 7px">
       <div
-        *ngFor="let oneSepCard of oneSepCards"
+        *ngFor="let oneSepCard of requiredCourse"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
         id="{{ oneSepCard.name }}"
+        style="margin-top: 7px"
       >
         <ngx-one-sep-card
           [info]="oneSepCard"
@@ -254,5 +298,33 @@
         ></ngx-one-sep-card>
       </div>
     </div>
-  </fieldset>-->
+  </fieldset>
+
+  <!--
+        06 Aug 2023 by panetl@airasia.com
+        add feature grouping document by using fieldset
+        5. Fieldset - Optional courses
+
+        merge into develop by wutthichair@airasia.com 06 Aug 2023
+    -->
+  <fieldset *ngIf="optionalCourse.length > 0">
+    <legend class="Mandatory-legend">Optional Courses</legend>
+    <!-- SHOW SEP CARDS-->
+    <div class="row" style="margin-bottom: 7px">
+      <div
+        *ngFor="let oneSepCard of optionalCourse"
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="{{ oneSepCard.name }}"
+        style="margin-top: 7px"
+      >
+        <ngx-one-sep-card
+          [info]="oneSepCard"
+          [allHistory]="fullHistory[oneSepCard.Name]"
+          [canDelete]="false"
+          (postCompleteEvent)="newDataFromGoogleAPI($event)"
+          (refreshEvent)="detectChanges()"
+        ></ngx-one-sep-card>
+      </div>
+    </div>
+  </fieldset>
 </div>

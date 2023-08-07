@@ -1,4 +1,4 @@
 export interface DelayDetail {
-    delayTime: string;
-    code: string;
+  delayTime: string;
+  code: string;
 }

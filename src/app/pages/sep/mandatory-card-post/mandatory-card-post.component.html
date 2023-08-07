@@ -1,5 +1,5 @@
 <nb-accordion *ngIf="!uploading">
-  <nb-accordion-item expanded="false">
+  <nb-accordion-item expanded="true">
     <nb-accordion-item-header
       ><nb-icon icon="close-square" status="danger"></nb-icon
       ><b>&nbsp;&nbsp;{{ name }}</b>
@@ -86,6 +86,8 @@
         <div *ngIf="!isProfile" class="form-group">
           <label for="issueBy" class="label">Issue By*:</label>
           <input
+            style="font-size: clamp(0.6rem, 2vw, 1rem)"
+            [attr.list]="getOptionListID()"
             id="issueBy"
             name="issueBy"
             formControlName="issueBy"
@@ -94,6 +96,14 @@
             fullWidth
             placeholder="Issue by"
           />
+          <datalist [id]="getOptionListID()">
+            <option
+              *ngFor="let option of optionsData; let i = index"
+              value="{{ option }}"
+            >
+              {{ option }}
+            </option>
+          </datalist>
         </div>
 
         <div *ngIf="!isProfile" class="form-group">

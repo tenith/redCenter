@@ -1,5 +1,5 @@
 <nb-accordion>
-  <nb-accordion-item expanded="{{ myStatus === 'success' }}">
+  <nb-accordion-item expanded="{{ myStatus != 'success' }}">
     <nb-accordion-item-header
       ><nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon
       ><b>&nbsp;&nbsp;{{ info.name }}</b></nb-accordion-item-header
@@ -37,7 +37,11 @@
               {{ info.expiry }}
             </div>
           </div>
-          <div *ngIf="!offline">
+          <div
+            *ngIf="
+              !offline && !firebaseUserService.getFirebaseUser().isAnonymous
+            "
+          >
             <form #autoLandingForm="ngForm">
               <div class="row" style="margin-top: 0.5rem">
                 <div class="col-12"><b>Perform Date</b></div>

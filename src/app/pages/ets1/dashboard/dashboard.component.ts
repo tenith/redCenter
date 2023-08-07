@@ -24,10 +24,7 @@ export class DashboardComponent implements OnInit {
   loading = true;
   @Output() addTab = new EventEmitter<string>();
   @Output() deleteData = new EventEmitter<string>();
-  @Output() tabNameChange = new EventEmitter<{
-    newName: string;
-    tabId: string;
-  }>();
+
   source: LocalDataSource;
   eTS1List: ETS1Data[] = [];
 
@@ -111,7 +108,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private eTS1Service: ETS1Service,
-    private firestoreUserService: FirestoreUserService
+    private firestoreUserService: FirestoreUserService,
   ) {}
 
   ngOnInit(): void {
@@ -133,12 +130,6 @@ export class DashboardComponent implements OnInit {
     const tempUUID = uuid.v4();
     this.addTab.emit(tempUUID);
   }
-
-  // addNewTab(): void {
-  //   const tempUUID = "input pilot name";
-  //   const nameNewTab = `${(loft, coft)},${CP name}`;
-  //   this.addTab.emit(tempUUID);
-  // }
 
   refresh(): void {
     this.loading = false;

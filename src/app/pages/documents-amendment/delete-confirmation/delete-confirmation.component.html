@@ -1,22 +1,64 @@
-<div class="row" style="background-color: white;">
-    <div class="col-12 col-sm-6 col-md-6" style="min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        <nb-card status="danger">
-            <nb-card-header style="text-align: center;">Please confirm, you want to delete an announcement</nb-card-header>
-            <nb-card-body style="text-align: center;">
-                You are going to delete an announcement [{{data.myCode}}], So please be careful.<br>
-                Are you sure?                
-            </nb-card-body>
-        </nb-card>
-    </div>
+<div class="row" style="background-color: white">
+  <div
+    class="col-12 col-sm-6 col-md-6"
+    style="
+      min-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: auto;
+    "
+  >
+    <nb-card status="danger">
+      <nb-card-header style="text-align: center"
+        >Please confirm, you want to delete an announcement</nb-card-header
+      >
+      <nb-card-body style="text-align: center">
+        You are going to delete an announcement [{{ data.myCode }}], So please
+        be careful.<br />
+        Are you sure?
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>
-<div class="row" style="background-color: white;">
-    <div class="col-12 col-sm-6 col-md-6" style="text-align: center; min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        <nb-icon (click)="confirm()" style="font-size: 2.5rem;" size="large" status="primary" icon="checkmark-square-2-outline"></nb-icon>&nbsp;&nbsp;&nbsp;
-        <nb-icon (click)="cancel()" style="font-size: 2.5rem;" size="large" status="danger" icon="close-square-outline"></nb-icon>
-    </div>
+<div class="row" style="background-color: white">
+  <div
+    class="col-12 col-sm-6 col-md-6"
+    style="
+      text-align: center;
+      min-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: auto;
+    "
+  >
+    <nb-icon
+      (click)="confirm()"
+      style="font-size: 2.5rem"
+      size="large"
+      status="primary"
+      icon="checkmark-square-2-outline"
+    ></nb-icon
+    >&nbsp;&nbsp;&nbsp;
+    <nb-icon
+      (click)="cancel()"
+      style="font-size: 2.5rem"
+      size="large"
+      status="danger"
+      icon="close-square-outline"
+    ></nb-icon>
+  </div>
 </div>
-<div class="row" style="background-color: white;">
-    <div class="col-12 col-sm-6 col-md-6" style="text-align: center; min-width: 100%; margin-left: auto; margin-right: auto; margin-top: auto;">
-        &nbsp;&nbsp;&nbsp;
-    </div>
+<div class="row" style="background-color: white">
+  <div
+    class="col-12 col-sm-6 col-md-6"
+    style="
+      text-align: center;
+      min-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: auto;
+    "
+  >
+    &nbsp;&nbsp;&nbsp;
+  </div>
 </div>

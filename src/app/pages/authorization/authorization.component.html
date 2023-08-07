@@ -1,76 +1,174 @@
 <div *ngIf="!online">
-    <div class="row">
-        <div class="col-md-12">
-          <nb-card>
-            <nb-card-body>
-              <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
-                <h2 class="title">Offline Mode</h2>
-                <small class="sub-title">Your connection has been lost. This module will recovery when your connection re-establish.</small>
-                <img src="../../../../assets/images/offline.png" style="max-width: 50%; margin-left: auto; margin-right: auto; display: block;">
-              </div>
-            </nb-card-body>
-          </nb-card>
-        </div>
+  <div class="row">
+    <div class="col-md-12">
+      <nb-card>
+        <nb-card-body>
+          <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
+            <h2 class="title">Offline Mode</h2>
+            <small class="sub-title"
+              >Your connection has been lost. This module will recovery when
+              your connection re-establish.</small
+            >
+            <img
+              src="../../../../assets/images/offline.png"
+              style="
+                max-width: 50%;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+              "
+            />
+          </div>
+        </nb-card-body>
+      </nb-card>
     </div>
+  </div>
 </div>
 <div *ngIf="online" class="row">
-    <div class="col-12 col-md-12">
-        <nb-card class="inline-form-card" status="primary">
-        <nb-card-header>Search user</nb-card-header>
-        <nb-card-body>
-            <form #searchForm>
-                <div class="form-inline">
-                    <input id="searchEmailID" name="searchEmailID" #searchEmailID="ngModel" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required type="email" nbTooltip="(ex, names@airasia.com)" [(ngModel)]="searchEmail" nbTooltipStatus="primary" nbInput fullWidth placeholder="User Email">
-                </div>
-                <div class="form-inline">
-                    <button type="submit" [disabled]="!searchEmailID.dirty || !searchEmailID.valid" (click)="search()" nbButton status="primary">Search</button>
-                </div>
-            </form>
-        </nb-card-body>
-        </nb-card>
-    </div>
+  <div class="col-12 col-md-12">
+    <nb-card class="inline-form-card" status="primary">
+      <nb-card-header>Search user</nb-card-header>
+      <nb-card-body>
+        <form #searchForm>
+          <div class="form-inline">
+            <input
+              id="searchEmailID"
+              name="searchEmailID"
+              #searchEmailID="ngModel"
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+              required
+              type="email"
+              nbTooltip="(ex, names@airasia.com)"
+              [(ngModel)]="searchEmail"
+              nbTooltipStatus="primary"
+              nbInput
+              fullWidth
+              placeholder="User Email"
+            />
+          </div>
+          <div class="form-inline">
+            <button
+              type="submit"
+              [disabled]="!searchEmailID.dirty || !searchEmailID.valid"
+              (click)="search()"
+              nbButton
+              status="primary"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>
 
 <div *ngIf="!loading && online">
-    <div class="row">
-        <div *ngIf="firestoreUser!=null" class="col-12 col-md-12">
-            <nb-card class="inline-form-card" accent="success">
-                <nb-card-header style="word-wrap: break-word;">{{firestoreUser.displayName}} Informaion <nb-icon *ngIf="searchEmail != firestoreUserService.getFirestoreUser().email" icon="trash-outline" (click)="delete()"></nb-icon></nb-card-header>
-                <nb-card-body>
-                    <form #updateForm>
-                        <div class="form-inline"><b>TAA ID :</b>
-                            <input nbInput type="text" pattern="[0-9]{7}" id="cId" name="cId" #cId="ngModel" fullWidth [(ngModel)]="firestoreUser.cId">                    
-                        </div>
-                        <div class="form-inline"><b>AOC :</b>
-                            <nb-select id="aoc" name="aoc" #role="ngModel" fullWidth [(ngModel)]="firestoreUser.aoc">
-                                <!-- <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value">{{ aocOption.label }}</nb-option> -->
-                                <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value"><img style="max-width: 25px;" src="../../../{{aocOption.icon}}">&nbsp;&nbsp;{{ aocOption.label }}</nb-option>
-                            </nb-select>
-                        </div>
-                        <div class="form-inline"><b>Role :</b>
-                            <nb-select id="role" name="role" #role="ngModel" fullWidth [(ngModel)]="firestoreUser.role">
-                                <!-- <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">{{ roleOption.label }}</nb-option> -->
-                                <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value"><img style="max-width: 25px;" src="../../../{{roleOption.icon}}">&nbsp;&nbsp;{{ roleOption.label }}</nb-option>
-                            </nb-select>
-                        </div>
-                        <div class="form-inline"><b>Level :</b>
-                            <nb-select id="level" name="level" #level="ngModel" fullWidth [(ngModel)]="firestoreUser.level">
-                                <nb-option *ngFor="let levelOption of levelOptions" [value]="levelOption.value">{{ levelOption.label }}</nb-option>
-                            </nb-select>
-                        </div>
-                        <div class="form-inline"><button type="submit" [disabled]="!cId.dirty && !role.dirty && !level.dirty" (click)="update()" nbButton status="primary">Update</button></div>
-                        </form>
-                </nb-card-body>
-            </nb-card>
-        </div>
-        <div *ngIf="firestoreUser==null" class="col-12 col-md-12">
-            <nb-card class="inline-form-card" accent="danger">
-                <nb-card-header>User Informaion</nb-card-header>
-                <nb-card-body>
-                    Incorrect email or nothing found.
-                    <P>&nbsp;</P>
-                </nb-card-body>
-            </nb-card>
-        </div>
+  <div class="row">
+    <div *ngIf="firestoreUser != null" class="col-12 col-md-12">
+      <nb-card class="inline-form-card" accent="success">
+        <nb-card-header style="word-wrap: break-word"
+          >{{ firestoreUser.displayName }} Informaion
+          <nb-icon
+            *ngIf="searchEmail != firestoreUserService.getFirestoreUser().email"
+            icon="trash-outline"
+            (click)="delete()"
+          ></nb-icon
+        ></nb-card-header>
+        <nb-card-body>
+          <form #updateForm>
+            <div class="form-inline">
+              <b>TAA ID :</b>
+              <input
+                nbInput
+                type="text"
+                pattern="[0-9]{7}"
+                id="cId"
+                name="cId"
+                #cId="ngModel"
+                fullWidth
+                [(ngModel)]="firestoreUser.cId"
+              />
+            </div>
+            <div class="form-inline">
+              <b>AOC :</b>
+              <nb-select
+                id="aoc"
+                name="aoc"
+                #role="ngModel"
+                fullWidth
+                [(ngModel)]="firestoreUser.aoc"
+              >
+                <!-- <nb-option *ngFor="let aocOption of aocOptions" [value]="aocOption.value">{{ aocOption.label }}</nb-option> -->
+                <nb-option
+                  *ngFor="let aocOption of aocOptions"
+                  [value]="aocOption.value"
+                  ><img
+                    style="max-width: 25px"
+                    src="../../../{{ aocOption.icon }}"
+                  />&nbsp;&nbsp;{{ aocOption.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+            <div class="form-inline">
+              <b>Role :</b>
+              <nb-select
+                id="role"
+                name="role"
+                #role="ngModel"
+                fullWidth
+                [(ngModel)]="firestoreUser.role"
+              >
+                <!-- <nb-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">{{ roleOption.label }}</nb-option> -->
+                <nb-option
+                  *ngFor="let roleOption of roleOptions"
+                  [value]="roleOption.value"
+                  ><img
+                    style="max-width: 25px"
+                    src="../../../{{ roleOption.icon }}"
+                  />&nbsp;&nbsp;{{ roleOption.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+            <div class="form-inline">
+              <b>Level :</b>
+              <nb-select
+                id="level"
+                name="level"
+                #level="ngModel"
+                fullWidth
+                [(ngModel)]="firestoreUser.level"
+              >
+                <nb-option
+                  *ngFor="let levelOption of levelOptions"
+                  [value]="levelOption.value"
+                  >{{ levelOption.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+            <div class="form-inline">
+              <button
+                type="submit"
+                [disabled]="!cId.dirty && !role.dirty && !level.dirty"
+                (click)="update()"
+                nbButton
+                status="primary"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </nb-card-body>
+      </nb-card>
     </div>
+    <div *ngIf="firestoreUser == null" class="col-12 col-md-12">
+      <nb-card class="inline-form-card" accent="danger">
+        <nb-card-header>User Informaion</nb-card-header>
+        <nb-card-body>
+          Incorrect email or nothing found.
+          <P>&nbsp;</P>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
 </div>

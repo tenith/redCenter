@@ -1,33 +1,37 @@
-import { of as observableOf,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { OrdersChart, OrdersChartData } from '../data/orders-chart';
-import { OrderProfitChartSummary, OrdersProfitChartData } from '../data/orders-profit-chart';
-import { ProfitChart, ProfitChartData } from '../data/profit-chart';
+import { of as observableOf, Observable } from "rxjs";
+import { Injectable } from "@angular/core";
+import { OrdersChart, OrdersChartData } from "../data/orders-chart";
+import {
+  OrderProfitChartSummary,
+  OrdersProfitChartData,
+} from "../data/orders-profit-chart";
+import { ProfitChart, ProfitChartData } from "../data/profit-chart";
 
 @Injectable()
 export class OrdersProfitChartService extends OrdersProfitChartData {
-
   private summary = [
     {
-      title: 'Marketplace',
+      title: "Marketplace",
       value: 3654,
     },
     {
-      title: 'Last Month',
+      title: "Last Month",
       value: 946,
     },
     {
-      title: 'Last Week',
+      title: "Last Week",
       value: 654,
     },
     {
-      title: 'Today',
+      title: "Today",
       value: 230,
     },
   ];
 
-  constructor(private ordersChartService: OrdersChartData,
-              private profitChartService: ProfitChartData) {
+  constructor(
+    private ordersChartService: OrdersChartData,
+    private profitChartService: ProfitChartData,
+  ) {
     super();
   }
 

@@ -1,32 +1,34 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
-import { NfcService } from '../../../@core/shared/services/nfc.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { NbDialogRef } from "@nebular/theme";
+import { NfcService } from "../../../@core/shared/services/nfc.service";
 
 @Component({
-  selector: 'ngx-qr-code',
-  templateUrl: './qr-code.component.html',
-  styleUrls: ['./qr-code.component.scss']
+  selector: "ngx-qr-code",
+  templateUrl: "./qr-code.component.html",
+  styleUrls: ["./qr-code.component.scss"],
 })
 export class QrCodeComponent implements OnInit {
-
   @Input() data: string;
-  qrData: string = '';
+  qrData: string = "";
 
-  constructor(private dialogRef: NbDialogRef<QrCodeComponent>, private nfcService: NfcService) { }
+  constructor(
+    private dialogRef: NbDialogRef<QrCodeComponent>,
+    private nfcService: NfcService,
+  ) {}
 
   ngOnInit(): void {
-    if(!(this.data == null || this.data == undefined)){
+    if (!(this.data == null || this.data == undefined)) {
       this.qrData = this.encodeString(this.data).toString();
       this.qrData = this.data;
     }
   }
 
   confirm(): void {
-    this.dialogRef.close('affirm');
+    this.dialogRef.close("affirm");
   }
 
   cancel(): void {
-    this.dialogRef.close('');
+    this.dialogRef.close("");
   }
 
   encodeString(string: string): any[] {
@@ -81,5 +83,4 @@ export class QrCodeComponent implements OnInit {
   //   const result = await this.nfcService.stopNfcReading();
   //   console.log(result);
   // }
-
 }

@@ -17,9 +17,12 @@ import { FileUploadInformation } from "../../@core/shared/interfaces/file-upload
 import { ManualCardService } from "../../@core/shared/services/manual-card.service";
 
 import {
+  sepCourseBasicRequiredToOperate,
   sepCourseOptions,
   sepMandatory,
+  strictVerify,
 } from "../../../environments/myconfigs";
+import { baseURL } from "../../../environments/environment";
 
 @Component({
   selector: "ngx-sep",
@@ -32,6 +35,7 @@ export class SepComponent implements OnInit, OnDestroy {
   */
   validList: string[] = [];
   aboutList: string[] = [];
+  pendingList: string[] = [];
   expiredList: string[] = [];
 
   loading: boolean = true;
@@ -55,6 +59,12 @@ export class SepComponent implements OnInit, OnDestroy {
 
   offline: boolean = false;
 
+  myURL: string = "";
+
+  basicRequiredCourseName = sepCourseBasicRequiredToOperate;
+  requiredCourse: OneSepCard[] = [];
+  optionalCourse: OneSepCard[] = [];
+
   constructor(
     private manualCardService: ManualCardService,
     private cdr: ChangeDetectorRef,
@@ -63,7 +73,7 @@ export class SepComponent implements OnInit, OnDestroy {
     public fireBaseAuth: FirebaseAuthenticationService,
     public toastr: NbToastrService,
     public sepCardService: SepCardService,
-    public autoLandCardService: AutolandCardService
+    public autoLandCardService: AutolandCardService,
   ) {}
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -80,7 +90,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      })
+      }),
     );
 
     this.subscriptions.push(
@@ -88,11 +98,27 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      })
+      }),
     );
   }
 
+  reviseRequiredCourse(): void {
+    this.requiredCourse = [];
+    this.optionalCourse = [];
+
+    for (let i = 0; i < this.oneSepCards.length; i++) {
+      if (
+        this.basicRequiredCourseName[
+          this.firestoreUser.getFirestoreUser().role
+        ].includes(this.oneSepCards[i].Name)
+      )
+        this.requiredCourse.push(this.oneSepCards[i]);
+      else this.optionalCourse.push(this.oneSepCards[i]);
+    }
+  }
+
   ngOnInit(): void {
+    // this.fileUploadSerivce.reloadData();
     this.handleAppConnectivityChanges();
 
     this.autoLandCards = [
@@ -115,12 +141,20 @@ export class SepComponent implements OnInit, OnDestroy {
     this.mandatoryCourseName =
       sepMandatory[this.firestoreUser.getFirestoreUser().role];
 
+    this.myURL =
+      baseURL +
+      "onlinechecking?email=" +
+      this.firestoreUser.getFirestoreUser().email +
+      "&token=" +
+      btoa(this.firestoreUser.getFirestoreUser().email);
+
     /*
       Loading Information From Cache....
     */
     if (this.sepCardService.isInLocalStorage()) {
       this.loading = false;
       this.oneSepCards = [...this.sepCardService.getAllSepCardsFromCache()];
+      this.reviseRequiredCourse();
 
       this.loadAutolandCards();
     }
@@ -134,34 +168,27 @@ export class SepComponent implements OnInit, OnDestroy {
     }
 
     if (this.loading) this.downloadSEP();
-
-    // this.updateSummary();
+    else if (!this.offline) this.anyChange();
   }
 
   reviseMandatoryCourse(): void {
     this.mandatoryCourseName =
       sepMandatory[this.firestoreUser.getFirestoreUser().role];
-    // console.log(JSON.stringify(this.mandatoryCourseName));
     for (let i = 0; i < this.manualCards.length; i++)
       if (this.mandatoryCourseName.includes(this.manualCards[i].Name))
         this.mandatoryCourseName = this.mandatoryCourseName.filter(
-          (obj) => obj !== this.manualCards[i].Name
+          (obj) => obj !== this.manualCards[i].Name,
         );
   }
 
-  downloadSEP(): void {
-    this.loading = true;
-    this.cdr.detectChanges();
-
-    this.sepCardService.clearCertificateCache();
-    this.manualCards = [];
-
+  anyChange(): void {
     /*
       Loading Information From personal file upload....
     */
+    console.log("cache loading try to update from server");
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
-        this.firestoreUser.getFirestoreUser().email
+        this.firestoreUser.getFirestoreUser().email,
       )
       .onSnapshot((docSnapshot) => {
         // console.log('get some data from firebase');
@@ -170,7 +197,7 @@ export class SepComponent implements OnInit, OnDestroy {
           const temp = [...docSnapshot.data().files] as FileUploadInformation[];
           for (let i = 0; i < temp.length; i++) {
             if (temp[i].showSEP == "Yes") {
-              //console.log(JSON.stringify(temp[i]));
+              // console.log(JSON.stringify(temp[i]));
               let tempSepCard: OneSepCard = {
                 Name: temp[i].fileCategory,
                 Attended: this.formatDate(temp[i].issueDate),
@@ -181,6 +208,7 @@ export class SepComponent implements OnInit, OnDestroy {
                 Remark: temp[i].description,
                 Link: temp[i].relativePath,
                 InitialDate: "NO DATA",
+                verify: temp[i].verify,
               };
 
               tempOneSepCard.push(tempSepCard);
@@ -206,7 +234,96 @@ export class SepComponent implements OnInit, OnDestroy {
             }
           }
           // console.log(JSON.stringify(tempS));
+          // console.log(JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())]));
 
+          if (
+            JSON.stringify(tempS) ==
+            JSON.stringify([
+              ...this.manualCardService.getAllSepCardsFromCache(),
+            ])
+          ) {
+            console.log("using cache");
+            console.log("do nothing");
+          } else {
+            this.manualCards = tempS;
+            this.manualCardService.deleteAllCards();
+            this.manualCardService.saveAllCards(this.manualCards);
+          }
+        } else {
+          if (
+            JSON.stringify([]) ==
+            JSON.stringify([
+              ...this.manualCardService.getAllSepCardsFromCache(),
+            ])
+          ) {
+            console.log("using cache");
+            console.log("do nothing");
+          } else {
+            this.manualCards = [];
+            this.manualCardService.deleteAllCards();
+            this.manualCardService.saveAllCards(this.manualCards);
+          }
+        }
+      });
+  }
+
+  downloadSEP(): void {
+    this.loading = true;
+    this.cdr.detectChanges();
+
+    this.sepCardService.clearCertificateCache();
+    /*
+      Loading Information From personal file upload....
+    */
+    this.fileUploadService
+      .getFileUploadInformationSnapshotByEmail(
+        this.firestoreUser.getFirestoreUser().email,
+      )
+      .onSnapshot((docSnapshot) => {
+        // console.log('get some data from firebase');
+        let tempOneSepCard: OneSepCard[] = [];
+        if (docSnapshot.exists) {
+          const temp = [...docSnapshot.data().files] as FileUploadInformation[];
+          for (let i = 0; i < temp.length; i++) {
+            if (temp[i].showSEP == "Yes") {
+              // console.log(JSON.stringify(temp[i]));
+              let tempSepCard: OneSepCard = {
+                Name: temp[i].fileCategory,
+                Attended: this.formatDate(temp[i].issueDate),
+                Type: "Personal Upload",
+                Validperiod: "",
+                Expiry: this.formatDate(temp[i].expiryDate),
+                Instructor: temp[i].issueBy,
+                Remark: temp[i].description,
+                Link: temp[i].relativePath,
+                InitialDate: "NO DATA",
+                verify: temp[i].verify,
+              };
+
+              tempOneSepCard.push(tempSepCard);
+            }
+          }
+        }
+
+        if (tempOneSepCard.length > 0) {
+          const tempS: OneSepCard[] = [];
+          for (
+            let i = 0;
+            i < sepMandatory[this.firestoreUser.getFirestoreUser().role].length;
+            i++
+          ) {
+            for (let j = 0; j < tempOneSepCard.length; j++) {
+              if (
+                sepMandatory[this.firestoreUser.getFirestoreUser().role][i] ==
+                tempOneSepCard[j].Name
+              ) {
+                tempS.push(tempOneSepCard[j]);
+                break;
+              }
+            }
+          }
+          // console.log(JSON.stringify(tempS));
+          // console.log(JSON.stringify([...(this.manualCardService.getAllSepCardsFromCache())]));
           this.manualCards = tempS;
           this.manualCardService.deleteAllCards();
           this.manualCardService.saveAllCards(this.manualCards);
@@ -229,7 +346,7 @@ export class SepComponent implements OnInit, OnDestroy {
         this.toastr.danger(
           "Error",
           "There is no SEP information from online Server, Please check your internet connection or contact TMS.",
-          { duration: 10000 }
+          { duration: 10000 },
         );
         return;
       }
@@ -282,17 +399,18 @@ export class SepComponent implements OnInit, OnDestroy {
       this.toastr.primary(
         "Completed",
         "Updated SEP from TMC server completed",
-        { duration: 10000 }
+        { duration: 10000 },
       );
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
+      this.reviseRequiredCourse();
+
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
       this.updateSummary();
       this.loadAutolandCards();
     });
-    console.log(this.oneSepCards);
   }
 
   detectChanges(): void {}
@@ -349,6 +467,7 @@ export class SepComponent implements OnInit, OnDestroy {
 
     this.validList = [];
     this.aboutList = [];
+    this.pendingList = [];
     this.expiredList = [];
 
     this.updateSEPSummary();
@@ -383,7 +502,9 @@ export class SepComponent implements OnInit, OnDestroy {
         this.validList.push(this.oneSepCards[i].Name);
     }
 
+    // console.log('number of manual cards: ' + this.manualCards.length);
     for (let i = 0; i < this.manualCards.length; i++) {
+      // console.log('index: ' + i + " -> " + JSON.stringify(this.manualCards[i]));
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
       const expire = new Date(this.manualCards[i].Expiry).getTime() + msInDay;
@@ -393,6 +514,32 @@ export class SepComponent implements OnInit, OnDestroy {
       if (this.manualCards[i].Expiry == "NO DATA") {
         this.expiredList.push(this.manualCards[i].Name);
         continue;
+      }
+
+      // console.log('hasverify:  ' + ('verify' in this.manualCards[i]));
+      // console.log(this.manualCards[i].verify);
+      if (this.manualCards[i].verify != undefined) {
+        if (this.manualCards[i].verify == false) {
+          if (
+            strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
+              this.manualCards[i].Name,
+            )
+          ) {
+            this.pendingList.push(this.manualCards[i].Name);
+            continue;
+          }
+        }
+      } else {
+        // console.log('no verify: ' + JSON.stringify(this.manualCards[i]));
+        // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name));
+        if (
+          strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
+            this.manualCards[i].Name,
+          )
+        ) {
+          this.pendingList.push(this.manualCards[i].Name);
+          continue;
+        }
       }
 
       if (diffDate < 0) this.expiredList.push(this.manualCards[i].Name);
@@ -444,7 +591,7 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "There is no Autoland history from online Server, Please check your internet connection or contact TMS.",
-            { duration: 10000 }
+            { duration: 10000 },
           );
           return;
         }
@@ -452,7 +599,7 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "Autoland history from your cache is error, Please check your internet connection or contact TMS.",
-            { duration: 10000 }
+            { duration: 10000 },
           );
           return;
         }

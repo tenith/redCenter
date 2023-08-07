@@ -1,4 +1,4 @@
 export interface FuelDetail {
-    uplift: string;
-    burn: string;
+  uplift: string;
+  burn: string;
 }

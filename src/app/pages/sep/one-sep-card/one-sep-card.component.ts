@@ -12,8 +12,10 @@ import { OneSepCard } from "../../../@core/shared/interfaces/one-sep-card";
 import { SepCardService } from "../../../@core/shared/services/sep-card.service";
 
 import {
+  requiredVerify,
   sepCourseDisplayOptions,
   statusConfig,
+  strictVerify,
 } from "../../../../environments/myconfigs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { Observable, Subscription, fromEvent, interval } from "rxjs";
@@ -25,6 +27,7 @@ import { NbDialogRef, NbDialogService, NbToastrService } from "@nebular/theme";
 import { FileUploadInformation } from "../../../@core/shared/interfaces/file-upload-information";
 import { FirestoreUserService } from "../../../@core/shared/services/firestore-user.service";
 import { SepHistoicalService } from "../../../@core/shared/services/sepHistorical.service";
+import { FileUploadInformationService } from "../../../@core/shared/services/file-upload-information.service";
 
 @Component({
   selector: "ngx-one-sep-card",
@@ -69,6 +72,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   showInitial: boolean = false;
   showHistory: boolean = false;
 
+  pendingStatus: boolean = false;
+
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
 
   constructor(
@@ -80,7 +85,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     private fileUploadDatabaseService: FileUploadDatabaseService,
     public sepService: SepCardService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
   ngOnDestroy(): void {
     this.stopPolling();
@@ -90,6 +95,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.offline = !navigator.onLine;
     this.handleAppConnectivityChanges();
+
+    // console.log(JSON.stringify(this.info));
 
     if (this.info.Name in this.displayOption) {
       this.showInitial = this.displayOption[this.info.Name].Initial;
@@ -107,7 +114,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     if (this.info.Type == "Personal Upload") {
       this.isPersonalDocument = true;
       this.downloadUrl$ = this.fileUploadDatabaseService.getFile(
-        this.info.Link
+        this.info.Link,
       );
     }
 
@@ -125,7 +132,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      })
+      }),
     );
 
     this.subscriptions.push(
@@ -133,7 +140,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      })
+      }),
     );
   }
 
@@ -149,7 +156,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         this.sepService
           .getAllSepCardsFromGoogleAPI(this.info.Name)
           .subscribe((response) => {
-            //console.log("JSON Google API: " + JSON.stringify(response));
+            console.log("JSON Google API: " + JSON.stringify(response));
             if (response != null && Object.keys(response).length != 0) {
               let temp = {
                 ...JSON.parse(JSON.stringify(response)),
@@ -169,7 +176,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       this.sepService
         .getAllSepCardsFromGoogleAPI(this.info.Name)
         .subscribe((response) => {
-          console.log(this.info.Name);
+          // console.log(this.info.Name);
           console.log("JSON Google API: " + JSON.stringify(response));
           if (response != null && Object.keys(response).length != 0) {
             // this.info = {...JSON.parse(JSON.stringify(response))} as OneSepCard;
@@ -260,20 +267,22 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       if (confirm == "affirm") {
         const user = this.firestoreUser.getFirestoreUser();
 
+        // console.log('try to delete: ' + JSON.stringify(this.info));
+
         this.fileUploadDatabaseService
           .deleteFileByName(this.info.Link, user.email)
           .then(() => {
             this.toastr.primary(
               "Completed",
-              "Delete " + this.info.Name + " document completed"
+              "Delete " + this.info.Name + " document completed",
             );
             this.deleteEvent.emit();
           })
           .catch((error) => {
-            // console.log(error);
+            console.log(error);
             this.toastr.danger(
               "error",
-              "Delete " + this.info.Name + " document failed, try again later"
+              "Delete " + this.info.Name + " document failed, try again later",
             );
           });
       }
@@ -285,6 +294,34 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     const today = new Date().getTime() + msInDay;
     const expire = new Date(this.info.Expiry).getTime() + msInDay;
     const diffDate = (expire - today) / msInDay;
+
+    this.pendingStatus = false;
+
+    if (this.info.verify != undefined) {
+      if (this.info.verify == false) {
+        if (
+          strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
+            this.info.Name,
+          )
+        ) {
+          this.setPending();
+          this.pendingStatus = true;
+          this.cdr.detectChanges();
+          return;
+        }
+      }
+    } else {
+      if (
+        strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
+          this.info.Name,
+        )
+      ) {
+        this.setPending();
+        this.pendingStatus = true;
+        this.cdr.detectChanges();
+        return;
+      }
+    }
 
     if (diffDate < 0) this.setStatusDanger();
     if (diffDate > 30) this.setStatusSuccess();
@@ -320,13 +357,13 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           this.sepService
             .getURIByLink(
               this.info.Name.replace(/ /g, "_") +
-                this.info.Attended.replace(/ /g, "_")
+                this.info.Attended.replace(/ /g, "_"),
             )
             .subscribe((data) => {
               if (data != null && data != "") {
                 this.uri = data.uri;
                 this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  this.uri
+                  this.uri,
                 );
                 this.cdr.detectChanges();
                 this.stopPolling();
@@ -345,7 +382,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
               if (data != null) {
                 this.uri = data.uri;
                 this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  this.uri
+                  this.uri,
                 );
                 this.cdr.detectChanges();
                 this.stopPolling();
@@ -370,6 +407,11 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
 
   getSafeURL(): SafeResourceUrl {
     return this.safeURL;
+  }
+
+  setPending(): void {
+    this.myStatus = statusConfig.pending.status;
+    this.myIcon = statusConfig.pending.icon;
   }
 
   setStatusSuccess(): void {

@@ -1,13 +1,12 @@
-import { Injectable, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
-import { NB_DOCUMENT } from '@nebular/theme';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Injectable, Inject, PLATFORM_ID, OnDestroy } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { NavigationEnd, Router } from "@angular/router";
+import { NB_DOCUMENT } from "@nebular/theme";
+import { filter, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Injectable()
 export class SeoService implements OnDestroy {
-
   private readonly destroy$ = new Subject<void>();
   private readonly dom: Document;
   private readonly isBrowser: boolean;
@@ -32,10 +31,10 @@ export class SeoService implements OnDestroy {
   }
 
   createCanonicalTag() {
-    this.linkCanonical = this.dom.createElement('link');
-    this.linkCanonical.setAttribute('rel', 'canonical');
+    this.linkCanonical = this.dom.createElement("link");
+    this.linkCanonical.setAttribute("rel", "canonical");
     this.dom.head.appendChild(this.linkCanonical);
-    this.linkCanonical.setAttribute('href', this.getCanonicalUrl());
+    this.linkCanonical.setAttribute("href", this.getCanonicalUrl());
   }
 
   trackCanonicalChanges() {
@@ -43,12 +42,13 @@ export class SeoService implements OnDestroy {
       return;
     }
 
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      takeUntil(this.destroy$),
-    )
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
       .subscribe(() => {
-        this.linkCanonical.setAttribute('href', this.getCanonicalUrl());
+        this.linkCanonical.setAttribute("href", this.getCanonicalUrl());
       });
   }
 

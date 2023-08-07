@@ -33,7 +33,7 @@
 }
 
 fieldset {
-  border: 3px solid #000;
+  border: 1px solid #000;
   margin: 5px;
   margin-top: 10px;
   padding: 10px; /* Keep the padding for visual spacing inside the fieldset */
@@ -41,22 +41,24 @@ fieldset {
   border-top-style: solid;
 }
 
-// legend {
-//   padding: 0 5px; /* Adjust the padding to make the legend smaller */
-//   font-weight: bold; /* Optional: Enhance the legend text's visibility */
-//   // border: 1px solid #333;
-//   border-radius: 5px 5px 0 0;
-//   background-color: #f0f0f0; /* Optional: Add a background color to the legend */
-//   width: 250px;
-// }
-//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง///////////////////////////
+//////////////////////แก้รูปแบบกล่องของแต่ละกล่อง////////////////////////////
+.PersonalDoc-Required-legend {
+  padding: 0 5px;
+  font-weight: bold;
+  // border: 1px solid #333;
+  border-radius: 5px 5px 0 0;
+  background-color: #f0f0f0;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
+}
 .PersonalDoc-legend {
   padding: 0 5px;
   font-weight: bold;
   // border: 1px solid #333;
   border-radius: 5px 5px 0 0;
   background-color: #f0f0f0;
-  width: 250px;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
 }
 .PersonalRec-legend {
   padding: 0 5px;
@@ -64,7 +66,8 @@ fieldset {
   // border: 1px solid #333;
   border-radius: 5px 5px 0 0;
   background-color: #f0f0f0;
-  width: 210px;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
 }
 .Mandatory-legend {
   padding: 0 5px;
@@ -72,7 +75,8 @@ fieldset {
   // border: 1px solid #333;
   border-radius: 5px 5px 0 0;
   background-color: #f0f0f0;
-  width: 150px;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
 }
 .Optional-legend {
   padding: 0 5px;
@@ -80,6 +84,6 @@ fieldset {
   // border: 1px solid #333;
   border-radius: 5px 5px 0 0;
   background-color: #f0f0f0;
-  width: 130px;
+  width: max-content;
+  font-size: clamp(0.9rem, 0.325rem + 1.2vw, 1rem);
 }
-//////////////////////////////////////////////////////////////////////////
