@@ -189,13 +189,17 @@
       Personal Document(s) [Required Action]
     </legend>
     <!-- Mandatory Card -->
-    <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="row">
+    <div
+      *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous"
+      class="row"
+      style="margin-bottom: 7px"
+    >
       <div
         *ngFor="let cardName of mandatoryCourseName"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
+        style="margin-top: 7px"
       >
         <ngx-mandatory-card-post
-          style="margin-top: 5px"
           [name]="cardName"
           (postCompleteEvent)="downloadSEP()"
         ></ngx-mandatory-card-post>
@@ -213,15 +217,15 @@
   <fieldset *ngIf="manualCards.length > 0">
     <legend class="PersonalDoc-legend">Personal Document(s)</legend>
     <!-- SHOW MANUAL UPLOAD DOCUMENTS CARDS-->
-    <div class="row">
+    <div class="row" style="margin-bottom: 7px">
       <div
         *ngFor="let oneSepCard of manualCards"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
+        style="margin-top: 7px"
         id="{{ oneSepCard.name }}"
       >
         <ngx-one-sep-card
           [info]="oneSepCard"
-          style="margin-top: 5px"
           [canDelete]="!fireBaseAuth.getFirebaseUser().isAnonymous"
           (deleteEvent)="downloadSEP()"
         ></ngx-one-sep-card>
@@ -239,17 +243,24 @@
   <fieldset *ngIf="autoLandCards.length > 0">
     <legend class="PersonalDoc-legend">Personal Autolanding Records</legend>
     <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
-    <div *ngIf="showAutoLand" class="row">
-      <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - ONLINE">
+    <div *ngIf="showAutoLand" class="row" style="margin-bottom: 7px">
+      <div
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="AUTOLAND - ONLINE"
+        style="margin-top: 7px"
+      >
         <ngx-autoland-card
-          style="margin-top: 5px"
           *ngIf="autoLandCards[0] != null"
           [info]="autoLandCards[0]"
           [events]="changeEvent.asObservable()"
           (postCompleteEvent)="loadAutolandCards()"
         ></ngx-autoland-card>
       </div>
-      <div class="col-12 col-sm-12 col-md-6 col-lg-4" id="AUTOLAND - SIMULATOR">
+      <div
+        class="col-12 col-sm-12 col-md-6 col-lg-4"
+        id="AUTOLAND - SIMULATOR"
+        style="margin-top: 7px"
+      >
         <ngx-autoland-card
           style="margin-top: 5px"
           *ngIf="autoLandCards[1] != null"
@@ -271,14 +282,14 @@
   <fieldset *ngIf="requiredCourse.length > 0">
     <legend class="Mandatory-legend">Required Courses</legend>
     <!-- SHOW SEP CARDS-->
-    <div class="row">
+    <div class="row" style="margin-bottom: 7px">
       <div
         *ngFor="let oneSepCard of requiredCourse"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
         id="{{ oneSepCard.name }}"
+        style="margin-top: 7px"
       >
         <ngx-one-sep-card
-          style="margin-top: 5px"
           [info]="oneSepCard"
           [allHistory]="fullHistory[oneSepCard.Name]"
           [canDelete]="false"
@@ -299,14 +310,14 @@
   <fieldset *ngIf="optionalCourse.length > 0">
     <legend class="Mandatory-legend">Optional Courses</legend>
     <!-- SHOW SEP CARDS-->
-    <div class="row">
+    <div class="row" style="margin-bottom: 7px">
       <div
         *ngFor="let oneSepCard of optionalCourse"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
         id="{{ oneSepCard.name }}"
+        style="margin-top: 7px"
       >
         <ngx-one-sep-card
-          style="margin-top: 5px"
           [info]="oneSepCard"
           [allHistory]="fullHistory[oneSepCard.Name]"
           [canDelete]="false"

@@ -43,12 +43,12 @@ export class FirebaseAuthenticationService {
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
-    public router: Router,
+    public router: Router
   ) {
     this.offline = !navigator.onLine;
     if (this.offline)
       this.firebaseUser = JSON.parse(
-        this.getDataWithExpiry(this.firebaseUserStoreKey),
+        this.getDataWithExpiry(this.firebaseUserStoreKey)
       ) as FirebaseUser;
     // this.afAuth.authState.subscribe((user)=>{
     //   console.log(JSON.stringify(user));
@@ -65,7 +65,7 @@ export class FirebaseAuthenticationService {
   */
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    state: RouterStateSnapshot
   ): boolean {
     if (this.firebaseUser == null) {
       this.router.navigate(["./authentication/"]);
@@ -102,7 +102,7 @@ export class FirebaseAuthenticationService {
       this.saveDataWithExpiry(
         this.firebaseUserStoreKey,
         JSON.stringify(tempFirebaseUser),
-        2 * 365 * 24 * 60 * 60 * 1000,
+        2 * 365 * 24 * 60 * 60 * 1000
       );
       this.firebaseUser = tempFirebaseUser;
     });
@@ -113,7 +113,7 @@ export class FirebaseAuthenticationService {
       Add AuthLogin()
   */
   private async AuthLogin(
-    provider: firebase.default.auth.AuthProvider | GoogleAuthProvider,
+    provider: firebase.default.auth.AuthProvider | GoogleAuthProvider
   ) {
     return this.afAuth
       .signInWithPopup(provider)
@@ -123,7 +123,7 @@ export class FirebaseAuthenticationService {
             Implement function check airasia domain
         */
         const tempFirebaseUser = JSON.parse(
-          JSON.stringify(result.user),
+          JSON.stringify(result.user)
         ) as FirebaseUser;
 
         if (!tempFirebaseUser.email.includes("@airasia.com")) {
@@ -142,7 +142,7 @@ export class FirebaseAuthenticationService {
         this.saveDataWithExpiry(
           this.firebaseUserStoreKey,
           JSON.stringify(tempFirebaseUser),
-          2 * 365 * 24 * 60 * 60 * 1000,
+          2 * 365 * 24 * 60 * 60 * 1000
         );
         this.firebaseUser = tempFirebaseUser;
         this.router.navigate(["./authorization/role"]);
