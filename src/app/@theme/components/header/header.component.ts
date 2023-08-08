@@ -124,7 +124,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
      * introduce swUpdate feature for PWA
      */
 
-    this.announceNewVersion();
     if (this.swUpdate.isEnabled)
       this.swUpdate.versionUpdates
         .pipe(
