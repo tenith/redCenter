@@ -28,6 +28,7 @@ import { FileUploadInformation } from "../../../@core/shared/interfaces/file-upl
 import { FirestoreUserService } from "../../../@core/shared/services/firestore-user.service";
 import { SepHistoicalService } from "../../../@core/shared/services/sepHistorical.service";
 import { FileUploadInformationService } from "../../../@core/shared/services/file-upload-information.service";
+import { FirebaseAuthenticationService } from "../../../@core/shared/services/firebase-authentication.service";
 
 @Component({
   selector: "ngx-one-sep-card",
@@ -73,10 +74,12 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   showHistory: boolean = false;
 
   pendingStatus: boolean = false;
+  isAnynomous: boolean = true;
 
   dialogRef: NbDialogRef<DeleteConfirmationComponent>;
 
   constructor(
+    private firebaseAuth: FirebaseAuthenticationService,
     private sepHistoricalService: SepHistoicalService,
     private firestoreUser: FirestoreUserService,
     private toastr: NbToastrService,
@@ -85,7 +88,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     private fileUploadDatabaseService: FileUploadDatabaseService,
     public sepService: SepCardService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnDestroy(): void {
     this.stopPolling();
@@ -96,6 +99,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     this.offline = !navigator.onLine;
     this.handleAppConnectivityChanges();
 
+    this.isAnynomous = this.firebaseAuth.getFirebaseUser().isAnonymous;
     // console.log(JSON.stringify(this.info));
 
     if (this.info.Name in this.displayOption) {
@@ -114,7 +118,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     if (this.info.Type == "Personal Upload") {
       this.isPersonalDocument = true;
       this.downloadUrl$ = this.fileUploadDatabaseService.getFile(
-        this.info.Link,
+        this.info.Link
       );
     }
 
@@ -132,7 +136,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -140,7 +144,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 
@@ -274,7 +278,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           .then(() => {
             this.toastr.primary(
               "Completed",
-              "Delete " + this.info.Name + " document completed",
+              "Delete " + this.info.Name + " document completed"
             );
             this.deleteEvent.emit();
           })
@@ -282,7 +286,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
             console.log(error);
             this.toastr.danger(
               "error",
-              "Delete " + this.info.Name + " document failed, try again later",
+              "Delete " + this.info.Name + " document failed, try again later"
             );
           });
       }
@@ -301,7 +305,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
       if (this.info.verify == false) {
         if (
           strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-            this.info.Name,
+            this.info.Name
           )
         ) {
           this.setPending();
@@ -313,7 +317,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     } else {
       if (
         strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-          this.info.Name,
+          this.info.Name
         )
       ) {
         this.setPending();
@@ -357,13 +361,13 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
           this.sepService
             .getURIByLink(
               this.info.Name.replace(/ /g, "_") +
-                this.info.Attended.replace(/ /g, "_"),
+                this.info.Attended.replace(/ /g, "_")
             )
             .subscribe((data) => {
               if (data != null && data != "") {
                 this.uri = data.uri;
                 this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  this.uri,
+                  this.uri
                 );
                 this.cdr.detectChanges();
                 this.stopPolling();
@@ -382,7 +386,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
               if (data != null) {
                 this.uri = data.uri;
                 this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  this.uri,
+                  this.uri
                 );
                 this.cdr.detectChanges();
                 this.stopPolling();
