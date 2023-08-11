@@ -1,5 +1,5 @@
 <nb-accordion>
-  <nb-accordion-item expanded="{{ myStatus != 'success' }}">
+  <nb-accordion-item>
     <nb-accordion-item-header
       ><nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon
       ><b> &nbsp;{{ info.Name | uppercase }}</b>
@@ -115,47 +115,71 @@
               <hr />
             </div>
 
-            <div class="col-4">
+            <div class="col-4" style="padding-top: 2px">
               <b>Type</b>
             </div>
-            <div class="col-8">
+            <div class="col-8" style="padding-top: 2px">
               {{ info.Type | uppercase }}
             </div>
 
-            <div *ngIf="info.Instructor != ''" class="col-4">
+            <div
+              *ngIf="info.Instructor != ''"
+              class="col-4"
+              style="padding-top: 2px"
+            >
               <b>Issue By</b>
             </div>
-            <div *ngIf="info.Instructor != ''" class="col-8">
-              {{ info.Instructor | uppercase }}
+            <div
+              *ngIf="info.Instructor != ''"
+              class="col-8"
+              style="padding-top: 2px"
+            >
+              {{
+                info.Instructor == "-" ? "TMC" : (info.Instructor | uppercase)
+              }}
             </div>
 
-            <div *ngIf="!isPersonalDocument" class="col-4">
+            <div
+              *ngIf="!isPersonalDocument"
+              class="col-4"
+              style="padding-top: 2px"
+            >
               <b>Attended</b>
             </div>
-            <div *ngIf="isPersonalDocument" class="col-4">
+            <div
+              *ngIf="isPersonalDocument"
+              class="col-4"
+              style="padding-top: 2px"
+            >
               <b>Issue Date</b>
             </div>
-            <div class="col-8">
+            <div class="col-8" style="padding-top: 2px">
               {{ info.Attended | uppercase }}
             </div>
 
             <div
               *ngIf="info.Validperiod != undefined && !isPersonalDocument"
               class="col-4"
+              style="padding-top: 2px"
             >
               <b>Validity</b>
             </div>
             <div
               *ngIf="info.Validperiod != undefined && !isPersonalDocument"
               class="col-8"
+              style="padding-top: 2px"
             >
               {{ info.Validperiod | uppercase }}
             </div>
 
-            <div *ngIf="info.Expiry != ''" class="col-4">
+            <div
+              *ngIf="info.Expiry != ''"
+              class="col-4"
+              style="padding-top: 2px"
+            >
               <b>Expiry</b>
             </div>
-            <div class="col-8">
+            <div class="col-8" style="padding-top: 2px">
               {{ info.Expiry | uppercase }}
             </div>
             <!-- <div *ngIf="info.remark!=''" class="col-12">
@@ -168,6 +192,7 @@
             <div
               *ngIf="dataReady && info.Link != '' && !isAnynomous"
               class="col-12"
+              style="padding-top: 2px"
             >
               <b
                 >Certificate &nbsp;
@@ -183,6 +208,7 @@
             <div
               *ngIf="isPersonalDocument && uri != '' && !isAnynomous"
               class="col-12"
+              style="padding-top: 2px"
             >
               <img
                 style="min-width: 60%; max-width: 95%; max-height: 700px"
@@ -198,6 +224,7 @@
                 !isAnynomous
               "
               class="col-12"
+              style="padding-top: 2px"
             >
               <iframe
                 *ngIf="safeURL"
@@ -211,7 +238,11 @@
           </div>
         </nb-card-body>
         <nb-card-body *ngIf="info.Name == 'My Picture'">
-          <div *ngIf="dataReady && info.Link != ''" class="col-12">
+          <div
+            *ngIf="dataReady && info.Link != ''"
+            class="col-12"
+            style="padding-top: 2px"
+          >
             <img
               style="min-width: 60%; max-width: 95%; max-height: 700px"
               *ngIf="this.uri"

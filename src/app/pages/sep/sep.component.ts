@@ -73,7 +73,7 @@ export class SepComponent implements OnInit, OnDestroy {
     public fireBaseAuth: FirebaseAuthenticationService,
     public toastr: NbToastrService,
     public sepCardService: SepCardService,
-    public autoLandCardService: AutolandCardService,
+    public autoLandCardService: AutolandCardService
   ) {}
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -90,7 +90,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -98,7 +98,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 
@@ -177,7 +177,7 @@ export class SepComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.manualCards.length; i++)
       if (this.mandatoryCourseName.includes(this.manualCards[i].Name))
         this.mandatoryCourseName = this.mandatoryCourseName.filter(
-          (obj) => obj !== this.manualCards[i].Name,
+          (obj) => obj !== this.manualCards[i].Name
         );
   }
 
@@ -188,7 +188,7 @@ export class SepComponent implements OnInit, OnDestroy {
     console.log("cache loading try to update from server");
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
-        this.firestoreUser.getFirestoreUser().email,
+        this.firestoreUser.getFirestoreUser().email
       )
       .onSnapshot((docSnapshot) => {
         // console.log('get some data from firebase');
@@ -242,8 +242,8 @@ export class SepComponent implements OnInit, OnDestroy {
               ...this.manualCardService.getAllSepCardsFromCache(),
             ])
           ) {
-            console.log("using cache");
-            console.log("do nothing");
+            // console.log("using cache");
+            // console.log("do nothing");
           } else {
             this.manualCards = tempS;
             this.manualCardService.deleteAllCards();
@@ -256,8 +256,8 @@ export class SepComponent implements OnInit, OnDestroy {
               ...this.manualCardService.getAllSepCardsFromCache(),
             ])
           ) {
-            console.log("using cache");
-            console.log("do nothing");
+            // console.log("using cache");
+            // console.log("do nothing");
           } else {
             this.manualCards = [];
             this.manualCardService.deleteAllCards();
@@ -277,7 +277,7 @@ export class SepComponent implements OnInit, OnDestroy {
     */
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
-        this.firestoreUser.getFirestoreUser().email,
+        this.firestoreUser.getFirestoreUser().email
       )
       .onSnapshot((docSnapshot) => {
         // console.log('get some data from firebase');
@@ -346,7 +346,7 @@ export class SepComponent implements OnInit, OnDestroy {
         this.toastr.danger(
           "Error",
           "There is no SEP information from online Server, Please check your internet connection or contact TMS.",
-          { duration: 10000 },
+          { duration: 10000 }
         );
         return;
       }
@@ -399,7 +399,7 @@ export class SepComponent implements OnInit, OnDestroy {
       this.toastr.primary(
         "Completed",
         "Updated SEP from TMC server completed",
-        { duration: 10000 },
+        { duration: 10000 }
       );
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
@@ -414,6 +414,16 @@ export class SepComponent implements OnInit, OnDestroy {
   }
 
   detectChanges(): void {}
+
+  private paddingOptional(courseName: string): string {
+    if (
+      !sepCourseBasicRequiredToOperate[
+        this.firestoreUser.getFirestoreUser().role
+      ].includes(courseName)
+    )
+      courseName += " - [Supplementary]";
+    return courseName;
+  }
 
   private isRequiredToShow(search: string): boolean {
     const role = this.firestoreUser.getFirestoreUser().role;
@@ -482,6 +492,11 @@ export class SepComponent implements OnInit, OnDestroy {
     }
 
     for (let i = 0; i < this.oneSepCards.length; i++) {
+      /**
+       * 11 Aug 2023 CCD request remove Ground Check from summary detail
+       */
+      if (this.oneSepCards[i].Name.includes("Ground Check")) continue;
+
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
       const expire = new Date(this.oneSepCards[i].Expiry).getTime() + msInDay;
@@ -489,11 +504,12 @@ export class SepComponent implements OnInit, OnDestroy {
 
       //It's expired course name if expiry date is NO DATA
       if (this.oneSepCards[i].Expiry == "NO DATA") {
-        this.expiredList.push(this.oneSepCards[i].Name);
+        this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
         continue;
       }
 
-      if (diffDate < 0) this.expiredList.push(this.oneSepCards[i].Name);
+      if (diffDate < 0)
+        this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
       if (diffDate > 30) this.validList.push(this.oneSepCards[i].Name);
       if (diffDate <= 30 && diffDate >= 0)
         this.aboutList.push(this.oneSepCards[i].Name);
@@ -522,7 +538,7 @@ export class SepComponent implements OnInit, OnDestroy {
         if (this.manualCards[i].verify == false) {
           if (
             strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-              this.manualCards[i].Name,
+              this.manualCards[i].Name
             )
           ) {
             this.pendingList.push(this.manualCards[i].Name);
@@ -534,7 +550,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name));
         if (
           strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-            this.manualCards[i].Name,
+            this.manualCards[i].Name
           )
         ) {
           this.pendingList.push(this.manualCards[i].Name);
@@ -559,13 +575,13 @@ export class SepComponent implements OnInit, OnDestroy {
           new Date(this.autoLandCards[i].expiry).getTime() + msInDay;
         const diffDate = (expire - today) / msInDay;
 
-        if (diffDate < 0) this.expiredList.push(this.autoLandCards[i].name);
+        if (diffDate < 0)
+          this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
         if (diffDate > 30) this.validList.push(this.autoLandCards[i].name);
         if (diffDate <= 30 && diffDate >= 0)
           this.aboutList.push(this.autoLandCards[i].name);
       }
     }
-
     // this.updateAutoLandSummary();
   }
 
@@ -591,7 +607,7 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "There is no Autoland history from online Server, Please check your internet connection or contact TMS.",
-            { duration: 10000 },
+            { duration: 10000 }
           );
           return;
         }
@@ -599,7 +615,7 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "Autoland history from your cache is error, Please check your internet connection or contact TMS.",
-            { duration: 10000 },
+            { duration: 10000 }
           );
           return;
         }

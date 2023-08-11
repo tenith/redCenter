@@ -240,7 +240,7 @@
 
         merge into develop by wutthichair@airasia.com 06 Aug 2023
     -->
-  <fieldset *ngIf="autoLandCards.length > 0">
+  <fieldset *ngIf="showAutoLand">
     <legend class="PersonalDoc-legend">Personal Autolanding Records</legend>
     <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
     <div *ngIf="showAutoLand" class="row" style="margin-bottom: 7px">
@@ -280,7 +280,7 @@
         merge into develop by wutthichair@airasia.com 06 Aug 2023
     -->
   <fieldset *ngIf="requiredCourse.length > 0">
-    <legend class="Mandatory-legend">Required Courses</legend>
+    <legend class="Mandatory-legend">Mandatory Courses</legend>
     <!-- SHOW SEP CARDS-->
     <div class="row" style="margin-bottom: 7px">
       <div
@@ -308,7 +308,7 @@
         merge into develop by wutthichair@airasia.com 06 Aug 2023
     -->
   <fieldset *ngIf="optionalCourse.length > 0">
-    <legend class="Mandatory-legend">Optional Courses</legend>
+    <legend class="Mandatory-legend">Supplementary Courses</legend>
     <!-- SHOW SEP CARDS-->
     <div class="row" style="margin-bottom: 7px">
       <div
