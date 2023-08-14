@@ -2,44 +2,58 @@
   <nb-accordion-item expanded="{{ myStatus != 'success' }}">
     <nb-accordion-item-header
       ><nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon
-      ><b>&nbsp;&nbsp;{{ info.name }}</b></nb-accordion-item-header
-    >
+      ><b>&nbsp;&nbsp;{{ info.name }}</b>
+    </nb-accordion-item-header>
     <nb-accordion-item-body>
       <nb-card accent="{{ myStatus }}">
         <!-- <nb-card-header ><nb-icon icon="{{myIcon}}" status="{{myStatus}}"></nb-icon> <b> {{info.name}}</b></nb-card-header> -->
         <nb-card-body>
+          <div
+            *ngIf="!firebaseUserService.getFirebaseUser().isAnonymous"
+            class="row col-12"
+          >
+            <div class="ml-auto mr-3">
+              <nb-icon
+                (click)="toggleFormDisplay()"
+                icon="edit-outline"
+                status="primary"
+              ></nb-icon>
+            </div>
+          </div>
           <div class="row">
             <div class="col-4">
               <b>Airport</b>
             </div>
             <div class="col-8">
-              {{ info.airport }}
+              {{ info.airport | uppercase }}
             </div>
 
             <div class="col-4">
               <b>Perform</b>
             </div>
             <div class="col-8">
-              {{ info.perform }}
+              {{ info.perform | uppercase }}
             </div>
 
             <div class="col-4">
               <b>Validity</b>
             </div>
             <div class="col-8">
-              {{ info.validperiod }}
+              {{ info.validperiod | uppercase }}
             </div>
 
             <div *ngIf="info.expiry != ''" class="col-4">
               <b>Expiry</b>
             </div>
             <div class="col-8">
-              {{ info.expiry }}
+              {{ info.expiry | uppercase }}
             </div>
           </div>
           <div
             *ngIf="
-              !offline && !firebaseUserService.getFirebaseUser().isAnonymous
+              showForm &&
+              !offline &&
+              !firebaseUserService.getFirebaseUser().isAnonymous
             "
           >
             <form #autoLandingForm="ngForm">
@@ -73,7 +87,7 @@
 
               <div class="row" style="margin-top: 0.5rem">
                 <div class="col-12">
-                  <b>ILS CAT (ILS I, ILS II, ILS IIIA, ILS IIIB)</b>
+                  <b>ILS CAT</b>
                 </div>
                 <div class="col-12">
                   <select
@@ -97,7 +111,6 @@
                       ILS II
                     </option>
                     <option value="IIIA">ILS IIIA</option>
-                    <option value="IIIB">ILS IIIB</option>
                   </select>
                 </div>
                 <div
@@ -165,14 +178,7 @@
                 </div>
               </div>
 
-              <div
-                class="row"
-                style="
-                  margin-top: 0.5rem;
-                  display: flex;
-                  justify-content: center;
-                "
-              >
+              <div class="row" style="margin-top: 0.5rem">
                 <button
                   nbButton
                   status="primary"
@@ -183,7 +189,7 @@
                   Submit</button
                 >&nbsp;&nbsp;&nbsp;<button
                   nbButton
-                  status="primary"
+                  status="danger"
                   *ngIf="
                     date.dirty || airport.dirty || runway.dirty || cat.dirty
                   "

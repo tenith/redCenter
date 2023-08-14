@@ -174,23 +174,12 @@ export const aocOptions = [
 ];
 
 export const sepMandatory = {
-  Pilot: [
-    "My Picture",
-    "Pilot License",
-    "Medical License",
-    "Passport",
-    "English Proficiency",
-  ],
+  Pilot: ["My Picture"],
   Cabin_Crew: ["My Picture", "Medical License", "Passport"],
 };
 
 export const requiredVerify = {
-  Pilot: [
-    "Pilot License",
-    "Medical License",
-    "Passport",
-    "English Proficiency",
-  ],
+  Pilot: [],
   Cabin_Crew: ["Medical License", "Passport"],
 };
 
@@ -213,6 +202,7 @@ export const sepCourseOptions = {
     "LVO CAT II",
     "LVO CAT IIIA",
     "A321",
+    "OPC",
     "LINE CHECK",
     "SEP DOOR DRILL",
     "SEP WET DRILL",
@@ -245,6 +235,7 @@ export const sepCourseBasicRequiredToOperate = {
     "RNP/BRNAV",
     "RVSM",
     "UPRT",
+    "OPC",
     "LINE CHECK",
     "SEP DOOR DRILL",
     "SEP WET DRILL",
