@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -24,9 +25,9 @@ import { FirebaseAuthenticationService } from "../../../@core/shared/services/fi
   templateUrl: "./autoland-card.component.html",
   styleUrls: ["./autoland-card.component.scss"],
 })
-export class AutolandCardComponent implements OnInit, OnDestroy {
+export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = true;
-  showForm = false;
+  showForm = true;
 
   // @Input() name!: string;
   @Input() info: AutolandSepCard;
@@ -61,11 +62,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
-  toggleFormDisplay(): void {
-    this.showForm = !this.showForm;
-  }
-
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     // console.log(JSON.stringify(this.info));
     this.handleAppConnectivityChanges();
 
@@ -73,13 +70,22 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
     this.eventsSubscription = this.events.subscribe(() => {
       this.reviseAutoLandCard();
       this.autoLandingForm.reset();
-      if (this.info.perform != "")
+      if (this.info.perform != "") {
         this.minDate = this.datePipe.transform(
           new Date(this.info.perform),
           "YYYY-MM-dd"
         );
+        this.showForm = false;
+        // console.log("min date: " + this.minDate);
+      }
     });
   }
+
+  toggleFormDisplay(): void {
+    this.showForm = !this.showForm;
+  }
+
+  ngOnInit(): void {}
 
   private handleAppConnectivityChanges(): void {
     this.offline = !navigator.onLine;
@@ -184,6 +190,8 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
               new Date(this.info.perform),
               "YYYY-MM-dd"
             );
+
+            console.log("mindate: " + this.minDate);
           });
         }
       });
