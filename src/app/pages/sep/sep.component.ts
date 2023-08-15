@@ -107,6 +107,8 @@ export class SepComponent implements OnInit, OnDestroy {
     this.requiredCourse = [];
     this.optionalCourse = [];
 
+    console.log("one sep card: " + JSON.stringify(this.oneSepCards));
+
     for (let i = 0; i < this.oneSepCards.length; i++) {
       if (
         this.basicRequiredCourseName[
@@ -360,6 +362,8 @@ export class SepComponent implements OnInit, OnDestroy {
 
       for (let i: number = 0; i < mainCourse.length; i++) {
         const courseName = mainCourse[i];
+        if (courseName == "RHS") continue;
+
         if (response[courseName] != undefined) {
           // console.log('HISTORY: ' + courseName + " : " + JSON.stringify({courseName: response[courseName]}));
 
@@ -379,10 +383,21 @@ export class SepComponent implements OnInit, OnDestroy {
 
           if (myProcessOneSepCard.Name == "OPC") {
             if (
-              !RHSEmailLists.includes(this.fireBaseAuth.getFirebaseUser().email)
+              RHSEmailLists.includes(this.fireBaseAuth.getFirebaseUser().email)
             ) {
+              /**
+               * Add OPC to be RHS for instructor and person who have authority...
+               */
+              let rhsTemp: OneSepCard = { ...myProcessOneSepCard };
+              rhsTemp.Name = "RHS";
+              temp.splice(4, 0, rhsTemp);
+              // temp.push(rhsTemp);
+            } else {
+              /**
+               * Add NO DATA to line Pilot....
+               */
               const x: OneSepCard = {
-                Name: courseName,
+                Name: "RHS",
                 InitialDate: "NO DATA",
                 Attended: "NO DATA",
                 Type: "NO DATA",
@@ -393,14 +408,14 @@ export class SepComponent implements OnInit, OnDestroy {
                 Link: "",
               };
 
-              myProcessOneSepCard = x;
-              console.log("RESET RHS to Be NO DATA");
+              temp.splice(4, 0, x);
             }
           }
 
           temp.push(myProcessOneSepCard);
         } else {
           //create null card to show....
+
           const x: OneSepCard = {
             Name: courseName,
             InitialDate: "NO DATA",
@@ -425,6 +440,7 @@ export class SepComponent implements OnInit, OnDestroy {
       );
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
+      console.log("main var: " + JSON.stringify(this.oneSepCards));
       this.reviseRequiredCourse();
 
       this.sepCardService.deleteAllSepCards();
