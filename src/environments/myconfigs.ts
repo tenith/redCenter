@@ -175,12 +175,12 @@ export const aocOptions = [
 
 export const sepMandatory = {
   Pilot: ["My Picture"],
-  Cabin_Crew: ["My Picture", "Medical License", "Passport"],
+  Cabin_Crew: ["My Picture", "Medical License"],
 };
 
 export const requiredVerify = {
   Pilot: [],
-  Cabin_Crew: ["Medical License", "Passport"],
+  Cabin_Crew: ["Medical License"],
 };
 
 export const strictVerify = {

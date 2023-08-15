@@ -54,12 +54,12 @@ export class DocumentVerificationComponent implements OnInit {
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           } catch (e) {
             formattedDate = new DatePipe("en_GB").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           }
           console.log(formattedDate);
@@ -104,7 +104,7 @@ export class DocumentVerificationComponent implements OnInit {
 
   constructor(
     private fileVerifyService: FileVerificationService,
-    private firestoreUserService: FirestoreUserService,
+    private firestoreUserService: FirestoreUserService
   ) {}
 
   ngOnInit(): void {
