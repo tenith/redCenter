@@ -64,12 +64,19 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     // console.log(JSON.stringify(this.info));
+  }
+
+  toggleFormDisplay(): void {
+    this.showForm = !this.showForm;
+  }
+
+  ngOnInit(): void {
     this.handleAppConnectivityChanges();
 
     this.reviseAutoLandCard();
     this.eventsSubscription = this.events.subscribe(() => {
       this.reviseAutoLandCard();
-      this.autoLandingForm.reset();
+      // this.autoLandingForm.reset();
       if (this.info.perform != "") {
         this.minDate = this.datePipe.transform(
           new Date(this.info.perform),
@@ -80,12 +87,6 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
-  toggleFormDisplay(): void {
-    this.showForm = !this.showForm;
-  }
-
-  ngOnInit(): void {}
 
   private handleAppConnectivityChanges(): void {
     this.offline = !navigator.onLine;

@@ -17,6 +17,7 @@ import { FileUploadInformation } from "../../@core/shared/interfaces/file-upload
 import { ManualCardService } from "../../@core/shared/services/manual-card.service";
 
 import {
+  RHSEmailLists,
   sepCourseBasicRequiredToOperate,
   sepCourseOptions,
   sepMandatory,
@@ -375,6 +376,27 @@ export class SepComponent implements OnInit, OnDestroy {
                 response[courseName][i].Attended;
               break;
             }
+
+          if (myProcessOneSepCard.Name == "OPC") {
+            if (
+              !RHSEmailLists.includes(this.fireBaseAuth.getFirebaseUser().email)
+            ) {
+              const x: OneSepCard = {
+                Name: courseName,
+                InitialDate: "NO DATA",
+                Attended: "NO DATA",
+                Type: "NO DATA",
+                Validperiod: "NO DATA",
+                Expiry: "NO DATA",
+                Instructor: "NO DATA",
+                Remark: "NO DATA",
+                Link: "",
+              };
+
+              myProcessOneSepCard = x;
+              console.log("RESET RHS to Be NO DATA");
+            }
+          }
 
           temp.push(myProcessOneSepCard);
         } else {
