@@ -190,20 +190,17 @@ export const strictVerify = {
 
 export const sepCourseOptions = {
   Pilot: [
-    "TCAS",
-    "RNP/BRNAV",
-    "RVSM",
     "ETOPS A320",
     "RHS",
-    "UPRT",
     "VVDN COMPETENCY",
     "VVCR COMPETENCY",
     "VNKT COMPETENCY",
-    "LVO CAT II",
-    "LVO CAT IIIA",
+    "LVO",
+    "AUTOLAND - SIMULATOR RECURRENT",
     "A321",
     "OPC",
     "LINE CHECK",
+    "PBN (AR)",
     "SEP DOOR DRILL",
     "SEP WET DRILL",
     "SEP FIRE DRILL",
@@ -284,10 +281,6 @@ export const RHSEmailLists = [
 
 export const sepCourseBasicRequiredToOperate = {
   Pilot: [
-    "TCAS",
-    "RNP/BRNAV",
-    "RVSM",
-    "UPRT",
     "OPC",
     "LINE CHECK",
     "SEP DOOR DRILL",
@@ -314,21 +307,24 @@ export const sepCourseBasicRequiredToOperate = {
 };
 
 export const sepCourseDisplayOptions = {
-  TCAS: { Initial: false, ShowHistory: false },
-  "RNP/BRNAV": { Initial: false, ShowHistory: false },
-  RVSM: { Initial: false, ShowHistory: false },
+  // TCAS: { Initial: false, ShowHistory: false },
+  // "RNP/BRNAV": { Initial: false, ShowHistory: false },
+  // RVSM: { Initial: false, ShowHistory: false },
   "ETOPS A320": { Initial: false, ShowHistory: false },
   RHS: { Initial: true, ShowHistory: false },
 
-  UPRT: { Initial: false, ShowHistory: false },
+  LVO: { Initial: false, ShowHistory: false },
+  "AUTOLAND - SIMULATOR RECURRENT": { Initial: false, ShowHistory: false },
+  "PBN (AR)": { Initial: false, ShowHistory: false },
+  // UPRT: { Initial: false, ShowHistory: false },
   "VVDN COMPETENCY": { Initial: false, ShowHistory: false },
   "VVCR COMPETENCY": { Initial: false, ShowHistory: false },
   "VNKT COMPETENCY": { Initial: false, ShowHistory: false },
-  "LVO CAT II": { Initial: false, ShowHistory: false },
+  // "LVO CAT II": { Initial: false, ShowHistory: false },
 
-  "LVO CAT IIIA": { Initial: false, ShowHistory: false },
+  // "LVO CAT IIIA": { Initial: false, ShowHistory: false },
   A321: { Initial: false, ShowHistory: false },
-  "LINE CHECK": { Initial: true, ShowHistory: false },
+  "LINE CHECK": { Initial: false, ShowHistory: false },
   OPC: { Initial: false, ShowHistory: false },
   "SEP DOOR DRILL": { Initial: true, ShowHistory: false },
   "SEP WET DRILL": { Initial: true, ShowHistory: false },

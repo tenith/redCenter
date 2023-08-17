@@ -46,10 +46,10 @@ export class FirebaseAuthenticationService {
     public router: Router
   ) {
     this.offline = !navigator.onLine;
-    if (this.offline)
-      this.firebaseUser = JSON.parse(
-        this.getDataWithExpiry(this.firebaseUserStoreKey)
-      ) as FirebaseUser;
+    // if (this.offline)
+    this.firebaseUser = JSON.parse(
+      this.getDataWithExpiry(this.firebaseUserStoreKey)
+    ) as FirebaseUser;
     // this.afAuth.authState.subscribe((user)=>{
     //   console.log(JSON.stringify(user));
     //   if(!user)

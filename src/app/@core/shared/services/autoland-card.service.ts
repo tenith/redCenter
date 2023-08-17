@@ -22,7 +22,7 @@ export class AutolandCardService {
 
   constructor(
     public fireBaseAuthService: FirebaseAuthenticationService,
-    public httpClient: HttpClient,
+    public httpClient: HttpClient
   ) {
     /*
       13 MAR 2023 wutthichair
@@ -57,7 +57,7 @@ export class AutolandCardService {
   saveAllSepCards(autoLandCard: AutolandSepCard[]): void {
     localStorage.setItem(
       this.autoLandCardLocalDBName,
-      JSON.stringify(autoLandCard),
+      JSON.stringify(autoLandCard)
     );
   }
 
@@ -73,7 +73,7 @@ export class AutolandCardService {
   getAllAutolandCards(): Observable<any> {
     let params = new HttpParams().set(
       "email",
-      this.fireBaseAuthService.getFirebaseUser().email,
+      this.fireBaseAuthService.getFirebaseUser().email
     );
     return this.httpClient.get(this.apiURL, { params: params });
   }
@@ -92,7 +92,7 @@ export class AutolandCardService {
     date: string,
     cat: string,
     runway: string,
-    airport: string,
+    airport: string
   ): Observable<any> {
     var formData: any = new FormData();
     formData.append("email", this.fireBaseAuthService.getFirebaseUser().email);

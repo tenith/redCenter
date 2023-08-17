@@ -256,19 +256,6 @@
           (postCompleteEvent)="loadAutolandCards()"
         ></ngx-autoland-card>
       </div>
-      <div
-        class="col-12 col-sm-12 col-md-6 col-lg-4"
-        id="AUTOLAND - SIMULATOR"
-        style="margin-top: 7px"
-      >
-        <ngx-autoland-card
-          style="margin-top: 5px"
-          *ngIf="autoLandCards[1] != null"
-          [info]="autoLandCards[1]"
-          [events]="changeEvent.asObservable()"
-          (postCompleteEvent)="loadAutolandCards()"
-        ></ngx-autoland-card>
-      </div>
     </div>
   </fieldset>
 

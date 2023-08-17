@@ -107,8 +107,6 @@ export class SepComponent implements OnInit, OnDestroy {
     this.requiredCourse = [];
     this.optionalCourse = [];
 
-    console.log("one sep card: " + JSON.stringify(this.oneSepCards));
-
     for (let i = 0; i < this.oneSepCards.length; i++) {
       if (
         this.basicRequiredCourseName[
@@ -132,13 +130,13 @@ export class SepComponent implements OnInit, OnDestroy {
         validperiod: "",
         expiry: "",
       },
-      {
-        name: "AUTOLAND - SIMULATOR",
-        airport: "",
-        perform: "",
-        validperiod: "",
-        expiry: "",
-      },
+      // {
+      //   name: "AUTOLAND - SIMULATOR",
+      //   airport: "",
+      //   perform: "",
+      //   validperiod: "",
+      //   expiry: "",
+      // },
     ];
 
     this.mandatoryCourseName =
@@ -363,11 +361,9 @@ export class SepComponent implements OnInit, OnDestroy {
       for (let i: number = 0; i < mainCourse.length; i++) {
         const courseName = mainCourse[i];
         if (courseName == "RHS") continue;
+        if (courseName == "AUTOLAND - SIMULATOR RECURRENT") continue;
 
         if (response[courseName] != undefined) {
-          // console.log('HISTORY: ' + courseName + " : " + JSON.stringify({courseName: response[courseName]}));
-
-          // localStorage.setItem(courseName + 'History', JSON.stringify(response[courseName]));
           this.fullHistory[courseName] = response[courseName];
           const last = response[courseName].length - 1;
           let myProcessOneSepCard: OneSepCard = response[courseName][last];
@@ -390,6 +386,10 @@ export class SepComponent implements OnInit, OnDestroy {
                */
               let rhsTemp: OneSepCard = { ...myProcessOneSepCard };
               rhsTemp.Name = "RHS";
+              rhsTemp.Expiry = this.addSixMonthsToDate(
+                new Date(rhsTemp.Attended)
+              );
+
               temp.splice(4, 0, rhsTemp);
               // temp.push(rhsTemp);
             } else {
@@ -440,7 +440,7 @@ export class SepComponent implements OnInit, OnDestroy {
       );
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
-      console.log("main var: " + JSON.stringify(this.oneSepCards));
+      // console.log("main var: " + JSON.stringify(this.oneSepCards));
       this.reviseRequiredCourse();
 
       this.sepCardService.deleteAllSepCards();
@@ -449,6 +449,16 @@ export class SepComponent implements OnInit, OnDestroy {
       this.updateSummary();
       this.loadAutolandCards();
     });
+  }
+
+  addSixMonthsToDate(inputDate: Date): string {
+    let newDate = new Date(inputDate);
+    newDate.setMonth(newDate.getMonth() + 7);
+
+    // Set the date to the last day of the month if necessary
+    newDate.setDate(0);
+
+    return new DatePipe("en-US").transform(newDate, "dd MMM yyyy");
   }
 
   detectChanges(): void {}
@@ -505,6 +515,7 @@ export class SepComponent implements OnInit, OnDestroy {
 
         this.loadAutolandCards();
         this.updateSummary();
+        this.reviseRequiredCourse();
         break;
       }
     }
@@ -627,7 +638,47 @@ export class SepComponent implements OnInit, OnDestroy {
   // }
 
   loadAutolandCards(): void {
-    if (!this.isLVOCertified()) return;
+    if (!this.isLVOCertified()) {
+      this.showAutoLand = false;
+      this.autoLandCardService.deleteAllSepCards();
+      this.oneSepCards = this.oneSepCards.filter(
+        (obj) => obj.Name !== "AUTOLAND - SIMULATOR RECURRENT"
+      );
+
+      this.updateSummary();
+      return;
+    }
+
+    /**
+     * Add card autoland - simulator recurrent to link with OPC
+     * 17 Aug 2023
+     */
+    let OPCCard: OneSepCard = this.oneSepCards.find((obj) => obj.Name == "OPC");
+    this.oneSepCards = this.oneSepCards.filter(
+      (obj) => obj.Name !== "AUTOLAND - SIMULATOR RECURRENT"
+    );
+    let autolandSimCard = { ...OPCCard };
+    if (OPCCard != undefined) {
+      autolandSimCard.Name = "AUTOLAND - SIMULATOR RECURRENT";
+      autolandSimCard.Expiry = this.addSixMonthsToDate(
+        new Date(OPCCard.Attended)
+      );
+    } else {
+      autolandSimCard = {
+        Name: "AUTOLAND - SIMULATOR RECURRENT",
+        InitialDate: "NO DATA",
+        Attended: "NO DATA",
+        Type: "NO DATA",
+        Validperiod: "NO DATA",
+        Expiry: "NO DATA",
+        Instructor: "NO DATA",
+        Remark: "NO DATA",
+        Link: "",
+      };
+    }
+    let index = this.oneSepCards.findIndex((obj) => obj.Name === "LVO");
+    if (index != -1) this.oneSepCards.splice(index + 1, 0, autolandSimCard);
+    else this.oneSepCards.push(autolandSimCard);
 
     if (this.autoLandCardService.isInLocalStorage()) {
       this.autoLandCards = [
@@ -659,7 +710,9 @@ export class SepComponent implements OnInit, OnDestroy {
         }
 
         this.autoLandCards = [...autoLandCards];
-        // console.log('GET AUTOLAND JSON :' + JSON.stringify(this.autoLandCards));
+        this.autoLandCards = this.autoLandCards.filter(
+          (obj) => obj.name !== "AUTOLAND - SIMULATOR"
+        );
 
         // if(!this.firstTimeAlert)
         //   this.toastr.primary('Completed','Updated Autoland history from online server completed', {duration:10000, preventDuplicates: true});
