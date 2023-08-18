@@ -190,17 +190,8 @@ export const strictVerify = {
 
 export const sepCourseOptions = {
   Pilot: [
-    "ETOPS A320",
-    "RHS",
-    "VVDN COMPETENCY",
-    "VVCR COMPETENCY",
-    "VNKT COMPETENCY",
-    "LVO",
-    "AUTOLAND - SIMULATOR RECURRENT",
-    "A321",
     "OPC",
     "LINE CHECK",
-    "PBN (AR)",
     "SEP DOOR DRILL",
     "SEP WET DRILL",
     "SEP FIRE DRILL",
@@ -210,9 +201,18 @@ export const sepCourseOptions = {
     "CREW RESOURCE MANAGEMENT",
     "SMS CLASS",
     "AVSEC",
+
+    "ETOPS A320",
+    "VVDN COMPETENCY",
+    "VVCR COMPETENCY",
+    "VNKT COMPETENCY",
+    "RHS",
+    "LVO",
+    "AUTOLAND - SIMULATOR RECURRENT",
+    "A321",
+    "PBN (AR)",
   ],
   Cabin_Crew: [
-    "A321",
     "SEP DOOR DRILL",
     "SEP WET DRILL",
     "SEP FIRE DRILL",
@@ -223,6 +223,7 @@ export const sepCourseOptions = {
     "SMS CLASS",
     "AVSEC",
     "Ground Check",
+    "A321",
   ],
 };
 

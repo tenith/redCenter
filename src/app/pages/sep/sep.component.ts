@@ -533,6 +533,55 @@ export class SepComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  sortList(): void {
+    let orderedCourseList = [
+      ...sepMandatory[this.firestoreUser.getFirestoreUser().role],
+      "AUTOLAND - ONLINE",
+      ...sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+    ];
+
+    this.validList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.validList
+    );
+
+    this.aboutList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.aboutList
+    );
+    this.expiredList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.expiredList
+    );
+  }
+
+  sortSubsetWithAliases(master: string[], subset: string[]): string[] {
+    const masterIndexMap: Map<string, number> = new Map();
+
+    // Create a map of elements to their indices in the master array
+    master.forEach((element, index) => {
+      masterIndexMap.set(element, index);
+    });
+
+    // Sort the subset array based on their indices in the master array
+    subset.sort((a, b) => {
+      const indexA = masterIndexMap.get(a.replace(" - [Supplementary]", ""));
+      const indexB = masterIndexMap.get(b.replace(" - [Supplementary]", ""));
+
+      if (indexA !== undefined && indexB !== undefined) {
+        return indexA - indexB;
+      } else if (indexA !== undefined) {
+        return -1; // Place elements from subset not found in master at the beginning
+      } else if (indexB !== undefined) {
+        return 1; // Place elements from subset not found in master at the beginning
+      } else {
+        return 0; // Elements not found in master, keep their relative order in subset
+      }
+    });
+
+    return subset;
+  }
+
   updateSEPSummary(): void {
     if (this.oneSepCards == null) return;
 
@@ -632,6 +681,8 @@ export class SepComponent implements OnInit, OnDestroy {
       }
     }
     // this.updateAutoLandSummary();
+
+    this.sortList();
   }
 
   // updateAutoLandSummary(): void {
