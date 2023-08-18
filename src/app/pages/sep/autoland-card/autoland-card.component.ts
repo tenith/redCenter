@@ -170,7 +170,8 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
       */
         if (respone.status.toString().includes("completed")) {
           this.autoLandService.getAllAutolandCards().subscribe((response) => {
-            let temp = response as AutolandSepCard[];
+            let temp: AutolandSepCard[] = [];
+            temp.push(response);
 
             this.autoLandService.deleteAllSepCards();
             this.autoLandService.saveAllSepCards(temp);
@@ -178,7 +179,11 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.info.name.includes("ONLINE")) this.info = { ...temp[0] };
             else this.info = { ...temp[1] };
 
+            this.showForm = true;
+            this.cdr.detectChanges();
             this.autoLandingForm.reset();
+            this.showForm = false;
+
             this.postCompleteEvent.emit("post completed");
             this.toastr.primary(
               "Completed",
@@ -192,7 +197,7 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
               "YYYY-MM-dd"
             );
 
-            console.log("mindate: " + this.minDate);
+            // console.log("mindate: " + this.minDate);
           });
         }
       });

@@ -29,6 +29,7 @@ export const settings = {
 };
 
 export const firestoreCollection = {
+  autoland_online: "/autoland_online",
   eTS1CollectionName: "/eTS1",
   userCollectionName: "/users",
   vrCollectionName: "/vr",

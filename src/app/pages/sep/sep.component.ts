@@ -116,6 +116,46 @@ export class SepComponent implements OnInit, OnDestroy {
         this.requiredCourse.push(this.oneSepCards[i]);
       else this.optionalCourse.push(this.oneSepCards[i]);
     }
+
+    this.requiredCourse = this.sortObjectsUsingMaster(
+      sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+      this.requiredCourse
+    );
+
+    this.optionalCourse = this.sortObjectsUsingMaster(
+      sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+      this.optionalCourse
+    );
+  }
+
+  sortObjectsUsingMaster(
+    master: string[],
+    objects: OneSepCard[]
+  ): OneSepCard[] {
+    const masterIndexMap: Map<string, number> = new Map();
+
+    // Create a map of names to their indices in the master array
+    master.forEach((name, index) => {
+      masterIndexMap.set(name, index);
+    });
+
+    // Sort the objects array based on their indices in the master array
+    objects.sort((a, b) => {
+      const indexA = masterIndexMap.get(a.Name);
+      const indexB = masterIndexMap.get(b.Name);
+
+      if (indexA !== undefined && indexB !== undefined) {
+        return indexA - indexB;
+      } else if (indexA !== undefined) {
+        return -1; // Place objects not found in master at the beginning
+      } else if (indexB !== undefined) {
+        return 1; // Place objects not found in master at the beginning
+      } else {
+        return 0; // Objects not found in master, keep their relative order
+      }
+    });
+
+    return objects;
   }
 
   ngOnInit(): void {
@@ -759,8 +799,10 @@ export class SepComponent implements OnInit, OnDestroy {
           );
           return;
         }
+        let tempAutoLandCards: AutolandSepCard[] = [];
+        tempAutoLandCards.push(autoLandCards);
 
-        this.autoLandCards = [...autoLandCards];
+        this.autoLandCards = [...tempAutoLandCards];
         this.autoLandCards = this.autoLandCards.filter(
           (obj) => obj.name !== "AUTOLAND - SIMULATOR"
         );
