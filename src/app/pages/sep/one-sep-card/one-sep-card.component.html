@@ -1,8 +1,10 @@
 <nb-accordion>
   <nb-accordion-item>
     <nb-accordion-item-header
-      ><nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon
-      ><b> &nbsp;{{ info.Name | uppercase }}</b>
+      ><div class="icon-container">
+        <nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon>
+      </div>
+      <b>{{ info.Name | uppercase }}</b>
 
       <!-- &nbsp;&nbsp;
             <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon> -->

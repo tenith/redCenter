@@ -355,25 +355,28 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   }
 
   checkFileStatus(): void {
+    let tempName =
+      this.info.Name.replace(/ /g, "_") + this.info.Attended.replace(/ /g, "_");
+    if (
+      this.info.Name == "RHS" ||
+      this.info.Name == "AUTOLAND - SIMULATOR RECURRENT"
+    )
+      tempName =
+        "OPC".replace(/ /g, "_") + this.info.Attended.replace(/ /g, "_");
     if (this.info.Link == "") this.stopPolling();
     else {
       if (!this.isPersonalDocument) {
         try {
-          this.sepService
-            .getURIByLink(
-              this.info.Name.replace(/ /g, "_") +
-                this.info.Attended.replace(/ /g, "_")
-            )
-            .subscribe((data) => {
-              if (data != null && data != "") {
-                this.uri = data.uri;
-                this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  this.uri
-                );
-                this.cdr.detectChanges();
-                this.stopPolling();
-              }
-            });
+          this.sepService.getURIByLink(tempName).subscribe((data) => {
+            if (data != null && data != "") {
+              this.uri = data.uri;
+              this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+                this.uri
+              );
+              this.cdr.detectChanges();
+              this.stopPolling();
+            }
+          });
         } catch (e) {
           // console.log(e);
         }
