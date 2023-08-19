@@ -195,9 +195,9 @@ export class SepComponent implements OnInit, OnDestroy {
     if (this.sepCardService.isInLocalStorage()) {
       this.loading = false;
       this.oneSepCards = [...this.sepCardService.getAllSepCardsFromCache()];
-      this.reviseRequiredCourse();
 
       this.loadAutolandCards();
+      this.reviseRequiredCourse();
     }
 
     if (this.manualCardService.isInLocalStorage()) {
@@ -226,7 +226,6 @@ export class SepComponent implements OnInit, OnDestroy {
     /*
       Loading Information From personal file upload....
     */
-    console.log("cache loading try to update from server");
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
         this.firestoreUser.getFirestoreUser().email
@@ -481,13 +480,13 @@ export class SepComponent implements OnInit, OnDestroy {
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
       // console.log("main var: " + JSON.stringify(this.oneSepCards));
-      this.reviseRequiredCourse();
 
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
-      this.updateSummary();
       this.loadAutolandCards();
+      this.reviseRequiredCourse();
+      this.updateSummary();
     });
   }
 
@@ -767,6 +766,7 @@ export class SepComponent implements OnInit, OnDestroy {
         Link: "",
       };
     }
+
     let index = this.oneSepCards.findIndex((obj) => obj.Name === "LVO");
     if (index != -1) this.oneSepCards.splice(index + 1, 0, autolandSimCard);
     else this.oneSepCards.push(autolandSimCard);
