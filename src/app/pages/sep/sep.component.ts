@@ -320,7 +320,9 @@ export class SepComponent implements OnInit, OnDestroy {
         this.firestoreUser.getFirestoreUser().email
       )
       .onSnapshot((docSnapshot) => {
-        // console.log('get some data from firebase');
+        // console.log(
+        //   "get some data from firebase: " + JSON.stringify(docSnapshot)
+        // );
         let tempOneSepCard: OneSepCard[] = [];
         if (docSnapshot.exists) {
           const temp = [...docSnapshot.data().files] as FileUploadInformation[];

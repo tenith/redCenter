@@ -50,19 +50,23 @@ export class DocumentVerificationComponent implements OnInit {
           if (date == "" || date == "-") return "-";
 
           let formattedDate = "";
-          console.log(date);
+          // console.log(date);
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
               "dd MMM yyyy HH:mm:ss"
             );
           } catch (e) {
-            formattedDate = new DatePipe("en_GB").transform(
+            const inputDateString = date;
+            const [datePart, timePart] = inputDateString.split(", ");
+            const [day, month, year] = datePart.split("/");
+            date = `${month}/${day}/${year}, ${timePart}`;
+            formattedDate = new DatePipe("en-US").transform(
               date,
               "dd MMM yyyy HH:mm:ss"
             );
           }
-          console.log(formattedDate);
+          // console.log(formattedDate);
           return formattedDate.toUpperCase();
         },
       },

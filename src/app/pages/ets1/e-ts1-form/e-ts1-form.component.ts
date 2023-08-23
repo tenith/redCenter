@@ -92,7 +92,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     private firestoreUserService: FirestoreUserService,
     private allStarService: AllStarService,
     private datePipe: DatePipe,
-    private router: Router,
+    private router: Router
   ) {}
 
   resetChiefPilotSignature(): void {
@@ -245,7 +245,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     this.eTS1Service.updateDateeTS1(this.eTS1);
     Swal.fire("Completed", "You saved this form into your device", "success");
 
-    this.saveEvent.emit();
+    this.saveEvent.emit("");
   }
 
   ngOnInit(): void {
@@ -473,7 +473,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     // this.saveToLocal();
     // this.eTS1.ownerEmail = this.firestoreUserService.getFirestoreUser().email;
     this.eTS1Service.updateDateeTS1(this.eTS1);
-    this.saveEvent.emit();
+    this.saveEvent.emit("");
 
     Swal.fire("Completed", "You saved this form", "success");
   }
@@ -488,7 +488,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         const timeStamp = this.datePipe.transform(
           new Date(),
-          "dd-MMM-yyyy HH:mm",
+          "dd-MMM-yyyy HH:mm"
         );
         this.eTS1.submitDateTime = timeStamp;
 
@@ -511,7 +511,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         const timeStamp = this.datePipe.transform(
           new Date(),
-          "dd-MMM-yyyy HH:mm",
+          "dd-MMM-yyyy HH:mm"
         );
         this.eTS1.completedDateTime = timeStamp;
 
@@ -533,7 +533,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         Swal.fire(
           "Completed",
           "You send this form to Big Data Completed",
-          "success",
+          "success"
         );
       }
     });
@@ -561,7 +561,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.setName3();
         this.saveToLocal();
 
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -592,7 +592,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
         this.setName3();
         this.saveToLocal();
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -623,7 +623,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
         this.setName3();
         this.saveToLocal();
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -654,7 +654,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.setName3();
         this.saveToLocal();
 
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -685,7 +685,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.setName3();
         this.saveToLocal();
 
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -717,7 +717,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.setName3();
         this.saveToLocal();
 
-        this.saveEvent.emit();
+        this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -727,14 +727,14 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   setName1(): void {
     if (!this.readOnlySectionA)
       this.eTS1.name1 = this.allStarService.getNameByStaffID(
-        this.eTS1.staffNo1,
+        this.eTS1.staffNo1
       );
   }
 
   setName2(): void {
     if (!this.readOnlySectionA)
       this.eTS1.name2 = this.allStarService.getNameByStaffID(
-        this.eTS1.staffNo2,
+        this.eTS1.staffNo2
       );
   }
 
@@ -743,7 +743,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       this.eTS1.submitByEmail =
         this.firestoreUserService.getFirestoreUser().email;
       this.eTS1.name3 = this.allStarService.getNameByEmail(
-        this.eTS1.submitByEmail,
+        this.eTS1.submitByEmail
       );
     }
   }
@@ -986,7 +986,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       Swal.fire(
         "The average score of section F. is " + Math.round(score / index),
         "Overall grading is " + this.eTS1.overAllScore,
-        "question",
+        "question"
       );
   }
 
@@ -1196,7 +1196,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       if (this.eTS1[("system" + i + "Detail") as ObjectKey] != "") {
         systemNormals.push(this.eTS1[("system" + i + "Detail") as ObjectKey]);
         systemNormalScores.push(
-          this.eTS1[("system" + i + "Score") as ObjectKey],
+          this.eTS1[("system" + i + "Score") as ObjectKey]
         );
       }
     }
@@ -1217,10 +1217,10 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       if (this.eTS1[("abNormal" + i + "Detail") as ObjectKey] != "") {
         //console.log('push : ' + i + this.eTS1['abNormal' + i + 'Detail' as ObjectKey]);
         systemAbNormals.push(
-          this.eTS1[("abNormal" + i + "Detail") as ObjectKey],
+          this.eTS1[("abNormal" + i + "Detail") as ObjectKey]
         );
         systemAbNormalScores.push(
-          this.eTS1[("abNormal" + i + "Score") as ObjectKey],
+          this.eTS1[("abNormal" + i + "Score") as ObjectKey]
         );
       }
     }

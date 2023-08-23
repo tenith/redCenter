@@ -147,7 +147,9 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       .onSnapshot((docSnapshot) => {
         if (docSnapshot.exists) {
           const temp = [...docSnapshot.data().files] as FileUploadInformation[];
-          this.fileUploadInformations = temp;
+          this.fileUploadInformations = temp.filter(
+            (obj) => obj.description !== null
+          );
 
           this.refresh();
         }

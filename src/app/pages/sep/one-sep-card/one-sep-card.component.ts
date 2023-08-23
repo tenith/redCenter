@@ -259,6 +259,11 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     return blob;
   }
 
+  deleteEventEmit(): void {
+    console.log("deletevent emit");
+    this.deleteEvent.emit("DELETE EVENT");
+  }
+
   deleteDocument(): void {
     this.dialogRef = this.dialogService.open(DeleteConfirmationComponent, {
       context: {
@@ -281,7 +286,7 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
               "Completed",
               "Delete " + this.info.Name + " document completed"
             );
-            this.deleteEvent.emit();
+            this.deleteEventEmit();
           })
           .catch((error) => {
             console.log(error);
