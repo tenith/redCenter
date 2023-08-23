@@ -26,7 +26,7 @@ export class FileUploadDatabaseService {
   constructor(
     private storage: AngularFireStorage,
     private firestoreUser: FirestoreUserService,
-    private fileUploadInformationService: FileUploadInformationService,
+    private fileUploadInformationService: FileUploadInformationService
   ) {
     const temp = this.firestoreUser.getFirestoreUser();
     this.email = temp.email;
@@ -38,12 +38,12 @@ export class FileUploadDatabaseService {
   public async uploadFileByAdmin(
     file: File,
     form: any,
-    email: string,
+    email: string
   ): Promise<boolean> {
     let completed = false;
     const newFileName = new Date().valueOf() + "_" + file.name;
     const fileRef = this.storage.ref(
-      firebaseDB.dbPathName + "/" + email + "/" + newFileName,
+      firebaseDB.dbPathName + "/" + email + "/" + newFileName
     );
     const fileAbsPath =
       this.absPath + firebaseDB.dbPathName + "/" + newFileName;
@@ -51,7 +51,7 @@ export class FileUploadDatabaseService {
     const datePipe = new DatePipe("en-US");
     const formattedDate = datePipe.transform(
       new Date(),
-      "dd MMM yyyy HH:mm:ss",
+      "dd MMM yyyy HH:mm:ss"
     );
 
     await fileRef.put(file).then(async () => {
@@ -103,7 +103,7 @@ export class FileUploadDatabaseService {
     const datePipe = new DatePipe("en-US");
     const formattedDate = datePipe.transform(
       new Date(),
-      "dd MMM yyyy HH:mm:ss",
+      "dd MMM yyyy HH:mm:ss"
     );
 
     await fileRef.put(file).then(async () => {
@@ -111,6 +111,7 @@ export class FileUploadDatabaseService {
         owner: this.email,
         name: newFileName,
         displayName: this.firestoreUser.getFirestoreUser().displayName,
+        id: this.firestoreUser.getFirestoreUser().cId,
         relativePath: this.path + "/" + newFileName,
         path: fileAbsPath,
         description: form.fileDescription,
@@ -181,7 +182,7 @@ export class FileUploadDatabaseService {
 
   public async deleteFile(
     path: string,
-    fileUploadInformation: FileUploadInformation,
+    fileUploadInformation: FileUploadInformation
   ): Promise<boolean> {
     let completed = false;
     // if(!this.isModerator)
@@ -190,7 +191,7 @@ export class FileUploadDatabaseService {
     await this.fileUploadInformationService
       .removeFileUploadInformation(
         fileUploadInformation,
-        fileUploadInformation.owner,
+        fileUploadInformation.owner
       )
       .then(async () => {
         const fileRef = this.storage.ref(path);

@@ -1,6 +1,7 @@
 export interface FileUploadInformation {
   owner: string;
   name: string;
+  id?: string;
   displayName: string;
   relativePath: string;
   path: string;
@@ -16,4 +17,8 @@ export interface FileUploadInformation {
   issueBy: string;
 
   verify?: boolean;
+
+  validatorEmail?: string;
+  validatorName?: string;
+  validateTimestamp?: string;
 }

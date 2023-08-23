@@ -67,6 +67,8 @@ export class DocumentVerificationComponent implements OnInit {
         },
       },
       owner: { title: "Owner Email", width: "12%" },
+      id: { title: "TAA ID" },
+      displayName: { title: "Name" },
       fileCategory: { title: "Category", width: "12%" },
       description: { title: "Description" },
       issueDate: {

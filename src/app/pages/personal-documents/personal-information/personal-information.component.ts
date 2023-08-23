@@ -90,6 +90,8 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
           return formattedDate.toUpperCase();
         },
       },
+      validatorEmail: { title: "Validated by" },
+      validateTimestamp: { title: "Validated at" },
       // name: { title: 'Name', valuePrepareFunction: (name) => {
       //   let temp = name.split('_')[1];
       //   return temp;
@@ -103,7 +105,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
     private fileReportService: FileReportService,
     private fileUploadInformationService: FileUploadInformationService,
     private firestoreUserService: FirestoreUserService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {
     // if(this.email == ''){
     //   this.email = this.firestoreUserService.getFirestoreUser().email;
