@@ -57,7 +57,7 @@ export class MandatoryCardPostComponent
     private firestoreUserService: FirestoreUserService,
     private fileUploadInformationService: FileUploadInformationService,
     private cdr: ChangeDetectorRef,
-    private fileUploadDatabaseService: FileUploadDatabaseService,
+    private fileUploadDatabaseService: FileUploadDatabaseService
   ) {}
 
   ngAfterViewInit(): void {
@@ -121,17 +121,17 @@ export class MandatoryCardPostComponent
       new Date(
         attendedDateString.getFullYear(),
         attendedDateString.getMonth() + 13,
-        0,
+        0
       ),
-      "yyyy-MM-dd",
+      "yyyy-MM-dd"
     );
     const next365Date = datePipe.transform(
       new Date(
         attendedDateString.getFullYear() + 1,
         attendedDateString.getMonth(),
-        attendedDateString.getDate() - 1,
+        attendedDateString.getDate() - 1
       ),
-      "yyyy-MM-dd",
+      "yyyy-MM-dd"
     );
 
     if (this.name.includes("Medical")) {
@@ -155,7 +155,7 @@ export class MandatoryCardPostComponent
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -163,7 +163,7 @@ export class MandatoryCardPostComponent
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 
@@ -182,7 +182,7 @@ export class MandatoryCardPostComponent
 
     this.uploading = true;
     await this.fileUploadDatabaseService
-      .uploadFile(this.fileToUpload, this.uploadForm.value)
+      .uploadFile(this.fileToUpload, { ...this.uploadForm.value })
       .then((response) => {
         if (response) {
           this.toastr.primary("Completed", "Upload file completed", {
@@ -191,7 +191,7 @@ export class MandatoryCardPostComponent
           this.personalDocNotification.PersonalDocumentNotification(
             this.uploadForm.get("fileCategory").value,
             this.firestoreUserService.getFirestoreUser().email,
-            uuid.v4(),
+            uuid.v4()
           );
 
           if (
@@ -204,7 +204,7 @@ export class MandatoryCardPostComponent
             this.CCDTEAM.PersonalDocumentNotification(
               this.uploadForm.get("fileCategory").value,
               this.firestoreUserService.getFirestoreUser().email,
-              uuid.v4(),
+              uuid.v4()
             );
           }
 
@@ -214,7 +214,7 @@ export class MandatoryCardPostComponent
           this.toastr.danger(
             "Error",
             "There is something wrong Please try again.",
-            { duration: 5000 },
+            { duration: 5000 }
           );
           this.reset();
         }

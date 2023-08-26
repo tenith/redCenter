@@ -27,7 +27,7 @@ export class FileUploadInformationService {
 
   constructor(
     private afs: AngularFirestore,
-    private firestoreUser: FirestoreUserService,
+    private firestoreUser: FirestoreUserService
   ) {
     this.collectionRef = this.afs.collection(this.collectionName);
     this.isModerator = this.firestoreUser.isModerator;
@@ -36,7 +36,7 @@ export class FileUploadInformationService {
   }
 
   public getFileUploadInformationSnapshotByEmail(
-    email: string,
+    email: string
   ): DocumentReference<any> {
     return this.collectionRef.doc(email).ref;
   }
@@ -62,21 +62,28 @@ export class FileUploadInformationService {
         ] as FileUploadInformation[];
         let needVerify = false;
         for (let i = 0; i < this.fileUploadInformations.length; i++) {
+          if (this.fileUploadInformations[i].description === null) {
+            this.removeFileUploadInformation(
+              this.fileUploadInformations[i],
+              this.email
+            );
+          }
           if (this.fileUploadInformations[i].verify == undefined) {
             const thisVerify = requiredVerify[
               this.firestoreUser.getFirestoreUser().role
             ].includes(this.fileUploadInformations[i].fileCategory);
             this.removeFileUploadInformation(
               this.fileUploadInformations[i],
-              this.email,
+              this.email
             );
             this.fileUploadInformations[i].verify = !thisVerify;
             needVerify = needVerify || thisVerify;
             this.addFileUploadInformation(
               this.fileUploadInformations[i],
-              this.email,
+              this.email
             );
           }
+
           if (this.fileUploadInformations[i].verify == false) {
             needVerify = true;
             break;
@@ -131,13 +138,11 @@ export class FileUploadInformationService {
 
   public async addFileUploadInformation(
     fileUploadInformation: FileUploadInformation,
-    email: string,
+    email: string
   ): Promise<any> {
-    return this.collectionRef
-      .doc(email)
-      .ref.update({
-        files: firestore.firestore.FieldValue.arrayUnion(fileUploadInformation),
-      });
+    return this.collectionRef.doc(email).ref.update({
+      files: firestore.firestore.FieldValue.arrayUnion(fileUploadInformation),
+    });
   }
 
   public setNeedVerify(email: string, result: boolean): Promise<any> {
@@ -146,7 +151,7 @@ export class FileUploadInformationService {
 
   public async removeFileUploadByName(
     name: string,
-    email: string,
+    email: string
   ): Promise<any> {
     let tempFileInformation: FileUploadInformation;
 
@@ -157,24 +162,18 @@ export class FileUploadInformationService {
       }
     }
 
-    return this.collectionRef
-      .doc(email)
-      .ref.update({
-        files: firestore.firestore.FieldValue.arrayRemove(tempFileInformation),
-      });
+    return this.collectionRef.doc(email).ref.update({
+      files: firestore.firestore.FieldValue.arrayRemove(tempFileInformation),
+    });
   }
 
   public removeFileUploadInformation(
     fileUploadInformation: FileUploadInformation,
-    email: string,
+    email: string
   ): Promise<any> {
     // console.log('delete Upload FILE INFO: ' + JSON.stringify(fileUploadInformation));
-    return this.collectionRef
-      .doc(email)
-      .ref.update({
-        files: firestore.firestore.FieldValue.arrayRemove(
-          fileUploadInformation,
-        ),
-      });
+    return this.collectionRef.doc(email).ref.update({
+      files: firestore.firestore.FieldValue.arrayRemove(fileUploadInformation),
+    });
   }
 }

@@ -58,12 +58,16 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit {
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           } catch (e) {
-            formattedDate = new DatePipe("en_GB").transform(
+            const inputDateString = date;
+            const [datePart, timePart] = inputDateString.split(", ");
+            const [day, month, year] = datePart.split("/");
+            date = `${month}/${day}/${year}, ${timePart}`;
+            formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           }
           return formattedDate.toUpperCase();
@@ -86,7 +90,7 @@ export class DocumentsAmendmentTableComponent implements OnInit, AfterViewInit {
     private firestoreUserService: FirestoreUserService,
     private announcementService: AnnouncementService,
     private toastr: NbToastrService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

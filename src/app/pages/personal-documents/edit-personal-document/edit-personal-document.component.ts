@@ -52,7 +52,7 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
     private fileReportService: FileReportService,
     private dialogService: NbDialogService,
     private dialogRef: NbDialogRef<EditPersonalDocumentComponent>,
-    private firestoreUserService: FirestoreUserService,
+    private firestoreUserService: FirestoreUserService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
     this.uploadForm = this.formBuilder;
 
     this.downloadUrl$ = this.fileUploadDatabaseService.getFile(
-      this.data.relativePath,
+      this.data.relativePath
     );
 
     this.uploadForm.controls["issueDate"].valueChanges.subscribe((value) => {
@@ -89,9 +89,9 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
       new Date(
         attendedDateString.getFullYear(),
         attendedDateString.getMonth() + 13,
-        0,
+        0
       ),
-      "yyyy-MM-dd",
+      "yyyy-MM-dd"
     );
 
     if (this.data.description.includes("Medical"))
@@ -102,22 +102,27 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
     const datePipe = new DatePipe("en-US");
     const formattedDate = datePipe.transform(
       new Date(),
-      "dd MMM yyyy HH:mm:ss",
+      "dd MMM yyyy HH:mm:ss"
     );
 
     this.data.issueBy = this.uploadForm.get("issueBy").value;
     this.data.issueDate = this.uploadForm.get("issueDate").value;
     this.data.expiryDate = this.uploadForm.get("expiryDate").value;
-    this.data.uploadTime = formattedDate;
     this.data.verify = true;
+
+    this.data.validatorEmail =
+      this.firestoreUserService.getFirestoreUser().email;
+    this.data.validatorName =
+      this.firestoreUserService.getFirestoreUser().displayName;
+    this.data.validateTimestamp = formattedDate;
 
     this.fileUploadInfoService.removeFileUploadInformation(
       this.initData as FileUploadInformation,
-      this.data.owner,
+      this.data.owner
     );
     this.fileUploadInfoService.addFileUploadInformation(
       this.data as FileUploadInformation,
-      this.data.owner,
+      this.data.owner
     );
     this.fileUploadInfoService.checkVerifyNeed(this.data.owner);
 
@@ -139,7 +144,7 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -147,7 +152,7 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 

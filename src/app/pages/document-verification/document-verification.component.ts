@@ -50,23 +50,29 @@ export class DocumentVerificationComponent implements OnInit {
           if (date == "" || date == "-") return "-";
 
           let formattedDate = "";
-          console.log(date);
+          // console.log(date);
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           } catch (e) {
-            formattedDate = new DatePipe("en_GB").transform(
+            const inputDateString = date;
+            const [datePart, timePart] = inputDateString.split(", ");
+            const [day, month, year] = datePart.split("/");
+            date = `${month}/${day}/${year}, ${timePart}`;
+            formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           }
-          console.log(formattedDate);
+          // console.log(formattedDate);
           return formattedDate.toUpperCase();
         },
       },
       owner: { title: "Owner Email", width: "12%" },
+      id: { title: "TAA ID" },
+      displayName: { title: "Name" },
       fileCategory: { title: "Category", width: "12%" },
       description: { title: "Description" },
       issueDate: {
@@ -104,7 +110,7 @@ export class DocumentVerificationComponent implements OnInit {
 
   constructor(
     private fileVerifyService: FileVerificationService,
-    private firestoreUserService: FirestoreUserService,
+    private firestoreUserService: FirestoreUserService
   ) {}
 
   ngOnInit(): void {

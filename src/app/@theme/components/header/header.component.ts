@@ -11,9 +11,10 @@ import {
   NbMenuService,
   NbSidebarService,
   NbThemeService,
+  NbToastrService,
 } from "@nebular/theme";
 import { LayoutService } from "../../../@core/utils";
-import { map, takeUntil } from "rxjs/operators";
+import { filter, map, takeUntil } from "rxjs/operators";
 import { Observable, Subject, Subscription } from "rxjs";
 import { FirebaseAuthenticationService } from "../../../@core/shared/services/firebase-authentication.service";
 import { Router } from "@angular/router";
@@ -26,7 +27,7 @@ import { FirestoreUserService } from "../../../@core/shared/services/firestore-u
 import { NotificationComponent } from "../notification/notification.component";
 import { NotificationService } from "../../../@core/shared/services/notification.service";
 import { Notification } from "../../../@core/shared/interfaces/notification";
-import { SwPush } from "@angular/service-worker";
+import { SwPush, SwUpdate, VersionReadyEvent } from "@angular/service-worker";
 
 import { AngularFireMessaging } from "@angular/fire/compat/messaging";
 
@@ -99,9 +100,50 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public push: SwPush,
     public afMessaging: AngularFireMessaging,
     public router: Router,
+    private swUpdate: SwUpdate,
+    private toastr: NbToastrService
   ) {}
 
+  /**
+   * 08 Aug 2023 by wutthichair@airasia.com
+   * introduce swUpdate feature for PWA
+   */
+  private announceNewVersion(): void {
+    this.toastr.info(
+      "Great news! We've just downloaded a new version of the software. To experience the latest enhancements, please log out and log back in. You'll be able to explore the new version and its features.",
+      "New version",
+      {
+        duration: 10000,
+      }
+    );
+  }
+
   ngOnInit() {
+    /**
+     * 08 Aug 2023 by wutthichair@airasia.com
+     * introduce swUpdate feature for PWA
+     */
+
+    if (this.swUpdate.isEnabled)
+      this.swUpdate.versionUpdates
+        .pipe(
+          filter(
+            (evt): evt is VersionReadyEvent => evt.type === "VERSION_READY"
+          ),
+          map((evt) => ({
+            type: "UPDATE_AVAILABLE",
+            current: evt.currentVersion,
+            available: evt.latestVersion,
+          }))
+        )
+        .subscribe((evt) => {
+          /**
+           * Alert user to Refresh the application....
+           */
+          this.announceNewVersion();
+          // this.promptUser();
+        });
+
     /*
       01 MAR 2023 by wutthichair
         change defualt theme
@@ -126,10 +168,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .onMediaQueryChange()
       .pipe(
         map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe(
-        (isLessThanXl: boolean) => (this.userPictureOnly = isLessThanXl),
+        (isLessThanXl: boolean) => (this.userPictureOnly = isLessThanXl)
       );
 
     // this.notificationService.setChangeDetectorRefs(this.changeDetectorRefs);
@@ -137,7 +179,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .onThemeChange()
       .pipe(
         map(({ name }) => name),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe((themeName) => (this.currentTheme = themeName));
 
@@ -166,8 +208,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           (value, index, self) =>
             index ===
             self.findIndex(
-              (t) => t.uuid === value.uuid && t.subject === value.subject,
-            ),
+              (t) => t.uuid === value.uuid && t.subject === value.subject
+            )
         );
 
         this.notificationService.setNotification(temp);

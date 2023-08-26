@@ -17,6 +17,7 @@ import { FileUploadInformation } from "../../@core/shared/interfaces/file-upload
 import { ManualCardService } from "../../@core/shared/services/manual-card.service";
 
 import {
+  RHSEmailLists,
   sepCourseBasicRequiredToOperate,
   sepCourseOptions,
   sepMandatory,
@@ -73,7 +74,7 @@ export class SepComponent implements OnInit, OnDestroy {
     public fireBaseAuth: FirebaseAuthenticationService,
     public toastr: NbToastrService,
     public sepCardService: SepCardService,
-    public autoLandCardService: AutolandCardService,
+    public autoLandCardService: AutolandCardService
   ) {}
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -90,7 +91,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -98,7 +99,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 
@@ -115,6 +116,46 @@ export class SepComponent implements OnInit, OnDestroy {
         this.requiredCourse.push(this.oneSepCards[i]);
       else this.optionalCourse.push(this.oneSepCards[i]);
     }
+
+    this.requiredCourse = this.sortObjectsUsingMaster(
+      sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+      this.requiredCourse
+    );
+
+    this.optionalCourse = this.sortObjectsUsingMaster(
+      sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+      this.optionalCourse
+    );
+  }
+
+  sortObjectsUsingMaster(
+    master: string[],
+    objects: OneSepCard[]
+  ): OneSepCard[] {
+    const masterIndexMap: Map<string, number> = new Map();
+
+    // Create a map of names to their indices in the master array
+    master.forEach((name, index) => {
+      masterIndexMap.set(name, index);
+    });
+
+    // Sort the objects array based on their indices in the master array
+    objects.sort((a, b) => {
+      const indexA = masterIndexMap.get(a.Name);
+      const indexB = masterIndexMap.get(b.Name);
+
+      if (indexA !== undefined && indexB !== undefined) {
+        return indexA - indexB;
+      } else if (indexA !== undefined) {
+        return -1; // Place objects not found in master at the beginning
+      } else if (indexB !== undefined) {
+        return 1; // Place objects not found in master at the beginning
+      } else {
+        return 0; // Objects not found in master, keep their relative order
+      }
+    });
+
+    return objects;
   }
 
   ngOnInit(): void {
@@ -129,13 +170,13 @@ export class SepComponent implements OnInit, OnDestroy {
         validperiod: "",
         expiry: "",
       },
-      {
-        name: "AUTOLAND - SIMULATOR",
-        airport: "",
-        perform: "",
-        validperiod: "",
-        expiry: "",
-      },
+      // {
+      //   name: "AUTOLAND - SIMULATOR",
+      //   airport: "",
+      //   perform: "",
+      //   validperiod: "",
+      //   expiry: "",
+      // },
     ];
 
     this.mandatoryCourseName =
@@ -154,9 +195,9 @@ export class SepComponent implements OnInit, OnDestroy {
     if (this.sepCardService.isInLocalStorage()) {
       this.loading = false;
       this.oneSepCards = [...this.sepCardService.getAllSepCardsFromCache()];
-      this.reviseRequiredCourse();
 
       this.loadAutolandCards();
+      this.reviseRequiredCourse();
     }
 
     if (this.manualCardService.isInLocalStorage()) {
@@ -177,7 +218,7 @@ export class SepComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.manualCards.length; i++)
       if (this.mandatoryCourseName.includes(this.manualCards[i].Name))
         this.mandatoryCourseName = this.mandatoryCourseName.filter(
-          (obj) => obj !== this.manualCards[i].Name,
+          (obj) => obj !== this.manualCards[i].Name
         );
   }
 
@@ -185,10 +226,9 @@ export class SepComponent implements OnInit, OnDestroy {
     /*
       Loading Information From personal file upload....
     */
-    console.log("cache loading try to update from server");
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
-        this.firestoreUser.getFirestoreUser().email,
+        this.firestoreUser.getFirestoreUser().email
       )
       .onSnapshot((docSnapshot) => {
         // console.log('get some data from firebase');
@@ -242,8 +282,8 @@ export class SepComponent implements OnInit, OnDestroy {
               ...this.manualCardService.getAllSepCardsFromCache(),
             ])
           ) {
-            console.log("using cache");
-            console.log("do nothing");
+            // console.log("using cache");
+            // console.log("do nothing");
           } else {
             this.manualCards = tempS;
             this.manualCardService.deleteAllCards();
@@ -256,8 +296,8 @@ export class SepComponent implements OnInit, OnDestroy {
               ...this.manualCardService.getAllSepCardsFromCache(),
             ])
           ) {
-            console.log("using cache");
-            console.log("do nothing");
+            // console.log("using cache");
+            // console.log("do nothing");
           } else {
             this.manualCards = [];
             this.manualCardService.deleteAllCards();
@@ -277,10 +317,12 @@ export class SepComponent implements OnInit, OnDestroy {
     */
     this.fileUploadService
       .getFileUploadInformationSnapshotByEmail(
-        this.firestoreUser.getFirestoreUser().email,
+        this.firestoreUser.getFirestoreUser().email
       )
       .onSnapshot((docSnapshot) => {
-        // console.log('get some data from firebase');
+        // console.log(
+        //   "get some data from firebase: " + JSON.stringify(docSnapshot)
+        // );
         let tempOneSepCard: OneSepCard[] = [];
         if (docSnapshot.exists) {
           const temp = [...docSnapshot.data().files] as FileUploadInformation[];
@@ -346,7 +388,7 @@ export class SepComponent implements OnInit, OnDestroy {
         this.toastr.danger(
           "Error",
           "There is no SEP information from online Server, Please check your internet connection or contact TMS.",
-          { duration: 10000 },
+          { duration: 10000 }
         );
         return;
       }
@@ -359,10 +401,10 @@ export class SepComponent implements OnInit, OnDestroy {
 
       for (let i: number = 0; i < mainCourse.length; i++) {
         const courseName = mainCourse[i];
-        if (response[courseName] != undefined) {
-          // console.log('HISTORY: ' + courseName + " : " + JSON.stringify({courseName: response[courseName]}));
+        if (courseName == "RHS") continue;
+        if (courseName == "AUTOLAND - SIMULATOR RECURRENT") continue;
 
-          // localStorage.setItem(courseName + 'History', JSON.stringify(response[courseName]));
+        if (response[courseName] != undefined) {
           this.fullHistory[courseName] = response[courseName];
           const last = response[courseName].length - 1;
           let myProcessOneSepCard: OneSepCard = response[courseName][last];
@@ -376,9 +418,45 @@ export class SepComponent implements OnInit, OnDestroy {
               break;
             }
 
+          if (myProcessOneSepCard.Name == "OPC") {
+            if (
+              RHSEmailLists.includes(this.fireBaseAuth.getFirebaseUser().email)
+            ) {
+              /**
+               * Add OPC to be RHS for instructor and person who have authority...
+               */
+              let rhsTemp: OneSepCard = { ...myProcessOneSepCard };
+              rhsTemp.Name = "RHS";
+              rhsTemp.Expiry = this.addSixMonthsToDate(
+                new Date(rhsTemp.Attended)
+              );
+
+              temp.splice(4, 0, rhsTemp);
+              // temp.push(rhsTemp);
+            } else {
+              /**
+               * Add NO DATA to line Pilot....
+               */
+              const x: OneSepCard = {
+                Name: "RHS",
+                InitialDate: "NO DATA",
+                Attended: "NO DATA",
+                Type: "NO DATA",
+                Validperiod: "NO DATA",
+                Expiry: "NO DATA",
+                Instructor: "NO DATA",
+                Remark: "NO DATA",
+                Link: "",
+              };
+
+              temp.splice(4, 0, x);
+            }
+          }
+
           temp.push(myProcessOneSepCard);
         } else {
           //create null card to show....
+
           const x: OneSepCard = {
             Name: courseName,
             InitialDate: "NO DATA",
@@ -399,21 +477,42 @@ export class SepComponent implements OnInit, OnDestroy {
       this.toastr.primary(
         "Completed",
         "Updated SEP from TMC server completed",
-        { duration: 10000 },
+        { duration: 10000 }
       );
       // this.oneSepCards = [...temp,...this.oneSepCards];
       this.oneSepCards = temp;
-      this.reviseRequiredCourse();
+      // console.log("main var: " + JSON.stringify(this.oneSepCards));
 
       this.sepCardService.deleteAllSepCards();
       this.sepCardService.saveAllSepCards(this.oneSepCards);
 
-      this.updateSummary();
       this.loadAutolandCards();
+      this.reviseRequiredCourse();
+      this.updateSummary();
     });
   }
 
+  addSixMonthsToDate(inputDate: Date): string {
+    let newDate = new Date(inputDate);
+    newDate.setMonth(newDate.getMonth() + 7);
+
+    // Set the date to the last day of the month if necessary
+    newDate.setDate(0);
+
+    return new DatePipe("en-US").transform(newDate, "dd MMM yyyy");
+  }
+
   detectChanges(): void {}
+
+  private paddingOptional(courseName: string): string {
+    if (
+      !sepCourseBasicRequiredToOperate[
+        this.firestoreUser.getFirestoreUser().role
+      ].includes(courseName)
+    )
+      courseName += " - [Supplementary]";
+    return courseName;
+  }
 
   private isRequiredToShow(search: string): boolean {
     const role = this.firestoreUser.getFirestoreUser().role;
@@ -457,6 +556,7 @@ export class SepComponent implements OnInit, OnDestroy {
 
         this.loadAutolandCards();
         this.updateSummary();
+        this.reviseRequiredCourse();
         break;
       }
     }
@@ -474,6 +574,55 @@ export class SepComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  sortList(): void {
+    let orderedCourseList = [
+      ...sepMandatory[this.firestoreUser.getFirestoreUser().role],
+      "AUTOLAND - ONLINE",
+      ...sepCourseOptions[this.firestoreUser.getFirestoreUser().role],
+    ];
+
+    this.validList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.validList
+    );
+
+    this.aboutList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.aboutList
+    );
+    this.expiredList = this.sortSubsetWithAliases(
+      orderedCourseList,
+      this.expiredList
+    );
+  }
+
+  sortSubsetWithAliases(master: string[], subset: string[]): string[] {
+    const masterIndexMap: Map<string, number> = new Map();
+
+    // Create a map of elements to their indices in the master array
+    master.forEach((element, index) => {
+      masterIndexMap.set(element, index);
+    });
+
+    // Sort the subset array based on their indices in the master array
+    subset.sort((a, b) => {
+      const indexA = masterIndexMap.get(a.replace(" - [Supplementary]", ""));
+      const indexB = masterIndexMap.get(b.replace(" - [Supplementary]", ""));
+
+      if (indexA !== undefined && indexB !== undefined) {
+        return indexA - indexB;
+      } else if (indexA !== undefined) {
+        return -1; // Place elements from subset not found in master at the beginning
+      } else if (indexB !== undefined) {
+        return 1; // Place elements from subset not found in master at the beginning
+      } else {
+        return 0; // Elements not found in master, keep their relative order in subset
+      }
+    });
+
+    return subset;
+  }
+
   updateSEPSummary(): void {
     if (this.oneSepCards == null) return;
 
@@ -482,6 +631,11 @@ export class SepComponent implements OnInit, OnDestroy {
     }
 
     for (let i = 0; i < this.oneSepCards.length; i++) {
+      /**
+       * 11 Aug 2023 CCD request remove Ground Check from summary detail
+       */
+      if (this.oneSepCards[i].Name.includes("Ground Check")) continue;
+
       const msInDay = 24 * 60 * 60 * 1000;
       const today = new Date().getTime();
       const expire = new Date(this.oneSepCards[i].Expiry).getTime() + msInDay;
@@ -489,11 +643,12 @@ export class SepComponent implements OnInit, OnDestroy {
 
       //It's expired course name if expiry date is NO DATA
       if (this.oneSepCards[i].Expiry == "NO DATA") {
-        this.expiredList.push(this.oneSepCards[i].Name);
+        this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
         continue;
       }
 
-      if (diffDate < 0) this.expiredList.push(this.oneSepCards[i].Name);
+      if (diffDate < 0)
+        this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
       if (diffDate > 30) this.validList.push(this.oneSepCards[i].Name);
       if (diffDate <= 30 && diffDate >= 0)
         this.aboutList.push(this.oneSepCards[i].Name);
@@ -522,7 +677,7 @@ export class SepComponent implements OnInit, OnDestroy {
         if (this.manualCards[i].verify == false) {
           if (
             strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-              this.manualCards[i].Name,
+              this.manualCards[i].Name
             )
           ) {
             this.pendingList.push(this.manualCards[i].Name);
@@ -534,7 +689,7 @@ export class SepComponent implements OnInit, OnDestroy {
         // console.log(requiredVerify[this.firestoreUser.getFirestoreUser().role].includes(this.manualCards[i].Name));
         if (
           strictVerify[this.firestoreUser.getFirestoreUser().role].includes(
-            this.manualCards[i].Name,
+            this.manualCards[i].Name
           )
         ) {
           this.pendingList.push(this.manualCards[i].Name);
@@ -559,21 +714,64 @@ export class SepComponent implements OnInit, OnDestroy {
           new Date(this.autoLandCards[i].expiry).getTime() + msInDay;
         const diffDate = (expire - today) / msInDay;
 
-        if (diffDate < 0) this.expiredList.push(this.autoLandCards[i].name);
+        if (diffDate < 0)
+          this.expiredList.push(this.paddingOptional(this.oneSepCards[i].Name));
         if (diffDate > 30) this.validList.push(this.autoLandCards[i].name);
         if (diffDate <= 30 && diffDate >= 0)
           this.aboutList.push(this.autoLandCards[i].name);
       }
     }
-
     // this.updateAutoLandSummary();
+
+    this.sortList();
   }
 
   // updateAutoLandSummary(): void {
   // }
 
   loadAutolandCards(): void {
-    if (!this.isLVOCertified()) return;
+    if (!this.isLVOCertified()) {
+      this.showAutoLand = false;
+      this.autoLandCardService.deleteAllSepCards();
+      this.oneSepCards = this.oneSepCards.filter(
+        (obj) => obj.Name !== "AUTOLAND - SIMULATOR RECURRENT"
+      );
+
+      this.updateSummary();
+      return;
+    }
+
+    /**
+     * Add card autoland - simulator recurrent to link with OPC
+     * 17 Aug 2023
+     */
+    let OPCCard: OneSepCard = this.oneSepCards.find((obj) => obj.Name == "OPC");
+    this.oneSepCards = this.oneSepCards.filter(
+      (obj) => obj.Name !== "AUTOLAND - SIMULATOR RECURRENT"
+    );
+    let autolandSimCard = { ...OPCCard };
+    if (OPCCard != undefined) {
+      autolandSimCard.Name = "AUTOLAND - SIMULATOR RECURRENT";
+      autolandSimCard.Expiry = this.addSixMonthsToDate(
+        new Date(OPCCard.Attended)
+      );
+    } else {
+      autolandSimCard = {
+        Name: "AUTOLAND - SIMULATOR RECURRENT",
+        InitialDate: "NO DATA",
+        Attended: "NO DATA",
+        Type: "NO DATA",
+        Validperiod: "NO DATA",
+        Expiry: "NO DATA",
+        Instructor: "NO DATA",
+        Remark: "NO DATA",
+        Link: "",
+      };
+    }
+
+    let index = this.oneSepCards.findIndex((obj) => obj.Name === "LVO");
+    if (index != -1) this.oneSepCards.splice(index + 1, 0, autolandSimCard);
+    else this.oneSepCards.push(autolandSimCard);
 
     if (this.autoLandCardService.isInLocalStorage()) {
       this.autoLandCards = [
@@ -591,7 +789,7 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "There is no Autoland history from online Server, Please check your internet connection or contact TMS.",
-            { duration: 10000 },
+            { duration: 10000 }
           );
           return;
         }
@@ -599,13 +797,17 @@ export class SepComponent implements OnInit, OnDestroy {
           this.toastr.danger(
             "Error",
             "Autoland history from your cache is error, Please check your internet connection or contact TMS.",
-            { duration: 10000 },
+            { duration: 10000 }
           );
           return;
         }
+        let tempAutoLandCards: AutolandSepCard[] = [];
+        tempAutoLandCards.push(autoLandCards);
 
-        this.autoLandCards = [...autoLandCards];
-        // console.log('GET AUTOLAND JSON :' + JSON.stringify(this.autoLandCards));
+        this.autoLandCards = [...tempAutoLandCards];
+        this.autoLandCards = this.autoLandCards.filter(
+          (obj) => obj.name !== "AUTOLAND - SIMULATOR"
+        );
 
         // if(!this.firstTimeAlert)
         //   this.toastr.primary('Completed','Updated Autoland history from online server completed', {duration:10000, preventDuplicates: true});

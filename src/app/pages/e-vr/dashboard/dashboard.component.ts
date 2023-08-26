@@ -44,12 +44,16 @@ export class DashboardComponent implements OnInit {
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           } catch (e) {
-            formattedDate = new DatePipe("en_GB").transform(
+            const inputDateString = date;
+            const [datePart, timePart] = inputDateString.split(", ");
+            const [day, month, year] = datePart.split("/");
+            date = `${month}/${day}/${year}, ${timePart}`;
+            formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy HH:mm:ss",
+              "dd MMM yyyy HH:mm:ss"
             );
           }
           return formattedDate.toUpperCase();
@@ -69,12 +73,16 @@ export class DashboardComponent implements OnInit {
           try {
             formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy",
+              "dd MMM yyyy"
             );
           } catch (e) {
-            formattedDate = new DatePipe("en_GB").transform(
+            const inputDateString = date;
+            const [datePart, timePart] = inputDateString.split(", ");
+            const [day, month, year] = datePart.split("/");
+            date = `${month}/${day}/${year}, ${timePart}`;
+            formattedDate = new DatePipe("en-US").transform(
               date,
-              "dd MMM yyyy",
+              "dd MMM yyyy HH:mm:ss"
             );
           }
           return formattedDate.toUpperCase();
@@ -112,10 +120,7 @@ export class DashboardComponent implements OnInit {
   source: LocalDataSource;
 
   vrList: any[];
-  constructor(
-    private vrService: VrService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private vrService: VrService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.vrService.getAllVR().subscribe((data) => {

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -24,8 +25,9 @@ import { FirebaseAuthenticationService } from "../../../@core/shared/services/fi
   templateUrl: "./autoland-card.component.html",
   styleUrls: ["./autoland-card.component.scss"],
 })
-export class AutolandCardComponent implements OnInit, OnDestroy {
+export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = true;
+  showForm = true;
 
   // @Input() name!: string;
   @Input() info: AutolandSepCard;
@@ -57,22 +59,32 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
     public autoLandService: AutolandCardService,
     public datePipe: DatePipe,
     public toastr: NbToastrService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     // console.log(JSON.stringify(this.info));
+  }
+
+  toggleFormDisplay(): void {
+    this.showForm = !this.showForm;
+  }
+
+  ngOnInit(): void {
     this.handleAppConnectivityChanges();
 
     this.reviseAutoLandCard();
     this.eventsSubscription = this.events.subscribe(() => {
       this.reviseAutoLandCard();
-      this.autoLandingForm.reset();
-      if (this.info.perform != "")
+      // this.autoLandingForm.reset();
+      if (this.info.perform != "") {
         this.minDate = this.datePipe.transform(
           new Date(this.info.perform),
-          "YYYY-MM-dd",
+          "YYYY-MM-dd"
         );
+        this.showForm = false;
+        // console.log("min date: " + this.minDate);
+      }
     });
   }
 
@@ -87,7 +99,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
         // handle online mode
         this.offline = false;
         this.cdr.detectChanges();
-      }),
+      })
     );
 
     this.subscriptions.push(
@@ -95,7 +107,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
         // handle offline mode
         this.offline = true;
         this.cdr.detectChanges();
-      }),
+      })
     );
   }
 
@@ -149,7 +161,7 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
         this.autoLandingForm.value.date,
         this.autoLandingForm.value.cat,
         this.autoLandingForm.value.runway,
-        this.autoLandingForm.value.airport,
+        this.autoLandingForm.value.airport
       )
       .subscribe((respone) => {
         /*
@@ -158,7 +170,8 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
       */
         if (respone.status.toString().includes("completed")) {
           this.autoLandService.getAllAutolandCards().subscribe((response) => {
-            let temp = response as AutolandSepCard[];
+            let temp: AutolandSepCard[] = [];
+            temp.push(response);
 
             this.autoLandService.deleteAllSepCards();
             this.autoLandService.saveAllSepCards(temp);
@@ -166,19 +179,25 @@ export class AutolandCardComponent implements OnInit, OnDestroy {
             if (this.info.name.includes("ONLINE")) this.info = { ...temp[0] };
             else this.info = { ...temp[1] };
 
+            this.showForm = true;
+            this.cdr.detectChanges();
             this.autoLandingForm.reset();
+            this.showForm = false;
+
             this.postCompleteEvent.emit("post completed");
             this.toastr.primary(
               "Completed",
               "Updated Autoland history completed",
-              { duration: 10000, preventDuplicates: true },
+              { duration: 10000, preventDuplicates: true }
             );
             this.reviseAutoLandCard();
 
             this.minDate = this.datePipe.transform(
               new Date(this.info.perform),
-              "YYYY-MM-dd",
+              "YYYY-MM-dd"
             );
+
+            // console.log("mindate: " + this.minDate);
           });
         }
       });

@@ -61,7 +61,7 @@ export const API = {
   redBookTMC_X: "cbHBWdeRODn2f6H1xca52FYSIRc4WfC9",
 };
 
-export const baseURL = "https://red-center.web.web.app/";
+export const baseURL = "https://red-center.web.app/";
 
 export const clickActionVR =
   "https://red-center.web.app/pages/eVR/workspace?id=";
