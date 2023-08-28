@@ -18,6 +18,7 @@ import { AuthorizationModule } from "./authorization/authorization.module";
 import { PersonalDocumentsModule } from "./personal-documents/personal-documents.module";
 import { EVRModule } from "./e-vr/e-vr.module";
 import { DocumentVerificationModule } from "./document-verification/document-verification.module";
+import { VerificationHistoryModule } from "./verification-history/verification-history.module";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { DocumentVerificationModule } from "./document-verification/document-ver
     PersonalDocumentsModule,
     DocumentsAmendmentModule,
     DocumentVerificationModule,
+    VerificationHistoryModule,
 
     /*
       09 MAR 2023 wutthichair

@@ -71,6 +71,7 @@ export const showMenu = [
   "Authorization",
   "Personal document(s)",
   "Documents verification",
+  "Verification History",
   "SEP Card",
   "Log out",
 ];

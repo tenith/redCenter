@@ -7,6 +7,7 @@ export let allowMenuByRole = {
     "authorization",
     "documents_amendment",
     "document_verification",
+    "verification_history",
     "personal_documents",
     "eVR",
     "performance",
@@ -47,7 +48,13 @@ export let allowMenuByRole = {
     "logout",
   ],
   Engineer: ["home", "documents_amendment", "personal_documents", "logout"],
-  CCD_TEAM: ["home", "document_verification", "personal_documents", "logout"],
+  CCD_TEAM: [
+    "home",
+    "document_verification",
+    "verification_history",
+    "personal_documents",
+    "logout",
+  ],
 };
 
 export let menuListDetail = {
@@ -71,6 +78,11 @@ export let menuListDetail = {
     title: "Documents verification",
     icon: "pricetags-outline",
     link: "/pages/document_verification",
+  },
+  verification_history: {
+    title: "Verification History",
+    icon: "search-outline",
+    link: "/pages/verification_history",
   },
   personal_documents: {
     title: "Personal document(s)",

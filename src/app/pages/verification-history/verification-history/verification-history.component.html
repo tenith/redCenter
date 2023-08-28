@@ -1,0 +1,42 @@
+<nb-card status="primary">
+  <nb-card-header>Verification History</nb-card-header>
+  <nb-card-body>
+    <div class="col-12 col-md-12">
+      <form [formGroup]="uploadForm" (ngSubmit)="search()">
+        <div class="form-group">
+          <label for="searchDate" class="label">Search Date:</label>
+          <input
+            id="searchDate"
+            name="searchDate"
+            formControlName="searchDate"
+            nbInput
+            type="date"
+            fullWidth
+            placeholder="Search Date"
+          />
+        </div>
+        <div class="form-group">
+          <button nbButton status="primary" type="submit">Search</button>
+          <!-- &nbsp;&nbsp;&nbsp;
+          <button
+            nbButton
+            printSectionId="print-section"
+            printTitle="Verification History"
+            ngxPrint
+            [useExistingCss]="true"
+            status="primary"
+          >
+            print
+          </button> -->
+        </div>
+      </form>
+    </div>
+
+    <div id="print-section" class="col-12 col-md-12">
+      <ng2-smart-table
+        [settings]="settings"
+        [source]="source"
+      ></ng2-smart-table>
+    </div>
+  </nb-card-body>
+</nb-card>

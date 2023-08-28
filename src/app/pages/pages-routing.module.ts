@@ -11,6 +11,7 @@ import { AuthorizationComponent } from "./authorization/authorization.component"
 import { PersonalDocumentsComponent } from "./personal-documents/personal-documents.component";
 import { ForbiddenComponent } from "./miscellaneous/forbidden/forbidden.component";
 import { DocumentVerificationComponent } from "./document-verification/document-verification.component";
+import { VerificationHistoryComponent } from "./verification-history/verification-history/verification-history.component";
 
 const routes: Routes = [
   {
@@ -41,6 +42,11 @@ const routes: Routes = [
         path: "document_verification",
         canActivate: [PagesGuard],
         component: DocumentVerificationComponent,
+      },
+      {
+        path: "verification_history",
+        canActivate: [PagesGuard],
+        component: VerificationHistoryComponent,
       },
       {
         path: "eVR",

@@ -17,6 +17,7 @@ import { userLevel } from "../../../../environments/myconfigs";
 import { roleName } from "../../../../environments/myconfigs";
 import { DocumentsAmendmentComponent } from "../../../pages/documents-amendment/documents-amendment.component";
 import { DocumentVerificationComponent } from "../../../pages/document-verification/document-verification.component";
+import { VerificationHistoryComponent } from "../../../pages/verification-history/verification-history/verification-history.component";
 
 @Injectable({
   providedIn: "root",
@@ -24,12 +25,12 @@ import { DocumentVerificationComponent } from "../../../pages/document-verificat
 export class PagesGuard implements CanActivate {
   constructor(
     private firestoreUserService: FirestoreUserService,
-    private router: Router,
+    private router: Router
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    state: RouterStateSnapshot
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
@@ -73,7 +74,10 @@ export class PagesGuard implements CanActivate {
       return true;
     }
 
-    if (thisComponent === DocumentVerificationComponent) {
+    if (
+      thisComponent === DocumentVerificationComponent ||
+      thisComponent === VerificationHistoryComponent
+    ) {
       if (
         firestoreUser.role != roleName.ccd_team &&
         firestoreUser.role != roleName.fltOPS &&

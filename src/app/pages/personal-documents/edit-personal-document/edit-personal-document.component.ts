@@ -1,15 +1,13 @@
 import {
   ChangeDetectorRef,
   Component,
-  Inject,
-  Injectable,
   Input,
   OnDestroy,
   OnInit,
 } from "@angular/core";
 import { FileUploadInformationService } from "../../../@core/shared/services/file-upload-information.service";
 import { FirestoreUserService } from "../../../@core/shared/services/firestore-user.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 
 import { Observable, Subscription, fromEvent } from "rxjs";
 import { NbDialogRef, NbDialogService } from "@nebular/theme";
@@ -20,6 +18,7 @@ import { NgxWatermarkOptions } from "ngx-watermark";
 import { FileUploadDatabaseService } from "../../../@core/shared/services/file-upload-database.service";
 import { FileReportService } from "../../../@core/shared/services/file-report.service";
 import { ReportComponent } from "../report/report.component";
+import { FileVerificationHistoryService } from "../../../@core/shared/services/file-verification-history.service";
 
 @Component({
   selector: "ngx-edit-personal-document",
@@ -52,7 +51,8 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
     private fileReportService: FileReportService,
     private dialogService: NbDialogService,
     private dialogRef: NbDialogRef<EditPersonalDocumentComponent>,
-    private firestoreUserService: FirestoreUserService
+    private firestoreUserService: FirestoreUserService,
+    private fileHisotryService: FileVerificationHistoryService
   ) {}
 
   ngOnInit(): void {
@@ -71,16 +71,6 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
       this.firestoreUserService.getFirestoreUser().email;
     this.initData = { ...this.data };
   }
-
-  // report(): void {
-  //   this.fileReportService.resetReport();
-  //   this.fileReportService.addFileToReport(this.data);
-  //   console.log('add data to report service: ' + this.data);
-  //   this.reportDialogRef = this.dialogService.open(ReportComponent,{ hasScroll:true});
-  //   this.reportDialogRef.onClose.subscribe(()=>{
-  //     this.fileReportService.resetReport();
-  //   });
-  // }
 
   private reviseExpireDate(): void {
     const attendedDateString = new Date(this.uploadForm.get("issueDate").value);
@@ -105,6 +95,8 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
       "dd MMM yyyy HH:mm:ss"
     );
 
+    const todayFormattedDate = datePipe.transform(new Date(), "dd MMM yyyy");
+
     this.data.issueBy = this.uploadForm.get("issueBy").value;
     this.data.issueDate = this.uploadForm.get("issueDate").value;
     this.data.expiryDate = this.uploadForm.get("expiryDate").value;
@@ -124,6 +116,12 @@ export class EditPersonalDocumentComponent implements OnInit, OnDestroy {
       this.data as FileUploadInformation,
       this.data.owner
     );
+
+    this.fileHisotryService.addHistory(
+      this.data as FileUploadInformation,
+      todayFormattedDate
+    );
+
     this.fileUploadInfoService.checkVerifyNeed(this.data.owner);
 
     this.cancel();

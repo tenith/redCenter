@@ -84,6 +84,7 @@ export const showMenu = [
   "Documents Amendment",
   "Personal document(s)",
   "Documents verification",
+  "Verification History",
   "E-VR",
   "My performance",
   "E-TS1",

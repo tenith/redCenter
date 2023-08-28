@@ -35,6 +35,7 @@ export const firestoreCollection = {
   vrCollectionName: "/vr",
   announcementCollectionName: "/announcements",
   fileUploadCollectionName: "/fileUploadInformation",
+  fileUploadHistoryCollectionName: "/fileUploadInformationHistory",
   groupTokenListCollectionName: "/groupTokenList",
   groupTokenDocumentName: "tokenDocument",
 };
