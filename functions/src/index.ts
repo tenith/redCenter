@@ -57,9 +57,7 @@ export const sendCCDPersonalDocNotification = functions.https.onRequest(
 
       let docName = req.query.docName as string;
       let ownerEmail = req.query.ownerEmail as string;
-      // console.log('Server V1 got docName: ' + docName);
-
-      // Set up the notification payload
+      
       const payload: admin.messaging.MessagingPayload = {
         data: {
           owner: ownerEmail,

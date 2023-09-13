@@ -208,7 +208,8 @@ export class SepComponent implements OnInit, OnDestroy {
       this.reviseMandatoryCourse();
     }
 
-    if (this.loading) this.downloadSEP();
+    if (this.loading || this.fireBaseAuth.getFirebaseUser().isAnonymous)
+      this.downloadSEP();
     else if (!this.offline) this.anyChange();
   }
 
