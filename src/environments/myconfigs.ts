@@ -281,6 +281,28 @@ export const RHSEmailLists = [
   "worwinp@airasia.com",
   "achirawatt@airasia.com",
   "chalermrits@airasia.com",
+
+  "anuchai@airasia.com",
+  "attapolt@airasia.com",
+  "arthapola@airasia.com",
+  "pittinuni@airasia.com",
+  "nuchitk@airasia.com",
+  "kitikunk@airasia.com",
+  "kittia@airasia.com",
+  "suthips@airasia.com",
+  "panpiboony@airasia.com",
+  "jaraspongr@airasia.com",
+  "paranchaio@airasia.com",
+  "sathapornu@airasia.com",
+  "chatchavalt@airasia.com",
+  "jarund@airasia.com",
+  "kalacharnk@airasia.com",
+  "phanpitik@airasia.com",
+  "thasanb@airasia.com",
+  "rapeeponp@airasia.com",
+  "theerawatp@airasia.com",
+  "toapongr@airasia.com",
+  "somsakuls@airasia.com",
 ];
 
 export const sepCourseBasicRequiredToOperate = {
