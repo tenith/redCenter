@@ -205,6 +205,7 @@ export const sepCourseOptions = {
     "AVSEC",
 
     "ETOPS A320",
+    "ETOPS A330",
     "VVDN COMPETENCY",
     "VVCR COMPETENCY",
     "VNKT COMPETENCY",
@@ -314,6 +315,7 @@ export const sepCourseDisplayOptions = {
   // "RNP/BRNAV": { Initial: false, ShowHistory: false },
   // RVSM: { Initial: false, ShowHistory: false },
   "ETOPS A320": { Initial: false, ShowHistory: false },
+  "ETOPS A330": { Initial: false, ShowHistory: false },
   RHS: { Initial: true, ShowHistory: false },
 
   LVO: { Initial: false, ShowHistory: false },
