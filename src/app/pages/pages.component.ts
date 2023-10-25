@@ -26,7 +26,7 @@ export class PagesComponent implements OnInit {
   constructor(
     public firebaseUser: FirebaseAuthenticationService,
     public toastr: NbToastrService,
-    public firestoreUserService: FirestoreUserService,
+    public firestoreUserService: FirestoreUserService
   ) {
     let tempFirestoreUser = this.firestoreUserService.getFirestoreUser();
     let tempMenu: NbMenuItem[] = [];
@@ -36,13 +36,24 @@ export class PagesComponent implements OnInit {
     else myList = allowMenuByRole[tempFirestoreUser.role];
 
     for (let i = 0; i < myList.length; i++) {
-      if (showMenu.includes(menuListDetail[myList[i]].title))
-        tempMenu.push(menuListDetail[myList[i]]);
-    }
+      if (showMenu.includes(menuListDetail[myList[i]].title)) {
+        if (
+          tempFirestoreUser.role == roleName.cabinCrew &&
+          tempFirestoreUser.level == userLevel.subscriber
+        ) {
+          if (
+            menuListDetail[myList[i]].title == "Documents verification" ||
+            menuListDetail[myList[i]].title == "Verification History"
+          )
+            continue;
+        }
 
+        tempMenu.push(menuListDetail[myList[i]]);
+      }
+    }
     //Revised Show Menu....
     this.menu = tempMenu;
-    // console.log(JSON.stringify(this.menu));
+    console.log(JSON.stringify(this.menu));
   }
 
   ngOnInit(): void {

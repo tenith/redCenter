@@ -79,6 +79,13 @@ export class PagesGuard implements CanActivate {
       thisComponent === VerificationHistoryComponent
     ) {
       if (
+        firestoreUser.role == roleName.cabinCrew &&
+        firestoreUser.level == userLevel.moderatore
+      ) {
+        return true;
+      }
+
+      if (
         firestoreUser.role != roleName.ccd_team &&
         firestoreUser.role != roleName.fltOPS &&
         firestoreUser.level != userLevel.admin

@@ -28,6 +28,8 @@ export let allowMenuByRole = {
   Cabin_Crew: [
     "home",
     "documents_amendment",
+    "document_verification",
+    "verification_history",
     "personal_documents",
     "sep",
     "logout",
