@@ -11,6 +11,7 @@ import {
   NbIconModule,
   NbButtonModule,
   NbCardModule,
+  NbToastrModule,
 } from "@nebular/theme";
 import { SignoutComponent } from "./signout/signout.component";
 
@@ -24,6 +25,7 @@ import { SignoutComponent } from "./signout/signout.component";
     NbIconModule,
     NbButtonModule,
     NbCardModule,
+    NbToastrModule,
   ],
 })
 export class AuthenticationModule {}

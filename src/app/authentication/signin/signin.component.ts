@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { NbToastrService } from "@nebular/theme";
 import { FirebaseAuthenticationService } from "../../@core/shared/services/firebase-authentication.service";
+import { Subscription, interval } from "rxjs";
 
 @Component({
   selector: "ngx-signin",
@@ -10,6 +11,9 @@ import { FirebaseAuthenticationService } from "../../@core/shared/services/fireb
 export class SigninComponent implements OnInit {
   private isLoginProgress = false;
   public loadingCredential = false;
+
+  private mySubscription: Subscription;
+  private intervalId: any;
 
   constructor(
     public firebaseAuthen: FirebaseAuthenticationService,
@@ -21,14 +25,29 @@ export class SigninComponent implements OnInit {
     // Clear the hash
     window.location.hash = "";
 
+    if (this.loadingCredential)
+      this.intervalId = setInterval(() => {
+        this.reset();
+      }, 5000);
+
     this.firebaseAuthen
       .getRedirect()
       .then((result) => {
+        clearInterval(this.intervalId);
         this.firebaseAuthen.byPassLoginWithUserInformation(result.user);
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  reset() {
+    this.toastr.danger(
+      "error",
+      "Unable to load your user information, Please login again."
+    );
+    this.loadingCredential = false;
+    clearInterval(this.intervalId);
   }
 
   async login() {
