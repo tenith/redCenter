@@ -17,6 +17,7 @@ import { FirebaseUser } from "../interfaces/firebase-user";
 
 import { localStorageCollection } from "../../../../environments/myconfigs";
 import { settings } from "../../../../environments/myconfigs";
+import { Subject } from "rxjs";
 
 /*
   01 Mar 2023 wutthichair
@@ -50,13 +51,79 @@ export class FirebaseAuthenticationService {
       this.firebaseUser = JSON.parse(
         this.getDataWithExpiry(this.firebaseUserStoreKey)
       ) as FirebaseUser;
-    // this.afAuth.authState.subscribe((user)=>{
-    //   console.log(JSON.stringify(user));
-    //   if(!user)
-    //     this.logout();
+
+    // this.afAuth.getRedirectResult().then((result) => {
+    //   console.log("get redirectresult: " + JSON.stringify(result));
+    // });
+
+    this.afAuth.onAuthStateChanged((user) => {
+      this.byPassLoginWithUserInformation(user);
+    });
+
+    // this.afAuth.authState.subscribe((user) => {
+    //   console.log("we got: " + user);
+    //   if (!user) return;
+    //   /*
+    //       02 Mar 2023 wutthichair
+    //         Implement function check airasia domain
+    //     */
+    //   const tempFirebaseUser = JSON.parse(JSON.stringify(user)) as FirebaseUser;
+
+    //   if (!tempFirebaseUser.email.includes("@airasia.com")) {
+    //     /*
+    //         02 Mar 2023 wutthichair
+    //           inhibit check airasia.com domain
+    //       */
+    //     if (settings.onlyAirasiaLogin) throw new Error("Invalid Airasia Email");
+    //   }
+
+    //   /*
+    //       01 Mar 2023 wutthichair
+    //         Implement function when get result from firebase
+    //     */
+    //   this.saveDataWithExpiry(
+    //     this.firebaseUserStoreKey,
+    //     JSON.stringify(tempFirebaseUser),
+    //     2 * 365 * 24 * 60 * 60 * 1000
+    //   );
+    //   this.firebaseUser = tempFirebaseUser;
+    //   this.router.navigate(["./authorization/role"]);
     // });
     // if(this.firebaseUser != null)
     // this.toastrService.warning('Warning','This is cache login, some features will not working.', {duration:5000});
+  }
+
+  public byPassLoginWithUserInformation(user) {
+    if (user == null) return;
+    /*
+          02 Mar 2023 wutthichair
+            Implement function check airasia domain
+        */
+    const tempFirebaseUser = JSON.parse(JSON.stringify(user)) as FirebaseUser;
+
+    if (!tempFirebaseUser.email.includes("@airasia.com")) {
+      /*
+            02 Mar 2023 wutthichair
+              inhibit check airasia.com domain
+          */
+      if (settings.onlyAirasiaLogin) throw new Error("Invalid Airasia Email");
+    }
+
+    /*
+          01 Mar 2023 wutthichair
+            Implement function when get result from firebase
+        */
+    this.saveDataWithExpiry(
+      this.firebaseUserStoreKey,
+      JSON.stringify(tempFirebaseUser),
+      2 * 365 * 24 * 60 * 60 * 1000
+    );
+    this.firebaseUser = tempFirebaseUser;
+    this.router.navigate(["./authorization/role"]);
+  }
+
+  getRedirect() {
+    return this.afAuth.getRedirectResult();
   }
 
   /*
@@ -79,8 +146,18 @@ export class FirebaseAuthenticationService {
     01 Mar 2023 wutthichair
       Add GoogleAuth()
   */
-  public GoogleAuth() {
-    return this.AuthLogin(new GoogleAuthProvider());
+  public async GoogleAuth() {
+    window.location.hash = "redirecting";
+    this.afAuth.signInWithRedirect(new GoogleAuthProvider());
+    // this.afAuth
+    //   .getRedirectResult()
+    //   .then((result) => {
+    //     this.byPassLoginWithUserInformation(result.user);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // return this.AuthLogin(new GoogleAuthProvider());
   }
 
   public async AnynomousAuth(email: string) {

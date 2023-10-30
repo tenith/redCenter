@@ -9,12 +9,27 @@ import { FirebaseAuthenticationService } from "../../@core/shared/services/fireb
 })
 export class SigninComponent implements OnInit {
   private isLoginProgress = false;
+  public loadingCredential = false;
+
   constructor(
     public firebaseAuthen: FirebaseAuthenticationService,
     public toastr: NbToastrService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadingCredential = window.location.hash === "#redirecting";
+    // Clear the hash
+    window.location.hash = "";
+
+    this.firebaseAuthen
+      .getRedirect()
+      .then((result) => {
+        this.firebaseAuthen.byPassLoginWithUserInformation(result.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   async login() {
     if (this.isLoginProgress) return;

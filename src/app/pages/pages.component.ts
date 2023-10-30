@@ -53,7 +53,7 @@ export class PagesComponent implements OnInit {
     }
     //Revised Show Menu....
     this.menu = tempMenu;
-    console.log(JSON.stringify(this.menu));
+    // console.log(JSON.stringify(this.menu));
   }
 
   ngOnInit(): void {
