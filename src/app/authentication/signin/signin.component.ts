@@ -28,11 +28,12 @@ export class SigninComponent implements OnInit {
     if (this.loadingCredential)
       this.intervalId = setInterval(() => {
         this.reset();
-      }, 5000);
+      }, 7000);
 
     this.firebaseAuthen
       .getRedirect()
       .then((result) => {
+        this.loadingCredential = false;
         clearInterval(this.intervalId);
         this.firebaseAuthen.byPassLoginWithUserInformation(result.user);
       })
@@ -42,6 +43,8 @@ export class SigninComponent implements OnInit {
   }
 
   reset() {
+    if (!this.loadingCredential) return;
+
     this.toastr.danger(
       "error",
       "Unable to load your user information, Please login again."
