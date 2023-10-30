@@ -21,7 +21,21 @@
 </h1>
 
 <p *ngIf="loadingCredential" class="sub-title" style="text-align: center">
-  Now, We are loading your information from server, Please wait.
+  <nb-card
+    status="danger"
+    size="giant"
+    [nbSpinner]="!loading"
+    nbSpinnerStatus="danger"
+    nbSpinnerSize="large"
+    nbSpinnerMessage=""
+  >
+    <nb-card-header style="text-align: center"
+      >-------------- Loading --------------</nb-card-header
+    >
+    <nb-card-body style="text-align: center">
+      <p>Please wait, We are loading the information from the server.</p>
+    </nb-card-body>
+  </nb-card>
 </p>
 
 <p *ngIf="!loadingCredential" class="sub-title" style="text-align: center">

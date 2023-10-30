@@ -56,9 +56,9 @@ export class FirebaseAuthenticationService {
     //   console.log("get redirectresult: " + JSON.stringify(result));
     // });
 
-    this.afAuth.onAuthStateChanged((user) => {
-      this.byPassLoginWithUserInformation(user);
-    });
+    // this.afAuth.onAuthStateChanged((user) => {
+    //   this.byPassLoginWithUserInformation(user);
+    // });
 
     // this.afAuth.authState.subscribe((user) => {
     //   console.log("we got: " + user);
