@@ -61,10 +61,10 @@ export const API = {
   redBookTMC_X: "cbHBWdeRODn2f6H1xca52FYSIRc4WfC9",
 };
 
-export const baseURL = "https://red-center.web.app/";
+export const baseURL = "https://red-center.firebaseapp.com/";
 
 export const clickActionVR =
-  "https://red-center.web.app/pages/eVR/workspace?id=";
+  "https://red-center.firebaseapp.com/pages/eVR/workspace?id=";
 
 export const showMenu = [
   "Home",
