@@ -1,7 +1,9 @@
 .containerZoom {
   transition: transform 0.3s;
   position: relative;
-  width: 600px;
+  max-width: 600px;
+  width: 90%px;
+  max-height: 20vh;
   height: 300px;
 }
 
@@ -13,7 +15,9 @@
 
 .container {
   position: relative;
-  width: 600px;
+  max-width: 600px;
+  width: 90%px;
+  max-height: 50vh;
   height: 300px;
 }
 
