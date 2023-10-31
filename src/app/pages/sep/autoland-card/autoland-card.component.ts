@@ -127,6 +127,8 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (diffDate <= 30 && diffDate >= 0) this.setStatusWarning();
 
     if (this.info.expiry == "") this.setStatusDanger();
+
+    this.cdr.detectChanges();
   }
 
   setStatusSuccess(): void {

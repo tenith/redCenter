@@ -338,7 +338,6 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
     if (diffDate <= 30 && diffDate >= 0) this.setStatusWarning();
 
     if (this.info.Expiry == "-") this.setStatusSuccess();
-
     this.cdr.detectChanges();
   }
 
@@ -425,20 +424,28 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   setPending(): void {
     this.myStatus = statusConfig.pending.status;
     this.myIcon = statusConfig.pending.icon;
+
+    this.cdr.detectChanges();
   }
 
   setStatusSuccess(): void {
     this.myStatus = statusConfig.success.status;
     this.myIcon = statusConfig.success.icon;
+
+    this.cdr.detectChanges();
   }
 
   setStatusWarning(): void {
     this.myStatus = statusConfig.warning.status;
     this.myIcon = statusConfig.warning.icon;
+
+    this.cdr.detectChanges();
   }
 
   setStatusDanger(): void {
     this.myStatus = statusConfig.danger.status;
     this.myIcon = statusConfig.danger.icon;
+
+    this.cdr.detectChanges();
   }
 }
