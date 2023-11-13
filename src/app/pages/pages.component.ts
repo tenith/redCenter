@@ -60,7 +60,9 @@ export class PagesComponent implements OnInit {
          * version 0.4.0 Add feature E-TS1 for instructors
          * by pass adding ETS1 Module if user is not allowed....
          */
-        if (menuListDetail[myList[i]].title == "E-TS1" && !isETS1User) continue;
+        if (tempFirestoreUser.role == roleName.pilot)
+          if (menuListDetail[myList[i]].title == "E-TS1" && !isETS1User)
+            continue;
 
         tempMenu.push(menuListDetail[myList[i]]);
       }
