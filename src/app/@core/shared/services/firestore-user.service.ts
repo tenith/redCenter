@@ -35,7 +35,7 @@ export class FirestoreUserService {
 
   constructor(
     public afs: AngularFirestore,
-    public firebaseAuthen: FirebaseAuthenticationService,
+    public firebaseAuthen: FirebaseAuthenticationService
   ) {
     this.collectionRef = this.afs.collection(this.collectionName);
 
@@ -44,7 +44,7 @@ export class FirestoreUserService {
      */
     if (localStorage.getItem(this.firestoreUserDBName) != null) {
       this.firestoreUser = JSON.parse(
-        localStorage.getItem(this.firestoreUserDBName),
+        localStorage.getItem(this.firestoreUserDBName)
       ) as FirestoreUser;
       this.reviseAuthorization();
     }
@@ -58,7 +58,7 @@ export class FirestoreUserService {
     this.firestoreUser = firestoreUser;
     localStorage.setItem(
       this.firestoreUserDBName,
-      JSON.stringify(this.firestoreUser),
+      JSON.stringify(this.firestoreUser)
     );
 
     this.reviseAuthorization();
@@ -129,7 +129,7 @@ export class FirestoreUserService {
 
     localStorage.setItem(
       this.firestoreUserDBName,
-      JSON.stringify(this.firestoreUser),
+      JSON.stringify(this.firestoreUser)
     );
     return this.collectionRef
       .doc(this.firebaseAuthen.getFirebaseUser().email)
@@ -141,24 +141,23 @@ export class FirestoreUserService {
   }
 
   public reviseFirestoreUser(firestoreUser: FirestoreUser): Promise<any> {
-    return this.collectionRef
-      .doc(firestoreUser.email)
-      .update({
-        role: firestoreUser.role,
-        level: firestoreUser.level,
-        aoc: firestoreUser.aoc,
-      });
+    return this.collectionRef.doc(firestoreUser.email).update({
+      //ID-0069, can't edit staff id so add
+      //cId: firestoreUser.cId,
+      cId: firestoreUser.cId,
+      role: firestoreUser.role,
+      level: firestoreUser.level,
+      aoc: firestoreUser.aoc,
+    });
   }
 
   public addAcknowledgement(
     firestoreUser: FirestoreUser,
-    invoice: Invoice,
+    invoice: Invoice
   ): Promise<any> {
-    return this.collectionRef
-      .doc(firestoreUser.email)
-      .ref.update({
-        invoice: firestore.firestore.FieldValue.arrayUnion(invoice),
-      });
+    return this.collectionRef.doc(firestoreUser.email).ref.update({
+      invoice: firestore.firestore.FieldValue.arrayUnion(invoice),
+    });
   }
 
   public hasRole(): boolean {
@@ -175,7 +174,7 @@ export class FirestoreUserService {
     this.firestoreUser.role = role;
     localStorage.setItem(
       this.firestoreUserDBName,
-      JSON.stringify(this.firestoreUser),
+      JSON.stringify(this.firestoreUser)
     );
     this.collectionRef
       .doc(this.firebaseAuthen.getFirebaseUser().email)
@@ -220,7 +219,7 @@ export class FirestoreUserService {
       });
 
     const roleCollection: AngularFirestoreCollection<any> = this.afs.collection(
-      firestoreCollection.groupTokenListCollectionName,
+      firestoreCollection.groupTokenListCollectionName
     );
 
     roleCollection
@@ -252,7 +251,7 @@ export class FirestoreUserService {
       });
 
     const roleCollection: AngularFirestoreCollection<any> = this.afs.collection(
-      firestoreCollection.groupTokenListCollectionName,
+      firestoreCollection.groupTokenListCollectionName
     );
     await roleCollection
       .doc(this.firestoreUser.aoc)

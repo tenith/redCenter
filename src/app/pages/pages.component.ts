@@ -4,7 +4,11 @@ import { FirebaseAuthenticationService } from "../@core/shared/services/firebase
 import { FirestoreUserService } from "../@core/shared/services/firestore-user.service";
 
 import { allowMenuByRole, menuListDetail } from "./pages-menu";
-import { roleName, userLevel } from "../../environments/myconfigs";
+import {
+  ETS1UserList,
+  roleName,
+  userLevel,
+} from "../../environments/myconfigs";
 import { showMenu } from "../../environments/environment";
 
 @Component({
@@ -32,6 +36,10 @@ export class PagesComponent implements OnInit {
     let tempMenu: NbMenuItem[] = [];
     let myList: string[];
 
+    let isETS1User = false;
+
+    isETS1User = ETS1UserList.includes(tempFirestoreUser.email);
+
     if (tempFirestoreUser.level == "Admin") myList = allowMenuByRole["Admin"];
     else myList = allowMenuByRole[tempFirestoreUser.role];
 
@@ -47,6 +55,12 @@ export class PagesComponent implements OnInit {
           )
             continue;
         }
+
+        /**
+         * version 0.4.0 Add feature E-TS1 for instructors
+         * by pass adding ETS1 Module if user is not allowed....
+         */
+        if (menuListDetail[myList[i]].title == "E-TS1" && !isETS1User) continue;
 
         tempMenu.push(menuListDetail[myList[i]]);
       }
