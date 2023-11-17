@@ -76,6 +76,11 @@ export class AutolandCardService {
     );
   }
 
+  saveAutolandOnline(autolandCard: AutolandSepCard): void {
+    this.autoLandCard[0] = autolandCard;
+    this.saveAllSepCards(this.autoLandCard);
+  }
+
   deleteAllSepCards(): void {
     localStorage.removeItem(this.autoLandCardLocalDBName);
   }

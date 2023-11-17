@@ -75,7 +75,6 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.reviseAutoLandCard();
     this.eventsSubscription = this.events.subscribe(() => {
-      this.reviseAutoLandCard();
       // this.autoLandingForm.reset();
       if (this.info.perform != "") {
         this.minDate = this.datePipe.transform(
@@ -169,7 +168,7 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
         /*
         15 Mar 2023 wutthichair
           Reload Autoland when post complete
-      */
+        */
         if (respone.status.toString().includes("completed")) {
           this.autoLandService.getAllAutolandCards().subscribe((response) => {
             let temp: AutolandSepCard[] = [];
@@ -181,10 +180,7 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.info.name.includes("ONLINE")) this.info = { ...temp[0] };
             else this.info = { ...temp[1] };
 
-            this.showForm = true;
-            this.cdr.detectChanges();
-            this.autoLandingForm.reset();
-            this.showForm = false;
+            this.autoLandService.saveAutolandOnline(this.info);
 
             this.postCompleteEvent.emit("post completed");
             this.toastr.primary(
@@ -193,15 +189,25 @@ export class AutolandCardComponent implements OnInit, AfterViewInit, OnDestroy {
               { duration: 10000, preventDuplicates: true }
             );
             this.reviseAutoLandCard();
+            this.cdr.detectChanges();
 
-            this.minDate = this.datePipe.transform(
-              new Date(this.info.perform),
-              "YYYY-MM-dd"
-            );
+            this.showForm = true;
+            this.cdr.detectChanges();
+            try {
+              this.minDate = this.datePipe.transform(
+                new Date(this.info.perform),
+                "YYYY-MM-dd"
+              );
+            } catch (error) {
+              console.log(error);
+            }
 
-            // console.log("mindate: " + this.minDate);
+            this.autoLandingForm.reset();
+            this.showForm = false;
           });
         }
+        this.reviseAutoLandCard();
+        this.cdr.detectChanges();
       });
   }
 }
