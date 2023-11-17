@@ -242,10 +242,28 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
   saveToLocal(): void {
     localStorage.setItem(this.uuid, JSON.stringify(this.eTS1));
-    this.eTS1Service.updateDateeTS1(this.eTS1);
-    Swal.fire("Completed", "You saved this form into your device", "success");
-
     this.saveEvent.emit("");
+    /*
+      adisakh@airasia.com request additional popup if there is something wrong when saveToLocal and instructorSubmit
+      Fix @ ID0073 on 17 Nov 2023
+    */
+    if (!navigator.onLine) {
+      Swal.fire({
+        icon: "success",
+        title: "Completed",
+        html: "You already saved this form to your mobile.",
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Completed",
+        html: "You already saved this form to your mobile. Do you want to save it onto server?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+      }).then((result) => {
+        if (result.isConfirmed) this.save("saved");
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -469,16 +487,48 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  save(): void {
-    // this.saveToLocal();
-    // this.eTS1.ownerEmail = this.firestoreUserService.getFirestoreUser().email;
-    this.eTS1Service.updateDateeTS1(this.eTS1);
-    this.saveEvent.emit("");
+  save(action): void {
+    /*
+      adisakh@airasia.com request additional popup if there is something wrong when saveToLocal and instructorSubmit
+      Fix @ ID0073 on 17 Nov 2023
+    */
 
-    Swal.fire("Completed", "You saved this form", "success");
+    if (!navigator.onLine) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! You are in offline mode, Can't save this form onto server. Please try again when you are online",
+      });
+      return;
+    }
+
+    try {
+      this.eTS1Service.updateDateeTS1(this.eTS1);
+      this.saveEvent.emit("");
+      Swal.fire(
+        "Completed",
+        "You " + action + " this form to server",
+        "success"
+      );
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! " + error.toString(),
+      });
+    }
   }
 
   instructorSubmit(): void {
+    if (!navigator.onLine) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! You are in offline mode, Can't save this form onto server. Please try again when you are online",
+      });
+      return;
+    }
+
     Swal.fire({
       title: "Do you want to submit this form?",
       icon: "warning",
@@ -492,7 +542,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         );
         this.eTS1.submitDateTime = timeStamp;
 
-        this.save();
+        this.save("submitted");
         this.reviseReadOnly();
 
         this.notiService.ETS1Notification(this.uuid, this.eTS1.ownerEmail);
@@ -502,6 +552,15 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   }
 
   adminSubmit(): void {
+    if (!navigator.onLine) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! You are in offline mode, Can't save this form onto server. Please try again when you are online",
+      });
+      return;
+    }
+
     Swal.fire({
       title: "Do you want to finalize this form?",
       icon: "warning",
@@ -515,7 +574,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         );
         this.eTS1.completedDateTime = timeStamp;
 
-        this.save();
+        this.save("submitted");
         this.reviseReadOnly();
 
         this.sendToGoogle();
@@ -558,8 +617,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.eTS1.uuid = tempUUID;
         this.eTS1.initDateTime = tempInitTime;
 
-        this.setName3();
-        this.saveToLocal();
+        // this.setName3();
+        // this.saveToLocal();
 
         this.saveEvent.emit("");
       } else if (result.isDenied) {
@@ -591,8 +650,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.eTS1.initDateTime = tempInitTime;
 
         this.setName3();
-        this.saveToLocal();
-        this.saveEvent.emit("");
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
@@ -652,9 +711,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.eTS1.initDateTime = tempInitTime;
 
         this.setName3();
-        this.saveToLocal();
-
-        this.saveEvent.emit("");
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
       } else if (result.isDenied) {
         // resultB = false;
       }
