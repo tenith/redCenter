@@ -145,11 +145,11 @@ export const roleOptions = [
     label: "Cabin Crew",
     icon: "assets/images/flight-attendant.png",
   },
-  {
-    value: "Flight_Operations",
-    label: "Flight Operations",
-    icon: "assets/images/operation.png",
-  },
+  // {
+  //   value: "Flight_Operations",
+  //   label: "Flight Operations",
+  //   icon: "assets/images/operation.png",
+  // },
   { value: "Training", label: "Training", icon: "assets/images/training.png" },
   { value: "Engineer", label: "Engineer", icon: "assets/images/engineer.png" },
   { value: "CCD_TEAM", label: "CCD Team", icon: "assets/images/operation.png" },
