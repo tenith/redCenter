@@ -114,7 +114,7 @@ export class CustomActionComponent implements OnInit {
       if (confirm == "affirm") {
         //Delete an announcement code....
         this.fileUploadDatabaseService
-          .deleteFile(this.rowData.path, {
+          .deleteFile(this.rowData.relativePath, {
             ...this.rowData,
           } as FileUploadInformation)
           .then(() => {

@@ -5,6 +5,8 @@ import { FileUploadInformation } from "../interfaces/file-upload-information";
 import { FileUploadInformationService } from "./file-upload-information.service";
 import { Observable } from "rxjs";
 
+import heic2any from "heic2any";
+
 import {
   firebaseDB,
   requiredVerify,
@@ -41,7 +43,32 @@ export class FileUploadDatabaseService {
     email: string
   ): Promise<boolean> {
     let completed = false;
-    const newFileName = new Date().valueOf() + "_" + file.name;
+    let newFileName = new Date().valueOf() + "_" + file.name;
+
+    /*
+      ID-0077
+      if file is heic format then try to convert it into jpg
+    */
+
+    if (file.name.endsWith(".heic")) {
+      newFileName = newFileName.replace(/\.heic$/, ".jpg");
+      await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality: 0.6, // Adjust the quality as needed
+      })
+        .then((jpgBlob: Blob) => {
+          const jpgFile = new File([jpgBlob], newFileName, {
+            type: "image/jpeg",
+          });
+
+          file = jpgFile;
+        })
+        .catch((error: any) => {
+          console.error("Error converting HEIC to JPEG:", error);
+        });
+    }
+
     const fileRef = this.storage.ref(
       firebaseDB.dbPathName + "/" + email + "/" + newFileName
     );
@@ -88,7 +115,31 @@ export class FileUploadDatabaseService {
 
   public async uploadFile(file: File, form: any): Promise<boolean> {
     let completed = false;
-    const newFileName = new Date().valueOf() + "_" + file.name;
+    let newFileName = new Date().valueOf() + "_" + file.name;
+
+    /*
+      ID-0077
+      if file is heic format then try to convert it into jpg
+    */
+    if (file.name.endsWith(".heic")) {
+      newFileName = newFileName.replace(/\.heic$/, ".jpg");
+      await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality: 0.6, // Adjust the quality as needed
+      })
+        .then((jpgBlob: Blob) => {
+          const jpgFile = new File([jpgBlob], newFileName, {
+            type: "image/jpeg",
+          });
+
+          file = jpgFile;
+        })
+        .catch((error: any) => {
+          console.error("Error converting HEIC to JPEG:", error);
+        });
+    }
+
     const fileRef = this.storage.ref(this.path + "/" + newFileName);
     const fileAbsPath = this.absPath + this.path + "/" + newFileName;
 

@@ -38,7 +38,7 @@ export class CustomActionComponent implements OnInit {
     private dialogService: NbDialogService,
     private toastr: NbToastrService,
     private firestoreUserService: FirestoreUserService,
-    private fileUploadDatabaseService: FileUploadDatabaseService,
+    private fileUploadDatabaseService: FileUploadDatabaseService
   ) {}
 
   reviseVerify(): void {
@@ -115,7 +115,7 @@ export class CustomActionComponent implements OnInit {
       if (confirm == "affirm") {
         //Delete an announcement code....
         this.fileUploadDatabaseService
-          .deleteFile(this.rowData.path, {
+          .deleteFile(this.rowData.relativePath, {
             ...this.rowData,
           } as FileUploadInformation)
           .then(() => {
@@ -123,7 +123,7 @@ export class CustomActionComponent implements OnInit {
               "Completed",
               "Delete " +
                 this.rowData.name.split("_")[1] +
-                " announement completed",
+                " announement completed"
             );
           })
           .catch((error) => {
@@ -132,7 +132,7 @@ export class CustomActionComponent implements OnInit {
               "error",
               "Delete " +
                 this.rowData.name.split("_")[1] +
-                " announement failed, try again later",
+                " announement failed, try again later"
             );
           });
       }
