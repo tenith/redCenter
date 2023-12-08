@@ -141,7 +141,7 @@
                     (ngModelChange)="
                       landingRunway = $event != null ? $event.toUpperCase() : ''
                     "
-                    pattern="^[0-2]{1}[0-9]{1}[L,R,C,l,r,c]?$"
+                    pattern="^(0?[1-9]|1[0-9]|2[0-9]|3[0-6])[L,R,C,l,r,c]?$"
                     required
                   />
                 </div>
