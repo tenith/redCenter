@@ -81,7 +81,7 @@ export const clickActionVR =
 export const showMenu = [
   "Home",
   "Authorization",
-  "Documents Amendment",
+  // "Documents Amendment",
   "Personal document(s)",
   "Documents verification",
   "Verification History",

@@ -798,11 +798,10 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
   setName3(): void {
     if (this.eTS1.name3 == "") {
-      this.eTS1.submitByEmail =
-        this.firestoreUserService.getFirestoreUser().email;
-      this.eTS1.name3 = this.allStarService.getNameByEmail(
-        this.eTS1.submitByEmail
-      );
+      this.eTS1.name3 = this.firestoreUserService
+        .getFirestoreUser()
+        .displayName.split(" -")[0]
+        .toUpperCase();
     }
   }
 
