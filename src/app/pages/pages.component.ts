@@ -46,7 +46,8 @@ export class PagesComponent implements OnInit {
     for (let i = 0; i < myList.length; i++) {
       if (showMenu.includes(menuListDetail[myList[i]].title)) {
         if (
-          tempFirestoreUser.role == roleName.cabinCrew &&
+          (tempFirestoreUser.role == roleName.cabinCrew ||
+            tempFirestoreUser.role == roleName.seniorCabinCrew) &&
           tempFirestoreUser.level == userLevel.subscriber
         ) {
           if (

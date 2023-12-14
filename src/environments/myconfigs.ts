@@ -15,6 +15,7 @@ export const userLevel = {
 
 export const roleName = {
   pilot: "Pilot",
+  seniorCabinCrew: "Senior_Cabin_Crew",
   cabinCrew: "Cabin_Crew",
   fltOPS: "Flight_Operations",
   training: "Training",
@@ -141,6 +142,11 @@ export const vrPosOptions = [
 export const roleOptions = [
   { value: "Pilot", label: "Pilot", icon: "assets/images/captain.png" },
   {
+    value: "Senior_Cabin_Crew",
+    label: "Senior Cabin Crew",
+    icon: "assets/images/flight-attendant.png",
+  },
+  {
     value: "Cabin_Crew",
     label: "Cabin Crew",
     icon: "assets/images/flight-attendant.png",
@@ -177,16 +183,19 @@ export const aocOptions = [
 
 export const sepMandatory = {
   Pilot: ["My Picture"],
+  Senior_Cabin_Crew: ["My Picture", "Medical License"],
   Cabin_Crew: ["My Picture", "Medical License"],
 };
 
 export const requiredVerify = {
   Pilot: [],
+  Senior_Cabin_Crew: ["Medical License"],
   Cabin_Crew: ["Medical License"],
 };
 
 export const strictVerify = {
   Pilot: [],
+  Senior_Cabin_Crew: ["Medical License"],
   Cabin_Crew: ["Medical License"],
 };
 
@@ -205,15 +214,27 @@ export const sepCourseOptions = {
     "AVSEC",
 
     "ETOPS A320",
-    "ETOPS A330",
     "VVDN COMPETENCY",
     "VVCR COMPETENCY",
     "VNKT COMPETENCY",
     "RHS",
     "LVO",
     "AUTOLAND - SIMULATOR RECURRENT",
-    "A321",
     "PBN (AR)",
+  ],
+  Senior_Cabin_Crew: [
+    "SCC/ICC Recurrent Training",
+    "SEP DOOR DRILL",
+    "SEP WET DRILL",
+    "SEP FIRE DRILL",
+    "SEP SLIDE DRILL",
+    "SEP FIRST AID",
+    "DANGEROUS GOOD AWARENESS",
+    "CREW RESOURCE MANAGEMENT",
+    "SMS CLASS",
+    "AVSEC",
+    "Ground Check",
+    "A321",
   ],
   Cabin_Crew: [
     "SEP DOOR DRILL",
@@ -409,6 +430,18 @@ export const sepCourseBasicRequiredToOperate = {
     "SMS CLASS",
     "AVSEC",
   ],
+  Senior_Cabin_Crew: [
+    "SCC/ICC Recurrent Training",
+    "SEP DOOR DRILL",
+    "SEP WET DRILL",
+    "SEP FIRE DRILL",
+    "SEP SLIDE DRILL",
+    "SEP FIRST AID",
+    "DANGEROUS GOOD AWARENESS",
+    "CREW RESOURCE MANAGEMENT",
+    "SMS CLASS",
+    "AVSEC",
+  ],
   Cabin_Crew: [
     "SEP DOOR DRILL",
     "SEP WET DRILL",
@@ -427,7 +460,6 @@ export const sepCourseDisplayOptions = {
   // "RNP/BRNAV": { Initial: false, ShowHistory: false },
   // RVSM: { Initial: false, ShowHistory: false },
   "ETOPS A320": { Initial: false, ShowHistory: false },
-  "ETOPS A330": { Initial: false, ShowHistory: false },
   RHS: { Initial: true, ShowHistory: false },
 
   LVO: { Initial: false, ShowHistory: false },
@@ -443,6 +475,7 @@ export const sepCourseDisplayOptions = {
   A321: { Initial: false, ShowHistory: false },
   "LINE CHECK": { Initial: false, ShowHistory: false },
   OPC: { Initial: false, ShowHistory: false },
+  "SCC/ICC Recurrent Training": { Initial: true, ShowHistory: true },
   "SEP DOOR DRILL": { Initial: true, ShowHistory: false },
   "SEP WET DRILL": { Initial: true, ShowHistory: false },
 

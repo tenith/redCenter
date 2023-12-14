@@ -25,6 +25,15 @@ export let allowMenuByRole = {
     "sep",
     "logout",
   ],
+  Senior_Cabin_Crew: [
+    "home",
+    "documents_amendment",
+    "document_verification",
+    "verification_history",
+    "personal_documents",
+    "sep",
+    "logout",
+  ],
   Cabin_Crew: [
     "home",
     "documents_amendment",

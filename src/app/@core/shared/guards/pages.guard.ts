@@ -79,7 +79,8 @@ export class PagesGuard implements CanActivate {
       thisComponent === VerificationHistoryComponent
     ) {
       if (
-        firestoreUser.role == roleName.cabinCrew &&
+        (firestoreUser.role == roleName.cabinCrew ||
+          firestoreUser.role == roleName.seniorCabinCrew) &&
         firestoreUser.level == userLevel.moderatore
       ) {
         return true;
@@ -109,7 +110,8 @@ export class PagesGuard implements CanActivate {
     if (thisComponent === SepComponent) {
       if (
         firestoreUser.role != roleName.pilot &&
-        firestoreUser.role != roleName.cabinCrew
+        firestoreUser.role != roleName.cabinCrew &&
+        firestoreUser.role != roleName.seniorCabinCrew
       ) {
         this.router.navigate(["./pages/forbidden"]);
         return false;
