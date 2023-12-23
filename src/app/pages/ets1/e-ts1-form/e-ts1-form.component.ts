@@ -31,6 +31,8 @@ import { ETS1GoogleSheetsService } from "../../../@core/shared/services/e-ts1-go
 import { loft2023H2ETS1Data } from "../../../@core/shared/data/loft2023H2ETS1Data";
 import { coft2023H2ETS1Data } from "../../../@core/shared/data/coft2023H2ETS1Data";
 import { ETS1NotificationService } from "../../../@core/shared/services/ets1Notification.service";
+import { loft2024H1ETS1Data } from "../../../@core/shared/data/loft2024H1ETS1Data";
+import { coft2024H1ETS1Data } from "../../../@core/shared/data/coft2024H1ETS1Data";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -487,6 +489,16 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  convertStringInObjectToUpperCase(obj) {
+    for (var key in obj) {
+      if (obj[key] !== null && typeof obj[key] === "object") {
+        this.convertStringInObjectToUpperCase(obj[key]);
+      } else if (obj[key] !== null && typeof obj[key] === "string") {
+        obj[key] = obj[key].toUpperCase();
+      }
+    }
+  }
+
   save(action): void {
     /*
       adisakh@airasia.com request additional popup if there is something wrong when saveToLocal and instructorSubmit
@@ -503,6 +515,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     }
 
     try {
+      this.convertStringInObjectToUpperCase(this.eTS1);
       this.eTS1Service.updateDateeTS1(this.eTS1);
       this.saveEvent.emit("");
       Swal.fire(
@@ -627,11 +640,72 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     });
   }
 
+  setCoft(): void {
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard COFT (JAN - JUN 2024)?",
+      showCancelButton: true,
+      icon: "warning",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO COFT 2022....
+        this.eTS1 = { ...coft2024H1ETS1Data };
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
+  setLoft(): void {
+    // let resultB = false;
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard LOFT (JAN - JUN 2024)?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO LOFT 2022....
+        this.eTS1 = { ...loft2024H1ETS1Data };
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
   setLoftH22023(): void {
     // let resultB = false;
     Swal.fire({
       title:
-        "Do you want to reset this form and fill with standard LOFT (JUL - DEC 2023)?",
+        "Do you want to reset this form and fill with standard LOFT (JAN - JUN 2024)?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -692,7 +766,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   setCoftH22023(): void {
     Swal.fire({
       title:
-        "Do you want to reset this form and fill with standard COFT (JUL - DEC 2023)?",
+        "Do you want to reset this form and fill with standard COFT (JAN - JUN 2024)?",
       showCancelButton: true,
       icon: "warning",
       confirmButtonText: "Yes",

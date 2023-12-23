@@ -132,14 +132,14 @@
           align="center"
           valign="middle"
         >
-          <button nbButton status="primary" (click)="setLoftH22023()">
-            LOFT JUL - DEC 2023
+          <button nbButton status="primary" (click)="setLoft()">
+            LOFT JAN - JUN 2024
           </button>
           &nbsp;&nbsp;&nbsp;
           <button nbButton status="danger" (click)="resetForm()">RESET</button>
           &nbsp;&nbsp;&nbsp;
-          <button nbButton status="primary" (click)="setCoftH22023()">
-            COFT JUL - DEC 2023
+          <button nbButton status="primary" (click)="setCoft()">
+            COFT JAN - JUN 2024
           </button>
         </td>
       </tr>
@@ -17622,9 +17622,9 @@
                 -webkit-box-sizing: border-box;
                 border: none;
                 text-align: left;
+                text-transform: uppercase;
               "
-              [ngModel]="eTS1.noteDetails[0]"
-              (ngModelChange)="eTS1.noteDetails[0] = $event.toUpperCase()"
+              [(ngModel)]="eTS1.noteDetails[0]"
               [ngStyle]="{
                 'background-color': detail0.invalid ? '#FFCCCB' : null
               }"
@@ -17881,9 +17881,9 @@
                 -webkit-box-sizing: border-box;
                 border: none;
                 text-align: left;
+                text-transform: uppercase;
               "
-              [ngModel]="eTS1.noteDetails[i]"
-              (ngModelChange)="eTS1.noteDetails[i] = $event.toUpperCase()"
+              [(ngModel)]="eTS1.noteDetails[i]"
               [ngStyle]="{
                 'background-color':
                   eTS1.noteDetails[i] === '' &&
@@ -18451,9 +18451,9 @@
                 -webkit-box-sizing: border-box;
                 border: none;
                 text-align: left;
+                text-transform: uppercase;
               "
-              [ngModel]="eTS1.noteDetails[i]"
-              (ngModelChange)="eTS1.noteDetails[i] = $event.toUpperCase()"
+              [(ngModel)]="eTS1.noteDetails[i]"
               [ngStyle]="{
                 'background-color':
                   eTS1.noteDetails[i] === '' &&
