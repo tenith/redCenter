@@ -268,6 +268,7 @@ export const ETS1UserList = [
   "phuwadetp@airasia.com",
   "ronnarongt@airasia.com",
   "sirapobj@airasia.com",
+  "gumpholj@airasia.com",
   "phuripantd@airasia.com",
   "santik@airasia.com",
   "teerasakp@airasia.com",
