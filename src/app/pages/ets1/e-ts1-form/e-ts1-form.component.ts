@@ -493,7 +493,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     for (var key in obj) {
       if (obj[key] !== null && typeof obj[key] === "object") {
         this.convertStringInObjectToUpperCase(obj[key]);
-      } else if (obj[key] !== null && typeof obj[key] === "string") {
+      } else if (obj[key] !== null && key.includes("detail")) {
         obj[key] = obj[key].toUpperCase();
       }
     }
