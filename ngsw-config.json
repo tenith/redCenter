@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
   "appData": {
-    "version": "0.1.1",
+    "version": "0.5.2",
     "changelog": "This update fixes a serious bug."
   },
   "assetGroups": [
@@ -13,9 +13,10 @@
       "resources": {
         "files": [
           "/index.html",
-          "/favicon.ico",          
+          "/favicon.ico",
           "/manifest.webmanifest",
           "/*.css",
+          "/assets/**",
           "/*.js"
         ]
       }
@@ -26,7 +27,6 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/**",
           "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
       }
