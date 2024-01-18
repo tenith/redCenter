@@ -152,7 +152,12 @@ export class DocumentVerificationComponent implements OnInit {
      * CCD_TEAM: See only medical
      */
     if (myRole == roleName.ccd_team || myRole == roleName.cabinCrew) {
-      if (fileUploadInfo.description.includes("[" + roleName.cabinCrew + "]")) {
+      if (
+        fileUploadInfo.description.includes("[" + roleName.cabinCrew + "]") ||
+        fileUploadInfo.description.includes(
+          "[" + roleName.seniorCabinCrew + "]"
+        )
+      ) {
         this.fileInforList.push(fileUploadInfo);
         return;
       }
