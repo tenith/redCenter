@@ -101,8 +101,17 @@ export class AutolandCardService {
           if (data.info.length == 0) observer.next(this.autoLandCard[0]);
           else observer.next(data.info[data.info.length - 1]);
         } else {
-          if (this.firestoreUser.getFirestoreUser().role == roleName.pilot)
-            this.collectionRef.doc(this.email).set({ info: [] });
+          if (this.firestoreUser.getFirestoreUser().role == roleName.pilot) {
+            /**
+             * ID-0093 Autolanding history was empty when user used automatically update version
+             * Add logic to use ref.get() to ensure doc doesn't exists to avoid reset doc....
+             */
+            ref.get().then((doc) => {
+              console.log("ref.get(): " + JSON.stringify(doc.data()));
+              if (!doc.exists)
+                this.collectionRef.doc(this.email).set({ info: [] });
+            });
+          }
         }
       });
 
