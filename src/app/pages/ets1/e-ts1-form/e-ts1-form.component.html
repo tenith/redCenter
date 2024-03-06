@@ -17427,8 +17427,10 @@
             align="center"
             valign="middle"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.deScores[0] }}</div>
             <!-- <select style="width:100px; text-align: center;border:1px; font-size:13px;" id="rank1" name="rank1" required [(ngModel)]="eTS1.rank1" [ngStyle]="{'background-color': eTS1.rank1 === '' ? '#FFCCCB' : null}"> -->
             <select
+              *ngIf="!readOnlySectionG"
               id="DE0"
               name="DE0"
               #DE0="ngModel"
@@ -17482,7 +17484,9 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.pcScores[0] }}</div>
             <select
+              *ngIf="!readOnlySectionG"
               id="PC0"
               name="PC0"
               #PC0="ngModel"
@@ -17552,7 +17556,9 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.iecScores[0] }}</div>
             <select
+              *ngIf="!readOnlySectionG"
               id="IEC0"
               name="IEC0"
               #IEC0="ngModel"
@@ -17649,8 +17655,9 @@
             align="center"
             valign="middle"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.deScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="DE{{ i }}"
               name="DE{{ i }}"
               #DE{{i}}="ngModel"
@@ -17716,8 +17723,9 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.pcScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="PC{{ i }}"
               name="PC{{ i }}"
               #PC{{i}}="ngModel"
@@ -17799,8 +17807,9 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.iecScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="IEC{{ i }}"
               name="IEC{{ i }}"
               #IEC{{i}}="ngModel"
@@ -18220,8 +18229,9 @@
             align="center"
             valign="middle"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.deScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="DE{{ i }}"
               name="DE{{ i }}"
               #DE{{i}}="ngModel"
@@ -18287,16 +18297,17 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.pcScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="PC{{ i }}"
               name="PC{{ i }}"
               #PC{{i}}="ngModel"
               style="
                 width: 22px;
-                text-align: left;
+                text-align: center;
                 border: 1px;
-                font-size: 12px;
+                font-size: 13px;
               "
               [(ngModel)]="eTS1.pcScores[i]"
               [ngStyle]="{
@@ -18370,16 +18381,17 @@
             valign="middle"
             sdnum="1033;0;0"
           >
+            <div *ngIf="readOnlySectionG">{{ eTS1.iecScores[i] }}</div>
             <select
-              *ngIf="eTS1.noteDetails[i - 1] != ''"
+              *ngIf="eTS1.noteDetails[i - 1] != '' && !readOnlySectionG"
               id="IEC{{ i }}"
               name="IEC{{ i }}"
               #IEC{{i}}="ngModel"
               style="
                 width: 22px;
-                text-align: left;
+                text-align: center;
                 border: 1px;
-                font-size: 12px;
+                font-size: 13px;
               "
               [(ngModel)]="eTS1.iecScores[i]"
               [ngStyle]="{
@@ -20922,15 +20934,11 @@
               style="
                 margin-top: 10px;
                 font: size 13px;
-                display: inline;
+                display: block;
                 width: 100%;
-                box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                -webkit-box-sizing: border-box;
                 border: none;
                 text-align: center;
                 font-family: Arial, Helvetica, sans-serif;
-                border: 0px;
                 font: size 13px;
               "
               [(ngModel)]="eTS1.signatureInstructorDate"

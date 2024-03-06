@@ -345,7 +345,7 @@ export const ETS1UserList = [
 export const RHSEmailLists = [
   "manatr@airasia.com",
   "tanuchab@airasia.com",
-  "surapongh@airais.com",
+  "surapongh@airasia.com",
   "ronnarongt@airasia.com",
   "werachaij@airasia.com",
   "manoonj@airasia.com",
