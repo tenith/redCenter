@@ -252,6 +252,7 @@ export const sepCourseOptions = {
 };
 
 export const ETS1UserList = [
+  "kasidisv@airasia.com",
   "karns@airasia.com",
   "chayakorna@airasia.com",
   "anuwatu@airasia.com",
