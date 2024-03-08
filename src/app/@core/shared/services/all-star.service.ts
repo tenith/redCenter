@@ -9,6 +9,8 @@ export class AllStarService {
   private adminList = ["wutthichair@airasia.com"];
 
   private name: { [key: string]: string } = {
+    "N/A": "N/A",
+    "0000000": "N/A",
     "1000227": "CHATUPOL TANA-ARPAPONG",
     "1000232": "PHARANEE SAKUNSRISASTEE",
     "1000234": "SITANG PATTAMA",

@@ -438,9 +438,20 @@
           >
             <font size="1" color="#000000"> Rank &amp; Name </font>
             <br />
-
+            <div
+              style="
+                font-size: clamp(9px, 1.5vw, 13px);
+                text-align: center;
+                width: 380px;
+              "
+              *ngIf="readOnlySectionA"
+            >
+              {{ eTS1.rank1 }} {{ eTS1.name1 }}
+            </div>
             <!-- eTS1.rank1 -->
+
             <select
+              *ngIf="!readOnlySectionA"
               id="rank1"
               name="rank1"
               #rank1="ngModel"
@@ -467,6 +478,7 @@
 
             <!-- eTS1.name1 -->
             <input
+              *ngIf="!readOnlySectionA"
               type="text"
               id="name1"
               name="name1"
@@ -712,11 +724,22 @@
             valign="top"
           >
             <font size="1" color="#000000"
-              >Other Crew Member Rank &amp; Name</font
-            >
+              >Other Crew Member Rank &amp; Name
+            </font>
 
             <!-- eTS1.rank2 -->
+            <div
+              style="
+                font-size: clamp(9px, 1.5vw, 11px);
+                text-align: center;
+                width: 240px;
+              "
+              *ngIf="readOnlySectionA"
+            >
+              {{ eTS1.rank2 }} {{ eTS1.name2 }}
+            </div>
             <select
+              *ngIf="!readOnlySectionA && eTS1.name2 != 'N/A'"
               id="rank2"
               name="rank2"
               #rank2="ngModel"
@@ -744,6 +767,7 @@
 
             <!-- eTS1.name2 -->
             <input
+              *ngIf="!readOnlySectionA"
               type="text"
               id="name2"
               name="name2"
@@ -792,8 +816,9 @@
                 border: none;
                 text-align: center;
               "
-              [(ngModel)]="eTS1.staffNo2"
-              pattern="^[1][0-9]{6}$"
+              [ngModel]="eTS1.staffNo2"
+              (ngModelChange)="eTS1.staffNo2 = $event.toUpperCase()"
+              pattern="^([1][0-9]{6}|0000000|N/A)$"
               [ngStyle]="{
                 'background-color': staffNo2.invalid ? '#FFCCCB' : null
               }"
@@ -801,6 +826,9 @@
               [readonly]="readOnlySectionA"
               required
             />
+            <!-- 
+              panlopk@airasia.com requested to add '0000000' to be default
+             -->
             <!-- eTS1.staffNo2 -->
           </td>
           <td
@@ -835,13 +863,18 @@
               "
               [ngModel]="eTS1.airport"
               (ngModelChange)="eTS1.airport = $event.toUpperCase()"
-              pattern="^[A-Z]{4}((-[A-Z]{4})*$)$"
+              pattern="^([A-Z]{4}([-|,][A-Z]{4})*|N\/A)$"
               [ngStyle]="{
                 'background-color': airport.invalid ? '#FFCCCB' : null
               }"
               [readonly]="readOnlySectionB"
               required
             />
+            <!-- 
+              09 Mar 2024
+              panlopk@airasia.com request to add default 'N/A' and add ','
+              ^([A-Z]{4}([-|,][A-Z]{4})*|N\/A)$
+             -->
             <!--eTS1.airport -->
           </td>
           <td
@@ -1146,7 +1179,9 @@
           >
             <div *ngIf="eTS1.aq == 'true'">
               <!-- eTS1.aqDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.aqDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="aqDetail"
                 name="aqDetail"
                 #aqDetail="ngModel"
@@ -1312,7 +1347,9 @@
           >
             <div *ngIf="eTS1.instructor == 'true'">
               <!-- eTS1.instructorDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.instructorDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="instructorDetail"
                 name="instructorDetail"
                 #instructorDetail="ngModel"
@@ -1425,7 +1462,9 @@
           >
             <div *ngIf="eTS1.skillTest == 'true'">
               <!-- eTS1.skillTestDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.skillTestDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="skillTestDetail"
                 name="skillTestDetail"
                 #skillTestDetail="ngModel"
@@ -1496,7 +1535,9 @@
           >
             <div *ngIf="eTS1.rhs == 'true'">
               <!-- eTS1.rhsDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.rhsDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="rhsDetail"
                 name="rhsDetail"
                 #rhsDetail="ngModel"
@@ -1836,7 +1877,9 @@
           >
             <div *ngIf="eTS1.zftt == 'true'">
               <!-- eTS1.zfttDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.zfttDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="zfttDetail"
                 name="zfttDetail"
                 #zfttDetail="ngModel"
@@ -2152,7 +2195,9 @@
           >
             <div *ngIf="eTS1.ilc == 'true'">
               <!-- eTS1.ilcDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.ilcDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="ilcDetail"
                 name="ilcDetail"
                 #ilcDetail="ngModel"
@@ -2508,7 +2553,9 @@
           >
             <div *ngIf="eTS1.progress == 'true'">
               <!-- eTS1.progressDetail -->
+              <div *ngIf="readOnlySectionC">{{ eTS1.progressDetail }}</div>
               <select
+                *ngIf="!readOnlySectionC"
                 id="progressDetail"
                 name="progressDetail"
                 #progressDetail="ngModel"

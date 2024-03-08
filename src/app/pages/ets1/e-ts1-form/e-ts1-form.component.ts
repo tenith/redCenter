@@ -278,6 +278,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
     if (localETS1 != null) {
       this.eTS1 = localETS1;
+      this.reviseReadOnly();
     } else {
       this.eTS1 = { ...cleanETS1Data };
       this.eTS1.uuid = this.uuid;
