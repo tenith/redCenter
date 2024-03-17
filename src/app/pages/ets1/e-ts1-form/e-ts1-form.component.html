@@ -730,7 +730,7 @@
             <!-- eTS1.rank2 -->
             <div
               style="
-                font-size: clamp(9px, 1.5vw, 11px);
+                font-size: clamp(8px, 1.5vw, 11px);
                 text-align: center;
                 width: 240px;
               "
@@ -1535,7 +1535,7 @@
           >
             <div *ngIf="eTS1.rhs == 'true'">
               <!-- eTS1.rhsDetail -->
-              <div *ngIf="readOnlySectionC">{{ eTS1.rhsDetail }}</div>
+              <div *ngIf="readOnlySectionC">RHS {{ eTS1.rhsDetail }}</div>
               <select
                 *ngIf="!readOnlySectionC"
                 id="rhsDetail"
