@@ -150,8 +150,14 @@ export class DocumentVerificationComponent implements OnInit {
     // console.log(JSON.stringify(fileUploadInfo));
     /**
      * CCD_TEAM: See only medical
+     * 05 APR 2024 add || myRole == roleName.seniorCabinCrew
+     * to fix bug
      */
-    if (myRole == roleName.ccd_team || myRole == roleName.cabinCrew) {
+    if (
+      myRole == roleName.ccd_team ||
+      myRole == roleName.cabinCrew ||
+      myRole == roleName.seniorCabinCrew
+    ) {
       if (
         fileUploadInfo.description.includes("[" + roleName.cabinCrew + "]") ||
         fileUploadInfo.description.includes(
