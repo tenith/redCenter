@@ -1,6 +1,6 @@
 import { ETS1Data } from "../interfaces/e-ts1-data";
 
-export let loft2024H1ETS1Data: ETS1Data = {
+export let loft2024H2ETS1Data: ETS1Data = {
   //BACKEND AND HEADER
   uuid: "",
   date: "",

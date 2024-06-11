@@ -33,6 +33,8 @@ import { coft2023H2ETS1Data } from "../../../@core/shared/data/coft2023H2ETS1Dat
 import { ETS1NotificationService } from "../../../@core/shared/services/ets1Notification.service";
 import { loft2024H1ETS1Data } from "../../../@core/shared/data/loft2024H1ETS1Data";
 import { coft2024H1ETS1Data } from "../../../@core/shared/data/coft2024H1ETS1Data";
+import { loft2024H2ETS1Data } from "../../../@core/shared/data/loft2024H2ETS1Data";
+import { coft2024H2ETS1Data } from "../../../@core/shared/data/coft2024H2ETS1Data";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -215,6 +217,12 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     if (this.eTS1.specialOps == "true")
       tempFileName += this.eTS1.specialDetail + "_";
 
+    if (this.eTS1.gti == "true") tempFileName += "GTI_RENEWAL_";
+    if (this.eTS1.sfi == "true") tempFileName += "SFI_RENEWAL_";
+    if (this.eTS1.tri == "true") tempFileName += "TRI_RENEWAL_";
+    if (this.eTS1.sfe == "true") tempFileName += "SFE_RENEWAL_";
+    if (this.eTS1.tre == "true") tempFileName += "TRE_RENEWAL_";
+
     tempFileName += this.eTS1.date;
 
     this.fileName = tempFileName.replace(/ /g, "_").replace(/,/g, "");
@@ -309,8 +317,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   }
 
   // myPrint() : void {
-  //   this.afterPrintEvent.emit(this.eTS1.uuid);
-  //   this.router.navigate(['/print', this.eTS1.uuid]);
+  //   this.afterPrintEvent.emit(thprintis.eTS1.uuid);
+  //   this.router.navigate(['/', this.eTS1.uuid]);
   // }
   async myPrint(): Promise<void> {
     let pdf = new jsPDF("p", "px", "a4", true);
@@ -671,6 +679,36 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     });
   }
 
+  setCoftH22024(): void {
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard COFT (JUL - DEC 2024)?",
+      showCancelButton: true,
+      icon: "warning",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO COFT 2022....
+        this.eTS1 = { ...coft2024H2ETS1Data };
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
   setLoft(): void {
     // let resultB = false;
     Swal.fire({
@@ -689,6 +727,37 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
 
         //SET TO LOFT 2022....
         this.eTS1 = { ...loft2024H1ETS1Data };
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
+  setLoftH22024(): void {
+    // let resultB = false;
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard LOFT (JUL - DEC 2024)?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO LOFT 2022....
+        this.eTS1 = { ...loft2024H2ETS1Data };
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;

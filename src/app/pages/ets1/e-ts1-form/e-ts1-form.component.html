@@ -143,6 +143,36 @@
           </button>
         </td>
       </tr>
+      <tr *ngIf="eTS1.submitDateTime == ''">
+        <td
+          style="
+            border-bottom: 0px solid #000000;
+            border-left: 2px solid #000000;
+            border-right: 2px solid #000000;
+          "
+          colspan="40"
+          align="center"
+          valign="middle"
+        >
+          <button
+            nbButton
+            shape="semi-round"
+            status="warning"
+            (click)="setLoftH22024()"
+          >
+            LOFT JUL - DEC 2024
+          </button>
+          &nbsp;&nbsp;&nbsp;
+          <button
+            nbButton
+            shape="semi-round"
+            status="warning"
+            (click)="setCoftH22024()"
+          >
+            COFT JUL - DEC 2024
+          </button>
+        </td>
+      </tr>
       <tr>
         <td
           style="
@@ -1560,8 +1590,8 @@
                 [disabled]="readOnlySectionC"
                 [required]="eTS1.rhs === 'true'"
               >
-                <option value="RHS Initial">RHS Initial</option>
-                <option value="Recurrent">Recurrent</option>
+                <option value="Initial">RHS Initial</option>
+                <option value="Recurrent">RHS Recurrent</option>
               </select>
               <!-- eTS1.rhsDetail -->
             </div>

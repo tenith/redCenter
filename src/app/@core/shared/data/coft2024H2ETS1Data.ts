@@ -1,6 +1,6 @@
 import { ETS1Data } from "../interfaces/e-ts1-data";
 
-export let loft2024H1ETS1Data: ETS1Data = {
+export let coft2024H2ETS1Data: ETS1Data = {
   //BACKEND AND HEADER
   uuid: "",
   date: "",
@@ -24,7 +24,7 @@ export let loft2024H1ETS1Data: ETS1Data = {
   //SECTION B.....
   classRoom: "",
   aircraftType: "A320",
-  airport: "WSSS-VTBD",
+  airport: "VLLB-VTCN",
   sectorsNo: "N/A",
   accSectorsNO: "N/A",
   instructor: "false",
@@ -41,9 +41,9 @@ export let loft2024H1ETS1Data: ETS1Data = {
   ccq: "false",
   cuc: "false",
   stc: "false",
-  loft: "true",
-  skillTest: "false",
-  skillTestDetail: "",
+  loft: "false",
+  skillTest: "true",
+  skillTestDetail: "OPC",
   fbs: "false",
   fbsDetail: "",
   ffs: "false",
@@ -60,12 +60,12 @@ export let loft2024H1ETS1Data: ETS1Data = {
   ilcDetail: "",
   observe: "false",
   specialOps: "true",
-  specialDetail: "RVSM",
+  specialDetail: "LVO, RNP APCH",
 
   others: "true",
-  othersDetail1: "TCAS, WIND SHEAR RECOVERY,",
-  othersDetail2: "R-UPRT, JET UPSET RECOVERY",
-  othersDetail3: "CONTAMINATE RWY OPERATION",
+  othersDetail1: "IR",
+  othersDetail2: "",
+  othersDetail3: "",
   progress: "false",
   progressDetail: "",
 
@@ -96,29 +96,29 @@ export let loft2024H1ETS1Data: ETS1Data = {
   specialOpsPMScore: "",
 
   //SECTION E.....
-  system1Detail: "R-UPRT",
+  system1Detail: "NON-PRECISION APCH",
   system1Score: "",
-  system2Detail: "JET UPSET RECOVERY",
+  system2Detail: "AREA DEPARTURE & ARRIVAL",
   system2Score: "",
-  system3Detail: "CONTAMINATE RWY OPERATION",
+  system3Detail: "LVO",
   system3Score: "",
-  system4Detail: "RVSM",
+  system4Detail: "HOLDING",
   system4Score: "",
-  system5Detail: "",
+  system5Detail: "EVACUATION",
   system5Score: "",
-  system6Detail: "",
+  system6Detail: "CIRCLING",
   system6Score: "",
-  abNormal1Detail: "TCAS PROCEDURE",
+  abNormal1Detail: "REJECTED TAKEOFF",
   abNormal1Score: "",
-  abNormal2Detail: "WIND SHEAR RECOVERY",
+  abNormal2Detail: "TAKEOFF ENG. FAIL BETWEEN V1 AND V2",
   abNormal2Score: "",
-  abNormal3Detail: "PNEUMATIC ENG1 BLEED FAULT",
+  abNormal3Detail: "INSTRUMENT APCH TO DECISION HEIGHT WITH 1EO",
   abNormal3Score: "",
-  abNormal4Detail: "ENG2 FADEC FAULT",
+  abNormal4Detail: "MISS APCH WITH 1EO FROM DECISION HEIGHT",
   abNormal4Score: "",
-  abNormal5Detail: "ENG2 FIRE UNEXTINGUISHED",
+  abNormal5Detail: "LANDING WITH FD MALFUNCTION",
   abNormal5Score: "",
-  abNormal6Detail: "CAB PR SYS 1+2 FAULT",
+  abNormal6Detail: "LANDING WITH 1EO",
   abNormal6Score: "",
 
   //SECTION F.....
