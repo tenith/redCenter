@@ -163,6 +163,8 @@
             LOFT JUL - DEC 2024
           </button>
           &nbsp;&nbsp;&nbsp;
+          <button nbButton status="danger" (click)="resetForm()">RESET</button>
+          &nbsp;&nbsp;&nbsp;
           <button
             nbButton
             shape="semi-round"
@@ -236,7 +238,7 @@
           <button
             *ngIf="eTS1.submitDateTime == ''"
             nbButton
-            status="primary"
+            status="success"
             (click)="saveToLocal()"
           >
             SAVE DRAFT</button
