@@ -60,12 +60,12 @@ export let loft2024H2ETS1Data: ETS1Data = {
   ilcDetail: "",
   observe: "false",
   specialOps: "true",
-  specialDetail: "RVSM",
+  specialDetail: "RVSM, RNAV/RNP, ETOPS",
 
   others: "true",
-  othersDetail1: "RVSM, RNAV/RNP, ETOPS",
-  othersDetail2: "WIND SHEAR RECOVER,",
-  othersDetail3: "R-UPRT, TCAS, CFIT/GPWS",
+  othersDetail1: "WIND SHEAR RECOVER,",
+  othersDetail2: "R-UPRT, TCAS, CFIT/GPWS",
+  othersDetail3: "",
   progress: "false",
   progressDetail: "",
 
