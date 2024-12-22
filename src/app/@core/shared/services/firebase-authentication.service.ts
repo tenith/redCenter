@@ -160,6 +160,10 @@ export class FirebaseAuthenticationService {
     // return this.AuthLogin(new GoogleAuthProvider());
   }
 
+  public async GoogleAuthWithPopUp() {
+    return this.AuthLogin(new GoogleAuthProvider());
+  }
+
   public async AnynomousAuth(email: string) {
     return this.afAuth.signInAnonymously().then((result) => {
       const tempFirebaseUser: FirebaseUser = {

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { NbToastrService } from "@nebular/theme";
 import { FirebaseAuthenticationService } from "../../@core/shared/services/firebase-authentication.service";
 import { Subscription, interval } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "ngx-signin",
@@ -58,7 +59,9 @@ export class SigninComponent implements OnInit {
 
     this.isLoginProgress = true;
     try {
-      await this.firebaseAuthen.GoogleAuth();
+      if (environment.signInWithPopup)
+        await this.firebaseAuthen.GoogleAuthWithPopUp();
+      else await this.firebaseAuthen.GoogleAuth();
       this.isLoginProgress = false;
     } catch (error) {
       this.toastr.danger("error", error);

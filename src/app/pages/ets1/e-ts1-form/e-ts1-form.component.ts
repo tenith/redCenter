@@ -35,6 +35,8 @@ import { loft2024H1ETS1Data } from "../../../@core/shared/data/loft2024H1ETS1Dat
 import { coft2024H1ETS1Data } from "../../../@core/shared/data/coft2024H1ETS1Data";
 import { loft2024H2ETS1Data } from "../../../@core/shared/data/loft2024H2ETS1Data";
 import { coft2024H2ETS1Data } from "../../../@core/shared/data/coft2024H2ETS1Data";
+import { loft2025H1ETS1Data } from "../../../@core/shared/data/loft2025H1ETS1Data";
+import { coft2025H1ETS1Data } from "../../../@core/shared/data/coft2025H1ETS1Data";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -652,7 +654,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   setCoft(): void {
     Swal.fire({
       title:
-        "Do you want to reset this form and fill with standard COFT (JAN - JUN 2024)?",
+        "Do you want to reset this form and fill with standard COFT (JAN - JUN 2025)?",
       showCancelButton: true,
       icon: "warning",
       confirmButtonText: "Yes",
@@ -665,7 +667,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO COFT 2022....
-        this.eTS1 = { ...coft2024H1ETS1Data };
+        this.eTS1 = { ...coft2025H1ETS1Data };
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -713,7 +715,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     // let resultB = false;
     Swal.fire({
       title:
-        "Do you want to reset this form and fill with standard LOFT (JAN - JUN 2024)?",
+        "Do you want to reset this form and fill with standard LOFT (JAN - JUN 2025)?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -726,7 +728,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO LOFT 2022....
-        this.eTS1 = { ...loft2024H1ETS1Data };
+        this.eTS1 = { ...loft2025H1ETS1Data };
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
