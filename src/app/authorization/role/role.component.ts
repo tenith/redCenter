@@ -10,6 +10,7 @@ import {
   levelOptions,
   roleOptions,
 } from "../../../environments/myconfigs";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "ngx-role",
@@ -32,7 +33,7 @@ export class RoleComponent implements OnInit {
     private dialogService: NbDialogService,
     private firestoreUserService: FirestoreUserService,
     private toastr: NbToastrService,
-    public router: Router,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class RoleComponent implements OnInit {
       if (doc.exists) {
         // console.log('getFirestoreUserFromServer :' + JSON.stringify(doc.data()));
         this.tempFirestoreUser = { ...doc.data() } as FirestoreUser;
+        this.tempFirestoreUser.appVersion = environment.appVersion;
 
         this.firestoreUserService.setFirestoreUser(this.tempFirestoreUser);
 
@@ -75,7 +77,7 @@ export class RoleComponent implements OnInit {
           .setInitialUser(
             this.tempFirestoreUser.cId,
             this.tempFirestoreUser.aoc,
-            this.tempFirestoreUser.role,
+            this.tempFirestoreUser.role
           )
           .then(() => {
             this.router.navigate(["/pages"]);
@@ -84,7 +86,7 @@ export class RoleComponent implements OnInit {
             this.toastr.danger(
               "Error",
               "There is something wrong Please try again.",
-              { duration: 5000 },
+              { duration: 5000 }
             );
           });
       }

@@ -6,6 +6,7 @@ export interface FirestoreUser {
   role?: string;
   level?: string;
   cId?: string;
+  appVersion?: string;
   displayName: string;
   photoURL: string;
   tokenList: string[];

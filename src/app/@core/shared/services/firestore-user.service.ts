@@ -61,6 +61,13 @@ export class FirestoreUserService {
       JSON.stringify(this.firestoreUser)
     );
 
+    if (this.firestoreUser.appVersion != null)
+      this.collectionRef
+        .doc(this.firebaseAuthen.getFirebaseUser().email)
+        .update({
+          appVersion: this.firestoreUser.appVersion,
+        });
+
     this.reviseAuthorization();
   }
 
