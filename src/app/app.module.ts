@@ -32,6 +32,7 @@ import { AngularFireStorageModule } from "@angular/fire/compat/storage";
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { ServiceWorkerModule } from "@angular/service-worker";
+import { AngularFireAnalyticsModule } from "@angular/fire/compat/analytics";
 
 import { NgxPrintModule } from "ngx-print";
 
@@ -52,6 +53,7 @@ import { dbConfig } from "../environments/myconfigs";
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    AngularFireAnalyticsModule,
 
     BrowserModule,
     BrowserAnimationsModule,
