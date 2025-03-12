@@ -17520,6 +17520,9 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.deScores[0]"
+              (blur)="updateOptionsDE('DE0')"
+              (ngModelChange)="updateOptionsDE('DE0')"
+              (click)="showFullDetailsDE('DE0')"
               [ngStyle]="{ 'background-color': DE0.invalid ? '#FFCCCB' : null }"
               [disabled]="readOnlySectionG"
               required
@@ -17576,6 +17579,8 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.pcScores[0]"
+              (blur)="onSelectionChange('PC0', eTS1.pcScores[0], 0)"
+              (click)="showFullDetailsPC('PC0')"
               [ngStyle]="{ 'background-color': PC0.invalid ? '#FFCCCB' : null }"
               [disabled]="readOnlySectionG"
               required
@@ -17647,6 +17652,8 @@
                 border: 1px;
                 font-size: 13px;
               "
+              (blur)="onSelectionIECChange('IEC0', eTS1.iecScores[0], 0)"
+              (click)="showFullDetailsIEC('IEC0')"
               [(ngModel)]="eTS1.iecScores[0]"
               [ngStyle]="{
                 'background-color': IEC0.invalid ? '#FFCCCB' : null
@@ -17747,6 +17754,9 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.deScores[i]"
+              (blur)="updateOptionsDE('DE' + i)"
+              (ngModelChange)="updateOptionsDE('DE' + i)"
+              (click)="showFullDetailsDE('DE' + i)"
               [ngStyle]="{
                 'background-color':
                   eTS1.deScores[i] === '' &&
@@ -17815,6 +17825,8 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.pcScores[i]"
+              (blur)="onSelectionChange('PC' + i, eTS1.pcScores[i], i)"
+              (click)="showFullDetailsPC('PC' + i)"
               [ngStyle]="{
                 'background-color':
                   eTS1.pcScores[i] === '' &&
@@ -17898,6 +17910,8 @@
                 border: 1px;
                 font-size: 13px;
               "
+              (blur)="onSelectionIECChange('IEC' + i, eTS1.iecScores[i], i)"
+              (click)="showFullDetailsIEC('IEC' + i)"
               [(ngModel)]="eTS1.iecScores[i]"
               [ngStyle]="{
                 'background-color':
@@ -18321,6 +18335,9 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.deScores[i]"
+              (blur)="updateOptionsDE('DE' + i)"
+              (ngModelChange)="updateOptionsDE('DE' + i)"
+              (click)="showFullDetailsDE('DE' + i)"
               [ngStyle]="{
                 'background-color':
                   eTS1.deScores[i] === '' &&
@@ -18389,6 +18406,8 @@
                 font-size: 13px;
               "
               [(ngModel)]="eTS1.pcScores[i]"
+              (blur)="onSelectionChange('PC' + i, eTS1.pcScores[i], i)"
+              (click)="showFullDetailsPC('PC' + i)"
               [ngStyle]="{
                 'background-color':
                   eTS1.pcScores[i] === '' &&
@@ -18472,6 +18491,8 @@
                 border: 1px;
                 font-size: 13px;
               "
+              (blur)="onSelectionIECChange('IEC0' + i, eTS1.iecScores[i], i)"
+              (click)="showFullDetailsIEC('IEC0' + i)"
               [(ngModel)]="eTS1.iecScores[i]"
               [ngStyle]="{
                 'background-color':

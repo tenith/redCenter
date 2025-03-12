@@ -1,0 +1,62 @@
+.fixed-width-card {
+  width: 600px;
+  max-width: 90vw; /* Prevents overflow on small screens */
+}
+
+.wrap-option {
+  white-space: normal !important; /* Allows text to wrap */
+  word-wrap: break-word !important; /* Ensures long words break */
+  overflow-wrap: break-word !important; /* Handles word breaking */
+  display: block; /* Forces block layout for better wrapping */
+  max-width: 100%; /* Ensures it doesn’t expand beyond container */
+}
+
+.scrollable-popup {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.custom-backdrop {
+  background-color: rgba(0, 0, 0, 0.5); /* Set your desired color */
+}
+
+.selected-row {
+  background-color: #4065f6;
+  color: white; /* Set text color to white */
+}
+
+.popup-card {
+  /* Ensure that your popup does not alter the backdrop */
+  background-color: white; /* Keep the background of the popup white */
+}
+
+.option-text {
+  white-space: normal; /* Ensure wrapping of long text */
+  word-wrap: break-word; /* Break long words */
+  overflow-wrap: break-word; /* Ensure wrapping even for long words */
+  max-width: 100%; /* Prevents text overflow */
+}
+
+.custom-select {
+  width: 100%; /* Adjust width */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subpc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.subpc-table tr.even {
+  background-color: #f9f9f9;
+}
+
+.subpc-table tr.odd {
+  background-color: #ffffff;
+}

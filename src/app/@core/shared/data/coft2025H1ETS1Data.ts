@@ -60,7 +60,7 @@ export let coft2025H1ETS1Data: ETS1Data = {
   ilcDetail: "",
   observe: "false",
   specialOps: "true",
-  specialDetail: "LVO, RNP APCH",
+  specialDetail: "LVO, PBN",
 
   others: "true",
   othersDetail1: "IR",

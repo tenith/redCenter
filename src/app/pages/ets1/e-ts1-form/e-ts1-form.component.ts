@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   ViewChild,
 } from "@angular/core";
 import { ETS1Data } from "../../../@core/shared/interfaces/e-ts1-data";
@@ -37,6 +39,10 @@ import { loft2024H2ETS1Data } from "../../../@core/shared/data/loft2024H2ETS1Dat
 import { coft2024H2ETS1Data } from "../../../@core/shared/data/coft2024H2ETS1Data";
 import { loft2025H1ETS1Data } from "../../../@core/shared/data/loft2025H1ETS1Data";
 import { coft2025H1ETS1Data } from "../../../@core/shared/data/coft2025H1ETS1Data";
+import { competenciesData } from "../../../@core/shared/data/competenciesData";
+import { PcDetailDialogComponent } from "../pc-detail-dialog/pc-detail-dialog.component";
+import { environment } from "../../../../environments/environment";
+import { IECcompetenciesData } from "../../../@core/shared/data/IECOBData";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -89,6 +95,88 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     "data:image/jpeg;base64,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",
   ];
 
+  deOptionTemplate = [
+    {
+      number: "99",
+      description: "N/A",
+    },
+    {
+      number: "D1",
+      description: "PRE FLT & COCKPIT PREP",
+    },
+    {
+      number: "D2",
+      description: "START & TAXI",
+    },
+    {
+      number: "D3",
+      description: "TAKE-OFF",
+    },
+    {
+      number: "D4",
+      description: "CLIMB & CRUISE",
+    },
+    {
+      number: "D5",
+      description: "DESCENT",
+    },
+    {
+      number: "D6",
+      description: "APPROACH",
+    },
+    {
+      number: "D7",
+      description: "GO-AROUND",
+    },
+    {
+      number: "D8",
+      description: "LANDING",
+    },
+    {
+      number: "D9",
+      description: "AFTER LANDING",
+    },
+    {
+      number: "D10",
+      description: "PARKING AND SHUTDOWN",
+    },
+    {
+      number: "D11",
+      description: "FLIGHT MANAGEMENT",
+    },
+    {
+      number: "D12",
+      description: "SPECIAL OPERATIONS",
+    },
+  ];
+
+  iecOptionTemplate = [
+    {
+      number: 0,
+      description: "N/A",
+    },
+    {
+      number: 1,
+      description: "Pilot competencies",
+    },
+    {
+      number: 2,
+      description: "Management of the learning environment",
+    },
+    {
+      number: 3,
+      description: "Instruction",
+    },
+    {
+      number: 4,
+      description: "Interaction",
+    },
+    {
+      number: 5,
+      description: "Assessment and evaluation",
+    },
+  ];
+
   constructor(
     private notiService: ETS1NotificationService,
     private eTS1GoogleSheetService: ETS1GoogleSheetsService,
@@ -98,8 +186,427 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     private firestoreUserService: FirestoreUserService,
     private allStarService: AllStarService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef,
+    private el: ElementRef,
+    private renderer: Renderer2
   ) {}
+
+  showFullDetailsDE(selectId: string) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Use setTimeout to ensure DOM updates properly
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "auto"); // Adjusts width dynamically
+      this.renderer.setStyle(selectElement, "text-align", "left");
+      this.cdRef.detectChanges();
+    });
+
+    for (let option of selectElement.options) {
+      option.text = this.getFullTextOfDE(option.value);
+    }
+  }
+
+  updateOptionsDE(selectId: string) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Remove inline width style
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "45px");
+      this.renderer.setStyle(selectElement, "text-align", "center");
+      this.cdRef.detectChanges();
+
+      for (let option of selectElement.options) {
+        option.text = option.value;
+      }
+    });
+  }
+
+  getFullTextOfDE(value: string): string {
+    const result = this.deOptionTemplate.find((item) => item.number == value);
+    if (result) return result.number + ": " + result.description;
+
+    // Check for E1 - E6 mappings
+    if (/^E[1-6]$/.test(value)) {
+      const index = parseInt(value.substring(1)); // Extract the number after 'E'
+      const temp =
+        this.eTS1[`system${index}Detail`] == ""
+          ? "NIL INFO"
+          : this.eTS1[`system${index}Detail`];
+
+      return value + ": " + temp;
+    }
+
+    // Check for E7 - E12 mappings
+    if (/^E(1[0-2]|[7-9])$/.test(value)) {
+      const index = parseInt(value.substring(1)) - 6; // Map to 1-6 range
+      const temp =
+        this.eTS1[`abNormal${index}Detail`] == ""
+          ? "NIL INFO"
+          : this.eTS1[`abNormal${index}Detail`];
+
+      return value + ": " + temp;
+    }
+
+    return "NIL INFO";
+  }
+
+  showFullDetailsIEC(selectId: string, index: number) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Use setTimeout to ensure DOM updates properly
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "auto"); // Adjusts width dynamically
+      this.renderer.setStyle(selectElement, "text-align", "left");
+      this.cdRef.detectChanges();
+    });
+
+    for (let option of selectElement.options) {
+      option.text = this.getFullTextOfIEC(option.value);
+    }
+  }
+
+  getFullTextOfIEC(value: number): string {
+    const competency = this.iecOptionTemplate.find(
+      (comp) => comp.number == value
+    );
+    return competency
+      ? `${competency.number}: ${competency.description}`
+      : value.toString();
+  }
+
+  updateOptionsIEC(selectId: string) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Remove inline width style
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "22px");
+      this.renderer.setStyle(selectElement, "text-align", "center");
+      this.cdRef.detectChanges();
+
+      for (let option of selectElement.options) {
+        option.text = option.value;
+      }
+    });
+  }
+
+  showFullDetailsPC(selectId: string, index: number) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Use setTimeout to ensure DOM updates properly
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "auto"); // Adjusts width dynamically
+      this.renderer.setStyle(selectElement, "text-align", "left");
+      this.cdRef.detectChanges();
+    });
+
+    for (let option of selectElement.options) {
+      option.text = this.getFullTextOfPC(option.value);
+    }
+  }
+
+  updateOptionsPC(selectId: string) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Remove inline width style
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "22px");
+      this.renderer.setStyle(selectElement, "text-align", "center");
+
+      for (let option of selectElement.options) {
+        option.text = option.value;
+      }
+
+      this.cdRef.detectChanges();
+    });
+  }
+
+  resetOptionsPC(selectId: string) {
+    const selectElement = this.el.nativeElement.querySelector(`#${selectId}`);
+    if (!selectElement) return;
+
+    // Remove inline width style
+    setTimeout(() => {
+      this.renderer.setStyle(selectElement, "width", "22px");
+      this.renderer.setStyle(selectElement, "text-align", "center");
+
+      for (let option of selectElement.options) {
+        option.text = option.value;
+      }
+
+      this.cdRef.detectChanges();
+    });
+  }
+
+  getFullTextOfPC(value: number): string {
+    const competency = competenciesData.find((comp) => comp.number == value);
+    return competency
+      ? `${competency.number}: ${competency.code} - ${competency.description}`
+      : value.toString();
+  }
+
+  onSelectionIECChange(selectId: string, value: number, index: number) {
+    this.updateOptionsIEC(selectId);
+    const isInstructor = this.eTS1.instructor == "true";
+    if (isInstructor && this.eTS1.iecScores[index] != "1") {
+      this.eTS1.pcScores[index] = "0";
+    }
+
+    if (value == 0 || value == 1) {
+      this.updateNoteDetail(index, 0, false);
+      return;
+    }
+
+    this.cdRef.detectChanges();
+    const competency = IECcompetenciesData.find(
+      (c) => Number(c.number) === Number(value)
+    );
+    if (competency) {
+      const dialogRef = this.dialogService.open(PcDetailDialogComponent, {
+        context: {
+          data: {
+            ...competency,
+            input: this.eTS1.noteDetails[index],
+            type: "IEC",
+          },
+        }, // Pass data correctly
+        autoFocus: true,
+        hasBackdrop: true,
+        closeOnBackdropClick: false,
+        closeOnEsc: false,
+      });
+
+      dialogRef.onClose.subscribe((result) => {
+        if (result) {
+          this.updateNoteDetail(index, result, false);
+        }
+      });
+    }
+  }
+
+  onSelectionChange(selectId: string, value: number, index: number) {
+    this.updateOptionsPC(selectId);
+    const isInstructor = this.eTS1.instructor == "true";
+    if (!isInstructor) {
+      this.eTS1.iecScores[index] = "0";
+    } else {
+      if (this.eTS1.pcScores[index] != "0") this.eTS1.iecScores[index] = "1";
+    }
+    if (value == 0) {
+      this.updateNoteDetail(index, 0, true);
+      return;
+    }
+    if (!environment.enableSubPCPopUP) return;
+
+    this.cdRef.detectChanges();
+    const competency = competenciesData.find(
+      (c) => Number(c.number) === Number(value)
+    );
+    if (competency) {
+      const dialogRef = this.dialogService.open(PcDetailDialogComponent, {
+        context: {
+          data: {
+            ...competency,
+            input: this.eTS1.noteDetails[index],
+            type: "PC",
+          },
+        }, // Pass data correctly
+        autoFocus: true,
+        hasBackdrop: true,
+        closeOnBackdropClick: false,
+        closeOnEsc: false,
+      });
+
+      dialogRef.onClose.subscribe((result) => {
+        if (result) {
+          this.updateNoteDetail(index, result, true);
+        }
+      });
+    }
+  }
+
+  updateNoteDetail(index: number, subPC: number, pcEntry: boolean) {
+    const pcValue = this.eTS1.pcScores[index];
+    const iecValue = this.eTS1.iecScores[index];
+
+    let result = "";
+    const isInstructor = this.eTS1.instructor == "true";
+
+    //initiated by IEC to revised PC
+    if (!pcEntry) {
+      if (isInstructor) {
+        if (iecValue == "0") {
+          if (pcValue != "0") {
+            this.eTS1.pcScores[index] = "0";
+            // this.resetSelectNativeHTML("PC" + index);
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: PC must be 0 when IEC is 0 and the form is for instructor",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+          if (pcValue == "0" && this.eTS1.noteDetails[index] != "") {
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+          }
+        }
+
+        if (iecValue == "1") {
+          if (pcValue == "0") {
+            this.eTS1.pcScores[index] = "";
+            // this.resetSelectNativeHTML("PC" + index);
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: PC must not be 0 when IEC is 1 and the form is for instructor",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+        }
+
+        if (iecValue > 1) {
+          if (pcValue != "0") {
+            this.eTS1.pcScores[index] = "0";
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: PC must be 0 when IEC is 2-5 and the form is for instructor",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+
+          result = `{${subPC}}`;
+        }
+      }
+
+      if (!isInstructor) {
+        if (iecValue != "0") {
+          this.eTS1.iecScores[index] = "0";
+          this.eTS1.pcScores[index] = "";
+          this.eTS1.noteDetails[index] = "";
+          this.cdRef.detectChanges();
+
+          Swal.fire({
+            title:
+              "Invalid selection: IEC must be 0 when the form is for line pilot",
+            icon: "warning",
+            confirmButtonText: "OK",
+          }).then((result) => {});
+        }
+      }
+    }
+
+    //initiated by PC to revised IEC
+    if (pcEntry) {
+      if (isInstructor) {
+        if (pcValue == "0") {
+          if (iecValue == "1") {
+            this.eTS1.iecScores[index] = "";
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: IEC must not be 1 when PC is 0 and the form is for instructor.",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+        }
+
+        if (pcValue >= 1 && pcValue <= 9) {
+          if (iecValue != "1") {
+            this.eTS1.iecScores[index] = "1";
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: IEC must be 1 when PC is not 0 and the form is for instructor.",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+
+          result = `[${subPC}]`;
+        }
+      }
+
+      if (!isInstructor) {
+        if (pcValue >= 0 && pcValue <= 9) {
+          if (iecValue != "0") {
+            this.eTS1.iecScores[index] = "0";
+            this.eTS1.noteDetails[index] = "";
+            this.cdRef.detectChanges();
+
+            Swal.fire({
+              title:
+                "Invalid selection: IEC must be 0 when the form is for line pilot.",
+              icon: "warning",
+              confirmButtonText: "OK",
+            }).then((result) => {});
+          }
+
+          result = `[${subPC}]`;
+        }
+      }
+    }
+
+    if (!result) return; // If no valid result, do nothing
+
+    // 📝 Update noteDetails with correct formatting
+    let note = this.eTS1.noteDetails[index];
+
+    // Replace existing subPC or subIEC based on brackets
+    if (note.match(/\[\d+\]/) || note.match(/\{\d+\}/)) {
+      note = note.replace(/\[\d+\]|\{\d+\}/, result);
+    } else {
+      note = `${result} - ${note}`;
+    }
+
+    this.eTS1.noteDetails[index] = note;
+  }
+
+  // resetSelectNativeHTML(controlName: string) {
+  //   const element = document.getElementsByName(
+  //     controlName
+  //   )[0] as HTMLSelectElement;
+
+  //   if (element) {
+  //     setTimeout(() => {
+  //       element.value = ""; // Explicitly set to empty string
+  //       element.dispatchEvent(new Event("change")); // Trigger Angular change detection
+
+  //       // Manually update the bound model (if using ngModel)
+  //       const ngModel = element["ngModel"];
+  //       if (ngModel) {
+  //         ngModel.control.setValue(""); // Ensure value is an empty string
+  //         ngModel.control.markAsTouched(); // Mark as touched for validation
+  //         ngModel.control.markAsDirty(); // Ensure form detects changes
+
+  //         console.log("ngModel");
+  //       }
+
+  //       this.cdRef.detectChanges(); // Force change detection to update UI
+  //     });
+  //   }
+  // }
 
   resetChiefPilotSignature(): void {
     this.eTS1.signatureStaff3 = "";
@@ -290,7 +797,13 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       this.eTS1 = localETS1;
       this.reviseReadOnly();
     } else {
-      this.eTS1 = { ...cleanETS1Data };
+      /*
+      // this.eTS1 = { ...cleanETS1Data };
+      // bug duplicated data across tabs.....
+      // wutthichair@airasia.com 11 Feb 2025
+      */
+
+      this.eTS1 = JSON.parse(JSON.stringify(cleanETS1Data));
       this.eTS1.uuid = this.uuid;
 
       this.eTS1Service.geteTS1byUUID(this.uuid).then((doc) => {
@@ -667,7 +1180,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO COFT 2022....
-        this.eTS1 = { ...coft2025H1ETS1Data };
+        // this.eTS1 = { ...coft2025H1ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...coft2025H1ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -697,7 +1211,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO COFT 2022....
-        this.eTS1 = { ...coft2024H2ETS1Data };
+        // this.eTS1 = { ...coft2024H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...coft2024H2ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -728,7 +1243,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO LOFT 2022....
-        this.eTS1 = { ...loft2025H1ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...loft2025H1ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -759,7 +1274,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO LOFT 2022....
-        this.eTS1 = { ...loft2024H2ETS1Data };
+        // this.eTS1 = { ...loft2024H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...loft2024H2ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -790,7 +1306,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO LOFT 2022....
-        this.eTS1 = { ...loft2023H2ETS1Data };
+        // this.eTS1 = { ...loft2023H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...loft2023H2ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -821,7 +1338,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO LOFT 2022....
-        this.eTS1 = { ...loft2023H1ETS1Data };
+        // this.eTS1 = { ...loft2023H1ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...loft2023H1ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -851,7 +1369,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO COFT 2022....
-        this.eTS1 = { ...coft2023H2ETS1Data };
+        // this.eTS1 = { ...coft2023H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...coft2023H2ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;
@@ -881,7 +1400,8 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         const tempEmail = this.eTS1.ownerEmail;
 
         //SET TO COFT 2022....
-        this.eTS1 = { ...coft2023H1ETS1Data };
+        // this.eTS1 = { ...coft2023H1ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...coft2023H1ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;

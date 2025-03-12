@@ -244,7 +244,13 @@
     <legend class="PersonalDoc-legend">Personal Autolanding Records</legend>
     <!-- SHOW AUTOLAND - ONELIN, AUTOLAND - SIMULATIOR -->
     <div *ngIf="showAutoLand" class="row" style="margin-bottom: 7px">
+      <!--
+        21 JAN 2025
+        wutthichair@airasia.com 
+        add *ngIf="autoLandCards[0] != null" into the underneath div to prevent autoland card init before has correct autoLandCards[0]
+      -->
       <div
+        *ngIf="autoLandCards[0] != null"
         class="col-12 col-sm-12 col-md-6 col-lg-4"
         id="AUTOLAND - ONLINE"
         style="margin-top: 7px"

@@ -106,7 +106,7 @@ export let loft2025H1ETS1Data: ETS1Data = {
   system4Score: "",
   system5Detail: "SIDESTICK PRIORITY&TAKEOVER TECHNIQUE",
   system5Score: "",
-  system6Detail: "RNAV/RNP",
+  system6Detail: "PBN",
   system6Score: "",
   abNormal1Detail: "TCAS PROCEDURE",
   abNormal1Score: "",

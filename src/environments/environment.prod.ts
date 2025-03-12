@@ -7,6 +7,7 @@ export const environment = {
   appVersion: require("../../package.json").version,
   production: true,
   signInWithPopup: false,
+  enableSubPCPopUP: false,
   /*
     01 Mar 2023 wutthichair
       Add firebaseConfig

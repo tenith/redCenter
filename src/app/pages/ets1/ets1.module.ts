@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { Ets1RoutingModule } from "./ets1-routing.module";
 import { Ets1Component } from "./ets1.component";
 
-import { NbTabsetModule } from "@nebular/theme";
+import { NbRadioModule, NbSelectModule, NbTabsetModule } from "@nebular/theme";
 import { WorkspaceComponent } from "./workspace/workspace.component";
 
 import { NbIconModule } from "@nebular/theme";
@@ -20,6 +20,7 @@ import { NbButtonModule } from "@nebular/theme";
 
 import { FormsModule } from "@angular/forms";
 import { NgxPrintModule } from "ngx-print";
+import { PcDetailDialogComponent } from "./pc-detail-dialog/pc-detail-dialog.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { NgxPrintModule } from "ngx-print";
     CustomActionComponent,
     DeleteConfirmationComponent,
     ETS1FormComponent,
+    PcDetailDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,9 @@ import { NgxPrintModule } from "ngx-print";
     NbTabsetModule,
     NbIconModule,
     Ng2SmartTableModule,
+    NbButtonModule,
+    NbSelectModule,
+    NbRadioModule,
     NbButtonModule,
   ],
 })

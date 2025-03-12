@@ -1,0 +1,70 @@
+<nb-card class="popup-card fixed-width-card" data-backdrop="static">
+  <nb-card-header class="text-center">
+    Select Additional Detail for {{ data.code }} - {{ data.description }}
+  </nb-card-header>
+  <nb-card-body class="text-center">
+    <label for="subPC" class="label">Select Detail:</label>
+    <!-- <nb-select
+      id="subPC"
+      fullWidth
+      [(ngModel)]="selectedSubDetail"
+      (ngModelChange)="confirmSelection()"
+    >
+      <nb-option
+        *ngFor="let subPC of data.subPCs"
+        [value]="subPC.number"
+        class="wrap-option"
+      >
+        <span class="option-text">{{ subPC.number }} - {{ subPC.detail }}</span>
+      </nb-option>
+    </nb-select> -->
+    <div class="scrollable-popup">
+      <table class="subpc-table">
+        <tr
+          *ngFor="let subPC of data.subPCs; let i = index"
+          [class.even]="i % 2 === 0"
+          [class.odd]="i % 2 !== 0"
+        >
+          <td>
+            <button
+              nbButton
+              [status]="selectedSubDetail == subPC.number ? 'primary' : 'basic'"
+              (click)="selectSubPC(subPC.number)"
+            >
+              {{ selectedSubDetail == subPC.number ? "✔" : "-" }}
+            </button>
+          </td>
+          <td
+            [ngClass]="{
+              'selected-row': selectedSubDetail == subPC.number
+            }"
+          >
+            &nbsp;{{ subPC.number }}.&nbsp;&nbsp;&nbsp;
+          </td>
+          <td
+            align="left"
+            [ngClass]="{
+              'selected-row': selectedSubDetail == subPC.number
+            }"
+          >
+            {{ subPC.detail }}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="text-center">
+    <button
+      *ngIf="selectedSubDetail"
+      nbButton
+      status="primary"
+      style="margin-right: 10px"
+      (click)="confirmSelection()"
+    >
+      <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Confirm
+    </button>
+    <button nbButton status="danger" outline (click)="closeDialog()">
+      <nb-icon icon="close-outline"></nb-icon> Cancel
+    </button>
+  </nb-card-footer>
+</nb-card>
