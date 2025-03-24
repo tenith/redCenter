@@ -111,6 +111,9 @@ export class MandatoryCardPostComponent
       this.uploadForm.get("issueBy").clearValidators();
     }
 
+    if (this.name == "Criminal background check") {
+      this.uploadForm.get("issueBy").setValue("Royal Thai Police");
+    }
     this.handleAppConnectivityChanges();
   }
 
