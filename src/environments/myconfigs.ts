@@ -183,20 +183,24 @@ export const aocOptions = [
 
 export const sepMandatory = {
   Pilot: ["My Picture"],
-  Senior_Cabin_Crew: ["My Picture", "Medical License"],
-  Cabin_Crew: ["My Picture", "Medical License"],
+  Senior_Cabin_Crew: [
+    "My Picture",
+    "Medical License",
+    "Criminal background check",
+  ],
+  Cabin_Crew: ["My Picture", "Medical License", "Criminal background check"],
 };
 
 export const requiredVerify = {
   Pilot: [],
-  Senior_Cabin_Crew: ["Medical License"],
-  Cabin_Crew: ["Medical License"],
+  Senior_Cabin_Crew: ["Medical License", "Criminal background check"],
+  Cabin_Crew: ["Medical License", "Criminal background check"],
 };
 
 export const strictVerify = {
   Pilot: [],
-  Senior_Cabin_Crew: ["Medical License"],
-  Cabin_Crew: ["Medical License"],
+  Senior_Cabin_Crew: ["Medical License", "Criminal background check"],
+  Cabin_Crew: ["Medical License", "Criminal background check"],
 };
 
 export const sepCourseOptions = {
