@@ -49,6 +49,11 @@
           {{ firestoreUser.getFirestoreUser().role | uppercase }}
         </div>
 
+        <div *ngIf="!offline" class="col-12" style="margin-top: 0.5rem">
+          <B>Display CSR on-site prerequisite attendance. </B>
+          <nb-icon icon="search-outline" (click)="openCSRPopUP()"></nb-icon>
+        </div>
+
         <!-- <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-3"><B>MY QR</B></div>
                 <div *ngIf="!fireBaseAuth.getFirebaseUser().isAnonymous" class="col-9">
                     <p>
@@ -85,7 +90,8 @@
                   [class.odd]="odd"
                 >
                   <!-- {{i+1}}. {{valid}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}"></nb-icon> -->
-                  {{ i + 1 }}. {{ valid }}
+                  {{ i + 1 }}.
+                  {{ (valid == "OPC" ? "OPC/LPC" : valid) | uppercase }}
                 </div>
               </nb-accordion-item-body>
             </nb-accordion-item>
@@ -112,7 +118,8 @@
                   [class.odd]="odd"
                 >
                   <!-- {{i+1}}. {{about}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(about)"></nb-icon> -->
-                  {{ i + 1 }}. {{ about }}
+                  {{ i + 1 }}.
+                  {{ (about == "OPC" ? "OPC/LPC" : about) | uppercase }}
                 </div>
               </nb-accordion-item-body>
             </nb-accordion-item>
@@ -167,7 +174,8 @@
                 >
                   <!-- {{i+1}}. <a href="./pages/sep/#{{expired}}">{{expired}}</a> -->
                   <!-- {{i+1}}. {{expired}}<nb-icon [config]="{icon: 'search-outline', options: {'icon-font-size': '0.5rem'}}" (click)="jumpTo(expired)"></nb-icon> -->
-                  {{ i + 1 }}. {{ expired }}
+                  {{ i + 1 }}.
+                  {{ (expired == "OPC" ? "OPC/LPC" : expired) | uppercase }}
                 </div>
               </nb-accordion-item-body>
             </nb-accordion-item>

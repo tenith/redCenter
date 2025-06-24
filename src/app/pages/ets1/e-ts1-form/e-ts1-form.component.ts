@@ -41,8 +41,11 @@ import { loft2025H1ETS1Data } from "../../../@core/shared/data/loft2025H1ETS1Dat
 import { coft2025H1ETS1Data } from "../../../@core/shared/data/coft2025H1ETS1Data";
 import { competenciesData } from "../../../@core/shared/data/competenciesData";
 import { PcDetailDialogComponent } from "../pc-detail-dialog/pc-detail-dialog.component";
+import { CeDetailDialogComponent } from "../ce-detail-dialog/ce-detail-dialog.component";
 import { environment } from "../../../../environments/environment";
 import { IECcompetenciesData } from "../../../@core/shared/data/IECOBData";
+import { loft2025H2ETS1Data } from "../../../@core/shared/data/loft2025H2ETS1Data";
+import { coft2025H2ETS1Data } from "../../../@core/shared/data/coft2025H2ETS1Data";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -101,6 +104,10 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       description: "N/A",
     },
     {
+      number: "88",
+      description: "ADDITIONAL COMMENT",
+    },
+    {
       number: "D1",
       description: "PRE FLT & COCKPIT PREP",
     },
@@ -147,6 +154,10 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     {
       number: "D12",
       description: "SPECIAL OPERATIONS",
+    },
+    {
+      number: "CE",
+      description: "CORE COMMANDER",
     },
   ];
 
@@ -222,6 +233,30 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         option.text = option.value;
       }
     });
+
+    this.review88();
+  }
+
+  syncTagNumber(prevLine, currLine) {
+    const match = prevLine.match(/\[(\d+)\]/);
+    if (!match) return currLine; // If prevLine doesn't have a [number], return currLine unchanged
+    const newNumber = match[1];
+    return currLine.replace(/\[\d+\]/, `[${newNumber}]`);
+  }
+
+  review88(): void {
+    for (let i = 0; i < this.eTS1.deScores.length; i++) {
+      if (this.eTS1.deScores[i] == "88") {
+        this.eTS1.pcScores[i] = this.eTS1.pcScores[i - 1];
+        this.eTS1.iecScores[i] = this.eTS1.iecScores[i - 1];
+
+        let code = this.eTS1.noteDetails[i - 1].match(/^\[\d+\]\s*-/);
+        let match = this.eTS1.noteDetails[i].match(/^\[\d+\]\s*-\s*(.*)/);
+
+        this.eTS1.noteDetails[i] =
+          code + " " + (match ? match[1] : this.eTS1.noteDetails[i]);
+      }
+    }
   }
 
   getFullTextOfDE(value: string): string {
@@ -426,12 +461,129 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
       dialogRef.onClose.subscribe((result) => {
         if (result) {
           this.updateNoteDetail(index, result, true);
+          if (this.eTS1.deScores[index] == "CE") {
+            this.openCEDialog(index);
+          }
         }
       });
     }
   }
 
+  openCEDialog(index: number): void {
+    const dialogRef = this.dialogService.open(CeDetailDialogComponent, {
+      context: {
+        data: this.parseEventDataFromText(
+          this.eTS1.noteDetails[index] + " " + this.eTS1.noteDetails[index + 1]
+        ),
+      }, // Pass data correctly
+      autoFocus: true,
+      hasBackdrop: true,
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+    });
+
+    dialogRef.onClose.subscribe((result) => {
+      if (result) {
+        const match = this.eTS1.noteDetails[index].match(/\[(\d+)\]/);
+        if (match) {
+          this.eTS1.noteDetails[index] = match[0] + " - " + result;
+        } else this.eTS1.noteDetails[index] = "";
+
+        this.eTS1.noteDetails[index].replace(/;;+/g, ";");
+
+        this.updateNoteWithCEDetail(index, this.eTS1.noteDetails[index]);
+      }
+    });
+  }
+
+  // Parse text back to eventData object
+  parseEventDataFromText(input: string): {
+    eventPhase: string;
+    eventName: string;
+    flightPhase: string;
+    detail: string;
+    tags: { text: string; status: string }[];
+  } {
+    const eventPhaseMatch = input.match(/Event Phase:\s*([^;]+)/);
+    const eventNameMatch = input.match(/Event Name:\s*([^;]+)/);
+    const flightPhaseMatch = input.match(/Flight Phase:\s*([^;]+)/);
+    const detailMatch = input.match(/Detail:\s*(.*?)\s*\[\d+\]\s*-\s*Tags:/);
+    const tagsMatch = input.match(/Tags:\s*(.+)$/);
+
+    const tags = tagsMatch
+      ? tagsMatch[1].split(";").map((tag) => {
+          const statusMatch = tag.match(/\(([^)]+)\)/);
+          return {
+            text: tag.replace(/\s*\([^)]+\)/, "").trim(),
+            status: statusMatch ? statusMatch[1].trim() : "unknown",
+          };
+        })
+      : [];
+
+    return {
+      eventPhase: eventPhaseMatch ? eventPhaseMatch[1].trim() : "",
+      eventName: eventNameMatch ? eventNameMatch[1].trim() : "",
+      flightPhase: flightPhaseMatch ? flightPhaseMatch[1].trim() : "",
+      detail: detailMatch ? detailMatch[1].trim().replace(/;$/, "") : "",
+      tags,
+    };
+  }
+
+  splitEventText(text) {
+    // First line: keep [x] -
+    const firstLineMatch = text.match(/^\[\d+\]\s*-\s*/);
+    const firstLine = firstLineMatch ? firstLineMatch[0].trim() : "";
+
+    // Remove first line to process the rest
+    const remaining = text.replace(firstLineMatch[0], "").trim();
+
+    // Find positions for splitting
+    const detailIndex = remaining.indexOf("Detail:");
+    const tagsIndex = remaining.indexOf("Tags:");
+
+    // Second line: from Event Name to just before Detail
+    const secondLine = remaining
+      .substring(0, detailIndex)
+      .trim()
+      .replace(/,$/, "");
+
+    // Third line: Detail
+    const thirdLine = remaining
+      .substring(detailIndex - 1, tagsIndex)
+      .trim()
+      .replace(/,$/, "");
+
+    // Fourth line: Tags and beyond
+    const fourthLine = remaining.substring(tagsIndex).trim();
+
+    return [
+      firstLine + " " + secondLine,
+      firstLine + " " + thirdLine,
+      // firstLine + " " + fourthLine,
+    ];
+  }
+
+  updateNoteWithCEDetail(index: number, data: string): void {
+    const temp = this.splitEventText(data);
+
+    const deScore = this.eTS1.deScores[index];
+    const pcScore = this.eTS1.pcScores[index];
+    const iecScore = 0;
+
+    for (let i = 0; i < temp.length; i++) {
+      console.log(JSON.stringify(temp[i]));
+      this.eTS1.deScores[index + i] = deScore;
+      this.eTS1.pcScores[index + i] = pcScore;
+      this.eTS1.iecScores[index + i] = iecScore;
+
+      this.eTS1.noteDetails[index + i] = temp[i];
+    }
+
+    // this.eTS1.noteDetails[index] += data;
+  }
+
   updateNoteDetail(index: number, subPC: number, pcEntry: boolean) {
+    this.review88();
     const pcValue = this.eTS1.pcScores[index];
     const iecValue = this.eTS1.iecScores[index];
 
@@ -1226,6 +1378,37 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     });
   }
 
+  setCoftH22025(): void {
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard COFT (JUL - DEC 2025)?",
+      showCancelButton: true,
+      icon: "warning",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO COFT 2022....
+        // this.eTS1 = { ...coft2024H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...coft2025H2ETS1Data }));
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
   setLoft(): void {
     // let resultB = false;
     Swal.fire({
@@ -1276,6 +1459,38 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         //SET TO LOFT 2022....
         // this.eTS1 = { ...loft2024H2ETS1Data };
         this.eTS1 = JSON.parse(JSON.stringify({ ...loft2024H2ETS1Data }));
+        this.eTS1.uuid = tempUUID;
+        this.eTS1.ownerEmail = tempEmail;
+        this.eTS1.initDateTime = tempInitTime;
+
+        this.setName3();
+        // this.saveToLocal();
+        // this.saveEvent.emit("");
+      } else if (result.isDenied) {
+        // resultB = false;
+      }
+    });
+  }
+
+  setLoftH22025(): void {
+    // let resultB = false;
+    Swal.fire({
+      title:
+        "Do you want to reset this form and fill with standard LOFT (JUL - DEC 2025)?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //SAVE INIT UUID, DRAFT TIME....
+        const tempUUID = this.eTS1.uuid;
+        const tempInitTime = this.eTS1.initDateTime;
+        const tempEmail = this.eTS1.ownerEmail;
+
+        //SET TO LOFT 2022....
+        // this.eTS1 = { ...loft2024H2ETS1Data };
+        this.eTS1 = JSON.parse(JSON.stringify({ ...loft2025H2ETS1Data }));
         this.eTS1.uuid = tempUUID;
         this.eTS1.ownerEmail = tempEmail;
         this.eTS1.initDateTime = tempInitTime;

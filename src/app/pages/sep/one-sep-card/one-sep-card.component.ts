@@ -151,6 +151,8 @@ export class OneSepCardComponent implements OnInit, OnDestroy {
   setupCard(): void {
     this.startPolling();
 
+    // if (this.info.Name == "OPC") this.info.Name = "OPC/ LPC";
+
     if (this.info.Name == "RHS" || this.info.Name == "LINE CHECK") {
       if (
         this.info.InitialDate == "NO DATA" ||

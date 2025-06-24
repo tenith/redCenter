@@ -4,7 +4,7 @@
       ><div class="icon-container">
         <nb-icon icon="{{ myIcon }}" status="{{ myStatus }}"></nb-icon>
       </div>
-      <b>{{ info.Name | uppercase }}</b>
+      <b>{{ info.Name == "OPC" ? "OPC/LPC" : info.Name }}</b>
 
       <!-- &nbsp;&nbsp;
             <nb-icon *ngIf="info.Link != '' && dataReady" icon="bookmark"></nb-icon> -->

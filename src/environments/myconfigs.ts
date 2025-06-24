@@ -238,7 +238,6 @@ export const sepCourseOptions = {
     "SMS CLASS",
     "AVSEC",
     "Ground Check",
-    "A321",
   ],
   Cabin_Crew: [
     "SEP DOOR DRILL",
@@ -251,7 +250,6 @@ export const sepCourseOptions = {
     "SMS CLASS",
     "AVSEC",
     "Ground Check",
-    "A321",
   ],
 };
 

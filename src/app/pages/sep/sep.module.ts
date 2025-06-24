@@ -21,6 +21,8 @@ import { NbInputModule } from "@nebular/theme";
 import { DeleteConfirmationComponent } from "./delete-confirmation/delete-confirmation.component";
 
 import { QRCodeModule } from "angularx-qrcode";
+import { CSRDetailDialogComponent } from "./csr-detail-dialog/csr-detail-dialog.component";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { QRCodeModule } from "angularx-qrcode";
     AutolandCardComponent,
     MandatoryCardPostComponent,
     DeleteConfirmationComponent,
+    CSRDetailDialogComponent,
   ],
   imports: [
     NbInputModule,
@@ -42,6 +45,7 @@ import { QRCodeModule } from "angularx-qrcode";
     NbButtonModule,
     NbAccordionModule,
     QRCodeModule,
+    HttpClientModule,
   ],
   providers: [DatePipe],
   exports: [SepComponent],

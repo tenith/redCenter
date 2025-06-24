@@ -1,0 +1,93 @@
+<div
+  class="container-fluid d-flex align-items-center justify-content-center min-vh-100 p-3"
+>
+  <ng-container *ngIf="apiResponse; else loading">
+    <div class="card popup-card" style="max-width: 600px; max-height: 600px">
+      <div
+        class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+      >
+        <h5 class="m-0 flex-grow-1 text-center text-white bg-primary p-2">
+          CSR LINE CARD
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          aria-label="Close"
+          (click)="closeDialog()"
+        ></button>
+      </div>
+      <div class="card-body scrollable-body">
+        <ng-container *ngIf="apiResponse.error; else staffDetails">
+          <div class="text-center">
+            <h2 class="text-danger mb-4" style="font-size: 1.5rem">Error</h2>
+            <p class="text-muted">
+              {{
+                apiResponse.message ||
+                  "An error occurred, please try again later."
+              }}
+            </p>
+          </div>
+          <div class="text-center mt-4">
+            <button nbButton status="danger" (click)="closeDialog()">
+              Close
+            </button>
+          </div>
+        </ng-container>
+        <ng-template #staffDetails>
+          <h1 class="card-title mb-1 text-truncate" style="font-size: 1.5rem">
+            {{ apiResponse.name || "-" }}
+          </h1>
+          <p class="text-muted small mb-4">
+            Staff ID: {{ apiResponse.staffId || "-" }}
+          </p>
+          <hr class="my-4" />
+          <div class="staff-details">
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">Name</span>
+              <span class="text-truncate">{{ apiResponse.name || "-" }}</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">Email</span>
+              <span class="text-truncate">{{ apiResponse.email || "-" }}</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">CSR On Site</span>
+              <span>{{ apiResponse.csrOnSite || "-" }}</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">CSR LMS</span>
+              <span>{{ apiResponse.csrLms || "-" }}</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">LMS Exam</span>
+              <span>{{ apiResponse.lmsExam || "-" }}</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <span class="fw-bold text-muted">Feedback</span>
+              <span>{{ apiResponse.feedback || "-" }}</span>
+            </div>
+          </div>
+          <hr class="my-4" />
+          <div class="d-flex justify-content-between text-muted small">
+            <span>STAFF ID</span>
+            <span>{{ apiResponse.staffId || "-" }}</span>
+          </div>
+          <div class="text-center mt-4">
+            <button nbButton status="danger" (click)="closeDialog()">
+              Close
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="text-center p-4">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="text-muted mt-2">Loading...</p>
+    </div>
+  </ng-template>
+</div>

@@ -15,7 +15,7 @@ import { FileUploadInformationService } from "../../@core/shared/services/file-u
 import { FirestoreUserService } from "../../@core/shared/services/firestore-user.service";
 import { FileUploadInformation } from "../../@core/shared/interfaces/file-upload-information";
 import { ManualCardService } from "../../@core/shared/services/manual-card.service";
-
+import { NbDialogRef, NbDialogService } from "@nebular/theme";
 import {
   RHSEmailLists,
   sepCourseBasicRequiredToOperate,
@@ -24,6 +24,7 @@ import {
   strictVerify,
 } from "../../../environments/myconfigs";
 import { baseURL } from "../../../environments/environment";
+import { CSRDetailDialogComponent } from "./csr-detail-dialog/csr-detail-dialog.component";
 
 @Component({
   selector: "ngx-sep",
@@ -74,10 +75,23 @@ export class SepComponent implements OnInit, OnDestroy {
     public fireBaseAuth: FirebaseAuthenticationService,
     public toastr: NbToastrService,
     public sepCardService: SepCardService,
-    public autoLandCardService: AutolandCardService
+    public autoLandCardService: AutolandCardService,
+    private dialogService: NbDialogService
   ) {}
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  openCSRPopUP(): void {
+    const dialogRef = this.dialogService.open(CSRDetailDialogComponent, {
+      context: {
+        data: {},
+      }, // Pass data correctly
+      autoFocus: true,
+      hasBackdrop: true,
+      closeOnBackdropClick: true,
+      closeOnEsc: true,
+    });
   }
 
   private handleAppConnectivityChanges(): void {

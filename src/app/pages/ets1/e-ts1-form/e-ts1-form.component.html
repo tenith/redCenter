@@ -121,38 +121,7 @@
           valign="middle"
         ></td>
       </tr>
-      <tr *ngIf="eTS1.submitDateTime == ''">
-        <td
-          style="
-            border-bottom: 0px solid #000000;
-            border-left: 2px solid #000000;
-            border-right: 2px solid #000000;
-          "
-          colspan="40"
-          align="center"
-          valign="middle"
-        >
-          <button
-            nbButton
-            shape="semi-round"
-            status="warning"
-            (click)="setLoftH22024()"
-          >
-            LOFT JUL - DEC 2024
-          </button>
-          &nbsp;&nbsp;&nbsp;
-          <button nbButton status="danger" (click)="resetForm()">RESET</button>
-          &nbsp;&nbsp;&nbsp;
-          <button
-            nbButton
-            shape="semi-round"
-            status="warning"
-            (click)="setCoftH22024()"
-          >
-            COFT JUL - DEC 2024
-          </button>
-        </td>
-      </tr>
+
       <tr *ngIf="eTS1.submitDateTime == ''">
         <td
           style="
@@ -167,11 +136,44 @@
           <button nbButton status="primary" (click)="setLoft()">
             LOFT JAN - JUN 2025
           </button>
-          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          <button nbButton status="danger" (click)="resetForm()">RESET</button>
+          &nbsp;&nbsp;&nbsp;
+          
 
           <button nbButton status="primary" (click)="setCoft()">
             COFT JAN - JUN 2025
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="eTS1.submitDateTime == ''">
+        <td
+          style="
+            border-bottom: 0px solid #000000;
+            border-left: 2px solid #000000;
+            border-right: 2px solid #000000;
+          "
+          colspan="40"
+          align="center"
+          valign="middle"
+        >
+          <button
+            nbButton
+            shape="semi-round"
+            status="warning"
+            (click)="setLoftH22025()"
+          >
+            LOFT JUL - DEC 2025
+          </button>
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+          <button
+            nbButton
+            shape="semi-round"
+            status="warning"
+            (click)="setCoftH22025()"
+          >
+            COFT JUL - DEC 2025
           </button>
         </td>
       </tr>
@@ -17528,6 +17530,7 @@
               required
             >
               <option value="99">99</option>
+              <option value="88">88</option>
               <option value="D1">D1</option>
               <option value="D2">D2</option>
               <option value="D3">D3</option>
@@ -17552,6 +17555,7 @@
               <option value="E10">E10</option>
               <option value="E11">E11</option>
               <option value="E12">E12</option>
+              <option value="CE">CE</option>
             </select>
           </td>
 
@@ -17776,6 +17780,7 @@
               "
             >
               <option value="99">99</option>
+              <option value="88">88</option>
               <option value="D1">D1</option>
               <option value="D2">D2</option>
               <option value="D3">D3</option>
@@ -17800,6 +17805,7 @@
               <option value="E10">E10</option>
               <option value="E11">E11</option>
               <option value="E12">E12</option>
+              <option value="CE">CE</option>
             </select>
           </td>
           <td
@@ -18357,6 +18363,7 @@
               "
             >
               <option value="99">99</option>
+              <option value="88">88</option>
               <option value="D1">D1</option>
               <option value="D2">D2</option>
               <option value="D3">D3</option>
@@ -18381,6 +18388,7 @@
               <option value="E10">E10</option>
               <option value="E11">E11</option>
               <option value="E12">E12</option>
+              <option value="CE">CE</option>
             </select>
           </td>
           <td

@@ -1,0 +1,185 @@
+<nb-card class="popup-card full-screen-card" data-backdrop="static">
+  <nb-card-header class="text-center"
+    >A320 Abnormal/Emergency Event</nb-card-header
+  >
+  <nb-card-body class="scrollable-body">
+    <form #eventForm="ngForm">
+      <div class="form-group">
+        <label for="eventPhase" class="label">Phase:</label>
+        <nb-select
+          id="eventPhase"
+          name="eventPhase"
+          [(ngModel)]="eventData.eventPhase"
+          (ngModelChange)="onPhaseChange($event)"
+          fullWidth
+          placeholder="Select event Phase"
+          required
+        >
+          <nb-option *ngFor="let phase of eventPhases" [value]="phase.value">
+            {{ phase.value }} - {{ phase.description }}
+          </nb-option>
+        </nb-select>
+
+        <small id="eventNameHelp" class="form-text">
+          Please select the CE information phase.
+        </small>
+      </div>
+
+      <!-- Flight Phase Dropdown -->
+      <div class="form-group">
+        <label for="flightPhase" class="label">Flight Phase:</label>
+        <nb-select
+          id="flightPhase"
+          name="flightPhase"
+          [(ngModel)]="eventData.flightPhase"
+          (ngModelChange)="onFlightPhaseChange($event)"
+          fullWidth
+          placeholder="Select Flight Phase"
+          required
+        >
+          <nb-option *ngFor="let phase of flightPhases" [value]="phase.value">
+            {{ phase.value }} - {{ phase.description }}
+          </nb-option>
+        </nb-select>
+      </div>
+
+      <!-- Event Name with Autocomplete -->
+      <div class="form-group">
+        <label for="eventName" class="label">Event Name:</label>
+        <input
+          type="text"
+          nbInput
+          fullWidth
+          id="eventName"
+          name="eventName"
+          [(ngModel)]="eventData.eventName"
+          placeholder="Search or enter A320 abnormal/emergency procedure"
+          [nbAutocomplete]="autoNgModel"
+          (ngModelChange)="onEventNameChange($event)"
+          required
+          aria-describedby="eventNameHelp"
+          class="full-width-input"
+        />
+        <nb-autocomplete #autoNgModel>
+          <nb-option
+            *ngFor="let event of filteredEvents | async"
+            [value]="event.name"
+            (selected)="selectEvent($event)"
+          >
+            {{ event.name }}
+          </nb-option>
+        </nb-autocomplete>
+        <small id="eventNameHelp" class="form-text">
+          Type to search A320 procedures or enter a new one.
+        </small>
+      </div>
+
+      <!-- Detail Textarea -->
+      <div class="form-group">
+        <label for="detail" class="label">Detail:</label>
+        <textarea
+          nbInput
+          fullWidth
+          id="detail"
+          name="detail"
+          [(ngModel)]="eventData.detail"
+          placeholder="Enter event details"
+          rows="4"
+          aria-describedby="detailHelp"
+        ></textarea>
+        <small id="detailHelp" class="form-text">
+          Provide additional context or observations.
+        </small>
+      </div>
+
+      <!-- Tags -->
+      <!-- <div class="form-group">
+        <label for="tagInput" class="label">Tags:</label>
+        <nb-tag-list>
+          <nb-tag
+            *ngFor="let tag of eventData.tags"
+            [text]="tag.text"
+            [status]="tag.status"
+            removable
+            (remove)="removeTag(tag)"
+          ></nb-tag>
+        </nb-tag-list>
+        <input
+          nbInput
+          fullWidth
+          id="tagInput"
+          placeholder="Add new tag (press Enter)"
+          (keyup.enter)="addTag($event)"
+          #tagInput
+          aria-describedby="tagHelp"
+        />
+        <small id="tagHelp" class="form-text">
+          Add tags to categorize the event (e.g., System, Crew).
+        </small>
+
+        <div class="predefined-tags">
+          <h6>Predefined Tags</h6>
+          <div class="tag-group">
+            <strong>Critical (Red):</strong>
+            <nb-tag
+              *ngFor="let tag of predefinedTags.danger"
+              [text]="tag.text"
+              [status]="tag.status"
+              (click)="addPredefinedTag(tag)"
+              class="tag-clickable"
+            ></nb-tag>
+          </div>
+          <div class="tag-group">
+            <strong>Warning (Yellow):</strong>
+            <nb-tag
+              *ngFor="let tag of predefinedTags.warning"
+              [text]="tag.text"
+              [status]="tag.status"
+              (click)="addPredefinedTag(tag)"
+              class="tag-clickable"
+            ></nb-tag>
+          </div>
+          <div class="tag-group">
+            <strong>Positive (Green):</strong>
+            <nb-tag
+              *ngFor="let tag of predefinedTags.success"
+              [text]="tag.text"
+              [status]="tag.status"
+              (click)="addPredefinedTag(tag)"
+              class="tag-clickable"
+            ></nb-tag>
+          </div>
+        </div>
+      </div> -->
+    </form>
+    <!-- Submit & Cancel Buttons moved here from card footer -->
+    <div class="text-center" style="margin-top: 20px">
+      <button
+        nbButton
+        status="primary"
+        style="margin-right: 10px"
+        [disabled]="!eventForm.valid"
+        (click)="submitForm()"
+      >
+        <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Submit
+      </button>
+      <button nbButton status="danger" outline (click)="closeDialog()">
+        <nb-icon icon="close-outline"></nb-icon> Cancel
+      </button>
+    </div>
+  </nb-card-body>
+  <!-- <nb-card-footer class="text-center">
+    <button
+      nbButton
+      status="primary"
+      style="margin-right: 10px"
+      [disabled]="!eventForm.valid"
+      (click)="submitForm()"
+    >
+      <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Submit
+    </button>
+    <button nbButton status="danger" outline (click)="closeDialog()">
+      <nb-icon icon="close-outline"></nb-icon> Cancel
+    </button>
+  </nb-card-footer> -->
+</nb-card>
