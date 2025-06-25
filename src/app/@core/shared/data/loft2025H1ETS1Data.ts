@@ -121,6 +121,297 @@ export let loft2025H1ETS1Data: ETS1Data = {
   abNormal6Detail: "UNRELIABLE AIRSPEED",
   abNormal6Score: "",
 
+  system1PCList: [
+    {
+      id: 3,
+      obList: [
+        {
+          id: 1,
+          observed: 3,
+          total: 3,
+          note: "",
+        },
+        {
+          id: 2,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+        {
+          id: 4,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+  ],
+  pcSummaries: [
+    {
+      pcID: 3,
+      howMany: 3,
+      totalMany: 3,
+      howOften: 100,
+      eventName: "R-UPRT",
+    },
+    {
+      pcID: 5,
+      howMany: 2,
+      totalMany: 2,
+      howOften: 100,
+      eventName: "RVSM",
+    },
+    {
+      pcID: 4,
+      howMany: 1,
+      totalMany: 1,
+      howOften: 100,
+      eventName: "RVSM",
+    },
+    {
+      pcID: 2,
+      howMany: 1,
+      totalMany: 1,
+      howOften: 100,
+      eventName: "HOT WEATHER OPERATION",
+    },
+    {
+      pcID: 2,
+      howMany: 1,
+      totalMany: 1,
+      howOften: 100,
+      eventName: "OPERATION NEAR VOLCANIC ASH",
+    },
+    {
+      pcID: 3,
+      howMany: 1,
+      totalMany: 1,
+      howOften: 100,
+      eventName: "SIDESTICK PRIORITY&TAKEOVER TECHNIQUE",
+    },
+    {
+      pcID: 8,
+      howMany: 2,
+      totalMany: 2,
+      howOften: 100,
+      eventName: "PBN",
+    },
+    {
+      pcID: 3,
+      howMany: 4,
+      totalMany: 4,
+      howOften: 100,
+    },
+    {
+      pcID: 5,
+      howMany: 2,
+      totalMany: 2,
+      howOften: 100,
+    },
+    {
+      pcID: 4,
+      howMany: 1,
+      totalMany: 1,
+      howOften: 100,
+    },
+    {
+      pcID: 2,
+      howMany: 2,
+      totalMany: 2,
+      howOften: 100,
+    },
+    {
+      pcID: 8,
+      howMany: 2,
+      totalMany: 2,
+      howOften: 100,
+    },
+    {
+      pcID: 0,
+      howMany: 11,
+      totalMany: 11,
+      howOften: 100,
+    },
+  ],
+  system2PCList: [
+    {
+      id: 5,
+      obList: [
+        {
+          id: 7,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+        {
+          id: 8,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+    {
+      id: 4,
+      obList: [
+        {
+          id: 3,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  system3PCList: [
+    {
+      id: 2,
+      obList: [
+        {
+          id: 5,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+  ],
+  system4PCList: [
+    {
+      id: 2,
+      obList: [
+        {
+          id: 3,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+  ],
+  system5PCList: [
+    {
+      id: 3,
+      obList: [
+        {
+          id: 2,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  system6PCList: [
+    {
+      id: 8,
+      obList: [
+        {
+          id: 1,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+        {
+          id: 2,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal1PCList: [
+    {
+      id: 3,
+      obList: [
+        {
+          id: 1,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal2PCList: [
+    {
+      id: 9,
+      obList: [
+        {
+          id: 1,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+        {
+          id: 2,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal3PCList: [
+    {
+      id: 1,
+      obList: [
+        {
+          id: 1,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal4PCList: [
+    {
+      id: 7,
+      obList: [
+        {
+          id: 1,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+        {
+          id: 4,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal5PCList: [
+    {
+      id: 3,
+      obList: [
+        {
+          id: 3,
+          observed: 2,
+          total: 2,
+          note: "",
+        },
+      ],
+    },
+  ],
+  abNormal6PCList: [
+    {
+      id: 8,
+      obList: [
+        {
+          id: 1,
+          observed: 1,
+          total: 1,
+          note: "",
+        },
+      ],
+    },
+  ],
+
   //SECTION F.....
   knoScore: "",
   proScore: "",

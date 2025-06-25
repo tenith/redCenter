@@ -5,6 +5,7 @@ import { Ets1RoutingModule } from "./ets1-routing.module";
 import { Ets1Component } from "./ets1.component";
 
 import {
+  NbAccordionModule,
   NbAutocompleteModule,
   NbRadioModule,
   NbSelectModule,
@@ -28,6 +29,7 @@ import { FormsModule } from "@angular/forms";
 import { NgxPrintModule } from "ngx-print";
 import { PcDetailDialogComponent } from "./pc-detail-dialog/pc-detail-dialog.component";
 import { CeDetailDialogComponent } from "./ce-detail-dialog/ce-detail-dialog.component";
+import { EbtDialogComponent } from "./ebt-dialog/ebt-dialog.component";
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { CeDetailDialogComponent } from "./ce-detail-dialog/ce-detail-dialog.com
     ETS1FormComponent,
     PcDetailDialogComponent,
     CeDetailDialogComponent,
+    EbtDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +50,7 @@ import { CeDetailDialogComponent } from "./ce-detail-dialog/ce-detail-dialog.com
     NbCardModule,
     Ets1RoutingModule,
     NbTabsetModule,
+    NbAccordionModule,
     NbIconModule,
     Ng2SmartTableModule,
     NbButtonModule,

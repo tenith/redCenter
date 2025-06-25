@@ -1,0 +1,81 @@
+<nb-card class="popup-card fixed-width-card">
+  <nb-card-header class="text-center">
+    Select Observations by Competency
+  </nb-card-header>
+
+  <nb-card-body class="scrollable-body">
+    <nb-accordion multi>
+      <nb-accordion-item *ngFor="let comp of competenciesData">
+        <nb-accordion-item-header>
+          <div>
+            <nb-icon
+              *ngIf="hasMax(comp)"
+              icon="bulb-outline"
+              status="warning"
+            ></nb-icon>
+            &nbsp;&nbsp;
+            <span>{{ comp.code }} - {{ comp.description }}</span>
+          </div>
+        </nb-accordion-item-header>
+
+        <nb-accordion-item-body>
+          <div class="table-wrapper">
+            <table class="subpc-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Detail</th>
+                  <th class="tiny-col">Obs</th>
+                  <th class="tiny-col">Max</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let sub of comp.subPCs"
+                  [ngClass]="{ 'highlight-row': sub.max > 0 }"
+                >
+                  <td>{{ sub.number }}</td>
+                  <td>{{ sub.detail }}</td>
+                  <td>
+                    <input
+                      nbInput
+                      type="number"
+                      min="0"
+                      [(ngModel)]="sub.observed"
+                      (ngModelChange)="onObservedChange(sub, comp)"
+                      placeholder="0"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      nbInput
+                      type="number"
+                      min="0"
+                      [(ngModel)]="sub.max"
+                      placeholder="0"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- 
+          <div class="text-center mt-3">
+            <button nbButton status="primary" (click)="saveCompetency(comp)">
+              <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Save
+            </button>
+          </div> -->
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  </nb-card-body>
+
+  <nb-card-footer class="text-center">
+    <button nbButton status="success" (click)="submitAll()">
+      <nb-icon icon="checkmark-outline"></nb-icon> Submit All
+    </button>
+    <button nbButton status="danger" outline (click)="closeDialog()">
+      <nb-icon icon="close-outline"></nb-icon> Cancel
+    </button>
+  </nb-card-footer>
+</nb-card>

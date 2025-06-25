@@ -46,6 +46,9 @@ import { environment } from "../../../../environments/environment";
 import { IECcompetenciesData } from "../../../@core/shared/data/IECOBData";
 import { loft2025H2ETS1Data } from "../../../@core/shared/data/loft2025H2ETS1Data";
 import { coft2025H2ETS1Data } from "../../../@core/shared/data/coft2025H2ETS1Data";
+import { EbtDialogComponent } from "../ebt-dialog/ebt-dialog.component";
+import { PilotCompetency } from "../../../@core/shared/interfaces/pilotCompetency";
+import { CbtaSummaryService } from "../../../@core/shared/services/cbta-summary.service";
 
 @Component({
   selector: "ngx-e-ts1-form",
@@ -189,6 +192,7 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
+    private cbtaService: CbtaSummaryService,
     private notiService: ETS1NotificationService,
     private eTS1GoogleSheetService: ETS1GoogleSheetsService,
     private tabService: TabService,
@@ -384,6 +388,40 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
     return competency
       ? `${competency.number}: ${competency.code} - ${competency.description}`
       : value.toString();
+  }
+
+  openEBTDialog(index: number, type: number) {
+    const prefix = type === 0 ? "system" : "abNormal";
+    const key = `${prefix}${index}PCList`;
+
+    const dialogRef = this.dialogService.open(EbtDialogComponent, {
+      context: {
+        data: this.eTS1[key],
+      }, // Pass data correctly
+      autoFocus: true,
+      hasBackdrop: true,
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+    });
+
+    dialogRef.onClose.subscribe((result) => {
+      if (result) {
+        this.eTS1[key] = result;
+        this.eTS1.pcSummaries = this.cbtaService.summarizeFromETS1(this.eTS1);
+        this.cdRef.detectChanges();
+
+        console.log(JSON.stringify(this.eTS1));
+      }
+    });
+  }
+
+  getPcSummary(pcID: number): string {
+    if (this.eTS1.pcSummaries == null) return "";
+    console.log("getPC: " + JSON.stringify(this.eTS1.pcSummaries));
+    const pc = this.eTS1.pcSummaries.find(
+      (p) => p.pcID === pcID && !p.eventName
+    );
+    return pc ? `${pc.howMany}/${pc.totalMany}:${pc.howOften}%` : "";
   }
 
   onSelectionIECChange(selectId: string, value: number, index: number) {
@@ -1432,6 +1470,9 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
         this.eTS1.initDateTime = tempInitTime;
 
         this.setName3();
+
+        this.eTS1.pcSummaries = this.cbtaService.summarizeFromETS1(this.eTS1);
+        this.cdRef.detectChanges();
         // this.saveToLocal();
         // this.saveEvent.emit("");
       } else if (result.isDenied) {
@@ -2121,74 +2162,149 @@ export class ETS1FormComponent implements OnInit, OnDestroy {
   }
 
   revisedSectionE(): void {
-    let systemNormals: Array<string> = [];
-    let systemNormalScores: Array<string> = [];
+    const systemDetails: string[] = [];
+    const systemScores: string[] = [];
+    const systemPCLists: any[][] = [];
 
-    let systemAbNormals: Array<string> = [];
-    let systemAbNormalScores: Array<string> = [];
+    const abnormalDetails: string[] = [];
+    const abnormalScores: string[] = [];
+    const abnormalPCLists: any[][] = [];
 
     type ObjectKey = keyof typeof this.eTS1;
 
-    //Revised System Normal.....
+    // Process system normal entries
     for (let i = 1; i <= 6; i++) {
-      if (this.eTS1[("system" + i + "Detail") as ObjectKey] != "") {
-        systemNormals.push(this.eTS1[("system" + i + "Detail") as ObjectKey]);
-        systemNormalScores.push(
-          this.eTS1[("system" + i + "Score") as ObjectKey]
-        );
+      const detailKey = `system${i}Detail` as ObjectKey;
+      const scoreKey = `system${i}Score` as ObjectKey;
+      const pcListKey = `system${i}PCList` as ObjectKey;
+
+      if (this.eTS1[detailKey] && this.eTS1[detailKey] !== "") {
+        systemDetails.push(this.eTS1[detailKey]);
+        systemScores.push(this.eTS1[scoreKey]);
+        systemPCLists.push(this.eTS1[pcListKey]);
       }
     }
 
-    for (let i = 1; i <= systemNormals.length; i++) {
-      this.eTS1[("system" + i + "Detail") as ObjectKey] = systemNormals[i - 1];
-      this.eTS1[("system" + i + "Score") as ObjectKey] =
-        systemNormalScores[i - 1];
-    }
-
-    for (let i = systemNormals.length + 1; i <= 6; i++) {
-      this.eTS1[("system" + i + "Detail") as ObjectKey] = "";
-      this.eTS1[("system" + i + "Score") as ObjectKey] = "";
-    }
-
-    //Revised Abnormal.....
+    // Reassign system normal entries
     for (let i = 1; i <= 6; i++) {
-      if (this.eTS1[("abNormal" + i + "Detail") as ObjectKey] != "") {
-        //console.log('push : ' + i + this.eTS1['abNormal' + i + 'Detail' as ObjectKey]);
-        systemAbNormals.push(
-          this.eTS1[("abNormal" + i + "Detail") as ObjectKey]
-        );
-        systemAbNormalScores.push(
-          this.eTS1[("abNormal" + i + "Score") as ObjectKey]
-        );
+      const detailKey = `system${i}Detail` as ObjectKey;
+      const scoreKey = `system${i}Score` as ObjectKey;
+      const pcListKey = `system${i}PCList` as ObjectKey;
+
+      if (i <= systemDetails.length) {
+        this.eTS1[detailKey] = systemDetails[i - 1];
+        this.eTS1[scoreKey] = systemScores[i - 1];
+        this.eTS1[pcListKey] = systemPCLists[i - 1];
+      } else {
+        this.eTS1[detailKey] = "";
+        this.eTS1[scoreKey] = "";
+        this.eTS1[pcListKey] = [];
       }
     }
 
-    for (let i = 1; i <= systemAbNormals.length; i++) {
-      this.eTS1[("abNormal" + i + "Detail") as ObjectKey] =
-        systemAbNormals[i - 1];
-      this.eTS1[("abNormal" + i + "Score") as ObjectKey] =
-        systemAbNormalScores[i - 1];
+    // Process abnormal entries
+    for (let i = 1; i <= 6; i++) {
+      const detailKey = `abNormal${i}Detail` as ObjectKey;
+      const scoreKey = `abNormal${i}Score` as ObjectKey;
+      const pcListKey = `abnormal${i}PCList` as ObjectKey;
+
+      if (this.eTS1[detailKey] && this.eTS1[detailKey] !== "") {
+        abnormalDetails.push(this.eTS1[detailKey]);
+        abnormalScores.push(this.eTS1[scoreKey]);
+        abnormalPCLists.push(this.eTS1[pcListKey]);
+      }
     }
 
-    for (let i = systemAbNormals.length + 1; i <= 6; i++) {
-      this.eTS1[("abNormal" + i + "Detail") as ObjectKey] = "";
-      this.eTS1[("abNormal" + i + "Score") as ObjectKey] = "";
+    // Reassign abnormal entries
+    for (let i = 1; i <= 6; i++) {
+      const detailKey = `abNormal${i}Detail` as ObjectKey;
+      const scoreKey = `abNormal${i}Score` as ObjectKey;
+      const pcListKey = `abnormal${i}PCList` as ObjectKey;
+
+      if (i <= abnormalDetails.length) {
+        this.eTS1[detailKey] = abnormalDetails[i - 1];
+        this.eTS1[scoreKey] = abnormalScores[i - 1];
+        this.eTS1[pcListKey] = abnormalPCLists[i - 1];
+      } else {
+        this.eTS1[detailKey] = "";
+        this.eTS1[scoreKey] = "";
+        this.eTS1[pcListKey] = [];
+      }
     }
 
-    if (this.eTS1.system1Detail == "") this.eTS1.system1Score = "";
-    if (this.eTS1.system2Detail == "") this.eTS1.system2Score = "";
-    if (this.eTS1.system3Detail == "") this.eTS1.system3Score = "";
-    if (this.eTS1.system4Detail == "") this.eTS1.system4Score = "";
-    if (this.eTS1.system5Detail == "") this.eTS1.system5Score = "";
-    if (this.eTS1.system6Detail == "") this.eTS1.system6Score = "";
-
-    if (this.eTS1.abNormal1Detail == "") this.eTS1.abNormal1Score = "";
-    if (this.eTS1.abNormal2Detail == "") this.eTS1.abNormal2Score = "";
-    if (this.eTS1.abNormal3Detail == "") this.eTS1.abNormal3Score = "";
-    if (this.eTS1.abNormal4Detail == "") this.eTS1.abNormal4Score = "";
-    if (this.eTS1.abNormal5Detail == "") this.eTS1.abNormal5Score = "";
-    if (this.eTS1.abNormal6Detail == "") this.eTS1.abNormal6Score = "";
+    this.eTS1.pcSummaries = this.cbtaService.summarizeFromETS1(this.eTS1);
+    this.cdRef.detectChanges();
   }
+
+  // revisedSectionE(): void {
+  //   let systemNormals: Array<string> = [];
+  //   let systemNormalScores: Array<string> = [];
+
+  //   let systemAbNormals: Array<string> = [];
+  //   let systemAbNormalScores: Array<string> = [];
+
+  //   type ObjectKey = keyof typeof this.eTS1;
+
+  //   //Revised System Normal.....
+  //   for (let i = 1; i <= 6; i++) {
+  //     if (this.eTS1[("system" + i + "Detail") as ObjectKey] != "") {
+  //       systemNormals.push(this.eTS1[("system" + i + "Detail") as ObjectKey]);
+  //       systemNormalScores.push(
+  //         this.eTS1[("system" + i + "Score") as ObjectKey]
+  //       );
+  //     }
+  //   }
+
+  //   for (let i = 1; i <= systemNormals.length; i++) {
+  //     this.eTS1[("system" + i + "Detail") as ObjectKey] = systemNormals[i - 1];
+  //     this.eTS1[("system" + i + "Score") as ObjectKey] =
+  //       systemNormalScores[i - 1];
+  //   }
+
+  //   for (let i = systemNormals.length + 1; i <= 6; i++) {
+  //     this.eTS1[("system" + i + "Detail") as ObjectKey] = "";
+  //     this.eTS1[("system" + i + "Score") as ObjectKey] = "";
+  //   }
+
+  //   //Revised Abnormal.....
+  //   for (let i = 1; i <= 6; i++) {
+  //     if (this.eTS1[("abNormal" + i + "Detail") as ObjectKey] != "") {
+  //       //console.log('push : ' + i + this.eTS1['abNormal' + i + 'Detail' as ObjectKey]);
+  //       systemAbNormals.push(
+  //         this.eTS1[("abNormal" + i + "Detail") as ObjectKey]
+  //       );
+  //       systemAbNormalScores.push(
+  //         this.eTS1[("abNormal" + i + "Score") as ObjectKey]
+  //       );
+  //     }
+  //   }
+
+  //   for (let i = 1; i <= systemAbNormals.length; i++) {
+  //     this.eTS1[("abNormal" + i + "Detail") as ObjectKey] =
+  //       systemAbNormals[i - 1];
+  //     this.eTS1[("abNormal" + i + "Score") as ObjectKey] =
+  //       systemAbNormalScores[i - 1];
+  //   }
+
+  //   for (let i = systemAbNormals.length + 1; i <= 6; i++) {
+  //     this.eTS1[("abNormal" + i + "Detail") as ObjectKey] = "";
+  //     this.eTS1[("abNormal" + i + "Score") as ObjectKey] = "";
+  //   }
+
+  //   if (this.eTS1.system1Detail == "") this.eTS1.system1Score = "";
+  //   if (this.eTS1.system2Detail == "") this.eTS1.system2Score = "";
+  //   if (this.eTS1.system3Detail == "") this.eTS1.system3Score = "";
+  //   if (this.eTS1.system4Detail == "") this.eTS1.system4Score = "";
+  //   if (this.eTS1.system5Detail == "") this.eTS1.system5Score = "";
+  //   if (this.eTS1.system6Detail == "") this.eTS1.system6Score = "";
+
+  //   if (this.eTS1.abNormal1Detail == "") this.eTS1.abNormal1Score = "";
+  //   if (this.eTS1.abNormal2Detail == "") this.eTS1.abNormal2Score = "";
+  //   if (this.eTS1.abNormal3Detail == "") this.eTS1.abNormal3Score = "";
+  //   if (this.eTS1.abNormal4Detail == "") this.eTS1.abNormal4Score = "";
+  //   if (this.eTS1.abNormal5Detail == "") this.eTS1.abNormal5Score = "";
+  //   if (this.eTS1.abNormal6Detail == "") this.eTS1.abNormal6Score = "";
+  // }
 
   revisedSectionG(): void {
     let tempDEScores: any[] = [];

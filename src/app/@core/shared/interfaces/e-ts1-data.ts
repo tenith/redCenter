@@ -1,3 +1,5 @@
+import { PilotCompetency } from "./pilotCompetency";
+import { PcSummary } from "./pcSummary";
 export interface ETS1Data {
   /**************************
     ETS1 REV. :06/08 JAN 22
@@ -179,39 +181,53 @@ export interface ETS1Data {
     **************************/
   system1Detail: any;
   system1Score: any;
+  system1PCList?: PilotCompetency[];
 
   system2Detail: any;
   system2Score: any;
+  system2PCList?: PilotCompetency[];
 
   system3Detail: any;
   system3Score: any;
+  system3PCList?: PilotCompetency[];
 
   system4Detail: any;
   system4Score: any;
+  system4PCList?: PilotCompetency[];
 
   system5Detail: any;
   system5Score: any;
+  system5PCList?: PilotCompetency[];
 
   system6Detail: any;
   system6Score: any;
+  system6PCList?: PilotCompetency[];
 
   abNormal1Detail: any;
   abNormal1Score: any;
+  abNormal1PCList?: PilotCompetency[];
 
   abNormal2Detail: any;
   abNormal2Score: any;
+  abNormal2PCList?: PilotCompetency[];
 
   abNormal3Detail: any;
   abNormal3Score: any;
+  abNormal3PCList?: PilotCompetency[];
 
   abNormal4Detail: any;
   abNormal4Score: any;
+  abNormal4PCList?: PilotCompetency[];
 
   abNormal5Detail: any;
   abNormal5Score: any;
+  abNormal5PCList?: PilotCompetency[];
 
   abNormal6Detail: any;
   abNormal6Score: any;
+  abNormal6PCList?: PilotCompetency[];
+
+  pcSummaries?: PcSummary[];
 
   /**************************
         SECTION F
