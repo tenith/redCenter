@@ -24,7 +24,7 @@ export let coft2025H2ETS1Data: ETS1Data = {
   //SECTION B.....
   classRoom: "",
   aircraftType: "A320",
-  airport: "VTCL-ZGGG",
+  airport: "VMMC-VTCL",
   sectorsNo: "N/A",
   accSectorsNO: "N/A",
   instructor: "false",
