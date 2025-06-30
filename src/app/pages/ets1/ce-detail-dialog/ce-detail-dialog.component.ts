@@ -19,27 +19,40 @@ export class CeDetailDialogComponent implements OnInit {
   };
 
   eventPhases = [
-    { value: "CES 1", description: "CES YEAR 1" },
-    { value: "CES 2", description: "CES YEAR 2" },
-    { value: "CES 3", description: "CES YEAR 3" },
-    { value: "CES 4", description: "CES YEAR 4" },
+    { value: "CES", description: "CES" },
     { value: "CEF 1", description: "CEF YEAR 1" },
     { value: "CEF 2", description: "CEF YEAR 2" },
     { value: "CEF 3", description: "CEF YEAR 3" },
     { value: "CEF 4", description: "CEF YEAR 4" },
   ];
 
+  // eventPhases = [
+  //   { value: "CES 1", description: "CES" },
+  //   { value: "CES 2", description: "CES" },
+  //   { value: "CES 3", description: "CES" },
+  //   { value: "CES 4", description: "CES" },
+  //   { value: "CEF 1", description: "CEF YEAR 1" },
+  //   { value: "CEF 2", description: "CEF YEAR 2" },
+  //   { value: "CEF 3", description: "CEF YEAR 3" },
+  //   { value: "CEF 4", description: "CEF YEAR 4" },
+  // ];
+
   flightPhases = [
     { value: "Preflight", description: "Before engine start" },
     { value: "Taxi", description: "Ground movement to runway" },
     { value: "Takeoff", description: "Runway to initial climb" },
-    { value: "Climb", description: "Initial climb to cruise" },
-    { value: "Cruise", description: "Level flight at altitude" },
-    { value: "Descent", description: "Cruise to approach" },
+
+    { value: "Climb&Cruise", description: "Initial climb to cruise" },
+    { value: "Descent", description: "Descent to airport" },
     { value: "Approach", description: "Final approach to landing" },
-    { value: "Landing", description: "Touchdown to taxi" },
+
     { value: "Go-Around", description: "Aborted landing" },
+    { value: "Landing", description: "Touchdown to taxi" },
     { value: "Taxi to Gate", description: "Runway to parking" },
+
+    { value: "Parkgin&Shutdown", description: "Parking and shutdown" },
+    { value: "Flight management", description: "Flight management" },
+    { value: "Special operations", description: "Special operations" },
   ];
 
   predefinedTags = {
@@ -382,20 +395,20 @@ export class CeDetailDialogComponent implements OnInit {
     { flightPhase: "Takeoff", name: "LAVOTARY SMOKE" },
     { flightPhase: "Takeoff", name: "T/O CONFIG WARNING" },
 
-    { flightPhase: "Climb", name: "TCAS" },
-    { flightPhase: "Climb", name: "UNRELIABLE AIRSPEED" },
-    { flightPhase: "Climb", name: "THR LVR 2 FAULT" },
-    { flightPhase: "Climb", name: "VHF EMITTING" },
-    { flightPhase: "Climb", name: "FLT CTRL STABILIZER JAM" },
-    { flightPhase: "Climb", name: "Y ENG2 PUMP LO PR PTU INOP" },
-    { flightPhase: "Climb", name: "ELEC EMER CONFIG" },
-    { flightPhase: "Climb", name: "ENG 2 HIGH VIBRATION" },
-    { flightPhase: "Climb", name: "CABIN OVER PRESSURE" },
-    { flightPhase: "Climb", name: "MULTIPLE UNDUE ECAM ALERTS" },
-    { flightPhase: "Climb", name: "REV UNLOCKED" },
-    { flightPhase: "Climb", name: "CARGO DOOR OPEN" },
-    { flightPhase: "Climb", name: "NAV HDG DISCREPANCY" },
-    { flightPhase: "Climb", name: "FAC 1+2 FAULT" },
+    { flightPhase: "Climb&Cruise", name: "TCAS" },
+    { flightPhase: "Climb&Cruise", name: "UNRELIABLE AIRSPEED" },
+    { flightPhase: "Climb&Cruise", name: "THR LVR 2 FAULT" },
+    { flightPhase: "Climb&Cruise", name: "VHF EMITTING" },
+    { flightPhase: "Climb&Cruise", name: "FLT CTRL STABILIZER JAM" },
+    { flightPhase: "Climb&Cruise", name: "Y ENG2 PUMP LO PR PTU INOP" },
+    { flightPhase: "Climb&Cruise", name: "ELEC EMER CONFIG" },
+    { flightPhase: "Climb&Cruise", name: "ENG 2 HIGH VIBRATION" },
+    { flightPhase: "Climb&Cruise", name: "CABIN OVER PRESSURE" },
+    { flightPhase: "Climb&Cruise", name: "MULTIPLE UNDUE ECAM ALERTS" },
+    { flightPhase: "Climb&Cruise", name: "REV UNLOCKED" },
+    { flightPhase: "Climb&Cruise", name: "CARGO DOOR OPEN" },
+    { flightPhase: "Climb&Cruise", name: "NAV HDG DISCREPANCY" },
+    { flightPhase: "Climb&Cruise", name: "FAC 1+2 FAULT" },
 
     { flightPhase: "Cruise", name: "EMERGENCY DESCENT" },
     { flightPhase: "Cruise", name: "ENG 1 E.I.U FAULT" },
